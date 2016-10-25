@@ -3,7 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_gravity="center"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    android:weightSum="1">
 
 
     <TextView
@@ -15,21 +16,20 @@
 
     <Button
         android:id="@+id/fuelType92Btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="92"
-        />
+        android:text="92" />
 
     <Button
         android:id="@+id/fuelType95Btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="95"
         />
 
     <Button
         android:id="@+id/fuelTypeDieselBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Diesel"
         />
