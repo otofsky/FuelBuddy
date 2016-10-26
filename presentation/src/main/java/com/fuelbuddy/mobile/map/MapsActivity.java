@@ -1,7 +1,9 @@
 package com.fuelbuddy.mobile.map;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.fuelbuddy.mobile.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,9 +13,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import javax.inject.Inject;
 
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, MapMvpView {
+
+    @Inject
+    public MapPresenter mapPresenter;
     private GoogleMap mMap;
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, MapsActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -43,5 +54,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    public void removeMarkers() {
+
+    }
+
+    @Override
+    public void showMarkerAt(float latitude, float longitude) {
+
+    }
+
+    @Override
+    public void showMarkersAt(float latitude, float longitude) {
+
     }
 }
