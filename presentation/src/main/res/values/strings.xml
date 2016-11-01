@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Fuel Buddy</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_maps2">Map</string>
+
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_cancel">Cancel</string>
+    <string name="dialog_error_title">Sorry</string>
+
+    <string name="empty_gas_stations_area">There aren\'t any gas stations</string>
+    <string name="error_loading_gas_stations">There was a problem loading gas stations</string>
+
+
 </resources>

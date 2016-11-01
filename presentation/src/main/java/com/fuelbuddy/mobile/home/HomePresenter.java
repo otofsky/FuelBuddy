@@ -15,6 +15,11 @@ public class HomePresenter extends BasePresenter<HomeMvpView> {
     public HomePresenter() {
 
     }
+
+
+    public void showInfo(){
+        getMvpView().showInfo();
+    }
 }
 
 

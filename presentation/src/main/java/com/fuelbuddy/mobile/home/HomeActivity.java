@@ -2,8 +2,13 @@ package com.fuelbuddy.mobile.home;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.module.HomeActivityModule;
 import com.fuelbuddy.mobile.navigation.Navigator;
 
 import javax.inject.Inject;
@@ -19,7 +24,7 @@ import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_DIESEL;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity implements HomeMvpView {
 
     @Inject
     HomePresenter homePresenter;
@@ -29,13 +34,30 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        homePresenter.attachView(this);
         ButterKnife.bind(this);
     }
+
+
+    @Override
+    protected void setupActivityComponent() {
+        //Uncomment those lines do measure dependencies creation time
+        //Debug.startMethodTracing("SplashTrace");
+        FuelBuddyApplication.get(this)
+                .getAppComponent()
+                .plus(new HomeActivityModule(this))
+                .inject(this);
+    }
+
+
+
 
     @DebugLog
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
-        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
+        Log.d("submitFuelType92", "submitFuelType92: ");
+        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
+        homePresenter.showInfo();
     }
 
     @DebugLog
@@ -51,4 +73,38 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void showMap() {
+
+    }
+
+    @Override
+    public void showInfo() {
+        Toast.makeText(getApplicationContext(), "updateLocationData " , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
 }

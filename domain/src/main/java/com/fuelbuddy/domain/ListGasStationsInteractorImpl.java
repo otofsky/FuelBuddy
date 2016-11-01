@@ -2,6 +2,7 @@ package com.fuelbuddy.domain;
 
 import com.fuelbuddy.data.GasStation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListGasStationsInteractorImpl implements ListGasStationsInteractor {
@@ -11,7 +12,7 @@ public class ListGasStationsInteractorImpl implements ListGasStationsInteractor 
 
     @Override
     public List<GasStation> getListGasStations() {
-        return null;
+       return new ArrayList<GasStation>();
     }
 }
 
