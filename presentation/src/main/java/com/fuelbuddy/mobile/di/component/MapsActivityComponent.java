@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.di.component;
 
 import com.fuelbuddy.mobile.base.ActivityScope;
 import com.fuelbuddy.mobile.di.module.HomeActivityModule;
+import com.fuelbuddy.mobile.di.module.MapsActivityModule;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.MapsActivity;
 
@@ -13,7 +14,7 @@ import dagger.Subcomponent;
 
 @ActivityScope
 @Subcomponent(
-        modules = HomeActivityModule.class
+        modules = MapsActivityModule.class
 )
 
 public interface MapsActivityComponent {

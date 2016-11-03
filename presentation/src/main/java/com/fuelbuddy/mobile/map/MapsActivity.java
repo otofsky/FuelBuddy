@@ -11,6 +11,7 @@ import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.module.HomeActivityModule;
 import com.fuelbuddy.mobile.di.module.MapsActivityModule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -49,17 +50,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapPresenter.attachView(this);
-        //mapPresenter.submitSearch();
+        mapPresenter.submitSearch();
         // startTracking();
         connectGoogleApiClient();
     }
 
     @Override
     protected void setupActivityComponent() {
-       /* FuelBuddyApplication.get(this)
+        FuelBuddyApplication.get(this)
                 .getAppComponent()
                 .plus(new MapsActivityModule(this))
-                .inject(this);*/
+                .inject(this);
     }
 
 

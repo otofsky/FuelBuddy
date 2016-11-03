@@ -19,7 +19,7 @@ import dagger.Component;
 public interface AppComponent {
     HomeActivityComponent plus(HomeActivityModule homeActivityModule);
 
-/*    MapsActivityComponent plus(MapsActivityModule mapsActivityModule);*/
+    MapsActivityComponent plus(MapsActivityModule mapsActivityModule);
 
 
 

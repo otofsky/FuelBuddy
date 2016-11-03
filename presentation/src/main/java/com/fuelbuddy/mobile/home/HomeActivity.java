@@ -56,8 +56,8 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
         Log.d("submitFuelType92", "submitFuelType92: ");
-        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
-        homePresenter.showInfo();
+        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
+        //homePresenter.showInfo();
     }
 
     @DebugLog
