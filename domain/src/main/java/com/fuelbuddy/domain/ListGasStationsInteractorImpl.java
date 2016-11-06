@@ -5,12 +5,15 @@ import com.fuelbuddy.data.GasStation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListGasStationsInteractorImpl implements ListGasStationsInteractor {
+import javax.inject.Inject;
 
+public class ListGasStationsInteractorImpl  {
+
+    @Inject
     public ListGasStationsInteractorImpl() {
     }
 
-    @Override
+
     public List<GasStation> getListGasStations() {
        return new ArrayList<GasStation>();
     }
