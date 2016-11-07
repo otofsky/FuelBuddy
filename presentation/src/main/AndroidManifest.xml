@@ -37,7 +37,8 @@
 
         <activity
             android:name=".home.HomeActivity"
-            android:label="@string/title_activity_maps">
+            android:theme="@style/AppThemeNoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
