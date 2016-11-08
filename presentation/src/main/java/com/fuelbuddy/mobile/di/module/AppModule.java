@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 import com.fuelbuddy.data.executor.JobExecutor;
+import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.mobile.UIThread;
+import com.fuelbuddy.repository.GasStationsRepository;
 
 import javax.inject.Singleton;
 
@@ -36,6 +38,9 @@ public class AppModule {
     PostExecutionThread providePostExecutionThread(UIThread uiThread) {
         return uiThread;
     }
-
+    @Provides @Singleton
+    GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
+        return gasStationDataRepository;
+    }
 
 }

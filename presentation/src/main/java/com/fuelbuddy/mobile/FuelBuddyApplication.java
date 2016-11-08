@@ -34,10 +34,6 @@ public class FuelBuddyApplication extends Application {
     }
 
 
-    public static FuelBuddyApplication get(Context context) {
-        return (FuelBuddyApplication) context.getApplicationContext();
-    }
-
     public AppComponent getAppComponent() {
         return component;
     }
