@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
-
+//
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
