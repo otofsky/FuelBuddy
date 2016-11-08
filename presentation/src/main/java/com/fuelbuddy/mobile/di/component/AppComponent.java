@@ -1,25 +1,34 @@
 package com.fuelbuddy.mobile.di.component;
 
+import android.content.Context;
+
+import com.fuelbuddy.executor.PostExecutionThread;
+import com.fuelbuddy.executor.ThreadExecutor;
+import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.PerActivity;
+import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.di.module.AppModule;
-import com.fuelbuddy.mobile.di.module.HomeActivityModule;
-import com.fuelbuddy.mobile.di.module.MapsActivityModule;
+import com.fuelbuddy.mobile.di.module.HomeModule;
+import com.fuelbuddy.mobile.di.module.MapsModule;
+import com.fuelbuddy.repository.GasStationsRepository;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-
-@Singleton
-@Component(
-        modules = {
-                AppModule.class,
-        }
-)
-
+/**
+ * A component whose lifetime is the life of the application.
+ */
+@Singleton // Constraints this component to one-per-application or unscoped bindings.
+@Component(modules = AppModule.class)
 public interface AppComponent {
-    HomeActivityComponent plus(HomeActivityModule homeActivityModule);
+    void inject(BaseActivity baseActivity);
 
-    MapsActivityComponent plus(MapsActivityModule mapsActivityModule);
+    //Exposed to sub-graphs.
+    Context context();
+    ThreadExecutor threadExecutor();
+    PostExecutionThread postExecutionThread();
+    GasStationsRepository userRepository();
 
 
 

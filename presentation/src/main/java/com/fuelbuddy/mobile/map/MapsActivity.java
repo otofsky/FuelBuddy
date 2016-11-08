@@ -11,8 +11,8 @@ import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.di.module.HomeActivityModule;
-import com.fuelbuddy.mobile.di.module.MapsActivityModule;
+import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.di.module.MapsModule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,6 +36,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
 
+    private MapsComponent mMapsComponent;
+
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
     }
@@ -49,20 +51,21 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        initializeInjector();
         mapPresenter.attachView(this);
         mapPresenter.submitSearch();
         // startTracking();
         connectGoogleApiClient();
     }
 
-    @Override
-    protected void setupActivityComponent() {
-        FuelBuddyApplication.get(this)
-                .getAppComponent()
-                .plus(new MapsActivityModule(this))
-                .inject(this);
-    }
 
+    private void initializeInjector() {
+        this.mMapsComponent = DaggerUserComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+        mMapsComponent.inject(this);
+    }
 
     private void startTracking() {
         connectGoogleApiClient();

@@ -1,8 +1,8 @@
 package com.fuelbuddy.mobile.map;
 
-import com.fuelbuddy.domain.ListGasStationsInteractor;
-import com.fuelbuddy.domain.ListGasStationsInteractorImpl;
+
 import com.fuelbuddy.interactor.GetGasStationList;
+import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.repository.GasStationsRepository;
 
@@ -14,13 +14,12 @@ import javax.inject.Inject;
 public class MapPresenter extends BasePresenter<MapMvpView> {
 
 
-    ListGasStationsInteractorImpl listGasStationsInteractor;
-
-    GetGasStationList getGasStationList;
+    private final UseCase getUserListUseCase;
 
     @Inject
-    public MapPresenter(ListGasStationsInteractorImpl listGasStationsInteractor) {
-        this.listGasStationsInteractor = listGasStationsInteractor;
+    public MapPresenter(UseCase getUserListUseCase) {
+        this.getUserListUseCase = getUserListUseCase;
+
 
     }
 
@@ -40,13 +39,12 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
 
     @Override
     public void detachView() {
-
         super.detachView();
+        this.getUserListUseCase.unsubscribe();
     }
 
     public void submitSearch() {
-        listGasStationsInteractor.getListGasStations();
-
+       // this.getUserListUseCase.execute(new UserListSubscriber());
     }
 
 }
