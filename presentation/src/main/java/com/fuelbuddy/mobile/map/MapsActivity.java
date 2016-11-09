@@ -11,30 +11,25 @@ import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.di.module.HomeActivityModule;
 import com.fuelbuddy.mobile.di.module.MapsActivityModule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
+public class MapsActivity extends BaseActivity implements MapMvpView, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     @Inject
     public MapPresenter mapPresenter;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
+    private MapView mapViewController;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
@@ -45,10 +40,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapViewController = new MapView(this);
         mapPresenter.attachView(this);
         mapPresenter.submitSearch();
         // startTracking();
@@ -114,26 +106,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         stopService(new Intent(this, TrackLocationService.class));
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @DebugLog
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
     @Override
     public void removeMarkers() {
 
@@ -141,13 +113,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void showMarkerAt(float latitude, float longitude) {
-
+       mapViewController.updateMarkerAt(latitude,longitude);
     }
 
     @DebugLog
     @Override
     public void showMarkersAt(float latitude, float longitude) {
-
+        mapViewController.updateMarkersAt(latitude,longitude);
     }
 
     @DebugLog
