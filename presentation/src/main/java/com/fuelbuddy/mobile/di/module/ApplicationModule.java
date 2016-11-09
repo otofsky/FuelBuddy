@@ -16,29 +16,33 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppModule {
+public class ApplicationModule {
     private Application application;
 
-    public AppModule(Application application) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
     @Provides
     @Singleton
-    public Application provideApplication() {
-        return application;
+    Context provideApplicationContext() {
+        return this.application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
         return jobExecutor;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     PostExecutionThread providePostExecutionThread(UIThread uiThread) {
         return uiThread;
     }
-    @Provides @Singleton
+
+    @Provides
+    @Singleton
     GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
         return gasStationDataRepository;
     }

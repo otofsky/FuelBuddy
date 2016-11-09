@@ -1,10 +1,11 @@
 package com.fuelbuddy.mobile.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.fuelbuddy.mobile.FuelBuddyApplication;
-import com.fuelbuddy.mobile.di.component.AppComponent;
+import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
 
 
@@ -21,8 +22,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      *
      */
-    protected AppComponent getApplicationComponent() {
-        return ((FuelBuddyApplication) getApplication()).getAppComponent();
+
+    protected ApplicationComponent getApplicationComponent() {
+
+        return FuelBuddyApplication.getInstance().getApplicationComponent();
     }
 
     /**

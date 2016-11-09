@@ -14,11 +14,11 @@ import javax.inject.Inject;
 public class MapPresenter extends BasePresenter<MapMvpView> {
 
 
-    private final UseCase getUserListUseCase;
+    //private final UseCase getUserListUseCase;
 
     @Inject
-    public MapPresenter(UseCase getUserListUseCase) {
-        this.getUserListUseCase = getUserListUseCase;
+    public MapPresenter() {
+
 
 
     }
@@ -40,7 +40,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        this.getUserListUseCase.unsubscribe();
+       // this.getUserListUseCase.unsubscribe();
     }
 
     public void submitSearch() {

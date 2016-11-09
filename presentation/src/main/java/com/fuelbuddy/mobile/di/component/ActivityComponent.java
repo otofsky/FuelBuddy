@@ -16,6 +16,7 @@
 package com.fuelbuddy.mobile.di.component;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.fuelbuddy.mobile.di.PerActivity;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
@@ -23,8 +24,8 @@ import dagger.Component;
 
 
 @PerActivity
-@Component(dependencies = AppComponent.class, modules = ActivityModule.class)
+@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
   //Exposed to sub-graphs.
-  Activity activity();
+  AppCompatActivity activity();
 }

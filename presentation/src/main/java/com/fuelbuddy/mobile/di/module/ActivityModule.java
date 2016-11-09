@@ -16,6 +16,7 @@
 package com.fuelbuddy.mobile.di.module;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
 
 import com.fuelbuddy.mobile.di.PerActivity;
@@ -28,9 +29,9 @@ import dagger.Provides;
  */
 @Module
 public class ActivityModule {
-  private final Activity activity;
+  private final AppCompatActivity activity;
 
-  public ActivityModule(Activity activity) {
+  public ActivityModule(AppCompatActivity activity) {
     this.activity = activity;
   }
 
@@ -39,7 +40,7 @@ public class ActivityModule {
   */
   @Provides
   @PerActivity
-  Activity activity() {
+  AppCompatActivity activity() {
     return this.activity;
   }
 }

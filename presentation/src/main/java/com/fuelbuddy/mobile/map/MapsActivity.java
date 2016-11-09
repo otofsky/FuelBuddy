@@ -11,6 +11,7 @@ import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.di.module.MapsModule;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,11 +57,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         mapPresenter.submitSearch();
         // startTracking();
         connectGoogleApiClient();
+
     }
 
 
     private void initializeInjector() {
-        this.mMapsComponent = DaggerUserComponent.builder()
+        this.mMapsComponent = DaggerMapsComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
