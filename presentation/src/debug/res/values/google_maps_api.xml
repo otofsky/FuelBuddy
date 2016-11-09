@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48%3Bcom.fuelbuddy.mobile.map
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48%3Bcom.fuelbuddy.fuelbuddy
 
     You can also add your credentials to an existing key, using this line:
-    B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48;com.fuelbuddy.mobile.map
+    B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48;com.fuelbuddy.fuelbuddy
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key

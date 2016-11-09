@@ -50,8 +50,5 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
 
     compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
-    compile 'com.google.android.gms:play-services:9.6.1'
-    compile 'com.google.android.gms:play-services-ads:9.6.1'
-    compile 'com.google.android.gms:play-services-auth:9.6.1'
-    compile 'com.google.android.gms:play-services-gcm:9.6.1'
+
 }
