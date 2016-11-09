@@ -8,6 +8,7 @@
 
     <string name="empty_gas_stations_area">There aren\'t any gas stations</string>
     <string name="error_loading_gas_stations">There was a problem loading gas stations</string>
+    <string name="title_activity_map">Map</string>
 
 
 </resources>

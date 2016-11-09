@@ -6,6 +6,7 @@ import android.content.Context;
 import com.fuelbuddy.data.executor.JobExecutor;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
+import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.UIThread;
 
 import javax.inject.Singleton;
@@ -15,15 +16,15 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-    private Application application;
+    private FuelBuddyApplication application;
 
-    public AppModule(Application application) {
+    public AppModule(FuelBuddyApplication application) {
         this.application = application;
     }
 
     @Provides
     @Singleton
-    public Application provideApplication() {
+    public Context provideApplication() {
         return application;
     }
 

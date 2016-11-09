@@ -4,10 +4,10 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
-    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48%3Bcom.fuelbuddy.fuelbuddy
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48%3Bcom.fuelbuddy.mobile.map
 
     You can also add your credentials to an existing key, using this line:
-    B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48;com.fuelbuddy.fuelbuddy
+    B5:AC:48:F1:A8:E1:B0:70:85:FB:94:41:46:DD:C8:C6:12:06:3E:48;com.fuelbuddy.mobile.map
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
@@ -15,5 +15,5 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAkQMASqGQo8MNVXYsB60ArjwGBRXbl5k8</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB0E58iOysi--m_k4z4WoMUZ90jX4qhBoA</string>
 </resources>
