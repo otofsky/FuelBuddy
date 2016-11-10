@@ -1,25 +1,18 @@
 package com.fuelbuddy.data.repository;
 
-import android.util.Log;
-
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
-import com.fuelbuddy.data.net.RestApi;
-import com.fuelbuddy.data.net.RestApiImpl;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 import com.fuelbuddy.data.repository.datasource.GasStationStoreFactory;
 import com.fuelbuddy.repository.GasStationsRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
 /**

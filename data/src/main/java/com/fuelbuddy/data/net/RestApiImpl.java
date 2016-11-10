@@ -20,12 +20,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 
-import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
-import com.fuelbuddy.data.exeption.NetworkConnectionException;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +30,15 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * {@link RestApi} implementation for retrieving data from the network.
+ * {@link RestApiService} implementation for retrieving data from the network.
  */
-public class RestApiImpl implements RestApi {
+public class RestApiImpl implements RestApiService {
+
+
+   // http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961
+
+    String ENDPOINT = "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
+
 
     private final Context context;
     GasStationEntityDataMapper mGasStationEntityDataMapper;

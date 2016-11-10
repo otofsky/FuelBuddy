@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.fuelbuddy.data.executor.JobExecutor;
+import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
@@ -45,6 +46,12 @@ public class ApplicationModule {
     @Singleton
     GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
         return gasStationDataRepository;
+    }
+
+    @Provides
+    @Singleton
+    RestApiService provideRestApiService() {
+        return RestApiService.Creator.newRestApiService();
     }
 
 }

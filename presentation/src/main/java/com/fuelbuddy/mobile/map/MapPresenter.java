@@ -72,7 +72,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
 
         @DebugLog
         @Override public void onNext(List<GasStation> gasStations) {
-            Log.d("UserListSubscriber", "onNext: " + gasStations.get(0).getName());
+            ///Log.d("UserListSubscriber", "onNext: " + gasStations.get(0).getName());
 
            // UserListPresenter.this.showUsersCollectionInView(users);
         }

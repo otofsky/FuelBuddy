@@ -18,31 +18,30 @@ package com.fuelbuddy.data.repository.datasource;
 
 
 import com.fuelbuddy.data.entity.GasStationEntity;
-import com.fuelbuddy.data.net.RestApi;
+import com.fuelbuddy.data.net.RestApiService;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.functions.Action1;
 
 
 class CloudGasStationStore implements GasStationDataStore {
 
-  private final RestApi restApi;
+  private final RestApiService mRestApiService;
 
 
 
 @Inject
-  CloudGasStationStore(RestApi restApi) {
-    this.restApi = restApi;
+  CloudGasStationStore(RestApiService restApiService) {
+    this.mRestApiService = restApiService;
   }
 
 
   @Override
   public Observable<List<GasStationEntity>> userEntityList() {
-    return this.restApi.gasStationEntityList();
+    return this.mRestApiService.gasStationEntityList();
   }
 
   @Override

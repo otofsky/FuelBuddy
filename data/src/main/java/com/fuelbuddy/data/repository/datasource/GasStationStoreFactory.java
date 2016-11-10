@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
-import com.fuelbuddy.data.net.RestApi;
+import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.net.RestApiImpl;
 
 import javax.inject.Inject;
@@ -26,9 +26,9 @@ public class GasStationStoreFactory {
 
     public GasStationDataStore createCloudDataStore() {
         GasStationEntityDataMapper gasStationEntityDataMapper = new GasStationEntityDataMapper();
-        RestApi restApi = new RestApiImpl(this.context, gasStationEntityDataMapper);
+        RestApiService restApiService = new RestApiImpl(this.context, gasStationEntityDataMapper);
 
-        return new CloudGasStationStore(restApi);
+        return new CloudGasStationStore(restApiService);
     }
 
 }
