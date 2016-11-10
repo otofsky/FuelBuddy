@@ -1,34 +1,27 @@
 package com.fuelbuddy.mobile.map;
 
 
-import com.fuelbuddy.interactor.GetGasStationList;
+import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.repository.GasStationsRepository;
+
+import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Created by zjuroszek on 07.10.16.
  */
 public class MapPresenter extends BasePresenter<MapMvpView> {
 
-
-    //private final UseCase getUserListUseCase;
+    private final UseCase getGasStationList;
 
     @Inject
-    public MapPresenter() {
-
-    }
-
-
-/*
-    @Inject
-    public MapPresenter(ListGasStationsInteractorImpl listGasStationsInteractor,GetGasStationList getGasStationList) {
-        this.listGasStationsInteractor = listGasStationsInteractor;
+    public MapPresenter(@Named("gasStationList")UseCase getGasStationList) {
         this.getGasStationList =  getGasStationList;
     }
-*/
 
     @Override
     public void attachView(MapMvpView mvpView) {
@@ -38,11 +31,43 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-       // this.getUserListUseCase.unsubscribe();
+       // this.getGasStationList.unsubscribe();
     }
 
     public void submitSearch() {
-       // this.getUserListUseCase.execute(new UserListSubscriber());
+       // this.getGasStationList.execute(new UserListSubscriber());
     }
+
+    /**
+     * Loads all users.
+     */
+    private void loadUserList() {
+        //this.hideViewRetry();
+        //this.showViewLoading();
+        this.getGasStationList();
+    }
+
+    private void getGasStationList() {
+        this.getGasStationList.execute(new UserListSubscriber());
+    }
+
+
+    private final class UserListSubscriber extends DefaultSubscriber<List<GasStation>> {
+
+        @Override public void onCompleted() {
+            //UserListPresenter.this.hideViewLoading();
+        }
+
+        @Override public void onError(Throwable e) {
+            //UserListPresenter.this.hideViewLoading();
+            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
+            //UserListPresenter.this.showViewRetry();
+        }
+
+        @Override public void onNext(List<GasStation> users) {
+           // UserListPresenter.this.showUsersCollectionInView(users);
+        }
+    }
+
 
 }

@@ -24,7 +24,7 @@ public interface ApplicationComponent {
     Context context();
     ThreadExecutor threadExecutor();
     PostExecutionThread postExecutionThread();
-    //GasStationsRepository userRepository();
+    GasStationsRepository userRepository();
 
 
 
