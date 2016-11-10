@@ -4,10 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 import com.fuelbuddy.data.executor.JobExecutor;
+import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
-import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.UIThread;
+import com.fuelbuddy.repository.GasStationsRepository;
 
 import javax.inject.Singleton;
 
@@ -15,28 +16,35 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppModule {
-    private FuelBuddyApplication application;
+public class ApplicationModule {
+    private Application application;
 
-    public AppModule(FuelBuddyApplication application) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
     @Provides
     @Singleton
-    public Context provideApplication() {
-        return application;
+    Context provideApplicationContext() {
+        return this.application;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
         return jobExecutor;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     PostExecutionThread providePostExecutionThread(UIThread uiThread) {
         return uiThread;
     }
 
+    @Provides
+    @Singleton
+    GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
+        return gasStationDataRepository;
+    }
 
 }

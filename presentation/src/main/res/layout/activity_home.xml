@@ -59,6 +59,14 @@
             android:layout_marginBottom="10dp"
             android:text="Diesel" />
 
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            style="@style/GreenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
     </LinearLayout>
 
 

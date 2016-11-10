@@ -1,7 +1,7 @@
 package com.fuelbuddy.mobile.di.component;
 
 import com.fuelbuddy.mobile.base.ActivityScope;
-import com.fuelbuddy.mobile.di.module.HomeActivityModule;
+import com.fuelbuddy.mobile.di.module.HomeModule;
 import com.fuelbuddy.mobile.home.HomeActivity;
 
 import dagger.Subcomponent;
@@ -12,10 +12,10 @@ import dagger.Subcomponent;
 
 @ActivityScope
 @Subcomponent(
-        modules = HomeActivityModule.class
+        modules = HomeModule.class
 )
 
-public interface HomeActivityComponent {
+public interface HomeComponent {
 
     HomeActivity inject(HomeActivity homeActivity);
 
