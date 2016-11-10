@@ -1,6 +1,7 @@
 package com.fuelbuddy.mobile;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 
@@ -38,6 +39,7 @@ public class FuelBuddyApplication extends Application {
         this.component = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+
     }
 
 
@@ -52,6 +54,9 @@ public class FuelBuddyApplication extends Application {
 
 
     public ApplicationComponent getApplicationComponent() {
+        if(this.component==null){
+         initializeInjector();
+        }
         return this.component;
     }
 

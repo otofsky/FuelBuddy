@@ -52,7 +52,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        initializeInjector();
+        this.initializeInjector();
         mapPresenter.attachView(this);
         mapPresenter.submitSearch();
         // startTracking();

@@ -1,6 +1,7 @@
 package com.fuelbuddy.mobile.home;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_DIESEL;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends BaseActivity implements HomeMvpView {
+public class HomeActivity extends AppCompatActivity implements HomeMvpView {
 
 
 
@@ -68,7 +69,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
 
     @Override
     public void showInfo() {
-        Toast.makeText(getApplicationContext(), "updateLocationData " , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "updateLocationData " , Toast.LENGTH_SHORT).show();
     }
 
     @Override

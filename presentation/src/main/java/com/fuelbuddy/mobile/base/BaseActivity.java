@@ -19,19 +19,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Get the Main Application component for dependency injection.
-     *
-     *
      */
 
     protected ApplicationComponent getApplicationComponent() {
-
-        return FuelBuddyApplication.getInstance().getApplicationComponent();
+        ApplicationComponent applicationComponent = FuelBuddyApplication.getInstance().getApplicationComponent();
+        return applicationComponent;
     }
 
     /**
      * Get an Activity module for dependency injection.
-     *
-     *
      */
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);

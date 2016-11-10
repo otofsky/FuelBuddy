@@ -19,8 +19,6 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     @Inject
     public MapPresenter() {
 
-
-
     }
 
 
