@@ -15,11 +15,11 @@ import dagger.Provides;
 
 
 @Module
-public class HomeActivityModule {
+public class HomeModule {
 
     private HomeActivity homeActivity;
 
-    public HomeActivityModule(HomeActivity homeActivity) {
+    public HomeModule(HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
     }
 

@@ -27,7 +27,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     private int notificationId = 9999;
     private GoogleApiClient googleApiClient;
-
     private FuelBuddyApplication app;
 
     public static boolean isServiceRunning() {
@@ -71,12 +70,12 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
     @DebugLog
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged");
         updateLocationData(location);
-
     }
 
     @Override
@@ -145,7 +144,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
-
         //   String timeText = "Location update at " + Utils.formatTime(System.currentTimeMillis());
 
     }

@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.di.module.HomeActivityModule;
+import com.fuelbuddy.mobile.di.module.HomeModule;
 import com.fuelbuddy.mobile.navigation.Navigator;
 
 import javax.inject.Inject;
@@ -24,30 +24,19 @@ import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_DIESEL;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends BaseActivity implements HomeMvpView {
+public class HomeActivity extends AppCompatActivity implements HomeMvpView {
 
-    @Inject
-    HomePresenter homePresenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        homePresenter.attachView(this);
+       // homePresenter.attachView(this);
         ButterKnife.bind(this);
     }
 
 
-    @Override
-    protected void setupActivityComponent() {
-        //Uncomment those lines do measure dependencies creation time
-        //Debug.startMethodTracing("SplashTrace");
-        FuelBuddyApplication.get(this)
-                .getAppComponent()
-                .plus(new HomeActivityModule(this))
-                .inject(this);
-    }
 
 
 
@@ -80,7 +69,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView {
 
     @Override
     public void showInfo() {
-        Toast.makeText(getApplicationContext(), "updateLocationData " , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "updateLocationData " , Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -42,6 +42,7 @@
         </activity>
         <activity
             android:name=".map.MapsActivity"
+            android:theme="@style/AppThemeNoActionBar"
             android:label="@string/title_activity_maps">
         </activity>
 
