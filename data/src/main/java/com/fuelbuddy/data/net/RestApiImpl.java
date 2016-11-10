@@ -67,15 +67,15 @@ public class RestApiImpl implements RestApi {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
-      /*  Observable<List<GasStation>> observable = Observable.create(new Observable.OnSubscribe<List<GasStation>>() {
+        Observable<List<GasStationEntity>> observable = Observable.create(new Observable.OnSubscribe<List<GasStationEntity>>() {
             @Override
-            public void call(Subscriber<? super List<GasStation>> subscriber) {
-                subscriber.onNext(mGasStationEntityDataMapper.transform(getUserEntitiesFromApi()));
+            public void call(Subscriber<? super List<GasStationEntity>> subscriber) {
+                subscriber.onNext(getUserEntitiesFromApi());
 
             }
         });
-        return observable;*/
-        return null;
+        return observable;
+
     }
 
 
@@ -104,13 +104,9 @@ public class RestApiImpl implements RestApi {
     }
 
     public List<GasStationEntity> getUserEntitiesFromApi() {
-
         GasStationEntity gasStationEntity = new GasStationEntity("Statoil");
         List<GasStationEntity> gasStationEntityList = new ArrayList<GasStationEntity>();
-
         gasStationEntityList.add(gasStationEntity);
-
-
         return gasStationEntityList;
     }
 }

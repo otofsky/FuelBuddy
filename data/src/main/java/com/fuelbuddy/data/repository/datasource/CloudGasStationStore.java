@@ -22,6 +22,8 @@ import com.fuelbuddy.data.net.RestApi;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -30,13 +32,9 @@ class CloudGasStationStore implements GasStationDataStore {
 
   private final RestApi restApi;
 
-/*  private final Action1<GasStationEntity> saveToCacheAction = userEntity -> {
-    if (userEntity != null) {
-      CloudUserDataStore.this.userCache.put(userEntity);
-    }
-  };*/
 
 
+@Inject
   CloudGasStationStore(RestApi restApi) {
     this.restApi = restApi;
   }

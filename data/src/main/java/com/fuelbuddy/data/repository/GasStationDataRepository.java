@@ -1,5 +1,7 @@
 package com.fuelbuddy.data.repository;
 
+import android.util.Log;
+
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
@@ -34,17 +36,19 @@ public class GasStationDataRepository implements GasStationsRepository {
 
     @Inject
     public GasStationDataRepository(GasStationEntityDataMapper gasStationEntityDataMapper,GasStationStoreFactory mGasStationStoreFactory ) {
-        mGasStationEntityDataMapper = gasStationEntityDataMapper;
+        this.mGasStationEntityDataMapper = gasStationEntityDataMapper;
         this.mGasStationStoreFactory = mGasStationStoreFactory;
     }
 
     @Override
     public Observable<List<GasStation>> gasStations() {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
+
         return gasStationDataStore.userEntityList().map(new Func1<List<GasStationEntity>, List<GasStation>>() {
             @Override
             public List<GasStation> call(List<GasStationEntity> gasStationEntities) {
-                return null;
+
+                return  mGasStationEntityDataMapper.transform(gasStationEntities);
             }
         });
     }

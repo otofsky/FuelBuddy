@@ -27,6 +27,7 @@ public class GasStationStoreFactory {
     public GasStationDataStore createCloudDataStore() {
         GasStationEntityDataMapper gasStationEntityDataMapper = new GasStationEntityDataMapper();
         RestApi restApi = new RestApiImpl(this.context, gasStationEntityDataMapper);
+
         return new CloudGasStationStore(restApi);
     }
 
