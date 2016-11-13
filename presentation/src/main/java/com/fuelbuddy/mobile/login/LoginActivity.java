@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity  implements HomeMvpView,  V
             String personName = acct.getDisplayName();
 
             String email = acct.getEmail();
-            String id = acct.getId();
+            String id = acct.getId();//
 
 
            /* Log.e("HomeActivity", "Name: " + personName + ", email: " + email
