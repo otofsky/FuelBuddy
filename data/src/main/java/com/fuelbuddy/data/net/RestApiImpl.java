@@ -72,6 +72,7 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
+
         Observable<List<GasStationEntity>> observable = Observable.create(new Observable.OnSubscribe<List<GasStationEntity>>() {
             @Override
             public void call(Subscriber<? super List<GasStationEntity>> subscriber) {
@@ -80,7 +81,6 @@ public class RestApiImpl implements RestApiService {
             }
         });
         return observable;
-
     }
 
 

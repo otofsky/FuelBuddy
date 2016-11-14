@@ -2,7 +2,6 @@ package com.fuelbuddy.mobile.map;
 
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.interactor.DefaultSubscriber;
@@ -55,11 +54,11 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     }
 
     private void getGasStationList() {
-        this.getGasStationList.execute(new UserListSubscriber());
+        this.getGasStationList.execute(new GasStationsListSubscriber());
     }
 
 
-    private final class UserListSubscriber extends DefaultSubscriber<List<GasStation>> {
+    private final class GasStationsListSubscriber extends DefaultSubscriber<List<GasStation>> {
         @DebugLog
         @Override public void onCompleted() {
             //UserListPresenter.this.hideViewLoading();

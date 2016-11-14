@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,15 +25,16 @@ public class HomeActivity extends AppCompatActivity implements HomeMvpView {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
+
+    private HomePresenter homePresenter;
     //sign_in_button
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        homePresenter = new HomePresenter(new GetCurrentUser());
        // homePresenter.attachView(this);
         ButterKnife.bind(this);
-
-
 
     }
 
@@ -40,8 +42,8 @@ public class HomeActivity extends AppCompatActivity implements HomeMvpView {
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
         Log.d("submitFuelType92", "submitFuelType92: ");
-        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
-        //homePresenter.showInfo();
+        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
+        homePresenter.getGetCurrentUser();
     }
 
     @DebugLog
@@ -64,9 +66,10 @@ public class HomeActivity extends AppCompatActivity implements HomeMvpView {
     }
 
     @Override
-    public void showInfo() {
-        Toast.makeText(this, "updateLocationData " , Toast.LENGTH_SHORT).show();
+    public void showInfo(String userId) {
+        Toast.makeText(this,  userId , Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void showLoading() {

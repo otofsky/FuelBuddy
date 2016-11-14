@@ -8,12 +8,6 @@ import dagger.Module;
 import dagger.Provides;
 
 
-
-/**
- * Created by Miroslaw Stanek on 23.04.15.
- */
-
-
 @Module
 public class HomeModule {
 
@@ -29,11 +23,11 @@ public class HomeModule {
         return homeActivity;
     }
 
-    @Provides
+  /*  @Provides
     @ActivityScope
     HomePresenter provideHomeActivityPresenter() {
         return new HomePresenter();
-    }
+    }*/
 
 
 }

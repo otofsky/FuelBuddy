@@ -15,8 +15,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.home.HomeMvpView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -35,7 +33,7 @@ import studios.codelight.smartloginlibrary.SmartLoginBuilder;
 import studios.codelight.smartloginlibrary.SmartLoginConfig;
 import studios.codelight.smartloginlibrary.users.SmartUser;
 
-public class LoginActivity extends AppCompatActivity  implements HomeMvpView,  View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, SmartCustomLogoutListener, SmartCustomLoginListener {
+public class LoginActivity extends AppCompatActivity  implements   View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, SmartCustomLogoutListener, SmartCustomLoginListener {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
@@ -47,7 +45,7 @@ public class LoginActivity extends AppCompatActivity  implements HomeMvpView,  V
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.fragment_login);
         ButterKnife.bind(this);
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
@@ -154,40 +152,7 @@ public class LoginActivity extends AppCompatActivity  implements HomeMvpView,  V
 
     }
 
-    @Override
-    public void showMap() {
 
-    }
-
-    @Override
-    public void showInfo() {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
