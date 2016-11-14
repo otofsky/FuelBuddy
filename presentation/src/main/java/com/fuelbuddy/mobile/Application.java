@@ -1,8 +1,5 @@
 package com.fuelbuddy.mobile;
 
-import android.app.Application;
-import android.util.Log;
-
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 
 import com.fuelbuddy.mobile.di.component.DaggerApplicationComponent;
@@ -12,9 +9,9 @@ import com.fuelbuddy.mobile.util.LocationRequestData;
 import com.google.android.gms.location.LocationRequest;
 
 
-public class FuelBuddyApplication extends Application {
+public class Application extends android.app.Application {
 
-    private static FuelBuddyApplication instance;
+    private static Application instance;
 
     private ApplicationComponent component;
     private LocationRequestData locationRequestData = LocationRequestData.FREQUENCY_MEDIUM_TWO;
@@ -27,12 +24,15 @@ public class FuelBuddyApplication extends Application {
         initializeInjector();
     }
 
-    public static FuelBuddyApplication getInstance() {
+    public static Application getInstance() {
+        initlialize();
         return instance;
     }
 
-    private void initlialize() {
-        instance = new FuelBuddyApplication();
+    private static void initlialize() {
+        if (instance == null) {
+            instance = new Application();
+        }
     }
 
     private void initializeInjector() {
@@ -54,9 +54,15 @@ public class FuelBuddyApplication extends Application {
 
 
     public ApplicationComponent getApplicationComponent() {
-        if(this.component==null){
-         initializeInjector();
+        if (this.component == null) {
+            initializeInjector();
         }
+
+        if (this.component == null) {
+
+        }
+
+
         return this.component;
     }
 

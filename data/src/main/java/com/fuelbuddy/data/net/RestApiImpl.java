@@ -41,7 +41,9 @@ public class RestApiImpl implements RestApiService {
 
 
     private final Context context;
+
     GasStationEntityDataMapper mGasStationEntityDataMapper;
+
     public RestApiImpl(Context context) {
         this.context = context;
     }

@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/domain/domain.iml" filepath="$PROJECT_DIR$/domain/domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/presentation/presentation.iml" filepath="$PROJECT_DIR$/presentation/presentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/smartloginlibrary-release/smartloginlibrary-release.iml" filepath="$PROJECT_DIR$/smartloginlibrary-release/smartloginlibrary-release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartloginlibrary-release/smartloginlibrary-release.iml" filepath="$PROJECT_DIR$/smartloginlibrary-release/smartloginlibrary-release.iml" />
     </modules>
   </component>
 </project>
