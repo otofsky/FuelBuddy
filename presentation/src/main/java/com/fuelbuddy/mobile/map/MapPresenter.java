@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.map;
 
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.interactor.DefaultSubscriber;
@@ -72,7 +73,9 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
 
         @DebugLog
         @Override public void onNext(List<GasStation> gasStations) {
-            ///Log.d("UserListSubscriber", "onNext: " + gasStations.get(0).getName());
+            Log.d("UserListSubscriber", "onNext: " + gasStations.get(0).getName());
+            getMvpView().showInfoTest(gasStations.get(0).getName());
+
 
            // UserListPresenter.this.showUsersCollectionInView(users);
         }

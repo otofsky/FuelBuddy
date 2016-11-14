@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
@@ -142,6 +143,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void removeMarkers() {
 
+    }
+
+    @Override
+    public void showInfoTest(String info) {
+        Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
     }
 
     @Override
