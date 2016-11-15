@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
         setContentView(R.layout.fragment_login);
         ButterKnife.bind(this);
 
-        loginButton = (LoginButton)findViewById(R.id.login_button);
+        //loginButton = (LoginButton)findViewById(R.id.login_button);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
     }
 
     @DebugLog
-    @OnClick(R.id.sign_in_button)
+    /*@OnClick(R.id.sign_in_button)*/
     public void signInWithGoogle() {
       /*  Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);*/

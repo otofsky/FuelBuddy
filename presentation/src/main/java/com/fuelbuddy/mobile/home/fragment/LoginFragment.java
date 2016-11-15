@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.home.fragment;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -9,9 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.navigation.Navigator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import hugo.weaving.DebugLog;
 
 /**
  * Created by zjuroszek on 14.11.16.
@@ -19,10 +24,18 @@ import butterknife.ButterKnife;
 
 public class LoginFragment extends BaseFragment {
 
+
+    public interface FragmentNavigator{
+        public void navigateToHome ();
+
+    }
+
     @BindView(R.id.login_google_button)
     AppCompatButton mloginGoogleButton;
     @BindView(R.id.login_fb_button)
     AppCompatButton mLoginFbButton;
+
+    FragmentNavigator mFragmentNavigator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,5 +66,20 @@ public class LoginFragment extends BaseFragment {
         } else {
             mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_facebook_white_36dp, 0, 0, 0);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity!=null){
+            mFragmentNavigator = (FragmentNavigator) activity;
+        }
+    }
+
+    @DebugLog
+    @OnClick(R.id.login_google_button)
+    public void submitFuelTypeDiesel() {
+        mFragmentNavigator.navigateToHome();
+         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
 }

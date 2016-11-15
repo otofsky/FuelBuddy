@@ -18,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/text1Tv"
+        android:id="@+id/welcomeTextTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Velkomen til Fuel Buddy Vaelg dit brandstof"
@@ -27,43 +27,12 @@
         android:layout_below="@+id/logoImg"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp" />
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/text1Tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <Button
-            android:id="@+id/fuelType92Btn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="92"
-            android:elevation="10dp" />
-
-        <Button
-            android:id="@+id/fuelType95Btn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="95" />
-
-        <Button
-            android:id="@+id/fuelTypeDieselBtn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="Diesel" />
-
-
-
-
-
-    </LinearLayout>
+        android:layout_below="@+id/welcomeTextTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>
