@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.fragment;
+package com.fuelbuddy.mobile.home.fuelType;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,24 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.navigation.Navigator;
+import com.fuelbuddy.mobile.home.BaseFragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_95;
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_DIESEL;
-
 /**
  * Created by zjuroszek on 14.11.16.
  */
 
-public class HomeFragment extends BaseFragment{
+public class FuelTypeFragment extends BaseFragment {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
-        final View fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+        final View fragmentView = inflater.inflate(R.layout.fragment_fuel_type, container, false);
         ButterKnife.bind(this, fragmentView);
         return fragmentView;
     }
@@ -35,7 +32,7 @@ public class HomeFragment extends BaseFragment{
     public void submitFuelType92() {
         Log.d("submitFuelType92", "submitFuelType92: ");
         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
-        //homePresenter.getGetCurrentUser();
+        //homePresenter.verifyCurrentUser();
     }
 
     @DebugLog

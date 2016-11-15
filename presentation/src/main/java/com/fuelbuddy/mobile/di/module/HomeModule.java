@@ -2,7 +2,6 @@ package com.fuelbuddy.mobile.di.module;
 
 import com.fuelbuddy.mobile.base.ActivityScope;
 import com.fuelbuddy.mobile.home.HomeActivity;
-import com.fuelbuddy.mobile.home.HomePresenter;
 
 import dagger.Module;
 import dagger.Provides;

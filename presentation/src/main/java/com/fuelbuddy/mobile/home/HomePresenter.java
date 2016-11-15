@@ -1,18 +1,10 @@
 package com.fuelbuddy.mobile.home;
 
 
-import android.util.Log;
-
-import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.model.User;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.map.MapPresenter;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
 
@@ -31,10 +23,8 @@ public class HomePresenter extends BasePresenter<HomeMvpView> {
 
 
     @DebugLog
-    public void getGetCurrentUser() {
-
-
-       // this.getCurrentUser.getCurrentUser().subscribe(new CurrentUserSubscriber());
+    public void verifyCurrentUser() {
+        this.getCurrentUser.getCurrentUser().subscribe(new CurrentUserSubscriber());
     }
 
     private final class CurrentUserSubscriber extends DefaultSubscriber<User> {
@@ -52,7 +42,12 @@ public class HomePresenter extends BasePresenter<HomeMvpView> {
         @DebugLog
         @Override public void onNext(User user) {
             getMvpView().showInfo(user.getUserId());
-            Log.d("UserListSubscriber", "onNext: " + user.getUserId());
+            if(user!=null){
+                getMvpView().showLoginView();
+            }
+            else{
+                getMvpView().showLoginView();
+            }
         }
     }
 }

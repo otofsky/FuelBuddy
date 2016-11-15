@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.fragment;
+package com.fuelbuddy.mobile.home.login;
 
 import android.app.Activity;
 import android.os.Build;
@@ -7,11 +7,10 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.home.HomeActivity;
-import com.fuelbuddy.mobile.navigation.Navigator;
+import com.fuelbuddy.mobile.home.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +24,8 @@ import hugo.weaving.DebugLog;
 public class LoginFragment extends BaseFragment {
 
 
-    public interface FragmentNavigator{
-        public void navigateToHome ();
+    public interface FragmentNavigator {
+        public void navigateToHome();
 
     }
 
@@ -34,6 +33,9 @@ public class LoginFragment extends BaseFragment {
     AppCompatButton mloginGoogleButton;
     @BindView(R.id.login_fb_button)
     AppCompatButton mLoginFbButton;
+
+    @BindView(R.id.rl_progress)
+    RelativeLayout rl_progress;
 
     FragmentNavigator mFragmentNavigator;
 
@@ -46,14 +48,14 @@ public class LoginFragment extends BaseFragment {
         return fragmentView;
     }
 
-    private void initButtonView (){
+    private void initButtonView() {
         initFacebookButton();
         initGoogleButton();
 
     }
 
     private void initGoogleButton() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.google_plus_vector, 0, 0, 0);
         } else {
             mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_google_plus_white_36dp, 0, 0, 0);
@@ -61,7 +63,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void initFacebookButton() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.facebook_vector, 0, 0, 0);
         } else {
             mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_facebook_white_36dp, 0, 0, 0);
@@ -71,15 +73,37 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity!=null){
+        if (activity != null) {
             mFragmentNavigator = (FragmentNavigator) activity;
         }
     }
 
+    public void showLoading() {
+        this.rl_progress.setVisibility(View.VISIBLE);
+        this.getActivity().setProgressBarIndeterminateVisibility(true);
+    }
+
+    public void hideLoading() {
+        this.rl_progress.setVisibility(View.GONE);
+        this.getActivity().setProgressBarIndeterminateVisibility(false);
+    }
+
+
     @DebugLog
     @OnClick(R.id.login_google_button)
-    public void submitFuelTypeDiesel() {
-        mFragmentNavigator.navigateToHome();
-         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
+    public void loginGoogleButton() {
+        showLoading();
+        //mFragmentNavigator.navigateToHome();
+        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
+
+    @DebugLog
+    @OnClick(R.id.login_fb_button)
+    public void loginFbButton() {
+        hideLoading();
+        //mFragmentNavigator.navigateToHome();
+        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
+    }
+
+
 }

@@ -9,6 +9,9 @@ public interface HomeMvpView extends MvpView {
 
     void showMap();
 
-
     void showInfo(String userId);
+
+    void showLoginView();
+
+    void showFuelTypeView();
 }
