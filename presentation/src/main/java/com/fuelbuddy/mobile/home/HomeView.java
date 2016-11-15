@@ -5,7 +5,7 @@ import com.fuelbuddy.mobile.base.MvpView;
 /**
  * Created by zjuroszek on 25.10.16.
  */
-public interface HomeMvpView extends MvpView {
+public interface HomeView extends MvpView {
 
     void showMap();
 

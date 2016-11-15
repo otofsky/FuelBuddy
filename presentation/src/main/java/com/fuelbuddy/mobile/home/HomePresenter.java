@@ -11,7 +11,7 @@ import hugo.weaving.DebugLog;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomePresenter extends BasePresenter<HomeMvpView> {
+public class HomePresenter extends BasePresenter<HomeView> {
 
 
     private GetCurrentUser getCurrentUser;

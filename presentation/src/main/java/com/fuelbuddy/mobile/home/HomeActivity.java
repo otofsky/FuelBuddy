@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends BaseActivity implements HomeMvpView, LoginFragment.FragmentNavigator {
+public class HomeActivity extends BaseActivity implements HomeView, LoginFragment.FragmentNavigator {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;

@@ -11,6 +11,9 @@ import android.widget.RelativeLayout;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.home.BaseFragment;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +26,7 @@ import hugo.weaving.DebugLog;
 
 public class LoginFragment extends BaseFragment {
 
-
+    private GoogleApiClient mGoogleApiClient;
     public interface FragmentNavigator {
         public void navigateToHome();
 
@@ -52,6 +55,21 @@ public class LoginFragment extends BaseFragment {
         initFacebookButton();
         initGoogleButton();
 
+    }
+
+
+
+    private void initGoogleApi(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestId()
+                .build();
+/*
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+
+                .build();*/
     }
 
     private void initGoogleButton() {
