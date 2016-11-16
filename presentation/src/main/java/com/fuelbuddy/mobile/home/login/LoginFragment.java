@@ -3,6 +3,8 @@ package com.fuelbuddy.mobile.home.login;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,12 @@ import android.widget.RelativeLayout;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.home.BaseFragment;
+import com.fuelbuddy.mobile.home.login.loginModule.LoginModule;
+import com.fuelbuddy.mobile.home.login.loginModule.LoginModuleFactory;
+import com.fuelbuddy.mobile.home.login.loginModule.LoginModuleGoogle;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import butterknife.BindView;
@@ -41,6 +47,16 @@ public class LoginFragment extends BaseFragment {
     RelativeLayout rl_progress;
 
     FragmentNavigator mFragmentNavigator;
+    LoginModuleFactory mLoginModuleFactory;
+    LoginModule googleLoginModule;
+    private static final int RC_SIGN_IN = 007;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mLoginModuleFactory = new LoginModuleFactory();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,7 +126,10 @@ public class LoginFragment extends BaseFragment {
     @DebugLog
     @OnClick(R.id.login_google_button)
     public void loginGoogleButton() {
-        showLoading();
+         googleLoginModule = mLoginModuleFactory.createGoogleLoginModule(getActivity(),mConnectionFailedListener);
+        startActivityForResult(googleLoginModule.getSignInIntent(), RC_SIGN_IN);
+
+        //showLoading();
         //mFragmentNavigator.navigateToHome();
         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
@@ -123,5 +142,17 @@ public class LoginFragment extends BaseFragment {
         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
 
+    GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+        }
+    };
+
+
+    @Override
+    public void onStop() {
+        googleLoginModule.close();
+        super.onStop();
+    }
 }
