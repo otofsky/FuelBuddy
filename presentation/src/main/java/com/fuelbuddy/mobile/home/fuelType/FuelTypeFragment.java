@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fuelbuddy.mobile.Constants;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.home.BaseFragment;
+import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.navigation.Navigator;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +34,7 @@ public class FuelTypeFragment extends BaseFragment {
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
         Log.d("submitFuelType92", "submitFuelType92: ");
-        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
+        Navigator.navigateToMapsActivity(getActivity(), Constants.FUEL_TYPE_92);
         //homePresenter.verifyCurrentUser();
     }
 

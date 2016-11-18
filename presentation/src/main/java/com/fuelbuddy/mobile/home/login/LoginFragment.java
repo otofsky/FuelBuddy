@@ -126,10 +126,10 @@ public class LoginFragment extends BaseFragment {
     @DebugLog
     @OnClick(R.id.login_google_button)
     public void loginGoogleButton() {
-         googleLoginModule = mLoginModuleFactory.createGoogleLoginModule(getActivity(),mConnectionFailedListener);
-        startActivityForResult(googleLoginModule.getSignInIntent(), RC_SIGN_IN);
+         //googleLoginModule = mLoginModuleFactory.createGoogleLoginModule(getActivity(),mConnectionFailedListener);
+        //startActivityForResult(googleLoginModule.getSignInIntent(), RC_SIGN_IN);
 
-        //showLoading();
+        showLoading();
         //mFragmentNavigator.navigateToHome();
         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
@@ -152,7 +152,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void onStop() {
-        googleLoginModule.close();
+        //googleLoginModule.close();
         super.onStop();
     }
 }

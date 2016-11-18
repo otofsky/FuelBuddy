@@ -1,7 +1,7 @@
 package com.fuelbuddy.mobile.home;
 
 
-import com.fuelbuddy.data.model.User;
+import com.fuelbuddy.data.User;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.mobile.base.BasePresenter;
@@ -43,7 +43,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @Override public void onNext(User user) {
             getMvpView().showInfo(user.getUserId());
             if(user!=null){
-                getMvpView().showLoginView();
+                getMvpView().showFuelTypeView();
             }
             else{
                 getMvpView().showLoginView();

@@ -1,4 +1,4 @@
-package com.fuelbuddy.data.repository.datasource;
+package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 
 import com.fuelbuddy.data.entity.GasStationEntity;
 

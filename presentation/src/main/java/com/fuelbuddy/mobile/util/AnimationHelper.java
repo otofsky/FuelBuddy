@@ -28,7 +28,6 @@ public class AnimationHelper {
     }
 
     public static void startAnimatedActivity(Activity activity, AnimationDirection animation) {
-
         switch (animation) {
             case LEFT_RIGHT:
                 activity.overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
@@ -37,6 +36,5 @@ public class AnimationHelper {
                 activity.overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
                 break;
         }
-
     }
 }

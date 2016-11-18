@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fuelbuddy.data.repository.datasource;
+package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 
 
 
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.net.RestApiService;
+import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
 
 import java.util.List;
 

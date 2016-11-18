@@ -3,8 +3,8 @@ package com.fuelbuddy.data.repository;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
-import com.fuelbuddy.data.repository.datasource.GasStationDataStore;
-import com.fuelbuddy.data.repository.datasource.GasStationStoreFactory;
+import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
+import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationStoreFactory;
 import com.fuelbuddy.repository.GasStationsRepository;
 
 import java.util.List;
@@ -25,6 +25,8 @@ public class GasStationDataRepository implements GasStationsRepository {
 
     private final GasStationStoreFactory mGasStationStoreFactory;
     GasStationEntityDataMapper mGasStationEntityDataMapper;
+
+
 
 
     @Inject

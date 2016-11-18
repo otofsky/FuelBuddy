@@ -1,4 +1,4 @@
-package com.fuelbuddy.data.model;
+package com.fuelbuddy.data;
 
 /**
  * Created by zjuroszek on 14.11.16.
@@ -6,11 +6,12 @@ package com.fuelbuddy.data.model;
 
 public class User {
 
+    private String userId;
+
     public User(String userId) {
         this.userId = userId;
     }
 
-    private String userId;
 
     public String getUserId() {
         return userId;

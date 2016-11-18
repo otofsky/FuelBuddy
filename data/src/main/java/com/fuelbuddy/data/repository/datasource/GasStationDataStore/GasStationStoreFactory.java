@@ -1,4 +1,4 @@
-package com.fuelbuddy.data.repository.datasource;
+package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.net.RestApiImpl;
+import com.fuelbuddy.data.repository.datasource.GasStationDataStore.CloudGasStationStore;
+import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
