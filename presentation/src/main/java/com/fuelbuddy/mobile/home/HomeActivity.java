@@ -3,12 +3,17 @@ package com.fuelbuddy.mobile.home;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.home.fuelType.FuelTypeFragment;
+import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
+
+import com.fuelbuddy.mobile.di.component.HomeComponent;
+
+import com.fuelbuddy.mobile.home.fuelSelection.FuelTypeFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -19,17 +24,27 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
-
-    private HomePresenter homePresenter;
+    @Inject
+    public  HomePresenter homePresenter;
+    private HomeComponent homeComponent;
     //sign_in_button
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        homePresenter = new HomePresenter(new GetCurrentUser());
+        this.initializeInjector();
         homePresenter.attachView(this);
         homePresenter.verifyCurrentUser();
         ButterKnife.bind(this);
+    }
+
+
+    private void initializeInjector() {
+        this.homeComponent = DaggerHomeComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+        homeComponent.inject(this);
     }
 
 

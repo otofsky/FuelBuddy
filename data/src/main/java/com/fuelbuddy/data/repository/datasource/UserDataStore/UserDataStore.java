@@ -12,7 +12,8 @@ public interface UserDataStore {
 
     Observable<UserEntity> getCurrentUserEntity();
 
-    void storeUserEntity(UserEntity userEntity);
+    Observable<UserEntity> setCurrentUser(UserEntity userEntity);
+
 
 
 }

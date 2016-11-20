@@ -1,7 +1,7 @@
 package com.fuelbuddy.mobile;
 
-import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 
+import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.di.component.DaggerApplicationComponent;
 import com.fuelbuddy.mobile.di.module.ApplicationModule;
 

@@ -36,7 +36,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-       // this.getGasStationList.unsubscribe();
+        this.getGasStationList.unsubscribe();
     }
     @DebugLog
     public void submitSearch() {

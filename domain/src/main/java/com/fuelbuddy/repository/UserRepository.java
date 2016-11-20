@@ -15,6 +15,8 @@ public interface UserRepository {
 
     Observable<User> getCurrentUser();
 
-    void addCurrentUser(User user);
+    Observable<User> setCurrentUser(User user);
+
+    Observable<User> logOut();
 
 }

@@ -8,10 +8,14 @@ import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserStoreFactory;
 import com.fuelbuddy.repository.UserRepository;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import hugo.weaving.DebugLog;
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
@@ -23,7 +27,7 @@ public class UserDataRepository implements UserRepository {
 
 
     private final UserStoreFactory mUserStoreFactory;
-    private final UserEntityMapper mUserEntityMapper;
+    UserEntityMapper mUserEntityMapper;
 
     @Inject
     public UserDataRepository(UserStoreFactory userStoreFactory, UserEntityMapper userEntityMapper) {
@@ -43,7 +47,34 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public void addCurrentUser(User user) {
-
+    public Observable<User> setCurrentUser(User user) {
+        return null;
     }
+
+    @Override
+    public Observable<User> logOut() {
+        return null;
+    }
+
+/*    public Observable<Ribot> syncRibots() {
+        return mRibotsService.getRibots()
+                .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
+                    @Override
+                    public Observable<Ribot> call(List<Ribot> ribots) {
+                        return mDatabaseHelper.setRibots(ribots);
+                    }
+                });
+    }*/
+
+
+/*    @Override
+    public Observable<User> setCurrentUser() {
+        UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
+        return userDataStore.setCurrentUser().map(new Func1<UserEntity, User>() {
+            @Override
+            public User call(UserEntity userEntity) {
+                return mUserEntityMapper.transform(userEntity);
+            }
+        });
+    }*/
 }

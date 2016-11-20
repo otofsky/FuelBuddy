@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.fuelType;
+package com.fuelbuddy.mobile.home.fuelSelection;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.fuelbuddy.mobile.Constants;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.home.BaseFragment;
-import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.navigation.Navigator;
 
 import butterknife.ButterKnife;

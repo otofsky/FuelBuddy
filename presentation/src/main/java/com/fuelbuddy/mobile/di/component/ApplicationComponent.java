@@ -7,6 +7,7 @@ import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.module.ApplicationModule;
 import com.fuelbuddy.repository.GasStationsRepository;
+import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Singleton;
 
@@ -24,7 +25,9 @@ public interface ApplicationComponent {
     Context context();
     ThreadExecutor threadExecutor();
     PostExecutionThread postExecutionThread();
-    GasStationsRepository userRepository();
+    GasStationsRepository gasStationsRepository();
+    UserRepository userRepository();
+
 
 
 

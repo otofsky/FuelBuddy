@@ -6,10 +6,12 @@ import android.content.Context;
 import com.fuelbuddy.data.executor.JobExecutor;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
+import com.fuelbuddy.data.repository.UserDataRepository;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.mobile.UIThread;
 import com.fuelbuddy.repository.GasStationsRepository;
+import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Singleton;
 
@@ -47,6 +49,13 @@ public class ApplicationModule {
     GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
         return gasStationDataRepository;
     }
+
+    @Provides
+    @Singleton
+    UserRepository provideUserRepositoryRepository(UserDataRepository userDataRepository) {
+        return userDataRepository;
+    }
+
 
     @Provides
     @Singleton

@@ -1,6 +1,8 @@
 package com.fuelbuddy.mobile.home.login;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.home.BaseFragment;
@@ -18,6 +21,7 @@ import com.fuelbuddy.mobile.home.login.loginModule.LoginModuleFactory;
 import com.fuelbuddy.mobile.home.login.loginModule.LoginModuleGoogle;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -30,9 +34,15 @@ import hugo.weaving.DebugLog;
  * Created by zjuroszek on 14.11.16.
  */
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment implements  GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     public interface FragmentNavigator {
         public void navigateToHome();
 
@@ -112,6 +122,19 @@ public class LoginFragment extends BaseFragment {
         }
     }
 
+    @DebugLog
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getActivity()," onActivityResult", Toast.LENGTH_SHORT).show();
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            //handleSignInResult(result);
+        }
+    }
+
     public void showLoading() {
         this.rl_progress.setVisibility(View.VISIBLE);
         this.getActivity().setProgressBarIndeterminateVisibility(true);
@@ -126,7 +149,7 @@ public class LoginFragment extends BaseFragment {
     @DebugLog
     @OnClick(R.id.login_google_button)
     public void loginGoogleButton() {
-         //googleLoginModule = mLoginModuleFactory.createGoogleLoginModule(getActivity(),mConnectionFailedListener);
+       doGoogleLogin();
         //startActivityForResult(googleLoginModule.getSignInIntent(), RC_SIGN_IN);
 
         showLoading();
@@ -142,12 +165,25 @@ public class LoginFragment extends BaseFragment {
         //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
 
-    GoogleApiClient.OnConnectionFailedListener mConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
-        @Override
-        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    private void doGoogleLogin() {
+        // User clicked the sign-in button, so begin the sign-in process and automatically
+        // attempt to resolve any errors that occur.
 
-        }
-    };
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity() /* FragmentActivity */, this /* On~ConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        //mGoogleApiClient.connect();
+    }
 
 
     @Override
