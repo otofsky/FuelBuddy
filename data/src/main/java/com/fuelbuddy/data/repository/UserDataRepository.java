@@ -53,29 +53,8 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<User> logOut() {
-        return null;
-    }
-
-/*    public Observable<Ribot> syncRibots() {
-        return mRibotsService.getRibots()
-                .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
-                    @Override
-                    public Observable<Ribot> call(List<Ribot> ribots) {
-                        return mDatabaseHelper.setRibots(ribots);
-                    }
-                });
-    }*/
-
-
-/*    @Override
-    public Observable<User> setCurrentUser() {
+    public Observable<Boolean> logOut() {
         UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
-        return userDataStore.setCurrentUser().map(new Func1<UserEntity, User>() {
-            @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
-            }
-        });
-    }*/
+        return userDataStore.logOut();
+    }
 }

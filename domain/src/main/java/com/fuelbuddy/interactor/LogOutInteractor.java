@@ -18,7 +18,6 @@ import rx.Observable;
 public class LogOutInteractor extends UseCase {
 
     UserRepository userRepository;
-    private User mUser;
 
     @Inject
     public LogOutInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -26,12 +25,8 @@ public class LogOutInteractor extends UseCase {
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(User user){
-        this.mUser = user;
-    }
-
     @Override
     protected Observable buildUseCaseObservable() {
-        return userRepository.setCurrentUser(mUser);
+        return userRepository.logOut();
     }
 }

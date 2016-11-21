@@ -14,6 +14,8 @@ public interface UserDataStore {
 
     Observable<UserEntity> setCurrentUser(UserEntity userEntity);
 
+    Observable<Boolean> logOut();
+
 
 
 }

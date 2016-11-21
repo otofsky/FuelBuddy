@@ -47,8 +47,21 @@ public class SharePreferencesUserEntityStore implements UserDataStore {
             @Override
             public void call(Subscriber<? super UserEntity> subscriber) {
                 Log.d("setCurrentUser", "call: " + userEntity.toString());
+                // addData
             }
         });
+    }
+
+    @Override
+    public Observable<Boolean> logOut() {
+        Observable <Boolean> observable = Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+               // remove user from storage
+                subscriber.onNext(true);
+            }
+        });
+        return observable;
     }
 
     @DebugLog

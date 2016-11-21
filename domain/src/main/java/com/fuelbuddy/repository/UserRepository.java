@@ -17,6 +17,6 @@ public interface UserRepository {
 
     Observable<User> setCurrentUser(User user);
 
-    Observable<User> logOut();
+    Observable<Boolean> logOut();
 
 }
