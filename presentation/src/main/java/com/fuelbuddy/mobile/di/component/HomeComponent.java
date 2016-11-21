@@ -7,6 +7,7 @@ import com.fuelbuddy.mobile.di.module.HomeModule;
 import com.fuelbuddy.mobile.di.module.LoginModule;
 import com.fuelbuddy.mobile.di.module.MapsModule;
 import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.home.login.LoginFragment;
 
 import dagger.Component;
 import dagger.Subcomponent;
@@ -19,9 +20,10 @@ import dagger.Subcomponent;
 @Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, LoginModule.class})
 
 
-public interface HomeComponent {
+public interface HomeComponent extends ActivityComponent {
 
     void inject(HomeActivity homeActivity);
+    void inject(LoginFragment loginFragment);
 
 
 

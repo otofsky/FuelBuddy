@@ -5,8 +5,7 @@
 
 
 
-    <string name="fb_login_text">Sign in with facebook</string>
-    <string name="google_login_text">Sign in with Google</string>
+
 
     <string name="title_activity_maps">Map</string>
 
@@ -17,6 +16,20 @@
     <string name="empty_gas_stations_area">There aren\'t any gas stations</string>
     <string name="error_loading_gas_stations">There was a problem loading gas stations</string>
     <string name="title_activity_map">Map</string>
+
+
+     <!--login module -->
+    <string name="fb_login_text">Sign in with facebook</string>
+    <string name="forgot">forgot?</string>
+    <string name="getting_data">Getting User Info…</string>
+    <string name="google_login_text">Sign in with Google</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="invalid_email_error">Please enter a valid email</string>
+    <string name="loading_holder">Please wait…</string>
+    <string name="logging_holder">Logging in…</string>
+    <string name="login_failed">Login failed! Try again!</string>
+    <string name="network_error">Something went wrong. Please check Network Connection.</string>
+
 
 
 </resources>

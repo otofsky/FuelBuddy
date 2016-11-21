@@ -16,12 +16,28 @@ public class UserEntityMapper {
     public UserEntityMapper() {
     }
 
-    public User transform(UserEntity userEntity) {
-        User user = null;
-        if (userEntity != null) {
-            user = new User(userEntity.getUserId());
 
+    public UserEntity transformToUserEntity(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Cannot transformToUser a null value");
         }
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserId(user.getUserId());
+        userEntity.setProfileName(user.getProfileName());
+        userEntity.setEmail(user.getEmail());
+
+
+        return userEntity;
+    }
+
+    public User transformToUser(UserEntity userEntity) {
+        if (userEntity == null) {
+            throw new IllegalArgumentException("Cannot transformToUser a null value");
+        }
+        User user = new User();
+        user.setUserId(userEntity.getUserId());
+        user.setProfileName(userEntity.getProfileName());
+        user.setEmail(userEntity.getEmail());
         return user;
     }
 

@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
             @Override
             public void onSuccess(LoginResult loginResult) {
                 /*"User ID: "
-                        + loginResult.getAccessToken().getUserId()
+                        + loginResult.getAccessToken().getProfileName()
                         + "\n" +
                         "Auth Token: "
                         + loginResult.getAccessToken().getToken()*/

@@ -14,14 +14,15 @@ import rx.Observable;
  * Created by zjuroszek on 20.11.16.
  */
 
-@Singleton
-public class AddNewUserInteractor extends UseCase {
+
+public class AddNewUserInteractor extends UseCase  {
+
 
     UserRepository userRepository;
     private User mUser;
 
     @Inject
-    public AddNewUserInteractor( UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public AddNewUserInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
@@ -34,4 +35,5 @@ public class AddNewUserInteractor extends UseCase {
     protected Observable buildUseCaseObservable() {
         return userRepository.setCurrentUser(mUser);
     }
+
 }

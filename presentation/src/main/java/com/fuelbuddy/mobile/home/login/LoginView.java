@@ -7,4 +7,6 @@ import com.fuelbuddy.mobile.base.MvpView;
  */
 public interface LoginView extends MvpView {
 
+    void showMap();
+
 }

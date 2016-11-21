@@ -24,9 +24,9 @@ public class LoginModule {
         return getCurrentUser;
     }
 
-    @Provides @PerActivity
-    @Named("currentUser")
-    UseCase provideAddUserUseCase(AddNewUserInteractor addNewUserInteractor) {
+    @Provides
+    @Named("addNewUser")
+    AddNewUserInteractor provideAddUserUseCase(AddNewUserInteractor addNewUserInteractor) {
         return addNewUserInteractor;
     }
 

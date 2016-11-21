@@ -29,7 +29,7 @@ import static com.fuelbuddy.mobile.Constants.FUEL_TYPE;
 public class Navigator {
 
     /**
-     * Goes to the user list screen.
+     * Goes to the populateGoogleUser list screen.
      *
      * @param context A Context needed to open the destiny activity.
      */

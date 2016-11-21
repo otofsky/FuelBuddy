@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 
 import com.fuelbuddy.mobile.di.component.HomeComponent;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends BaseActivity implements HomeView, LoginFragment.FragmentNavigator {
+public class HomeActivity extends BaseActivity implements HomeView, LoginFragment.FragmentNavigator, HasComponent<HomeComponent> {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
@@ -98,5 +99,10 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     @Override
     public void showError(String message) {
 
+    }
+
+    @Override
+    public HomeComponent getComponent() {
+        return homeComponent;
     }
 }

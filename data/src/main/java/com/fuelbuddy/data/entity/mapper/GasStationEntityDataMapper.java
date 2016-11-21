@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Mapper class used to transform {@link com.fuelbuddy.data.entity.GasStationEntity} (in the data layer) to {@link com.fuelbuddy.data.GasStation} in the
+ * Mapper class used to transformToUser {@link com.fuelbuddy.data.entity.GasStationEntity} (in the data layer) to {@link com.fuelbuddy.data.GasStation} in the
  * domain layer.
  */
 

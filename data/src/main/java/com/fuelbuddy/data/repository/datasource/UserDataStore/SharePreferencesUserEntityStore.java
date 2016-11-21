@@ -56,7 +56,9 @@ public class SharePreferencesUserEntityStore implements UserDataStore {
         Observable <UserEntity> observable = Observable.create(new Observable.OnSubscribe<UserEntity>() {
             @Override
             public void call(Subscriber<? super UserEntity> subscriber) {
-                subscriber.onNext(new UserEntity("1"));
+             UserEntity userEntity =    new UserEntity();
+                userEntity.setUserId("1");
+                subscriber.onNext(userEntity);
             }
         });
         return observable;

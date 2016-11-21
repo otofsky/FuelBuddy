@@ -3,19 +3,14 @@ package com.fuelbuddy.data.repository;
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.UserEntityMapper;
-import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserStoreFactory;
 import com.fuelbuddy.repository.UserRepository;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import hugo.weaving.DebugLog;
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
@@ -41,14 +36,20 @@ public class UserDataRepository implements UserRepository {
         return userDataStore.getCurrentUserEntity().map(new Func1<UserEntity, User>() {
             @Override
             public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transform(userEntity);
+                return mUserEntityMapper.transformToUser(userEntity);
             }
         });
     }
 
     @Override
     public Observable<User> setCurrentUser(User user) {
-        return null;
+        UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
+        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {
+            @Override
+            public User call(UserEntity userEntity) {
+                return mUserEntityMapper.transformToUser(userEntity);
+            }
+        });
     }
 
     @Override
@@ -73,7 +74,7 @@ public class UserDataRepository implements UserRepository {
         return userDataStore.setCurrentUser().map(new Func1<UserEntity, User>() {
             @Override
             public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transform(userEntity);
+                return mUserEntityMapper.transformToUser(userEntity);
             }
         });
     }*/
