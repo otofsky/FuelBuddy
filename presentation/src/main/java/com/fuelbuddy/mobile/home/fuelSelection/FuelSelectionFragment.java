@@ -77,24 +77,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }//end switch
-    }//end onOptionsItemSelected
-
-    @Override
     public void showLoading() {
 
     }

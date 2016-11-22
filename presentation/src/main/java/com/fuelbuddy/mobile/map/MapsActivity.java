@@ -8,11 +8,13 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fuelbuddy.mobile.Constants;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.navigation.Navigator;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,6 +59,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         // startTracking();
         connectGoogleApiClient();
 
+    }
+
+    @Override
+    public void navigateToHomeActivity() {
+        //Navigator.navigateToHomeActivity(this);
+        finish();
     }
 
 

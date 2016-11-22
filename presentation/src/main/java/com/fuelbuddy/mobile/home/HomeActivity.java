@@ -1,7 +1,10 @@
 package com.fuelbuddy.mobile.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.fuelbuddy.mobile.R;
@@ -29,8 +32,11 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     @Inject
     public  HomePresenter homePresenter;
     private HomeComponent homeComponent;
-    //sign_in_button
-    @Override
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, HomeActivity.class);
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -40,6 +46,10 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         ButterKnife.bind(this);
     }
 
+    @Override
+    public void navigateToHomeActivity() {
+
+    }
 
     private void initializeInjector() {
         this.homeComponent = DaggerHomeComponent.builder()

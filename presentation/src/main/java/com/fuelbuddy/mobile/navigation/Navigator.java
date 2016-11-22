@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.MapsActivity;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 
@@ -43,6 +44,15 @@ public class Navigator {
 
             Intent intentToLaunch = MapsActivity.getCallingIntent(context);
             intentToLaunch.putExtra(FUEL_TYPE, fuelType);
+            context.startActivity(intentToLaunch);
+        }
+    }
+
+
+    public static void navigateToHomeActivity(Context context) {
+        if (context != null) {
+            Intent intentToLaunch = HomeActivity.getCallingIntent(context);
+          /*  intentToLaunch.putExtra(FUEL_TYPE, fuelType);*/
             context.startActivity(intentToLaunch);
         }
     }
