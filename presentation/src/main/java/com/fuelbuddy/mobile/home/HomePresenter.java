@@ -1,12 +1,15 @@
 package com.fuelbuddy.mobile.home;
 
 
+import android.util.Log;
+
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.map.MapPresenter;
+import com.fuelbuddy.mobile.util.StringHelper;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -49,12 +52,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         @DebugLog
         @Override public void onNext(User user) {
-            getMvpView().showInfo(user.getUserId());
-            if(user!=null){
-                getMvpView().showLoginView();
-            }
-            else{
-                getMvpView().showLoginView();
+                if(!StringHelper.isNullOrEmpty(user.getUserId())) {
+                    getMvpView().showFuelTypeView();
+                }
+                else{
+                    getMvpView().showLoginView();
+
             }
         }
     }

@@ -7,6 +7,7 @@ import com.fuelbuddy.mobile.di.module.HomeModule;
 import com.fuelbuddy.mobile.di.module.LoginModule;
 import com.fuelbuddy.mobile.di.module.MapsModule;
 import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
 
 import dagger.Component;
@@ -24,8 +25,6 @@ public interface HomeComponent extends ActivityComponent {
 
     void inject(HomeActivity homeActivity);
     void inject(LoginFragment loginFragment);
-
-
-
+    void inject(FuelSelectionFragment fuelSelectionFragment);
 
 }

@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.home.login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -97,13 +98,8 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // initializeInjector();
-
-
         this.getComponent(HomeComponent.class).inject(this);
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,6 +220,16 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
     @Override
     public void showError(String message) {
 
+    }
+
+    @Override
+    public void logOut() {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
     }
 
 

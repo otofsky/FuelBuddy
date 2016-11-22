@@ -15,10 +15,13 @@
  */
 package com.fuelbuddy.mobile.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import com.fuelbuddy.mobile.map.MapsActivity;
+import com.fuelbuddy.mobile.util.AnimationHelper;
+
 import static com.fuelbuddy.mobile.Constants.FUEL_TYPE;
 
 
@@ -35,6 +38,9 @@ public class Navigator {
      */
     public static void navigateToMapsActivity(Context context, String fuelType) {
         if (context != null) {
+
+
+
             Intent intentToLaunch = MapsActivity.getCallingIntent(context);
             intentToLaunch.putExtra(FUEL_TYPE, fuelType);
             context.startActivity(intentToLaunch);

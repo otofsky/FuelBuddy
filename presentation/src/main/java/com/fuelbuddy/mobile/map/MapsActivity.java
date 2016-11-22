@@ -189,6 +189,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     }
 
+    @Override
+    public void logOut() {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
+    }
+
     @DebugLog
     @Override
     public void onConnected(@Nullable Bundle bundle) {

@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -10,7 +11,7 @@ import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 
 import com.fuelbuddy.mobile.di.component.HomeComponent;
 
-import com.fuelbuddy.mobile.home.fuelSelection.FuelTypeFragment;
+import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -51,7 +52,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void navigateToHome() {
-        addFragment(R.id.fragmentContainer, new FuelTypeFragment());
+        addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
 
 
@@ -72,7 +73,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showFuelTypeView() {
-        addFragment(R.id.fragmentContainer, new FuelTypeFragment());
+        addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
 
 
@@ -99,6 +100,16 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     @Override
     public void showError(String message) {
 
+    }
+
+    @Override
+    public void logOut() {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
     }
 
     @Override

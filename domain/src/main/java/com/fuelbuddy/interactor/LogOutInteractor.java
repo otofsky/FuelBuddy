@@ -14,7 +14,6 @@ import rx.Observable;
  * Created by zjuroszek on 20.11.16.
  */
 
-@Singleton
 public class LogOutInteractor extends UseCase {
 
     UserRepository userRepository;

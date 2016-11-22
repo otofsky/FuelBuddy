@@ -36,4 +36,8 @@ public interface MvpView {
      */
     void showError(String message);
 
+    void logOut();
+
+    Context context();
+
 }
