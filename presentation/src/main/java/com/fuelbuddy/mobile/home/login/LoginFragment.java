@@ -128,7 +128,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.google_plus_vector, 0, 0, 0);
         } else {
-            mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_google_plus_white_36dp, 0, 0, 0);
+            mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_google_plus_white_36dp, 0, 0, 0);
         }
     }
 
@@ -136,7 +136,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.facebook_vector, 0, 0, 0);
         } else {
-            mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_facebook_white_36dp, 0, 0, 0);
+            mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_facebook_white_36dp, 0, 0, 0);
         }
     }
 

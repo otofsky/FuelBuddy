@@ -5,7 +5,6 @@
  */
 package com.fuelbuddy.mobile.base;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.fuelbuddy.mobile.Application;
+import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
-import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.home.HomeActivity;
 
 /**
@@ -49,13 +47,6 @@ public abstract class BaseFragment extends Fragment {
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
   }
 
-  protected ApplicationComponent getApplicationComponent() {
-    ApplicationComponent applicationComponent = Application.getInstance().getApplicationComponent();
-    if(applicationComponent == null){
-
-    }
-    return applicationComponent;
-  }
 
   /**
    * Get an Activity module for dependency injection.

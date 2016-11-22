@@ -28,13 +28,9 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
-import studios.codelight.smartloginlibrary.SmartCustomLoginListener;
-import studios.codelight.smartloginlibrary.SmartCustomLogoutListener;
-import studios.codelight.smartloginlibrary.SmartLoginBuilder;
-import studios.codelight.smartloginlibrary.SmartLoginConfig;
-import studios.codelight.smartloginlibrary.users.SmartUser;
 
-public class LoginActivity extends AppCompatActivity  implements   View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, SmartCustomLogoutListener, SmartCustomLoginListener {
+
+public class LoginActivity extends AppCompatActivity  implements   View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
@@ -101,7 +97,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
       /*  Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);*/
 
-        SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
+/*        SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
 
         //Set facebook permissions
         ArrayList<String> permissions = new ArrayList<>();
@@ -120,7 +116,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
                 .setSmartCustomLoginHelper(LoginActivity.this)
                 .build();
 
-        startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);
+        startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);*/
     }
 
     @DebugLog
@@ -164,24 +160,8 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
     }
 
 
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    public boolean customSignin(SmartUser smartUser) {
-        return false;
-    }
-
-    @Override
-    public boolean customSignup(SmartUser smartUser) {
-        return false;
-    }
-
-    @Override
-    public boolean customUserSignout(SmartUser smartUser) {
-        return false;
     }
 }

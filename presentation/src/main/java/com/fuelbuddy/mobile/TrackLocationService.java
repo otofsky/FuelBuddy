@@ -27,7 +27,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     private int notificationId = 9999;
     private GoogleApiClient googleApiClient;
-    private Application app;
+    private AndroidApplication app;
 
     public static boolean isServiceRunning() {
         return isServiceRunning;
@@ -46,7 +46,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         super.onCreate();
         Log.d(TAG, "onCreate");
 
-        app = (Application) getApplication();
+        app = (AndroidApplication) getApplication();
     }
 
     @Override

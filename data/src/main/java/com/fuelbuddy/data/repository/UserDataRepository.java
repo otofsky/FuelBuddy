@@ -32,7 +32,7 @@ public class UserDataRepository implements UserRepository {
 
     @Override
     public Observable<User> getCurrentUser() {
-        UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
+        UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
         return userDataStore.getCurrentUserEntity().map(new Func1<UserEntity, User>() {
             @Override
             public User call(UserEntity userEntity) {
@@ -43,7 +43,7 @@ public class UserDataRepository implements UserRepository {
 
     @Override
     public Observable<User> setCurrentUser(User user) {
-        UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
+        UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
         return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {
             @Override
             public User call(UserEntity userEntity) {
@@ -54,7 +54,7 @@ public class UserDataRepository implements UserRepository {
 
     @Override
     public Observable<Boolean> logOut() {
-        UserDataStore userDataStore = mUserStoreFactory.createSharePreferencesDataStore();
+        UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
         return userDataStore.logOut();
     }
 }

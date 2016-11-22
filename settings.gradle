@@ -1,1 +1,1 @@
-include ':presentation', ':domain', ':data', ':smartloginlibrary-release'
+include ':presentation', ':domain', ':data'

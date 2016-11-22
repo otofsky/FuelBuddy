@@ -1,7 +1,9 @@
 package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
 
 import javax.inject.Inject;
@@ -15,15 +17,18 @@ import javax.inject.Singleton;
 public class UserStoreFactory {
 
     private final Context context;
+    private final UserCache userCache;
+
 
     @Inject
-    public UserStoreFactory(Context context) {
+    public UserStoreFactory(@NonNull Context context,@NonNull UserCache userCache ) {
         this.context = context;
+        this.userCache = userCache;
     }
 
-    public UserDataStore createSharePreferencesDataStore() {
-        UserJsonEntityMapper userJsonEntityMapper = new UserJsonEntityMapper();
-        SharePreferencesUserEntityStore sharePreferencesUserEntityStore = new SharePreferencesUserEntityStore(context, userJsonEntityMapper);
-        return sharePreferencesUserEntityStore;
+    public UserDataStore createDiskUserDataStore() {
+        UserDataStore userDataStore = new DiskUserDataStore(this.userCache);
+        return userDataStore;
+
     }
 }

@@ -119,9 +119,9 @@ public class LoginConfig {
         return bundle;
     }
 
-    public static studios.codelight.smartloginlibrary.SmartLoginConfig unpack(Bundle bundle){
+    public static LoginConfig unpack(Bundle bundle){
         //new LoginConfig to return
-        studios.codelight.smartloginlibrary.SmartLoginConfig loginConfig = new studios.codelight.smartloginlibrary.SmartLoginConfig();
+    LoginConfig loginConfig = new LoginConfig();
         Set<String> keys = bundle.keySet();
 
         if(keys.contains(APPLOGO)){
