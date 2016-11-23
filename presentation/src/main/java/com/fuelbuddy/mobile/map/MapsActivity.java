@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Constants;
@@ -14,6 +15,7 @@ import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,6 +27,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -150,6 +154,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public void removeMarkers() {
 
     }
+
+    private static void populateRelatedOperationSection(List<GasStationModel> gasStationModels, LinearLayout container, GasStationAdapter adapter) {
+        for (GasStationModel relatedOperation : gasStationModels) {
+            adapter.add(relatedOperation);
+        }
+        for (int i = 0; i < adapter.getCount(); ++i) {
+            container.addView(adapter.getView(i, null, null));
+        }
+    }
+
+
 
     @Override
     public void showInfoTest(String info) {

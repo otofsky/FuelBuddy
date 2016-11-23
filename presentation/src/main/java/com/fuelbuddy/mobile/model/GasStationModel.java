@@ -1,9 +1,9 @@
-package com.fuelbuddy.data;
+package com.fuelbuddy.mobile.model;
 
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class GasStation {
+public class GasStationModel {
 
 
     private String gasStationId;
@@ -170,7 +170,7 @@ public class GasStation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GasStation that = (GasStation) o;
+        GasStationModel that = (GasStationModel) o;
 
         if (gasStationId != null ? !gasStationId.equals(that.gasStationId) : that.gasStationId != null)
             return false;

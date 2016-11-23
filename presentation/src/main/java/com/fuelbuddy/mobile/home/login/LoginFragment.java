@@ -161,12 +161,12 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
     }
 
     private void handleGoogleLoginResult(int requestCode, GoogleSignInResult result) {
-        if (true) {
+        if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             UserUtil util = new UserUtil();
             UserModel googleUser = util.populateGoogleUser(acct);
-            Log.d("LoginFragment", "onActivityResult: " + googleUser.toString());
+            Log.d("LoginFragment", "onActivityResult: " + acct.getDisplayName());
             mLoginPresenter.addNewUser(googleUser);
             finishLogin();
             progress.dismiss();

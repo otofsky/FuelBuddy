@@ -72,15 +72,7 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
-
-        Observable<List<GasStationEntity>> observable = Observable.create(new Observable.OnSubscribe<List<GasStationEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<GasStationEntity>> subscriber) {
-                subscriber.onNext(getUserEntitiesFromApi());
-
-            }
-        });
-        return observable;
+        return ApiInvoker.getInstance().getGasStations("55.951869964599610","8.514181137084961");
     }
 
 
@@ -107,11 +99,11 @@ public class RestApiImpl implements RestApiService {
     public Observable<GasStationEntity> gasStationEntityById(int gasStationId) {
         return null;
     }
-
+/*
     public List<GasStationEntity> getUserEntitiesFromApi() {
         GasStationEntity gasStationEntity = new GasStationEntity("Statoil");
         List<GasStationEntity> gasStationEntityList = new ArrayList<GasStationEntity>();
         gasStationEntityList.add(gasStationEntity);
         return gasStationEntityList;
-    }
+    }*/
 }
