@@ -67,8 +67,8 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     @DebugLog
     @OnClick(R.id.fuelTypeDieselBtn)
     public void submitFuelTypeDiesel() {
-        mFuelSelectionPresenter.logout();
-        //Navigator.navigateToMapsActivity(getActivity(),Config.FUEL_TYPE_DIESEL);
+       // mFuelSelectionPresenter.logout();
+        Navigator.navigateToMapsActivity(getActivity(),FuelPriceMode.DIESEL);
     }
 
     @Override

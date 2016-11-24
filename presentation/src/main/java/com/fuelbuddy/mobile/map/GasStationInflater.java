@@ -2,12 +2,17 @@ package com.fuelbuddy.mobile.map;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.PriceHelper;
+import com.fuelbuddy.mobile.util.ResourcesHelper;
+import com.fuelbuddy.mobile.util.StringHelper;
+import com.fuelbuddy.mobile.util.ViewHelper;
 
 
 /**
@@ -18,6 +23,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     private LayoutInflater inflater;
     private FuelPriceMode fuelPriceMode;
     private Context context;
+    String TAG = getClass().getName();
 
     public GasStationInflater(Context context, FuelPriceMode fuelPriceMode) {
         this.context = context;
@@ -41,17 +47,58 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
     private void initFuelPriceDataViews(GasStationModel gasStationModel, ViewHolder viewHolder) {
-        switch (fuelPriceMode){
+        switch (fuelPriceMode) {
             case BENZIN_92:
-                viewHolder.fuelPriceBtn.setText(PriceHelper.toFormattedPrice(gasStationModel.getPrice92(), "92 kr"));
+                init92FuelPriceView(viewHolder, gasStationModel.getPrice92(),
+                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92,
+                                gasStationModel.getPrice92()));
                 break;
             case BENZIN_95:
-                viewHolder.fuelPriceBtn.setText(PriceHelper.toFormattedPrice(gasStationModel.getPrice95(), "95 kr"));
+                init95FuelPriceView(viewHolder, gasStationModel.getPrice95(),
+                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95,
+                                gasStationModel.getPrice95()));
                 break;
             case DIESEL:
-                viewHolder.fuelPriceBtn.setText(PriceHelper.toFormattedPrice(gasStationModel.getPriceDiesel(), "diesel kr"));
+                initDieselFuelPriceView(viewHolder, gasStationModel.getPriceDiesel(),
+                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL,
+                                gasStationModel.getPriceDiesel()));
                 break;
+            default:
+                Log.d(TAG, "invalid fuel type: ");
+                break;
+
         }
+    }
+
+    private void initDieselFuelPriceView(ViewHolder viewHolder, String priceDiesel, String s) {
+        if (!StringHelper.isNullOrEmpty(priceDiesel)) {
+            viewHolder.fuelPriceBtn.setText(s);
+        } else {
+            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+        }
+    }
+
+    private void init95FuelPriceView(ViewHolder viewHolder, String price95, String s) {
+        if (!StringHelper.isNullOrEmpty(price95)) {
+            viewHolder.fuelPriceBtn.setText(s);
+        } else {
+            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+        }
+    }
+
+    private void init92FuelPriceView(ViewHolder viewHolder, String price92, String s) {
+        if (!StringHelper.isNullOrEmpty(price92)) {
+            viewHolder.fuelPriceBtn.setText(s);
+            setFuelStateColor(viewHolder.fuelPriceBtn);
+        } else {
+            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+        }
+    }
+
+    public void setFuelStateColor(View view){
+        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_green));
+        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_yellow));
+        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_red));
     }
 
     public static class ViewHolder {

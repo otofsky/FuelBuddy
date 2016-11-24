@@ -14,9 +14,7 @@ public enum FuelPriceMode {
         this.fuelType = fuelType;
     }
 
-    public String getFuelType() {
-        return fuelType;
-    }
+
 
 
 }

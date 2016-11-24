@@ -6,6 +6,9 @@
 
     <color name="app_orange">#CD5B1C</color>
     <color name="app_green">#508B89</color>
+    <color name="app_red">#dc4e41</color>
+    <color name="app_yellow">#fff933</color>
+
     <color name="app_green_selected">#69a5a3</color>
 
     <color name="facebook_brand_color">#3B5998</color>

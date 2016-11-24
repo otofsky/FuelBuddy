@@ -15,7 +15,6 @@ import java.util.List;
 
 public class FuelPriceController {
 
-
     GasStationAdapter gasStationAdapter;
     List<GasStationModel> gasStationModelList = new ArrayList<>();
     private final Context context;
@@ -39,17 +38,16 @@ public class FuelPriceController {
         initView();
         gasStationAdapter.notifyDataSetChanged();
     }
-
+    private void initAdapter(List<GasStationModel> gasStationModels) {
+        for (GasStationModel gasStationModel : gasStationModels) {
+            gasStationAdapter.add(gasStationModel);
+        }
+    }
     private void initView() {
         for (int i = 0; i < gasStationAdapter.getCount(); ++i) {
             view.addView(gasStationAdapter.getView(i, null, null));
         }
     }
 
-    private void initAdapter(List<GasStationModel> gasStationModels) {
-        for (GasStationModel relatedOperation : gasStationModels) {
-            gasStationAdapter.add(relatedOperation);
-        }
-    }
 
 }

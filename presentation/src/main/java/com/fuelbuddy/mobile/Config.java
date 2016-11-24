@@ -15,7 +15,7 @@ public class Config {
     public static String FUEL_TYPE_DIESEL = "diesel";
 
 
-    public static final String CURRENCY_DKR = "kr";
+    public static final String CURRENCY_DK = "kr";
 
 
 }
