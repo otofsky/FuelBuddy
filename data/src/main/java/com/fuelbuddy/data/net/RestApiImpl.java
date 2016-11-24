@@ -101,6 +101,7 @@ public class RestApiImpl implements RestApiService {
     }
 /*
     public List<GasStationEntity> getUserEntitiesFromApi() {
+        RestApiService.Creator.newRestApiService().gasStationEntityList();
         GasStationEntity gasStationEntity = new GasStationEntity("Statoil");
         List<GasStationEntity> gasStationEntityList = new ArrayList<GasStationEntity>();
         gasStationEntityList.add(gasStationEntity);

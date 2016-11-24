@@ -1,9 +1,9 @@
 package com.fuelbuddy.mobile.map;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
@@ -27,9 +27,9 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     public View getView(GasStationModel item, View convertView, int positionFlag) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.dpsdk_payment_related_operation_view, null);
+           convertView = inflater.inflate(R.layout.fuel_price_bar, null);
             holder = new ViewHolder();
-            holder.fuelPriceTv = (TextView) convertView.findViewById(R.id.pro_relatedTransactions);
+            holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -39,11 +39,11 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
     private void initRelateOperationDataViews(GasStationModel gasStationModel, ViewHolder viewHolder) {
-        viewHolder.fuelPriceTv.setText(gasStationModel.getPrice95());
+        viewHolder.fuelPriceBtn.setText(gasStationModel.getGasStationName());
     }
 
     public static class ViewHolder {
-        TextView fuelPriceTv;
+        AppCompatButton fuelPriceBtn;
 
     }
 }

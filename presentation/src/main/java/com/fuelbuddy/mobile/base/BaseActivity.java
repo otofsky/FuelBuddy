@@ -10,11 +10,15 @@ import android.view.MenuItem;
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
+import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
+import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
 
 
     public abstract void navigateToHomeActivity();

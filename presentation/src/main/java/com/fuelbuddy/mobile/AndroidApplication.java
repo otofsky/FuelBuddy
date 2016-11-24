@@ -42,11 +42,8 @@ public class AndroidApplication extends Application {
         return locationRequest;
     }
 
-
     public ApplicationComponent getApplicationComponent() {
         return this.component;
     }
-
-
 
 }

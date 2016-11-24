@@ -27,24 +27,24 @@ public class GasStationModelDataMapper {
 
     public GasStationModel transform(GasStation gasStation) {
         GasStationModel gasStationModel = null;
-        if (gasStationModel != null) {
+        if (gasStation != null) {
             gasStationModel = new GasStationModel();
-            gasStationModel.setDistance(gasStationModel.getDistance());
-            gasStationModel.setGasStationId(gasStationModel.getGasStationId());
-            gasStationModel.setGasStationLatitude(gasStationModel.getGasStationLatitude());
-            gasStationModel.setGasStationLongitude(gasStationModel.getGasStationLongitude());
-            gasStationModel.setGasStationName(gasStationModel.getGasStationName());
-            gasStationModel.setPrice92(gasStationModel.getPrice92());
-            gasStationModel.setPrice95(gasStationModel.getPrice95());
-            gasStationModel.setPriceDiesel(gasStationModel.getPriceDiesel());
-            gasStationModel.setTimeUpdated(gasStationModel.getTimeUpdated());
+            gasStationModel.setDistance(gasStation.getDistance());
+            gasStationModel.setGasStationId(gasStation.getGasStationId());
+            gasStationModel.setGasStationLatitude(gasStation.getGasStationLatitude());
+            gasStationModel.setGasStationLongitude(gasStation.getGasStationLongitude());
+            gasStationModel.setGasStationName(gasStation.getGasStationName());
+            gasStationModel.setPrice92(gasStation.getPrice92());
+            gasStationModel.setPrice95(gasStation.getPrice95());
+            gasStationModel.setPriceDiesel(gasStation.getPriceDiesel());
+            gasStationModel.setTimeUpdated(gasStation.getTimeUpdated());
         }
         return gasStationModel;
     }
 
 
     public List<GasStationModel> transform(Collection<GasStation> gasStationEntityCollection) {
-        List<GasStationModel> userList = new ArrayList<>(20);
+        List<GasStationModel> userList = new ArrayList<>();
         GasStationModel gasStationModel;
         for (GasStation gasStation : gasStationEntityCollection) {
             gasStationModel = transform(gasStation);

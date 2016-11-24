@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.mobile.Constants;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
@@ -32,6 +33,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
@@ -44,6 +47,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     private MapsComponent mMapsComponent;
 
+   @BindView(R.id.fuelPriceHolderView)
+   LinearLayout fuelPriceHolderView;
+
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
     }
@@ -53,6 +59,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ButterKnife.bind(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -64,6 +71,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         connectGoogleApiClient();
 
     }
+
+
+
 
     @Override
     public void navigateToHomeActivity() {
@@ -155,14 +165,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     }
 
-    private static void populateRelatedOperationSection(List<GasStationModel> gasStationModels, LinearLayout container, GasStationAdapter adapter) {
-        for (GasStationModel relatedOperation : gasStationModels) {
-            adapter.add(relatedOperation);
-        }
-        for (int i = 0; i < adapter.getCount(); ++i) {
-            container.addView(adapter.getView(i, null, null));
-        }
-    }
+
 
 
 
@@ -181,6 +184,22 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public void showMarkersAt(float latitude, float longitude) {
 
     }
+
+    @Override
+    public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
+        GasStationAdapter gasStationAdapter = new GasStationAdapter(new GasStationInflater(this), this);
+        populateFuelPriceBarsSection(gasStationModelList,fuelPriceHolderView,gasStationAdapter);
+    }
+
+    private static void populateFuelPriceBarsSection(List<GasStationModel> gasStationModels, LinearLayout container, GasStationAdapter adapter) {
+        for (GasStationModel relatedOperation : gasStationModels) {
+            adapter.add(relatedOperation);
+        }
+        for (int i = 0; i < adapter.getCount(); ++i) {
+            container.addView(adapter.getView(i, null, null));
+        }
+    }
+
 
     @DebugLog
     @Override

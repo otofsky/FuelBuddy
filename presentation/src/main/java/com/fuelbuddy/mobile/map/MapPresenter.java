@@ -7,6 +7,7 @@ import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
+import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 
 import java.util.List;
 
@@ -75,8 +76,9 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             for(GasStation gasStation: gasStations){
                 Log.d("UserListSubscriber", "onNext: " + gasStation.toString());
             }
-
+            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
            // getMvpView().showInfoTest(gasStations.get(0).getName());
+            getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
 
 
            // UserListPresenter.this.showUsersCollectionInView(users);

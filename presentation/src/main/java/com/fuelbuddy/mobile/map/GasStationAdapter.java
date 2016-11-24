@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.fuelbuddy.mobile.model.GasStationModel;
 
-import pl.mobiltek.paymentsmobile.dotpay.model.Json.RelatedOperation;
 
 /**
  * Created by zjuroszek on 08.07.16.
