@@ -15,15 +15,14 @@
  */
 package com.fuelbuddy.mobile.navigation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.MapsActivity;
-import com.fuelbuddy.mobile.util.AnimationHelper;
 
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE;
+import static com.fuelbuddy.mobile.Config.FUEL_TYPE;
 
 
 /**
@@ -37,13 +36,10 @@ public class Navigator {
      *
      * @param context A Context needed to open the destiny activity.
      */
-    public static void navigateToMapsActivity(Context context, String fuelType) {
+    public static void navigateToMapsActivity(Context context, FuelPriceMode fuelPriceMode) {
         if (context != null) {
-
-
-
             Intent intentToLaunch = MapsActivity.getCallingIntent(context);
-            intentToLaunch.putExtra(FUEL_TYPE, fuelType);
+            intentToLaunch.putExtra(FUEL_TYPE, fuelPriceMode);
             context.startActivity(intentToLaunch);
         }
     }

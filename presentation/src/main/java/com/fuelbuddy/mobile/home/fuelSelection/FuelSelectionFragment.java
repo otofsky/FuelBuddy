@@ -1,30 +1,25 @@
 package com.fuelbuddy.mobile.home.fuelSelection;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fuelbuddy.mobile.Constants;
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
-import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.map.FuelPriceController;
+import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.navigation.Navigator;
-import com.fuelbuddy.mobile.util.AnimationHelper;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.internal.Utils;
 import hugo.weaving.DebugLog;
 
 /**
@@ -59,21 +54,21 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     public void submitFuelType92() {
         Log.d("submitFuelType92", "submitFuelType92: ");
         // AnimationHelper.startAnimatedActivity(getActivity(), AnimationHelper.AnimationDirection.RIGHT_LEFT);
-        Navigator.navigateToMapsActivity(getActivity(), Constants.FUEL_TYPE_92);
+        Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.BENZIN_92);
         //homePresenter.verifyCurrentUser();
     }
 
     @DebugLog
     @OnClick(R.id.fuelType95Btn)
     public void submitFuelType95() {
-        Navigator.navigateToMapsActivity(getActivity(), Constants.FUEL_TYPE_95);
+        Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.BENZIN_95);
     }
 
     @DebugLog
     @OnClick(R.id.fuelTypeDieselBtn)
     public void submitFuelTypeDiesel() {
         mFuelSelectionPresenter.logout();
-        //Navigator.navigateToMapsActivity(getActivity(),Constants.FUEL_TYPE_DIESEL);
+        //Navigator.navigateToMapsActivity(getActivity(),Config.FUEL_TYPE_DIESEL);
     }
 
     @Override

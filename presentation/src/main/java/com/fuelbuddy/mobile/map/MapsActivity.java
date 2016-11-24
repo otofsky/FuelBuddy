@@ -9,15 +9,13 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.fuelbuddy.data.GasStation;
-import com.fuelbuddy.mobile.Constants;
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.model.GasStationModel;
-import com.fuelbuddy.mobile.navigation.Navigator;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,8 +45,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     private MapsComponent mMapsComponent;
 
-   @BindView(R.id.fuelPriceHolderView)
-   LinearLayout fuelPriceHolderView;
+    @BindView(R.id.fuelPriceHolderView)
+    LinearLayout fuelPriceHolderView;
+
+
+    FuelPriceController mFuelPriceController;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
@@ -60,19 +61,26 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.initializeInjector();
+        FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
+
+        LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
+
+        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
+
         mapPresenter.attachView(this);
+
         mapPresenter.submitSearch();
         // startTracking();
         connectGoogleApiClient();
 
+
     }
-
-
 
 
     @Override
@@ -166,9 +174,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     }
 
 
-
-
-
     @Override
     public void showInfoTest(String info) {
         Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
@@ -187,17 +192,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
-        GasStationAdapter gasStationAdapter = new GasStationAdapter(new GasStationInflater(this), this);
-        populateFuelPriceBarsSection(gasStationModelList,fuelPriceHolderView,gasStationAdapter);
-    }
-
-    private static void populateFuelPriceBarsSection(List<GasStationModel> gasStationModels, LinearLayout container, GasStationAdapter adapter) {
-        for (GasStationModel relatedOperation : gasStationModels) {
-            adapter.add(relatedOperation);
-        }
-        for (int i = 0; i < adapter.getCount(); ++i) {
-            container.addView(adapter.getView(i, null, null));
-        }
+        mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
     }
 
 
