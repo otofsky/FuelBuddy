@@ -9,6 +9,7 @@ import android.view.View;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.ResourcesHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
@@ -20,6 +21,7 @@ import com.fuelbuddy.mobile.util.ViewHelper;
  */
 
 public class GasStationInflater implements GenericCustomListAdapter.ListItemInflater<GasStationModel> {
+
     private LayoutInflater inflater;
     private FuelPriceMode fuelPriceMode;
     private Context context;
@@ -47,21 +49,25 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
     private void initFuelPriceDataViews(GasStationModel gasStationModel, ViewHolder viewHolder) {
+
         switch (fuelPriceMode) {
             case BENZIN_92:
                 init92FuelPriceView(viewHolder, gasStationModel.getPrice92(),
                         PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92,
                                 gasStationModel.getPrice92()));
+                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case BENZIN_95:
                 init95FuelPriceView(viewHolder, gasStationModel.getPrice95(),
                         PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95,
                                 gasStationModel.getPrice95()));
+                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case DIESEL:
                 initDieselFuelPriceView(viewHolder, gasStationModel.getPriceDiesel(),
                         PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL,
                                 gasStationModel.getPriceDiesel()));
+                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             default:
                 Log.d(TAG, "invalid fuel type: ");
@@ -89,17 +95,24 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     private void init92FuelPriceView(ViewHolder viewHolder, String price92, String s) {
         if (!StringHelper.isNullOrEmpty(price92)) {
             viewHolder.fuelPriceBtn.setText(s);
-            setFuelStateColor(viewHolder.fuelPriceBtn);
+
         } else {
             ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
         }
     }
 
-    public void setFuelStateColor(View view){
-        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_green));
-        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_yellow));
-        view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_red));
+
+    public void setSetFuelColorState(String lastUpDatePrice, View view) {
+        int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
+        if (numOfHours < 2) {
+            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_green));
+        } else if (numOfHours > 2 && numOfHours < 4) {
+            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_yellow));
+        } else {
+            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_red));
+        }
     }
+
 
     public static class ViewHolder {
         AppCompatButton fuelPriceBtn;

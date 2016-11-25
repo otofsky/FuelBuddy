@@ -39,7 +39,6 @@ public class PriceHelper {
     private static String toFormattedPrice(String price, String currency) {
         if (price != null && currency != null) {
             try {
-
                 double dPrice = new BigDecimal(price).doubleValue();
                 String to = nf.format(dPrice);
                 to = to.replace("\u00A4", currency);

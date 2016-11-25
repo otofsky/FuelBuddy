@@ -32,6 +32,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     public void attachView(MapMvpView mvpView) {
         super.attachView(mvpView);
         loadUserList();
+        getMvpView().showLoading();
     }
     @DebugLog
     @Override
@@ -79,6 +80,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
            // getMvpView().showInfoTest(gasStations.get(0).getName());
             getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
+            //getMvpView().hideLoading();
 
 
            // UserListPresenter.this.showUsersCollectionInView(users);

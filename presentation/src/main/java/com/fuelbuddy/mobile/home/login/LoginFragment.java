@@ -27,13 +27,9 @@ import com.facebook.login.LoginResult;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 
-import com.fuelbuddy.mobile.di.HasComponent;
-import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
 
 
-import com.fuelbuddy.mobile.di.module.LoginModule;
-import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.model.UserModel;
 import com.fuelbuddy.mobile.util.loginUtil.LoginConfig;
 import com.fuelbuddy.mobile.util.loginUtil.UserUtil;
@@ -85,7 +81,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
     @BindView(R.id.login_fb_button)
     AppCompatButton mLoginFbButton;
 
-    @BindView(R.id.rl_progress)
+    @BindView(R.id.progressView)
     RelativeLayout rl_progress;
 
     FragmentNavigator mFragmentNavigator;

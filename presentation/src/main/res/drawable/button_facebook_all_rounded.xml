@@ -3,7 +3,7 @@
 
     <item>
         <shape>
-            <solid android:color="@color/app_green" />
+            <solid android:color="@color/facebook_brand_color" />
 
             <corners
                 android:bottomLeftRadius="2dp"
