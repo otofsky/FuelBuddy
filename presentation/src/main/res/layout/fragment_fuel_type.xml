@@ -9,6 +9,7 @@
     <Button
         android:id="@+id/fuelType92Btn"
         style="@style/GreenButton"
+        android:background="@drawable/button_green_all_rounded"
         android:layout_marginBottom="10dp"
         android:elevation="10dp"
         android:text="92"/>
@@ -16,12 +17,14 @@
     <Button
         android:id="@+id/fuelType95Btn"
         style="@style/GreenButton"
+        android:background="@drawable/button_green_all_rounded"
         android:layout_marginBottom="10dp"
         android:text="95"/>
 
     <Button
         android:id="@+id/fuelTypeDieselBtn"
         style="@style/GreenButton"
+        android:background="@drawable/button_green_all_rounded"
         android:layout_marginBottom="10dp"
         android:text="Diesel"/>
 </LinearLayout>
