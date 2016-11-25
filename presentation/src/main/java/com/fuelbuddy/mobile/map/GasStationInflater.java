@@ -72,7 +72,6 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
             default:
                 Log.d(TAG, "invalid fuel type: ");
                 break;
-
         }
     }
 
@@ -101,18 +100,16 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         }
     }
 
-
     public void setSetFuelColorState(String lastUpDatePrice, View view) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
-            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_green));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
         } else if (numOfHours > 2 && numOfHours < 4) {
-            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_yellow));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
         } else {
-            view.setBackgroundColor(ResourcesHelper.getColor(context, R.color.app_red));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
         }
     }
-
 
     public static class ViewHolder {
         AppCompatButton fuelPriceBtn;

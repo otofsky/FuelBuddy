@@ -1,6 +1,7 @@
 package com.fuelbuddy.mobile.util;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.Button;
@@ -19,6 +20,15 @@ public class ResourcesHelper {
             return ContextCompat.getColor(context, id);
         } else {
             return context.getResources().getColor(id);
+        }
+    }
+
+    public static final Drawable getDrawable(Context context, int id) {
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= 21) {
+            return ContextCompat.getDrawable(context, id);
+        } else {
+            return context.getResources().getDrawable(id);
         }
     }
 
