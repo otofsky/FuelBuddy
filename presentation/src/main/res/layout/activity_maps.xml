@@ -21,7 +21,10 @@
             android:id="@+id/fuelPriceHolderView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left|top"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_gravity="left|bottom"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>
