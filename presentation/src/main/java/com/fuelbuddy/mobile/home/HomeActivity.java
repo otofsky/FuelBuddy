@@ -18,6 +18,9 @@ import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -64,6 +67,10 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     public void navigateToHome() {
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginViewEvent event)
+    {/* Do something */};
 
 
     @Override

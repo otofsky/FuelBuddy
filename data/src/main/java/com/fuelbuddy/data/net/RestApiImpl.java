@@ -72,7 +72,7 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
-        return ApiInvoker.getInstance().getGasStations("49.734784","18.737955");
+        return ApiInvoker.getInstance().getGasStations("49.7350690","18.7364720");
     }
 
 

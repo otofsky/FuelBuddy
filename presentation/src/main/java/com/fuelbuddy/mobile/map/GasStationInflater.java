@@ -103,11 +103,11 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     public void setSetFuelColorState(String lastUpDatePrice, View view) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
         } else if (numOfHours > 2 && numOfHours < 4) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
         } else {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded) );
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
         }
     }
 

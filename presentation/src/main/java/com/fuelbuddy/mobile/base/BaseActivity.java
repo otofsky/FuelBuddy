@@ -15,6 +15,8 @@ import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -24,7 +26,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationComponent().inject(this);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

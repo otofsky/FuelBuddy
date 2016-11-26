@@ -40,7 +40,7 @@
 		
 			<item android:state_selected="true">
 				<shape>
-
+					<solid android:color="@color/app_green_selected"/>
 					 <corners
                         android:bottomLeftRadius="0dp"
                         android:bottomRightRadius="2dp"

@@ -26,9 +26,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +57,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     RelativeLayout progressView;
 
     FuelPriceController mFuelPriceController;
+    private ArrayList<LatLng>listLatLng;
+
+    //HashMap<Marker, LatLngBean> hashMapMarker = new HashMap<Marker, LatLngBean>();
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
@@ -164,11 +171,38 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+/*        final LatLng HAMBURG = new LatLng(53.558, 9.927);
+        final LatLng KIEL = new LatLng(53.551, 9.993);
 
+        Marker hamburg = mMap.addMarker(new MarkerOptions().position(HAMBURG)
+                .title("Hamburg"));
+        Marker kiel = mMap.addMarker(new MarkerOptions()
+                .position(KIEL)
+                .title("Kiel")
+                .snippet("Kiel is cool")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
+
+// Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);*/
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+ /*       LatLng sydney = new LatLng(49.7497638, 18.635470899999973);
+
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(sydney)      // Sets the center of the map to Mountain View
+                .zoom(10)                   // Sets the zoom
+                .bearing(90)                // Sets the orientation of the camera to east
+                .tilt(30)
+
+                // Sets the tilt of the camera to 30 degrees
+                .build();                   // Creates a CameraPosition from the builder
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+
+
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     @Override
@@ -196,8 +230,95 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
+        loadingGoogleMap(gasStationModelList);
+        hideLoading();
     }
 
+/*    private void loadGoogleMap(List<GasStationModel> gasStationModelList) {
+        if (mMap != null) {
+            mMap.clear();
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+
+            for (GasStationModel gasStationModel : gasStationModelList) {
+
+                double lat = Double.parseDouble(gasStationModel.getGasStationLatitude());
+                double lon = Double.parseDouble(gasStationModel.getGasStationLongitude());
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat, lon))
+                        .title(gasStationModel.getGasStationName())
+                        .snippet("Snippet").
+                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+            }
+        }
+    }*/
+
+    void loadingGoogleMap(List<GasStationModel> gasStationModelList) {
+        if (mMap != null) {
+            mMap.clear();
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            //mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+
+            try {
+                listLatLng=new ArrayList<LatLng>();
+                for (GasStationModel gasStationModel : gasStationModelList) {
+                    LatLng latLng = getLatLng(gasStationModel);
+                    listLatLng.add(latLng);
+
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(gasStationModel.getGasStationName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.drop_off)));
+
+                }
+                setZoomlevel(listLatLng);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            LatLng sydney = new LatLng(49.7350690, 18.7364720);
+            mMap.addMarker(new MarkerOptions()
+                    .position(sydney)
+                    .title("current position")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                @Override
+                public void onInfoWindowClick(Marker position) {
+                    // LatLngBean bean=hashMapMarker.get(position);
+                    Toast.makeText(getApplicationContext(), position.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @NonNull
+    private LatLng getLatLng(GasStationModel gasStationModel) {
+        double lat = Double.parseDouble(gasStationModel.getGasStationLatitude());
+        double lon = Double.parseDouble(gasStationModel.getGasStationLongitude());
+        return new LatLng(lat, lon);
+    }
+
+    public void setZoomlevel(ArrayList<LatLng> listLatLng) {
+        if (listLatLng != null && listLatLng.size() == 1) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(listLatLng.get(0), 10));
+        } else if (listLatLng != null && listLatLng.size() > 1) {
+            final LatLngBounds.Builder builder = LatLngBounds.builder();
+            for (int i = 0; i < listLatLng.size(); i++) {
+                builder.include(listLatLng.get(i));
+            }
+        }
+    }
 
     @DebugLog
     @Override

@@ -80,7 +80,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
            // getMvpView().showInfoTest(gasStations.get(0).getName());
             getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
-            //getMvpView().hideLoading();
+            getMvpView().hideLoading();
 
 
            // UserListPresenter.this.showUsersCollectionInView(users);

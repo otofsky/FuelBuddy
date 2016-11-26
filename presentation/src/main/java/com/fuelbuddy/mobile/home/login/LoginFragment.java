@@ -132,6 +132,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         }
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -139,6 +140,24 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             mFragmentNavigator = (FragmentNavigator) activity;
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.stopAutoManage( getActivity());
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
 
     @DebugLog
     @Override
@@ -309,12 +328,5 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             }
         });
 
-    }
-
-
-    @Override
-    public void onStop() {
-        //googleLoginModule.close();
-        super.onStop();
     }
 }
