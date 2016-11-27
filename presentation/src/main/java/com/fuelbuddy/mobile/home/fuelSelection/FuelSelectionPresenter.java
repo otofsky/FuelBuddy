@@ -2,11 +2,9 @@ package com.fuelbuddy.mobile.home.fuelSelection;
 
 import android.util.Log;
 
-import com.fuelbuddy.data.User;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.home.login.LoginView;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,12 +19,13 @@ public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
     private UseCase logOutInteractor;
 
     @Inject
-    public FuelSelectionPresenter(@Named("logOut")UseCase logOutInteractor) {
+    public FuelSelectionPresenter(@Named("logOut") UseCase logOutInteractor) {
         this.logOutInteractor = logOutInteractor;
     }
 
     public void logout() {
-     this.logOutInteractor.execute(new LogOutSubscriber());
+        getMvpView().showLoading();
+        this.logOutInteractor.execute(new LogOutSubscriber());
     }
 
 
@@ -41,6 +40,7 @@ public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
         @DebugLog
         @Override
         public void onError(Throwable e) {
+
             //UserListPresenter.this.hideViewLoading();
             //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
             //UserListPresenter.this.showViewRetry();
@@ -50,7 +50,8 @@ public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
         @Override
         public void onNext(Boolean isLogout) {
             Log.d("Logout", "onNext: " + isLogout);
-
+            getMvpView().hideLoading();
+            getMvpView().logOut();
         }
     }
 }

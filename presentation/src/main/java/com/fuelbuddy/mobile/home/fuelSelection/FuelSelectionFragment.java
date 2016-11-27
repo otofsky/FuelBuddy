@@ -1,20 +1,26 @@
 package com.fuelbuddy.mobile.home.fuelSelection;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
-import com.fuelbuddy.mobile.map.FuelPriceController;
+import com.fuelbuddy.mobile.home.LoginViewEvent;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.navigation.Navigator;
+import com.fuelbuddy.mobile.util.DialogFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -28,15 +34,16 @@ import hugo.weaving.DebugLog;
 
 public class FuelSelectionFragment extends BaseFragment implements FuelSelectionView {
 
-
     @Inject
     FuelSelectionPresenter mFuelSelectionPresenter;
 
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getComponent(HomeComponent.class).inject(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -48,6 +55,24 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
         return fragmentView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @DebugLog
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.actionLogOut:
+                mFuelSelectionPresenter.logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @DebugLog
     @OnClick(R.id.fuelType92Btn)
@@ -67,18 +92,26 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     @DebugLog
     @OnClick(R.id.fuelTypeDieselBtn)
     public void submitFuelTypeDiesel() {
-       // mFuelSelectionPresenter.logout();
-        Navigator.navigateToMapsActivity(getActivity(),FuelPriceMode.DIESEL);
+        // mFuelSelectionPresenter.logout();
+        Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.DIESEL);
     }
 
     @Override
     public void showLoading() {
-
+        progressDialog = DialogFactory.createProgressDialog(getActivity(), "Wylogowywanie");
+        progressDialog.show();
     }
 
     @Override
     public void hideLoading() {
+        if (progressDialog != null) {
+            progressDialog.hide();
+        }
+    }
 
+    @Override
+    public void logOut() {
+        EventBus.getDefault().post(new LoginViewEvent());
     }
 
     @Override
@@ -93,11 +126,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
 
     @Override
     public void showError(String message) {
-
-    }
-
-    @Override
-    public void logOut() {
 
     }
 

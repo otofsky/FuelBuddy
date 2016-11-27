@@ -3,6 +3,7 @@ package com.fuelbuddy.mobile.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,13 +17,16 @@ import com.fuelbuddy.mobile.di.component.HomeComponent;
 
 import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -36,6 +40,9 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     public  HomePresenter homePresenter;
     private HomeComponent homeComponent;
 
+  /*  @BindView(R.id.toolbar)
+    Toolbar toolbar;*/
+
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, HomeActivity.class);
     }
@@ -44,10 +51,32 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.initializeInjector();
-        homePresenter.attachView(this);
-        homePresenter.verifyCurrentUser();
+        setToolbar();
+        initPresenter();
         ButterKnife.bind(this);
     }
+
+    private void initPresenter() {
+        homePresenter.attachView(this);
+        homePresenter.verifyCurrentUser();
+    }
+
+   /* private void setToolbar() {
+        setSupportActionBar(toolbar);
+    }*/
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
 
     @Override
     public void navigateToHomeActivity() {
@@ -69,8 +98,9 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LoginViewEvent event)
-    {/* Do something */};
+    public void onMessageEvent(LoginViewEvent event) {
+        showLoginView();
+    };
 
 
     @Override
@@ -96,7 +126,6 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showLoading() {
-
     }
 
     @Override

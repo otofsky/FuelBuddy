@@ -34,6 +34,7 @@
         -->
 
         <activity
+            android:label=""
             android:name=".login.LoginActivity"
             android:theme="@style/AppThemeNoActionBar">
 
@@ -41,7 +42,7 @@
 
         <activity
             android:name=".home.HomeActivity"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppThemee.TranslucentActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,7 +52,9 @@
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:theme="@style/AppThemee.TranslucentActionBar">
+
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -63,9 +66,6 @@
             android:enabled="true"
             android:exported="false"></service>
 
-        <activity
-            android:name=".map.MapActivity"
-            android:label="@string/title_activity_map"></activity>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
