@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
+package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 
 
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
 
@@ -28,26 +29,29 @@ import javax.inject.Inject;
 import rx.Observable;
 
 
-class CloudGasStationStore implements GasStationDataStore {
+class CloudUserStore implements UserDataStore {
 
   private final RestApiService mRestApiService;
 
 
 
 @Inject
-  CloudGasStationStore(RestApiService restApiService) {
+CloudUserStore(RestApiService restApiService) {
     this.mRestApiService = restApiService;
   }
 
+    @Override
+    public Observable<UserEntity> getCurrentUserEntity() {
+        return null;
+    }
 
-  @Override
-  public Observable<List<GasStationEntity>> gasStationsEntityList() {
-    return this.mRestApiService.gasStationEntityList();
-  }
+    @Override
+    public Observable<UserEntity> setCurrentUser(UserEntity userEntity) {
+        return this.mRestApiService.addNewUser(userEntity);
+    }
 
-  @Override
-  public Observable<GasStationEntity> gasStationEntityDetails(int userId) {
-    return null;
-  }
-
+    @Override
+    public Observable<Boolean> logOut() {
+        return null;
+    }
 }

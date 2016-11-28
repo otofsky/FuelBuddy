@@ -28,10 +28,6 @@ public class GetCurrentUser extends UseCase  {
     }
 
 
-
-
-
-
     @Override
     protected Observable buildUseCaseObservable() {
         return this.userRepository.getCurrentUser();

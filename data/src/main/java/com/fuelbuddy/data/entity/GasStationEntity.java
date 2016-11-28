@@ -11,27 +11,36 @@ public class GasStationEntity {
     @SerializedName("gasStation_id")
     @Expose
     private String gasStation_id;
+
     @SerializedName("gasStationLatitude")
     @Expose
     private String gasStationLatitude;
+
     @SerializedName("gasStationLongitude")
     @Expose
     private String gasStationLongitude;
+
     @SerializedName("gasStationName")
     @Expose
     private String gasStationName;
+
     @SerializedName("timeUpdated")
     @Expose
     private String timeUpdated;
+
     @SerializedName("price92")
     @Expose
     private String price92;
+
     @SerializedName("price95")
     @Expose
     private String price95;
+
     @SerializedName("priceDiesel")
     @Expose
     private String priceDiesel;
+
+
     @SerializedName("distance")
     @Expose
     private String distance;

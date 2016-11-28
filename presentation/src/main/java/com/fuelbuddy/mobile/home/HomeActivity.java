@@ -40,8 +40,8 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     public  HomePresenter homePresenter;
     private HomeComponent homeComponent;
 
-  /*  @BindView(R.id.toolbar)
-    Toolbar toolbar;*/
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, HomeActivity.class);
@@ -51,9 +51,10 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.initializeInjector();
-        setToolbar();
+
         initPresenter();
         ButterKnife.bind(this);
+        setToolbar();
     }
 
     private void initPresenter() {
@@ -61,10 +62,21 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         homePresenter.verifyCurrentUser();
     }
 
-   /* private void setToolbar() {
+    private void setToolbar() {
         setSupportActionBar(toolbar);
-    }*/
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        //toolbar.hideOverflowMenu();
+       // toolbar.showOverflowMenu();
+    }
+
+  /*  @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+     getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+*/
     @Override
     public void onStart() {
         super.onStart();
@@ -95,6 +107,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     @Override
     public void navigateToHome() {
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
+        toolbar.showOverflowMenu();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -120,6 +133,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showFuelTypeView() {
+
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
 

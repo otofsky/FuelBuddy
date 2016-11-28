@@ -15,8 +15,13 @@ import rx.Observable;
 public interface ApiInterface {
     //http://api.openweathermap.org/data/2.5/weather?q=Cieszyn&APPID=ab6b80c5f1d39e5f3b6fac39594910c4
 
-    //@GET("weather?&APPID=ab6b80c5f1d39e5f3b6fac39594910c4&units=metric")
+    //@"http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
+
+    //"http://fuelbuddy.dk/ws/adduser?userID=&profileName=&email="
     @GET("stations?")
     Observable<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude, @Query("longitude") String longitude);
+
+    @GET("adduser?")
+    Observable<String> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);
 
 }

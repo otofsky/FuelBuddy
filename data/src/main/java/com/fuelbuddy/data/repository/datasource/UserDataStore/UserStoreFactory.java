@@ -31,4 +31,12 @@ public class UserStoreFactory {
         return userDataStore;
 
     }
+
+    public UserDataStore createCloudDataStore() {
+        UserDataStore userDataStore = new DiskUserDataStore(this.userCache);
+        return userDataStore;
+
+    }
+
+
 }

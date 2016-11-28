@@ -47,6 +47,7 @@ public class UserDataRepository implements UserRepository {
         return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {
             @Override
             public User call(UserEntity userEntity) {
+
                 return mUserEntityMapper.transformToUser(userEntity);
             }
         });

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,8 +58,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @BindView(R.id.progressView)
     RelativeLayout progressView;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     FuelPriceController mFuelPriceController;
-    private ArrayList<LatLng>listLatLng;
+    private ArrayList<LatLng> listLatLng;
 
     //HashMap<Marker, LatLngBean> hashMapMarker = new HashMap<Marker, LatLngBean>();
 
@@ -71,6 +76,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
+        setToolbar();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -82,16 +88,31 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
 
         mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
-
         mapPresenter.attachView(this);
-
         mapPresenter.submitSearch();
         // startTracking();
         connectGoogleApiClient();
-
-
     }
 
+
+    private void setToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        //toolbar.hideOverflowMenu();
+        // toolbar.showOverflowMenu();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     public void navigateToHomeActivity() {
@@ -263,7 +284,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
             mMap.getUiSettings().setZoomControlsEnabled(true);
 
             try {
-                listLatLng=new ArrayList<LatLng>();
+                listLatLng = new ArrayList<LatLng>();
                 for (GasStationModel gasStationModel : gasStationModelList) {
                     LatLng latLng = getLatLng(gasStationModel);
                     listLatLng.add(latLng);
@@ -283,7 +304,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                     .position(sydney)
                     .title("current position")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
 
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
@@ -331,7 +351,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @DebugLog
     @Override
     public void hideLoading() {
-        this.progressView.setVisibility(View.GONE);
+      //  this.progressView.setVisibility(View.GONE);
         setProgressBarIndeterminateVisibility(false);
     }
 

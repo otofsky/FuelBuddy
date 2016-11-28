@@ -2,6 +2,7 @@ package com.fuelbuddy.data.net;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,6 +32,8 @@ public interface RestApiService {
 
     @GET("/")
     Observable<List<GasStationEntity>> gasStationEntityList();
+
+    Observable<UserEntity> addNewUser(UserEntity userEntity);
 
     /**
      * Retrieves an {@link rx.Observable} which will emit a {@link GasStationEntity}.

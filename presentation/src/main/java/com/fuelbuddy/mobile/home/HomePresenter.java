@@ -17,6 +17,8 @@ import javax.inject.Named;
 import hugo.weaving.DebugLog;
 import rx.Observable;
 
+import static com.facebook.login.widget.ProfilePictureView.TAG;
+
 /**
  * Created by zjuroszek on 07.10.16.
  */
@@ -41,10 +43,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private final class CurrentUserSubscriber extends DefaultSubscriber<User> {
         @DebugLog
         @Override public void onCompleted() {
+            Log.d(TAG, "onCompleted: ");
             //UserListPresenter.this.hideViewLoading();
         }
         @DebugLog
         @Override public void onError(Throwable e) {
+            Log.d(TAG, "onError: ");
             //UserListPresenter.this.hideViewLoading();
             //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
             //UserListPresenter.this.showViewRetry();
@@ -52,6 +56,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         @DebugLog
         @Override public void onNext(User user) {
+            Log.d(TAG, "onNext: ");
                 if(!StringHelper.isNullOrEmpty(user.getUserId())) {
                     getMvpView().showLoginView();
                 }

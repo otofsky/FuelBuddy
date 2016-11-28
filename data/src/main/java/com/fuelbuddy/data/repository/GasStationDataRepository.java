@@ -39,7 +39,7 @@ public class GasStationDataRepository implements GasStationsRepository {
     public Observable<List<GasStation>> gasStations() {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
 
-        return gasStationDataStore.userEntityList().map(new Func1<List<GasStationEntity>, List<GasStation>>() {
+        return gasStationDataStore.gasStationsEntityList().map(new Func1<List<GasStationEntity>, List<GasStation>>() {
             @Override
             public List<GasStation> call(List<GasStationEntity> gasStationEntities) {
 

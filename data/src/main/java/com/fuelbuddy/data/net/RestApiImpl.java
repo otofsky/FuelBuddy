@@ -21,6 +21,7 @@ import android.net.NetworkInfo;
 
 
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
 import java.util.ArrayList;
@@ -33,12 +34,6 @@ import rx.Subscriber;
  * {@link RestApiService} implementation for retrieving data from the network.
  */
 public class RestApiImpl implements RestApiService {
-
-
-   // http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961
-
-    String ENDPOINT = "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
-
 
     private final Context context;
 
@@ -75,9 +70,23 @@ public class RestApiImpl implements RestApiService {
         return ApiInvoker.getInstance().getGasStations("49.7350690","18.7364720");
     }
 
+    @Override
+    public Observable<UserEntity> addNewUser(UserEntity userEntity) {
+        return null;
+    }
 
 
-/*    @Override
+/*
+    @Override
+    public Observable<UserEntity> addNewUser(UserEntity userEntity) {
+        return ApiInvoker.getInstance().addNewUser(userEntity.getUserId(),userEntity.getProfileName(),userEntity.getEmail());
+    }
+*/
+
+
+
+/*
+    @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
         return Observable.create(subscriber -> {
             if (isThereInternetConnection()) {
@@ -93,7 +102,8 @@ public class RestApiImpl implements RestApiService {
                 subscriber.onError(new NetworkConnectionException());
             }
         });
-    }*/
+    }
+*/
 
     @Override
     public Observable<GasStationEntity> gasStationEntityById(int gasStationId) {

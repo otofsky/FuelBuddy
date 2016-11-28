@@ -12,8 +12,8 @@ import rx.Observable;
 public interface GasStationDataStore {
 
 
-    Observable<List<GasStationEntity>> userEntityList();
+    Observable<List<GasStationEntity>> gasStationsEntityList();
 
-    Observable<GasStationEntity> userEntityDetails(final int userId);
+    Observable<GasStationEntity> gasStationEntityDetails(final int userId);
 
 }

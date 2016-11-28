@@ -63,17 +63,23 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     private final class GasStationsListSubscriber extends DefaultSubscriber<List<GasStation>> {
         @DebugLog
         @Override public void onCompleted() {
-            //UserListPresenter.this.hideViewLoading();
+            Log.d("UserListSubscriber", "onCompleted: ");
+            getMvpView().hideLoading();
         }
         @DebugLog
         @Override public void onError(Throwable e) {
-            //UserListPresenter.this.hideViewLoading();
+            Log.d("UserListSubscriber", "onError: " + e.getMessage());
+            Log.d("UserListSubscriber", "onError: " + e.getLocalizedMessage());
+            Log.d("UserListSubscriber", "onError: " + e.getCause());
+            Log.d("UserListSubscriber", "onError: " + e.getStackTrace());
+            getMvpView().hideLoading();
             //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
             //UserListPresenter.this.showViewRetry();
         }
 
         @DebugLog
         @Override public void onNext(List<GasStation> gasStations) {
+            Log.d("UserListSubscriber", "onNext: ");
             for(GasStation gasStation: gasStations){
                 Log.d("UserListSubscriber", "onNext: " + gasStation.toString());
             }
