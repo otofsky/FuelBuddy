@@ -10,6 +10,8 @@ import rx.Observable;
 public interface UserDataStore {
 
 
+    Observable<UserEntity> checkUser(String userId);
+
     Observable<UserEntity> getCurrentUserEntity();
 
     Observable<UserEntity> setCurrentUser(UserEntity userEntity);

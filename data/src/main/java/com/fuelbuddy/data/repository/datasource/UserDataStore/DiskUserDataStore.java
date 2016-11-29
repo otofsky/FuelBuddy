@@ -17,6 +17,11 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
+    public Observable<UserEntity> checkUser(String userId) {
+        return null;
+    }
+
+    @Override
     public Observable<UserEntity> getCurrentUserEntity() {
         return getUserEntity();
     }

@@ -15,6 +15,8 @@ public interface UserRepository {
 
     Observable<User> getCurrentUser();
 
+    Observable<User> getCheckUser(String UserId);
+
     Observable<User> setCurrentUser(User user);
 
     Observable<Boolean> logOut();

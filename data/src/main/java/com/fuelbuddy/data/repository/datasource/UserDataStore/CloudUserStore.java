@@ -33,12 +33,15 @@ class CloudUserStore implements UserDataStore {
 
   private final RestApiService mRestApiService;
 
-
-
 @Inject
 CloudUserStore(RestApiService restApiService) {
     this.mRestApiService = restApiService;
   }
+
+    @Override
+    public Observable<UserEntity> checkUser(String userId) {
+        return this.mRestApiService.checkUser(userId);
+    }
 
     @Override
     public Observable<UserEntity> getCurrentUserEntity() {
@@ -49,7 +52,6 @@ CloudUserStore(RestApiService restApiService) {
     public Observable<UserEntity> setCurrentUser(UserEntity userEntity) {
         return this.mRestApiService.addNewUser(userEntity);
     }
-
     @Override
     public Observable<Boolean> logOut() {
         return null;

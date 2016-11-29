@@ -30,17 +30,15 @@ public interface RestApiService {
      * Retrieves an {@link rx.Observable} which will emit a List of {@link GasStationEntity}.
      */
 
-    @GET("/")
+
     Observable<List<GasStationEntity>> gasStationEntityList();
 
     Observable<UserEntity> addNewUser(UserEntity userEntity);
 
-    /**
-     * Retrieves an {@link rx.Observable} which will emit a {@link GasStationEntity}.
-     *
-     * @param gasStationId The user id used to get user data.
-     */
+    Observable<UserEntity> checkUser(String userId);
+
     Observable<GasStationEntity> gasStationEntityById(final int gasStationId);
+
 
 
     class Creator {

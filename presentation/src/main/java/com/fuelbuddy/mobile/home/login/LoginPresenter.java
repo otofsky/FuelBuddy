@@ -1,12 +1,12 @@
 package com.fuelbuddy.mobile.home.login;
 
+import android.util.Log;
+
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.interactor.AddNewUserInteractor;
+import com.fuelbuddy.interactor.CheckUserInteractor;
 import com.fuelbuddy.interactor.DefaultSubscriber;
-import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.home.HomePresenter;
-import com.fuelbuddy.mobile.home.HomeView;
 import com.fuelbuddy.mobile.mapper.UserModelDataMapper;
 import com.fuelbuddy.mobile.model.UserModel;
 
@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by zjuroszek on 15.11.16.
@@ -24,17 +26,24 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     UserModelDataMapper userModelDataMapper;
     private AddNewUserInteractor addNewUser;
+    private CheckUserInteractor mCheckUserInteractor;
 
 
     @Inject
-    public LoginPresenter(@Named("addNewUser") AddNewUserInteractor addNewUser, UserModelDataMapper userModelDataMapper) {
+    public LoginPresenter(@Named("addNewUser") AddNewUserInteractor addNewUser, CheckUserInteractor checkUserInteractor, UserModelDataMapper userModelDataMapper) {
         this.addNewUser = addNewUser;
+        this.mCheckUserInteractor = checkUserInteractor;
         this.userModelDataMapper = userModelDataMapper;
     }
 
     public void addNewUser(UserModel user) {
         addNewUser.addNewUser(userModelDataMapper.transformToUser(user));
         this.addNewUser.execute(new LoginPresenter.AddUserSubscriber());
+    }
+
+    public void checkUser(String userId) {
+        mCheckUserInteractor.addUserId(userId);
+        this.mCheckUserInteractor.execute(new CheckUserSubscriber());
     }
 
 
@@ -58,6 +67,32 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @Override
         public void onNext(User user) {
 
+        }
+    }
+
+
+    private final class CheckUserSubscriber extends DefaultSubscriber<User> {
+
+        @DebugLog
+        @Override
+        public void onCompleted() {
+            Log.d("CheckUserSubscriber", "onCompleted: ");
+            //UserListPresenter.this.hideViewLoading();
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable e) {
+            Log.d("CheckUserSubscriber", "onError: ");
+            //UserListPresenter.this.hideViewLoading();
+            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
+            //UserListPresenter.this.showViewRetry();
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(User user) {
+            Log.d("CheckUserSubscriber", "onNext: ");
         }
     }
 

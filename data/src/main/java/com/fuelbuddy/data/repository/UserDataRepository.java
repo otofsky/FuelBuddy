@@ -42,6 +42,17 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
+    public Observable<User> getCheckUser(String userId) {
+        UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
+        return userDataStore.checkUser(userId).map(new Func1<UserEntity, User>() {
+            @Override
+            public User call(UserEntity userEntity) {
+                return mUserEntityMapper.transformToUser(userEntity);
+            }
+        });
+    }
+
+    @Override
     public Observable<User> setCurrentUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
         return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {

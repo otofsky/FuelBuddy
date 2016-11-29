@@ -4,6 +4,7 @@ package com.fuelbuddy.data.net;
 import android.util.Log;
 
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -72,5 +73,11 @@ public class ApiInvoker {
         Log.d(TAG, "getGasStations: ");
         return apiInterface.addNewUser(userID,profileName,email);
     }
+
+    public Observable<UserEntity> checkUser(String userID) {
+        Log.d(TAG, "getGasStations: ");
+        return apiInterface.checkUser(userID);
+    }
+
 
 }

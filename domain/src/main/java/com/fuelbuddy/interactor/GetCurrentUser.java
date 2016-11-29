@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 /**
  * Created by zjuroszek on 14.11.16.
@@ -30,7 +31,14 @@ public class GetCurrentUser extends UseCase  {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.getCurrentUser();
+       Observable observable  =  userRepository.getCurrentUser();
+        observable.map(new Func1() {
+            @Override
+            public Object call(Object o) {
+                return null;
+            }
+        });
+        return observable;
     }
 }
 

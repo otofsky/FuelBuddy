@@ -2,6 +2,7 @@ package com.fuelbuddy.data.net;
 
 
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 
 import java.util.List;
 
@@ -23,5 +24,8 @@ public interface ApiInterface {
 
     @GET("adduser?")
     Observable<String> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);
+
+    @GET("checkuser?")
+    Observable<UserEntity> checkUser(@Query("userID") String userID);
 
 }

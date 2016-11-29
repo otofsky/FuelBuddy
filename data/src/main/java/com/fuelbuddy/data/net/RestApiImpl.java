@@ -75,6 +75,10 @@ public class RestApiImpl implements RestApiService {
         return null;
     }
 
+    public Observable<UserEntity> checkUser(String userId) {
+        return ApiInvoker.getInstance().checkUser(userId);
+    }
+
 
 /*
     @Override
