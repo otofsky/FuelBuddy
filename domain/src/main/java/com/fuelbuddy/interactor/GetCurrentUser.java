@@ -29,12 +29,17 @@ public class GetCurrentUser extends UseCase  {
     }
 
 
+
     @Override
     protected Observable buildUseCaseObservable() {
-       Observable observable  =  userRepository.getCurrentUser();
-        observable.map(new Func1() {
+       Observable<User> observable  =  userRepository.getCurrentUser();
+        observable.map(new Func1<User,Observable<User>>() {
             @Override
-            public Object call(Object o) {
+            public Observable<User> call(User user) {
+                if(user==null){
+                  userRepository.getCheckUser("");
+                }
+
                 return null;
             }
         });
