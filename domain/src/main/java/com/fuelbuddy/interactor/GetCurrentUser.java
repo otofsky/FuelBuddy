@@ -13,37 +13,47 @@ import hugo.weaving.DebugLog;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zjuroszek on 14.11.16.
  */
 
-public class GetCurrentUser extends UseCase  {
+public class GetCurrentUser extends UseCase {
 
     UserRepository userRepository;
 
     @Inject
-    public GetCurrentUser(UserRepository userRepository,ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public GetCurrentUser(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
 
-
-
     @Override
     protected Observable buildUseCaseObservable() {
-       Observable<User> observable  =  userRepository.getCurrentUser();
-        observable.map(new Func1<User,Observable<User>>() {
-            @Override
-            public Observable<User> call(User user) {
-                if(user==null){
-                  userRepository.getCheckUser("");
-                }
+        getUserObservable().concatMap(validateUser);
+        return userRepository.getCurrentUser();
+    }
 
-                return null;
-            }
-        });
-        return observable;
+
+    private final Func1<User, Observable<User>> validateUser =
+            new Func1<User, Observable<User>>() {
+                @Override
+                public Observable<User> call(User user) {
+                    if (user == null) {
+                        return userRepository.getCheckUser("1");
+                    } else {
+                        return getUser(user);
+                    }
+                }
+            };
+
+    protected Observable getUserObservable() {
+        return userRepository.getCurrentUser();
+    }
+
+    public Observable<User> getUser(User user) {
+        return Observable.just(user);
     }
 }
 
