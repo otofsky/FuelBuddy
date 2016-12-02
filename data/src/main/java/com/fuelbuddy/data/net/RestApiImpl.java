@@ -18,8 +18,10 @@ package com.fuelbuddy.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
@@ -66,8 +68,9 @@ public class RestApiImpl implements RestApiService {
     }
 
     @Override
-    public Observable<List<GasStationEntity>> gasStationEntityList() {
-        return ApiInvoker.getInstance().getGasStations("49.7350690","18.7364720");
+    public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
+        Log.d("RestApiImpl ", "gasStationEntityList: ");
+        return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLatitude());
     }
 
     @Override

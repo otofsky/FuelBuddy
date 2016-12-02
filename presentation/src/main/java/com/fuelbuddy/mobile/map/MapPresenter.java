@@ -5,9 +5,12 @@ import android.util.Log;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.GetGasStationList;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
+import com.fuelbuddy.mobile.mapper.PositionMapper;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -21,17 +24,18 @@ import hugo.weaving.DebugLog;
  */
 public class MapPresenter extends BasePresenter<MapMvpView> {
 
-    private final UseCase getGasStationList;
+    private final GetGasStationList getGasStationList;
+    private PositionMapper mPositionMapper;
 
     @Inject
-    public MapPresenter(@Named("gasStationList")UseCase getGasStationList) {
+    public MapPresenter(@Named("gasStationList")GetGasStationList getGasStationList) {
         this.getGasStationList =  getGasStationList;
+        mPositionMapper = new PositionMapper();
     }
 
     @Override
     public void attachView(MapMvpView mvpView) {
         super.attachView(mvpView);
-        loadUserList();
         getMvpView().showLoading();
     }
     @DebugLog
@@ -41,7 +45,8 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         this.getGasStationList.unsubscribe();
     }
     @DebugLog
-    public void submitSearch() {
+    public void submitSearch(LatLng loLatLng) {
+        loadUserList(loLatLng);
        // this.getGasStationList.execute(new UserListSubscriber());
     }
 
@@ -49,13 +54,15 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
      * Loads all users.
      */
     @DebugLog
-    private void loadUserList() {
+    private void loadUserList(LatLng loLatLng) {
         //this.hideViewRetry();
         //this.showViewLoading();
-        this.getGasStationList();
+        this.getGasStationList(loLatLng);
     }
 
-    private void getGasStationList() {
+    private void getGasStationList(LatLng loLatLn) {
+
+        this.getGasStationList.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
         this.getGasStationList.execute(new GasStationsListSubscriber());
     }
 

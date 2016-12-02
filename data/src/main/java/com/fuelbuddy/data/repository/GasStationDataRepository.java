@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.repository;
 
 import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
@@ -36,10 +37,10 @@ public class GasStationDataRepository implements GasStationsRepository {
     }
 
     @Override
-    public Observable<List<GasStation>> gasStations() {
+    public Observable<List<GasStation>> gasStations(Position position) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
 
-        return gasStationDataStore.gasStationsEntityList().map(new Func1<List<GasStationEntity>, List<GasStation>>() {
+        return gasStationDataStore.gasStationsEntityList(position).map(new Func1<List<GasStationEntity>, List<GasStation>>() {
             @Override
             public List<GasStation> call(List<GasStationEntity> gasStationEntities) {
 

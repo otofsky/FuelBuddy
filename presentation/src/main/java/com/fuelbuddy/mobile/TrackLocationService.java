@@ -11,11 +11,15 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.greenrobot.eventbus.EventBus;
 
 import hugo.weaving.DebugLog;
 
@@ -141,10 +145,11 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @DebugLog
     private void updateLocationData(Location location) {
+
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
+        EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
         Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
-        //   String timeText = "Location update at " + Utils.formatTime(System.currentTimeMillis());
-
+        Log.d(TAG, "updateLocationData:  " + latitude);
     }
 }

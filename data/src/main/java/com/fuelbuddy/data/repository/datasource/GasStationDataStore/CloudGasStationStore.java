@@ -17,6 +17,7 @@ package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 
 
 
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
@@ -41,8 +42,8 @@ class CloudGasStationStore implements GasStationDataStore {
 
 
   @Override
-  public Observable<List<GasStationEntity>> gasStationsEntityList() {
-    return this.mRestApiService.gasStationEntityList();
+  public Observable<List<GasStationEntity>> gasStationsEntityList(Position position) {
+    return this.mRestApiService.gasStationEntityList(position);
   }
 
   @Override

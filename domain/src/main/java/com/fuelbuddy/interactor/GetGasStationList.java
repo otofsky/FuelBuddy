@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package com.fuelbuddy.interactor;
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.GasStationsRepository;
@@ -27,6 +28,9 @@ import rx.Observable;
  */
 public class GetGasStationList extends UseCase {
 
+  private Position mCurrentPoistion;
+
+
   private final GasStationsRepository gasStationsRepository;
 
   @Inject
@@ -36,7 +40,13 @@ public class GetGasStationList extends UseCase {
     this.gasStationsRepository = gasStationsRepository;
   }
 
+  public void setCurrentPosition(Position currentPosition) {
+
+    mCurrentPoistion = currentPosition;
+  }
+
   @Override public Observable buildUseCaseObservable() {
-    return this.gasStationsRepository.gasStations();
+
+    return this.gasStationsRepository.gasStations(mCurrentPoistion);
   }
 }

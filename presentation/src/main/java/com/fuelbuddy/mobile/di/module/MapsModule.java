@@ -23,7 +23,7 @@ public class MapsModule {
 
     @Provides @PerActivity
     @Named("gasStationList")
-    UseCase provideGetGasStationsListUseCase(GetGasStationList getGasStationList) {
+    GetGasStationList provideGetGasStationsListUseCase(GetGasStationList getGasStationList) {
         return getGasStationList;
     }
 

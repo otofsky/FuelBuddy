@@ -19,6 +19,7 @@ import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -34,6 +35,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +46,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
-
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
@@ -89,7 +92,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
         mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
         mapPresenter.attachView(this);
-        mapPresenter.submitSearch();
+
         // startTracking();
         connectGoogleApiClient();
     }
@@ -105,6 +108,25 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
         //toolbar.hideOverflowMenu();
         // toolbar.showOverflowMenu();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
+        Log.d(TAG, "onEventMainThread: " + locationUpdateEvent.toString());
+        Toast.makeText(getApplicationContext(), "mapaaaa " + locationUpdateEvent.getLatLng().latitude, Toast.LENGTH_SHORT).show();
+        mapPresenter.submitSearch(locationUpdateEvent.getLatLng());
     }
 
 

@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.net;
 
 import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
@@ -31,7 +32,7 @@ public interface RestApiService {
      */
 
 
-    Observable<List<GasStationEntity>> gasStationEntityList();
+    Observable<List<GasStationEntity>> gasStationEntityList(Position position);
 
     Observable<UserEntity> addNewUser(UserEntity userEntity);
 
