@@ -5,7 +5,6 @@ import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.UserRepository;
 
-
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -27,8 +26,8 @@ public class GetCurrentUser extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        getLocalUserObservable().concatMap(validateRemoteUser);
-        return userRepository.getCurrentUser();
+        return getLocalUserObservable().concatMap(validateLocalUser);
+
     }
 
     private final Func1<User, Observable<User>> validateLocalUser =
@@ -36,7 +35,7 @@ public class GetCurrentUser extends UseCase {
                 @Override
                 public Observable<User> call(User user) {
                     if (user == null) {
-                        return userRepository.getCheckUser("43");
+                        return getRemoteUserObservable("43").concatMap(validateRemoteUser);
                     } else {
                         return getUser(user);
                     }

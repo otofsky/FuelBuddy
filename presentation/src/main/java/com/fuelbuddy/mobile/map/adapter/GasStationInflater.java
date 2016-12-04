@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.PriceHelper;
@@ -35,12 +37,28 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
     @Override
     public View getView(GasStationModel item, View convertView, int positionFlag) {
-        final ViewHolder holder;
+         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fuel_price_bar, null);
-            holder = new ViewHolder();
-            holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
-            convertView.setTag(holder);
+            switch (fuelPriceMode){
+                case BENZIN_92:
+                    convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
+                    holder = new ViewHolder();
+                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    convertView.setTag(holder);
+                    break;
+                case BENZIN_95:
+                    convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
+                    holder = new ViewHolder();
+                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    convertView.setTag(holder);
+                    break;
+                case DIESEL:
+                    convertView = inflater.inflate(R.layout.fuel_price_bar_diesel, null);
+                    holder = new ViewHolder();
+                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    convertView.setTag(holder);
+                    break;
+            }
         } else {
             holder = (ViewHolder) convertView.getTag();
         }

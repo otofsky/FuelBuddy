@@ -1,9 +1,11 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.controller;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
+import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.mobile.map.adapter.GasStationAdapter;
+import com.fuelbuddy.mobile.map.adapter.GasStationInflater;
 import com.fuelbuddy.mobile.model.GasStationModel;
 
 import java.util.ArrayList;
@@ -49,5 +51,10 @@ public class FuelPriceController {
         }
     }
 
+ /*   private void removeView() {
+       int count  = view.getChildCount();
+        for
+       view.removeViewAt(count-1);
+    }*/
 
 }

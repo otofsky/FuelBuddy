@@ -1,7 +1,9 @@
 package com.fuelbuddy.mobile.map;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Config;
@@ -19,24 +21,23 @@ import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.ProgressHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,31 +47,44 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
+
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     @Inject
     public MapPresenter mapPresenter;
     private GoogleMap mMap;
+
+    private Map map;
+
     private GoogleApiClient googleApiClient;
 
     private MapsComponent mMapsComponent;
 
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
-    @BindView(R.id.progressView)
-    RelativeLayout progressView;
+    @BindView(R.id.view_progress)
+    FrameLayout progressView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     FuelPriceController mFuelPriceController;
     private ArrayList<LatLng> listLatLng;
+    private LatLng currentPositionLatLng;
 
     //HashMap<Marker, LatLngBean> hashMapMarker = new HashMap<Marker, LatLngBean>();
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
+    }
+
+    private void initializeInjector() {
+        this.mMapsComponent = DaggerMapsComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+        mMapsComponent.inject(this);
     }
 
     @DebugLog
@@ -80,23 +94,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         setContentView(R.layout.activity_maps);
         ButterKnife.bind(this);
         setToolbar();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.initializeInjector();
         FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
-
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
-
         mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
         mapPresenter.attachView(this);
 
-        // startTracking();
         connectGoogleApiClient();
     }
-
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
@@ -124,11 +132,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
-        Log.d(TAG, "onEventMainThread: " + locationUpdateEvent.toString());
-        Toast.makeText(getApplicationContext(), "mapaaaa " + locationUpdateEvent.getLatLng().latitude, Toast.LENGTH_SHORT).show();
+        this.currentPositionLatLng = locationUpdateEvent.getLatLng();
+        map.seUserCurrentPosition(currentPositionLatLng);
         mapPresenter.submitSearch(locationUpdateEvent.getLatLng());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,23 +145,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void navigateToHomeActivity() {
-        //Navigator.navigateToHomeActivity(this);
         finish();
     }
-
-
-    private void initializeInjector() {
-        this.mMapsComponent = DaggerMapsComponent.builder()
-                .applicationComponent(getApplicationComponent())
-                .activityModule(getActivityModule())
-                .build();
-        mMapsComponent.inject(this);
-    }
-
-    private void startTracking() {
-        connectGoogleApiClient();
-    }
-
 
     private void connectGoogleApiClient() {
         if (googleApiClient == null) {
@@ -162,7 +154,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 return;
             }
         }
-
         if (!(googleApiClient.isConnected() || googleApiClient.isConnecting())) {
             googleApiClient.connect();
         } else {
@@ -170,7 +161,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
             startTrackLocationService();
         }
     }
-
 
     private int createGoogleApiClient() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -192,7 +182,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         return status;
     }
 
-
     private void startTrackLocationService() {
         startService(new Intent(this, TrackLocationService.class));
     }
@@ -201,58 +190,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         stopService(new Intent(this, TrackLocationService.class));
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the populateGoogleUser will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the populateGoogleUser has
-     * installed Google Play services and returned to the app.
-     */
     @DebugLog
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-/*        final LatLng HAMBURG = new LatLng(53.558, 9.927);
-        final LatLng KIEL = new LatLng(53.551, 9.993);
-
-        Marker hamburg = mMap.addMarker(new MarkerOptions().position(HAMBURG)
-                .title("Hamburg"));
-        Marker kiel = mMap.addMarker(new MarkerOptions()
-                .position(KIEL)
-                .title("Kiel")
-                .snippet("Kiel is cool")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
-
-// Zoom in, animating the camera.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);*/
-        // Add a marker in Sydney and move the camera
- /*       LatLng sydney = new LatLng(49.7497638, 18.635470899999973);
-
-
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(sydney)      // Sets the center of the map to Mountain View
-                .zoom(10)                   // Sets the zoom
-                .bearing(90)                // Sets the orientation of the camera to east
-                .tilt(30)
-
-                // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
-
-
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        this.map = new MapImpl();
+        map.initMap(googleMap, this);
     }
 
     @Override
     public void removeMarkers() {
 
     }
-
 
     @Override
     public void showInfoTest(String info) {
@@ -271,109 +219,77 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     }
 
     @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        //marker.
+        DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), "Navigate here", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                LatLng latLng = marker.getPosition();
+                double lat = latLng.latitude;
+                double lng =latLng.longitude;
+
+                String latString = String.valueOf(lat);
+                String lngString = String.valueOf(lng);
+
+
+                StringBuilder stringBuilder = new StringBuilder("google.navigation:q=");
+                stringBuilder.append(latString);
+                stringBuilder.append(",");
+                stringBuilder.append(lngString);
+
+                Uri gmmIntentUri = Uri.parse(stringBuilder.toString());
+// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+// Make the Intent explicit by setting the Google Maps package
+                mapIntent.setPackage("com.google.android.apps.maps");
+
+                startActivity(mapIntent);
+            }
+        }).show();
+
+
+
+        /*  Toast.makeText(this,"ajfa",Toast.LENGTH_LONG);
+        // Retrieve the data from the marker.
+          // Create a Uri from an intent string. Use the result to create an Intent.
+          Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.414382,10.013988");
+
+// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+          Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+// Make the Intent explicit by setting the Google Maps package
+          mapIntent.setPackage("com.google.android.apps.maps");
+
+// Attempt to start an activity that can handle the Intent
+          startActivity(mapIntent);*/
+
+        return false;
+
+    }
+
+    @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
-        loadingGoogleMap(gasStationModelList);
+        map.clear();
+        map.seUserCurrentPosition(currentPositionLatLng);
+        map.seFuelStationsPositions(gasStationModelList);
         hideLoading();
-    }
-
-/*    private void loadGoogleMap(List<GasStationModel> gasStationModelList) {
-        if (mMap != null) {
-            mMap.clear();
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setZoomControlsEnabled(true);
-
-            for (GasStationModel gasStationModel : gasStationModelList) {
-
-                double lat = Double.parseDouble(gasStationModel.getGasStationLatitude());
-                double lon = Double.parseDouble(gasStationModel.getGasStationLongitude());
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(lat, lon))
-                        .title(gasStationModel.getGasStationName())
-                        .snippet("Snippet").
-                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-            }
-        }
-    }*/
-
-    void loadingGoogleMap(List<GasStationModel> gasStationModelList) {
-        if (mMap != null) {
-            mMap.clear();
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            //mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setZoomControlsEnabled(true);
-
-            try {
-                listLatLng = new ArrayList<LatLng>();
-                for (GasStationModel gasStationModel : gasStationModelList) {
-                    LatLng latLng = getLatLng(gasStationModel);
-                    listLatLng.add(latLng);
-
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(gasStationModel.getGasStationName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.drop_off)));
-
-                }
-                setZoomlevel(listLatLng);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-            LatLng sydney = new LatLng(49.7350690, 18.7364720);
-            mMap.addMarker(new MarkerOptions()
-                    .position(sydney)
-                    .title("current position")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12));
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-                @Override
-                public void onInfoWindowClick(Marker position) {
-                    // LatLngBean bean=hashMapMarker.get(position);
-                    Toast.makeText(getApplicationContext(), position.getTitle(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-        } else {
-            Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @NonNull
-    private LatLng getLatLng(GasStationModel gasStationModel) {
-        double lat = Double.parseDouble(gasStationModel.getGasStationLatitude());
-        double lon = Double.parseDouble(gasStationModel.getGasStationLongitude());
-        return new LatLng(lat, lon);
-    }
-
-    public void setZoomlevel(ArrayList<LatLng> listLatLng) {
-        if (listLatLng != null && listLatLng.size() == 1) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(listLatLng.get(0), 10));
-        } else if (listLatLng != null && listLatLng.size() > 1) {
-            final LatLngBounds.Builder builder = LatLngBounds.builder();
-            for (int i = 0; i < listLatLng.size(); i++) {
-                builder.include(listLatLng.get(i));
-            }
-        }
     }
 
     @DebugLog
     @Override
     public void showLoading() {
-        Log.d(TAG, "showLoading: ");
         this.progressView.setVisibility(View.VISIBLE);
+        ProgressHelper.animateDefault(progressView, true);
         setProgressBarIndeterminateVisibility(true);
     }
 
     @DebugLog
     @Override
     public void hideLoading() {
-      //  this.progressView.setVisibility(View.GONE);
+        ProgressHelper.animateDefault(progressView, false);
+        this.progressView.setVisibility(View.GONE);
         setProgressBarIndeterminateVisibility(false);
     }
 

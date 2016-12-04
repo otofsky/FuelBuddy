@@ -69,8 +69,8 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
-        Log.d("RestApiImpl ", "gasStationEntityList: ");
-        return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLatitude());
+        Log.d("RestApiImpl ", "gasStationEntityList: " + position.toString());
+        return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLongitude());
     }
 
     @Override

@@ -1,7 +1,8 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.adapter;
 
 import android.content.Context;
 
+import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.model.GasStationModel;
 
 

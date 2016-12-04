@@ -9,6 +9,7 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/fuelPriceView"
         style="@style/GreenButton"
+        android:layout_width="115dp"
         android:background="@drawable/button_green_right_rounded"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -17,5 +18,6 @@
         android:elevation="10dp"
         android:textAllCaps="false"
         android:fontFamily="sans-serif-light"
+        android:gravity="left"
         />
 </LinearLayout>

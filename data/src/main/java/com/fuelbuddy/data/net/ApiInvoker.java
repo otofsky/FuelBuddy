@@ -53,7 +53,6 @@ public class ApiInvoker {
 
         apiInterface = retrofit.create(ApiInterface.class);
 
-
     }
 
     public static ApiInvoker getInstance() {

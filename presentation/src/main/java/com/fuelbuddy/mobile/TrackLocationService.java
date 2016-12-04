@@ -125,7 +125,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         }
     }
 
-
     @DebugLog
     private void startLocationUpdates() {
         Log.d(TAG, "startLocationUpdates: ");
@@ -145,11 +144,9 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @DebugLog
     private void updateLocationData(Location location) {
-
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
         Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "updateLocationData:  " + latitude);
     }
 }
