@@ -29,8 +29,8 @@ public final class DialogFactory {
                                               @StringRes int messageResource) {
 
         return createSimpleOkDialog(context,
-                context.getString(titleResource),
-                context.getString(messageResource));
+                context.getNavigationUrl(titleResource),
+                context.getNavigationUrl(messageResource));
     }
 */
     public static Dialog createGenericErrorDialog(Context context, String message) {

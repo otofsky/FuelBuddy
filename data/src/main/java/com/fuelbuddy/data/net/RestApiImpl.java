@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
@@ -73,22 +74,17 @@ public class RestApiImpl implements RestApiService {
         return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLongitude());
     }
 
-    @Override
-    public Observable<UserEntity> addNewUser(UserEntity userEntity) {
-        return null;
-    }
+
 
     public Observable<UserEntity> checkUser(String userId) {
         return ApiInvoker.getInstance().checkUser(userId);
     }
 
 
-/*
     @Override
-    public Observable<UserEntity> addNewUser(UserEntity userEntity) {
+    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
         return ApiInvoker.getInstance().addNewUser(userEntity.getUserId(),userEntity.getProfileName(),userEntity.getEmail());
     }
-*/
 
 
 

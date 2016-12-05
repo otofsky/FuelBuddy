@@ -26,6 +26,7 @@ import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.ProgressHelper;
+import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -222,48 +223,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public boolean onMarkerClick(final Marker marker) {
 
         //marker.
-        DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), "Navigate here", new DialogInterface.OnClickListener() {
+        DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
-                LatLng latLng = marker.getPosition();
-                double lat = latLng.latitude;
-                double lng =latLng.longitude;
-
-                String latString = String.valueOf(lat);
-                String lngString = String.valueOf(lng);
-
-
-                StringBuilder stringBuilder = new StringBuilder("google.navigation:q=");
-                stringBuilder.append(latString);
-                stringBuilder.append(",");
-                stringBuilder.append(lngString);
-
-                Uri gmmIntentUri = Uri.parse(stringBuilder.toString());
-// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(marker.getPosition()));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-// Make the Intent explicit by setting the Google Maps package
-                mapIntent.setPackage("com.google.android.apps.maps");
-
+                mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
                 startActivity(mapIntent);
             }
         }).show();
-
-
-
-        /*  Toast.makeText(this,"ajfa",Toast.LENGTH_LONG);
-        // Retrieve the data from the marker.
-          // Create a Uri from an intent string. Use the result to create an Intent.
-          Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.414382,10.013988");
-
-// Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
-          Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-// Make the Intent explicit by setting the Google Maps package
-          mapIntent.setPackage("com.google.android.apps.maps");
-
-// Attempt to start an activity that can handle the Intent
-          startActivity(mapIntent);*/
-
         return false;
 
     }

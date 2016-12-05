@@ -43,8 +43,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
     private final class CurrentUserSubscriber extends DefaultSubscriber<User> {
         @DebugLog
         @Override public void onCompleted() {
-            Log.d(TAG, "onCompleted: ");
-            //UserListPresenter.this.hideViewLoading();
         }
         @DebugLog
         @Override public void onError(Throwable e) {
@@ -56,9 +54,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
         @DebugLog
         @Override public void onNext(User user) {
-            Log.d(TAG, "onNext: ");
                 if(!StringHelper.isNullOrEmpty(user.getUserId())) {
-                    getMvpView().showLoginView();
+                    getMvpView().showFuelTypeView();
                 }
                 else{
                     getMvpView().showLoginView();

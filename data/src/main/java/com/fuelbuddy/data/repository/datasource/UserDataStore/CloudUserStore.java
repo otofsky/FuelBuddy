@@ -49,7 +49,7 @@ CloudUserStore(RestApiService restApiService) {
     }
 
     @Override
-    public Observable<UserEntity> setCurrentUser(UserEntity userEntity) {
+    public Observable<UserEntity> setCurrentUserLocally(UserEntity userEntity) {
         return this.mRestApiService.addNewUser(userEntity);
     }
     @Override

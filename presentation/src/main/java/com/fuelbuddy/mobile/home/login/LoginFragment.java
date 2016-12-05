@@ -106,8 +106,11 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         FacebookSdk.sdkInitialize(getActivity());
         mLoginPresenter.attachView(this);
         callbackManager = CallbackManager.Factory.create();
+        initGoogleApi();
         return fragmentView;
     }
+
+
 
 
     private void initButtonView() {
@@ -131,6 +134,28 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_facebook_white_36dp, 0, 0, 0);
         }
     }
+
+    private void initGoogleApi() {
+        GoogleSignInOptions gso = initGoogleSignInOptions();
+        initGoogleApiClient(gso);
+    }
+
+    private void initGoogleApiClient(GoogleSignInOptions gso) {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity() /* FragmentActivity */, this /* On~ConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    @NonNull
+    private GoogleSignInOptions initGoogleSignInOptions() {
+        return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestId()
+                .requestEmail()
+                .requestProfile()
+                .build();
+    }
+
 
 
     @Override
@@ -182,8 +207,8 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             UserUtil util = new UserUtil();
             UserModel googleUser = util.populateGoogleUser(acct);
             Log.d("LoginFragment", "onActivityResult: " + googleUser.toString());
-            mLoginPresenter.checkUser(googleUser.getUserId());
-            //mLoginPresenter.addNewUs(googleUser);
+            //mLoginPresenter.checkUser(googleUser.getUserId());
+            mLoginPresenter.addNewUser(googleUser);
             finishLogin();
             progress.dismiss();
 
@@ -271,19 +296,11 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     private void doGoogleLogin() {
         progress = ProgressDialog.show(getActivity(), "", getString(R.string.logging_holder), true);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestId()
-                .requestEmail()
-                .requestProfile()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() /* FragmentActivity */, this /* On~ConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
         progress.dismiss();
     }
+
 
     private void doFacebookLogin() {
         final ProgressDialog progress = ProgressDialog.show(getActivity(), "", getString(R.string.logging_holder), true);

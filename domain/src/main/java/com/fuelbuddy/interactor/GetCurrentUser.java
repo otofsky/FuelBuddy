@@ -26,7 +26,7 @@ public class GetCurrentUser extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return getLocalUserObservable().concatMap(validateLocalUser);
+        return getLocalUserObservable();
 
     }
 

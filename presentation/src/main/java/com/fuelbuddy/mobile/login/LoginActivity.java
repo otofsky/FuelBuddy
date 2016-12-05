@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity  implements   View.OnClickL
         Intent intent = loginBuilder.with(getApplicationContext())
                 .setAppLogo(R.mipmap.ic_launcher)
                 .isFacebookLoginEnabled(true)
-                .withFacebookAppId(getString(R.string.facebook_app_id)).withFacebookPermissions(permissions)
+                .withFacebookAppId(getNavigationUrl(R.string.facebook_app_id)).withFacebookPermissions(permissions)
                 .isGoogleLoginEnabled(true)
                 .isCustomLoginEnabled(true, SmartLoginConfig.LoginType.withEmail)
                 .setSmartCustomLoginHelper(LoginActivity.this)

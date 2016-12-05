@@ -1,5 +1,6 @@
 package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import rx.Observable;
@@ -14,10 +15,10 @@ public interface UserDataStore {
 
     Observable<UserEntity> getCurrentUserEntity();
 
-    Observable<UserEntity> setCurrentUser(UserEntity userEntity);
+    Observable<UserEntity> setCurrentUserLocally(UserEntity userEntity);
+
+    Observable<ResponseEntity> setCurrentUser(UserEntity userEntity);
 
     Observable<Boolean> logOut();
-
-
-
+    
 }

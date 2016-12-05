@@ -27,7 +27,7 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
-    public Observable<UserEntity> setCurrentUser(final UserEntity userEntity) {
+    public Observable<UserEntity> setCurrentUserLocally(final UserEntity userEntity) {
         return mUserCache.put(userEntity);
     }
 

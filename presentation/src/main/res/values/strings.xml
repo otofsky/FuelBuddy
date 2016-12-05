@@ -29,7 +29,7 @@
     <string name="logging_holder">Logging in…</string>
     <string name="login_failed">Login failed! Try again!</string>
     <string name="network_error">Something went wrong. Please check Network Connection.</string>
-
+    <string name="dialog_navigation_button_txt">Navigate here</string>
 
 
 </resources>

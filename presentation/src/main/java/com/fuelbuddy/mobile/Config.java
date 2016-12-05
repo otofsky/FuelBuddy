@@ -17,5 +17,7 @@ public class Config {
 
     public static final String CURRENCY_DK = "kr";
 
+    public static String GOOGLE_MAP_PACKAGE = "com.google.android.apps.maps";
+
 
 }
