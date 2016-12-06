@@ -1,7 +1,10 @@
 package com.fuelbuddy.data.repository;
 
+import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.entity.mapper.ResponseEntityMapper;
 import com.fuelbuddy.data.entity.mapper.UserEntityMapper;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserStoreFactory;
@@ -22,12 +25,14 @@ public class UserDataRepository implements UserRepository {
 
 
     private final UserStoreFactory mUserStoreFactory;
+    ResponseEntityMapper mResponseEntityMapper;
     UserEntityMapper mUserEntityMapper;
 
     @Inject
-    public UserDataRepository(UserStoreFactory userStoreFactory, UserEntityMapper userEntityMapper) {
+    public UserDataRepository(UserStoreFactory userStoreFactory, UserEntityMapper userEntityMapper, ResponseEntityMapper responseEntityMapper) {
         mUserStoreFactory = userStoreFactory;
         mUserEntityMapper = userEntityMapper;
+        mResponseEntityMapper = responseEntityMapper;
     }
 
     @Override
@@ -53,28 +58,26 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<User> setCurrentUser(User user) {
+    public Observable<Response> setCurrentUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
-        return userDataStore.setCurrentUserLocally(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {
+        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
             @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
+            public Response call(ResponseEntity responseEntity) {
+                return  mResponseEntityMapper.transformToResponse(responseEntity);
             }
         });
     }
 
     @Override
-    public Observable<User> addCurrentUser(User user) {
+    public Observable<Response> addNewUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<UserEntity, User>() {
+        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
             @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
+            public Response call(ResponseEntity responseEntity) {
+                return mResponseEntityMapper.transformToResponse(responseEntity);
             }
         });
     }
-
-
 
     @Override
     public Observable<Boolean> logOut() {

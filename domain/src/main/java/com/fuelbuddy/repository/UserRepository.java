@@ -1,5 +1,6 @@
 package com.fuelbuddy.repository;
 
+import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 
 import rx.Observable;
@@ -17,7 +18,9 @@ public interface UserRepository {
 
     Observable<User> getCheckUser(String UserId);
 
-    Observable<User> setCurrentUser(User user);
+    Observable<Response> setCurrentUser(User user);
+
+    Observable<Response> addNewUser(User user);
 
     Observable<Boolean> logOut();
 

@@ -15,8 +15,6 @@ import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by zjuroszek on 15.11.16.
  */
@@ -41,8 +39,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.addNewUser.execute(new LoginPresenter.AddUserSubscriber());
     }
 
-    public void checkUser(String userId) {
-        mCheckUserInteractor.addUserId(userId);
+    public void checkUser(UserModel userModel) {
+        mCheckUserInteractor.addUser(userModelDataMapper.transformToUser(userModel));
         this.mCheckUserInteractor.execute(new CheckUserSubscriber());
     }
 

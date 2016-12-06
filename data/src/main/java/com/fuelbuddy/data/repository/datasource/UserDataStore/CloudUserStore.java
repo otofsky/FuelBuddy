@@ -17,7 +17,9 @@ package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 
 
+import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
@@ -49,9 +51,15 @@ CloudUserStore(RestApiService restApiService) {
     }
 
     @Override
-    public Observable<UserEntity> setCurrentUserLocally(UserEntity userEntity) {
-        return this.mRestApiService.addNewUser(userEntity);
+    public Observable<ResponseEntity> setCurrentUser(UserEntity userEntity) {
+        return null;
     }
+
+    @Override
+    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
+        return mRestApiService.addNewUser(userEntity);
+    }
+
     @Override
     public Observable<Boolean> logOut() {
         return null;
