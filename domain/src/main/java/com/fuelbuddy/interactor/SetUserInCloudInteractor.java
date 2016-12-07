@@ -8,30 +8,31 @@ import com.fuelbuddy.repository.UserRepository;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
- * Created by zjuroszek on 14.11.16.
+ * Created by zjuroszek on 20.11.16.
  */
 
-public class GetCurrentUser extends UseCase {
+
+public class SetUserInCloudInteractor extends UseCase  {
+
 
     UserRepository userRepository;
+    private User mUser;
 
     @Inject
-    public GetCurrentUser(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SetUserInCloudInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
 
+    public void setUser(User user){
+        this.mUser = user;
+    }
+
     @Override
     protected Observable buildUseCaseObservable() {
-        return getLocalUserObservable();
-
+        return userRepository.addNewUser(mUser);
     }
 
-    protected Observable getLocalUserObservable() {
-        return userRepository.getCurrentUser();
-    }
 }
-

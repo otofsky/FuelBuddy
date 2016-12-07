@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.fuelbuddy.data.User;
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
@@ -78,10 +79,10 @@ public class SharePreferencesUserCacheImpl implements UserCache {
     }
 
     @Override
-    public Observable<UserEntity> put(final UserEntity userEntity) {
-        return Observable.create(new Observable.OnSubscribe<UserEntity>() {
+    public Observable<ResponseEntity> put(final UserEntity userEntity) {
+        return Observable.create(new Observable.OnSubscribe<ResponseEntity>() {
             @Override
-            public void call(Subscriber<? super UserEntity> subscriber) {
+            public void call(Subscriber<? super ResponseEntity> subscriber) {
                 try {
                     sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
                 } catch (JSONException e) {

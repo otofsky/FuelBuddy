@@ -14,19 +14,19 @@ import rx.Observable;
  */
 
 
-public class AddNewUserInteractor extends UseCase  {
+public class SetUserLocallyInteractor extends UseCase  {
 
 
     UserRepository userRepository;
     private User mUser;
 
     @Inject
-    public AddNewUserInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SetUserLocallyInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(User user){
+    public void setUser(User user){
         this.mUser = user;
     }
 

@@ -1,5 +1,6 @@
 package com.fuelbuddy.data.cache;
 
+import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import rx.Observable;
@@ -20,7 +21,7 @@ public interface UserCache {
      *
      * @param userEntity Element to insert in the cache.
      */
-    Observable<UserEntity> put(UserEntity userEntity);
+    Observable<ResponseEntity> put(UserEntity userEntity);
 
     /**
      * Checks if an element (User) exists in the cache.

@@ -1,7 +1,8 @@
 package com.fuelbuddy.mobile.di.module;
 
 
-import com.fuelbuddy.interactor.AddNewUserInteractor;
+import com.fuelbuddy.interactor.SetUserInCloudInteractor;
+import com.fuelbuddy.interactor.SetUserLocallyInteractor;
 import com.fuelbuddy.interactor.CheckUserInteractor;
 import com.fuelbuddy.interactor.GetCurrentUser;
 import com.fuelbuddy.interactor.LogOutInteractor;
@@ -26,9 +27,15 @@ public class LoginModule {
     }
 
     @Provides
-    @Named("addNewUser")
-    AddNewUserInteractor provideAddUserUseCase(AddNewUserInteractor addNewUserInteractor) {
+    @Named("setUserLocally")
+    SetUserLocallyInteractor provideSetUserLocally(SetUserLocallyInteractor addNewUserInteractor) {
         return addNewUserInteractor;
+    }
+
+    @Provides
+    @Named("setUserInCloud")
+    SetUserInCloudInteractor provideSetUserInCloud(SetUserInCloudInteractor setUserInCloudInteractor) {
+        return setUserInCloudInteractor;
     }
 
     @Provides
@@ -42,5 +49,4 @@ public class LoginModule {
     UseCase provideCheckUser(CheckUserInteractor checkUserInteractor) {
         return checkUserInteractor;
     }
-
 }

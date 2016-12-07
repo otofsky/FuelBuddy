@@ -16,7 +16,7 @@ import rx.functions.Func1;
  */
 
 
-public class CheckUserInteractor extends UseCase  {
+public class CheckUserInteractor extends UseCase {
 
     UserRepository userRepository;
     private User mUser;
@@ -27,7 +27,7 @@ public class CheckUserInteractor extends UseCase  {
         this.userRepository = userRepository;
     }
 
-    public void addUser(User user){
+    public void setUser(User user) {
         this.mUser = user;
     }
 
@@ -36,49 +36,45 @@ public class CheckUserInteractor extends UseCase  {
         // jesli istnieje
         //to zapisje dane lokalnie
         // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
-        return userRepository.getCheckUser(mUser.getUserId()).concatMap(StoreRemoteUser);
+        //return userRepository.getCheckUser(mUser.getUserId()).concatMap(StoreRemoteUser);
+        return userRepository.getCheckUser(mUser.getUserId());
     }
 
-
-    private final Func1<Response, Observable<User>> StoreRemoteUser =
-            new Func1<User, Observable<Response>>() {
+/*
+    private final Func1<Response, Observable<Response>> StoreRemoteUser =
+            new Func1<Response, Observable<Response>>() {
                 @Override
-                public Observable<Response> call(User user) {
-                    if (user == null) {
+                public Observable<Response> call(Response response) {
+                    if (response.getResultType() == Response.ResultTypeEnum.UserNotFound) {
+
                         return userRepository.addNewUser(mUser).concatMap(storeUserLocally);
                     } else {
-                        return getUser(user);
+
+                        return userRepository.setCurrentUser(mUser);
                     }
                 }
-            };
+            };*/
 
 
-    private final Func1<User, Observable<User>> storeUserLocally =
-            new Func1<User, Observable<User>>() {
+    private final Func1<Response, Observable<Response>> storeUserLocally =
+            new Func1<Response, Observable<Response>>() {
                 @Override
-                public Observable<User> call(User user) {
-                    if (user == null) {
-                        return getRemoteUserObservable("43").concatMap(StoreRemoteUser);
+                public Observable<Response> call(Response response) {
+                    if (response != null && response.getCode() == 200) {
+                        return userRepository.setCurrentUser(mUser);
                     } else {
-                        return getUser(user);
+                        return getResponse(getErrorResponse());
                     }
                 }
             };
 
-
-    private final Func1<User, Observable<User>> storeUserLocally =
-            new Func1<User, Observable<User>>() {
-                @Override
-                public Observable<User> call(User user) {
-                    if (user == null) {
-                        return getRemoteUserObservable("43").concatMap(StoreRemoteUser);
-                    } else {
-                        return getUser(user);
-                    }
-                }
-            };
-
-
+    private Response getErrorResponse() {
+        Response response1 = new Response();
+        response1.setResultType(Response.ResultTypeEnum.GeneralError);
+        response1.setCode(500);
+        response1.setMessage("User not found");
+        return response1;
+    }
 
     protected Observable getLocalUserObservable() {
         return userRepository.getCurrentUser();
@@ -88,8 +84,8 @@ public class CheckUserInteractor extends UseCase  {
         return userRepository.getCheckUser(userId);
     }
 
-    public Observable<User> getUser(User user) {
-        return Observable.just(user);
+    public Observable<Response> getResponse(Response response) {
+        return Observable.just(response);
     }
 
 }

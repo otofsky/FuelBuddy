@@ -207,8 +207,11 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             UserUtil util = new UserUtil();
             UserModel googleUser = util.populateGoogleUser(acct);
             Log.d("LoginFragment", "onActivityResult: " + googleUser.toString());
-            mLoginPresenter.checkUser(googleUser.getUserId());
-            //mLoginPresenter.addNewUser(googleUser);
+            googleUser.setUserId("200");
+            googleUser.setEmail("j@begood.tr");
+            googleUser.setProfileName("jimiBegood");
+            mLoginPresenter.checkUser(googleUser);
+            //mLoginPresenter.setUser(googleUser);
             finishLogin();
             progress.dismiss();
 

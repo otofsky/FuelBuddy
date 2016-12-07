@@ -16,7 +16,7 @@ public interface UserRepository {
 
     Observable<User> getCurrentUser();
 
-    Observable<User> getCheckUser(String UserId);
+    Observable<Response> getCheckUser(String UserId);
 
     Observable<Response> setCurrentUser(User user);
 

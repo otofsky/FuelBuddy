@@ -1,16 +1,20 @@
 package com.fuelbuddy.data;
 
-import static sun.awt.X11.XConstants.Expose;
-
 /**
  * Created by zjuroszek on 06.12.16.
  */
 
 public class Response {
 
+    public enum ResultTypeEnum {
+        Success,  GeneralError,  UserNotFound,
+    };
+
     private Integer code;
 
     private String message;
+
+    private ResultTypeEnum resultType = null;
 
     public Integer getCode() {
         return code;
@@ -28,11 +32,20 @@ public class Response {
         this.message = message;
     }
 
+    public void setResultType(ResultTypeEnum resultType) {
+        this.resultType = resultType;
+    }
+
+    public ResultTypeEnum getResultType() {
+        return resultType;
+    }
+
     @Override
     public String toString() {
-        return "ResponseEntity{" +
+        return "Response{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
+                ", resultType=" + resultType +
                 '}';
     }
 

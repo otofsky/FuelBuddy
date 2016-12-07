@@ -47,12 +47,23 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<User> getCheckUser(String userId) {
+    public Observable<Response> getCheckUser(String userId) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.checkUser(userId).map(new Func1<UserEntity, User>() {
+        return userDataStore.checkUser(userId).map(new Func1<UserEntity, Response>() {
             @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
+            public Response call(UserEntity userEntity) {
+                Response response = new Response();
+                if (userEntity != null) {
+                    response.setCode(200);
+                    response.setMessage("User exist");
+                    response.setResultType(Response.ResultTypeEnum.Success);
+                    return response;
+                } else {
+                    response.setResultType(Response.ResultTypeEnum.UserNotFound);
+                    response.setCode(500);
+                    response.setMessage("User not found");
+                    return response;
+                }
             }
         });
     }
@@ -63,7 +74,7 @@ public class UserDataRepository implements UserRepository {
         return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
             @Override
             public Response call(ResponseEntity responseEntity) {
-                return  mResponseEntityMapper.transformToResponse(responseEntity);
+                return mResponseEntityMapper.transformToResponse(responseEntity);
             }
         });
     }
@@ -71,7 +82,7 @@ public class UserDataRepository implements UserRepository {
     @Override
     public Observable<Response> addNewUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
+        return userDataStore.addNewUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
             @Override
             public Response call(ResponseEntity responseEntity) {
                 return mResponseEntityMapper.transformToResponse(responseEntity);

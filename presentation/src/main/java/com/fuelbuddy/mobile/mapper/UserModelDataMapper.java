@@ -45,8 +45,8 @@ public class UserModelDataMapper {
     }
     User user = new User();
     user.setUserId(userModel.getUserId());
-    user.setProfileName(user.getProfileName());
-    user.setEmail(user.getEmail());
+    user.setProfileName(userModel.getProfileName());
+    user.setEmail(userModel.getEmail());
     return user;
   }
 

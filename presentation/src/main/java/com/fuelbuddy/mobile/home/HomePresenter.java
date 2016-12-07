@@ -55,7 +55,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @DebugLog
         @Override public void onNext(User user) {
                 if(!StringHelper.isNullOrEmpty(user.getUserId())) {
-                    getMvpView().showFuelTypeView();
+                    getMvpView().showLoginView();
                 }
                 else{
                     getMvpView().showLoginView();
