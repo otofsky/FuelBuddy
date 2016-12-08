@@ -46,10 +46,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         }
         @DebugLog
         @Override public void onError(Throwable e) {
-            Log.d(TAG, "onError: ");
-            //UserListPresenter.this.hideViewLoading();
-            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-            //UserListPresenter.this.showViewRetry();
+
         }
 
         @DebugLog

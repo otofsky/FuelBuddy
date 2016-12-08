@@ -66,17 +66,8 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-        //toolbar.hideOverflowMenu();
-       // toolbar.showOverflowMenu();
     }
 
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-     getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-*/
     @Override
     public void onStart() {
         super.onStart();
@@ -88,7 +79,6 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
 
     @Override
     public void navigateToHomeActivity() {

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.ProgressHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
@@ -54,7 +56,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     @Inject
     public MapPresenter mapPresenter;
-    private GoogleMap mMap;
 
     private Map map;
 
@@ -74,7 +75,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     private ArrayList<LatLng> listLatLng;
     private LatLng currentPositionLatLng;
 
-    //HashMap<Marker, LatLngBean> hashMapMarker = new HashMap<Marker, LatLngBean>();
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MapsActivity.class);
@@ -103,8 +103,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
         mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
         mapPresenter.attachView(this);
-
         connectGoogleApiClient();
+        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
     }
 
     private void setToolbar() {
@@ -113,10 +113,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        //toolbar.hideOverflowMenu();
-        // toolbar.showOverflowMenu();
     }
 
     @Override
@@ -142,6 +138,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

@@ -21,7 +21,7 @@
 
             <include
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar_actionbar"
+                layout="@layout/toolbar_shadowed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

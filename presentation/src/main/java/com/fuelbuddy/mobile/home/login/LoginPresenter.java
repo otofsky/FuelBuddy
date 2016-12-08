@@ -109,17 +109,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            Log.d(TAG, "AddUserLocallySubscriber onError: ");
             if (throwable instanceof HttpException) {
-                // We had non-2XX http error
             }
             if (throwable instanceof IOException) {
-                // A network or conversion error happened
             }
 
-            //UserListPresenter.this.hideViewLoading();
-            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-            //UserListPresenter.this.showViewRetry();
         }
 
         @DebugLog
@@ -143,15 +137,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         public void onError(Throwable throwable) {
             Log.d(TAG, "AddUserLocallySubscriber onError: ");
             if (throwable instanceof HttpException) {
-                // We had non-2XX http error
             }
             if (throwable instanceof IOException) {
-                // A network or conversion error happened
             }
-
-            //UserListPresenter.this.hideViewLoading();
-            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-            //UserListPresenter.this.showViewRetry();
         }
 
         @DebugLog

@@ -27,7 +27,7 @@ public class AnimationHelper {
         ft.replace(container, fragment, null).commit();
     }
 
-    public static void startAnimatedActivity(Activity activity, AnimationDirection animation) {
+    public static void startAnimatedActivity(AppCompatActivity activity, AnimationDirection animation) {
         switch (animation) {
             case LEFT_RIGHT:
                 activity.overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);

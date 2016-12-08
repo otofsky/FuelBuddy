@@ -110,9 +110,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         return fragmentView;
     }
 
-
-
-
     private void initButtonView() {
         initFacebookButton();
         initGoogleButton();
@@ -181,8 +178,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             mGoogleApiClient.disconnect();
         }
     }
-
-
 
     @DebugLog
     @Override
@@ -281,20 +276,12 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
     @OnClick(R.id.login_google_button)
     public void loginGoogleButton() {
         doGoogleLogin();
-        //startActivityForResult(googleLoginModule.getSignInIntent(), RC_SIGN_IN);
-
-        // showLoading();
-        //mFragmentNavigator.navigateToHome();
-        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
 
     @DebugLog
     @OnClick(R.id.login_fb_button)
     public void loginFbButton() {
         doFacebookLogin();
-        // hideLoading();
-        //mFragmentNavigator.navigateToHome();
-        //Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
     }
 
     private void doGoogleLogin() {
@@ -334,8 +321,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             @Override
             public void onCancel() {
                 progress.dismiss();
-               /* progress.dismiss();
-                finish();*/
                 Log.d("Facebook Login", "User cancelled the login process");
             }
 
@@ -343,9 +328,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
             public void onError(FacebookException e) {
                 Log.d("Facebook Login", "onError");
                 progress.dismiss();
-              /*
-                finish();*/
-                // Toast.makeText(SmartLoginActivity.this, R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
 

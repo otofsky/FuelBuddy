@@ -85,7 +85,7 @@ public class MapImpl implements Map {
         return new MarkerOptions()
                 .position(latLng)
                 .title(gasStationModel.getGasStationName())
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.drop_off));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
     }
 
     private MarkerOptions initMarkerOptionsForUser(LatLng currentPositionLatLng) {
