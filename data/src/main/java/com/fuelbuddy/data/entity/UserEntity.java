@@ -12,9 +12,6 @@ public class UserEntity {
     private String email;
     private String profileLink;
 
-
-
-
     public String getUserId() {
         return userId;
     }

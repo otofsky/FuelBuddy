@@ -7,14 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.fuelbuddy.mobile.R;
 
 
 public final class DialogFactory {
-
-
 
     public static Dialog createSimpleOkDialog(Context context, String title, String message,String neutralBtnMessage, final DialogInterface.OnClickListener listener) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
@@ -24,15 +24,7 @@ public final class DialogFactory {
         return alertDialog.create();
     }
 
- /*   public static Dialog createSimpleOkDialog(Context context,
-                                              @StringRes int titleResource,
-                                              @StringRes int messageResource) {
 
-        return createSimpleOkDialog(context,
-                context.getNavigationUrl(titleResource),
-                context.getNavigationUrl(messageResource));
-    }
-*/
     public static Dialog createGenericErrorDialog(Context context, String message) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.dialog_error_title))
@@ -55,5 +47,8 @@ public final class DialogFactory {
                                                       @StringRes int messageResource) {
         return createProgressDialog(context, context.getString(messageResource));
     }
-
+    public static void createSimpleSnackBarInfo(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
 }

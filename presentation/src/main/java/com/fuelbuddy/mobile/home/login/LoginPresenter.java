@@ -27,14 +27,13 @@ import retrofit2.adapter.rxjava.HttpException;
 
 public class LoginPresenter extends BasePresenter<LoginView> {
 
+    private static String TAG = "LoginPresenter";
+
     UserModelDataMapper userModelDataMapper;
     private SetUserLocallyInteractor mSetUserLocallyInteractor;
     private SetUserInCloudInteractor mSetUserInCloudInteractor;
     private CheckUserInteractor mCheckUserInteractor;
     private UserModel mUserModel;
-
-    private static String TAG = "LoginPresenter";
-
 
     @Inject
     public LoginPresenter(@Named("setUserLocally") SetUserLocallyInteractor setUserLocallyInteractor,
@@ -65,34 +64,23 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     private final class CheckUserSubscriber extends DefaultSubscriber<Response> {
-
         @DebugLog
         @Override
         public void onCompleted() {
-            Log.d("CheckUserSubscriber", "onCompleted: ");
-            //UserListPresenter.this.hideViewLoading();
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
             addNewUseInCloud(mUserModel);
-            if (throwable instanceof HttpException) {
-                Log.d("CheckUserSubscriber", "HttpException: ");
-                // We had non-2XX http error
-            }
-            if (throwable instanceof IOException) {
-                Log.d("CheckUserSubscriber", "IOException: ");
-                // A network or conversion error happened
-            } else {
-                Log.d("CheckUserSubscriber", "");
-            }
+
         }
 
         @DebugLog
         @Override
         public void onNext(Response response) {
-            Log.d("CheckUserSubscriber", "onNext: " + response.toString());
+            Log.d(TAG, "CheckUserSubscriber onNext: " + response.toString());
+            addNewUserLocally(mUserModel);
         }
     }
 
@@ -101,25 +89,17 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
-            addNewUserLocally(mUserModel);
-            Log.d(TAG, "AddUserLocallySubscriber onCompleted: ");
-            //UserListPresenter.this.hideViewLoading();
-        }
 
+        }
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            if (throwable instanceof HttpException) {
-            }
-            if (throwable instanceof IOException) {
-            }
-
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
-            Log.d(TAG, "AddUserLocallySubscriber onNext: ");
+            addNewUserLocally(mUserModel);
         }
     }
 
@@ -128,24 +108,17 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
-            Log.d(TAG, "AddUserLocallySubscriber onCompleted: ");
 
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            Log.d(TAG, "AddUserLocallySubscriber onError: ");
-            if (throwable instanceof HttpException) {
-            }
-            if (throwable instanceof IOException) {
-            }
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
-            Log.d(TAG, "AddUserLocallySubscriber onNext: ");
         }
     }
 

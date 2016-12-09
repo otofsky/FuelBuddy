@@ -145,10 +145,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
     }
 
     @Override
@@ -165,7 +173,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         if (!(googleApiClient.isConnected() || googleApiClient.isConnecting())) {
             googleApiClient.connect();
         } else {
-            Log.d(TAG, "Client is connected");
             startTrackLocationService();
         }
     }
@@ -229,7 +236,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        //marker.
         DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

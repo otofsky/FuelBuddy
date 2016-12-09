@@ -9,6 +9,7 @@ import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
+import com.fuelbuddy.data.exeption.UserNotFoundException;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
 
 import org.json.JSONArray;
@@ -45,15 +46,18 @@ public class SharePreferencesUserCacheImpl implements UserCache {
     }
 
     @Override
-    public Observable<UserEntity> get() {
+    public Observable<UserEntity> getUser() {
         Observable<UserEntity> observable = Observable.create(new Observable.OnSubscribe<UserEntity>() {
             @Override
             public void call(Subscriber<? super UserEntity> subscriber) {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setUserId("1");
                 try {
-                    subscriber.onNext(entityJsonMapper.fromJson(sharedPreferences.getString(SP_USER_ENTITY, "")));
-                    //subscriber.onNext(null);
+                   UserEntity userEntity = entityJsonMapper.fromJson(sharedPreferences.getString(SP_USER_ENTITY, ""));
+                    if(userEntity!=null) {
+                        subscriber.onNext(userEntity);
+                        subscriber.onCompleted();
+                    } else {
+                        subscriber.onError(new UserNotFoundException());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     subscriber.onError(e);
@@ -71,7 +75,6 @@ public class SharePreferencesUserCacheImpl implements UserCache {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove(SP_USER_ENTITY);
                 editor.apply();
-                Log.d("Logout Share preferen", "onNext: ");
                 subscriber.onNext(true);
             }
         });
@@ -85,6 +88,8 @@ public class SharePreferencesUserCacheImpl implements UserCache {
             public void call(Subscriber<? super ResponseEntity> subscriber) {
                 try {
                     sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
+                    //ResponseEntity responseEntity = new ResponseEntity();
+                    //subscriber.onNext();
                 } catch (JSONException e) {
                     subscriber.onError(e);
                 }
@@ -117,16 +122,12 @@ public class SharePreferencesUserCacheImpl implements UserCache {
             JSONObject obj = new JSONObject();
             obj.put("userId", entity.getUserId());
             obj.put("profileName", entity.getProfileName());
-            /*obj.put("username", entity.getUsername());
-            obj.put("email", entity.getEmail());
-            obj.put("profileLink", entity.getProfileLink());*/
             return obj.toString();
         }
 
 
         private UserEntity fromJson(String obj) throws JSONException {
-            Log.d("from", "fromJson: " + obj);
-            UserEntity userEntity = new UserEntity();
+            UserEntity userEntity = null;
             if (!obj.equalsIgnoreCase("")) {
                 JSONObject jsonObject = new JSONObject(obj);
                 userEntity = new UserEntity();

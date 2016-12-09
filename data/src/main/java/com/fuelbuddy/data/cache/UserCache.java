@@ -11,7 +11,7 @@ import rx.Observable;
 public interface UserCache {
 
 
-    Observable<UserEntity> get();
+    Observable<UserEntity> getUser();
 
 
     Observable<Boolean> delete();

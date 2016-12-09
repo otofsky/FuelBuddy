@@ -44,6 +44,6 @@ public class DiskUserDataStore implements UserDataStore {
 
     @DebugLog
     public Observable<UserEntity> getUserEntity() {
-        return mUserCache.get();
+        return mUserCache.getUser();
     }
 }
