@@ -1,11 +1,11 @@
 package com.fuelbuddy.data.net;
 
 
-import android.util.Log;
-
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.net.utils.PrimitiveConverterFactory;
+import com.fuelbuddy.data.net.utils.RxErrorHandlingCallAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,11 +13,9 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Query;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -28,7 +26,7 @@ public class ApiInvoker {
     private String TAG = "WeatherInvoker";
     private static ApiInvoker httpsInvoker;
 
-   // public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    // public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     // "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
     String BASE_URL = "http://fuelbuddy.dk/ws/";
 
@@ -48,7 +46,8 @@ public class ApiInvoker {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(rxAdapter)
+                .addConverterFactory(PrimitiveConverterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .client(client)
                 .build();
 
@@ -65,17 +64,19 @@ public class ApiInvoker {
 
 
     public Observable<List<GasStationEntity>> getGasStations(String latitude, String longitude) {
-        Log.d(TAG, "getGasStations: ");
-        return apiInterface.getGasStations(latitude,longitude);
+        return apiInterface.getGasStations(latitude, longitude);
+    }
+
+    public Observable<ResponseEntity> updateStation(Double iD, Double userID, Double price92
+            , Double price95, Double priceDiesel) {
+        return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel);
     }
 
     public Observable<ResponseEntity> addNewUser(String userID, String profileName, String email) {
-        Log.d(TAG, "getGasStations: ");
-        return apiInterface.addNewUser(userID,profileName,email);
+        return apiInterface.addNewUser(userID, profileName, email);
     }
 
     public Observable<UserEntity> checkUser(String userID) {
-        Log.d(TAG, "getGasStations: ");
         return apiInterface.checkUser(userID);
     }
 

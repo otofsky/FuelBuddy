@@ -2,6 +2,7 @@ package com.fuelbuddy.repository;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Position;
+import com.fuelbuddy.data.Response;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public interface GasStationsRepository  {
      * Get an {@link rx.Observable} which will emit a List of {@link GasStation}.
      */
     Observable<List<GasStation>> gasStations(Position position);
+
+    Observable<Response> updateStation(Double iD, Double userID, Double price92
+            , Double price95, Double priceDiesel);
 
     /**
      * Get an {@link rx.Observable} which will emit a {@link GasStation}.

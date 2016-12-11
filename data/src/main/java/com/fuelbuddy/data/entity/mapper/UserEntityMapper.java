@@ -25,6 +25,7 @@ public class UserEntityMapper {
         userEntity.setUserId(user.getUserId());
         userEntity.setProfileName(user.getProfileName());
         userEntity.setEmail(user.getEmail());
+        userEntity.setTokens(user.getTokens());
 
 
         return userEntity;
@@ -38,6 +39,7 @@ public class UserEntityMapper {
         user.setUserId(userEntity.getUserId());
         user.setProfileName(userEntity.getProfileName());
         user.setEmail(userEntity.getEmail());
+        user.setTokens(userEntity.getTokens());
         return user;
     }
 

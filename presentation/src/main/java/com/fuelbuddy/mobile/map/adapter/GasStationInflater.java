@@ -10,8 +10,10 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
+import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.DateHelper;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.ResourcesHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
@@ -26,10 +28,13 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
     private LayoutInflater inflater;
     private FuelPriceMode fuelPriceMode;
+    OnFuelPriceClickListener onFuelPriceClickListener;
     private Context context;
     String TAG = getClass().getName();
 
-    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode) {
+
+
+    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode,OnFuelPriceClickListener onFuelPriceClickListener) {
         this.context = context;
         inflater = LayoutInflater.from(this.context);
         this.fuelPriceMode = fuelPriceMode;
@@ -44,18 +49,21 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    setBtnListener(holder.fuelPriceBtn,item);
                     convertView.setTag(holder);
                     break;
                 case BENZIN_95:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    setBtnListener(holder.fuelPriceBtn,item);
                     convertView.setTag(holder);
                     break;
                 case DIESEL:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_diesel, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    setBtnListener(holder.fuelPriceBtn,item);
                     convertView.setTag(holder);
                     break;
             }
@@ -91,6 +99,17 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
                 Log.d(TAG, "invalid fuel type: ");
                 break;
         }
+    }
+
+
+    private void setBtnListener(AppCompatButton appCompatButton, final GasStationModel gasStationModel){
+        appCompatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFuelPriceClickListener.onFuelPriceClick(gasStationModel);
+                DialogFactory.createSimpleSnackBarInfo(view,gasStationModel.getGasStationName());
+            }
+        });
     }
 
     private void initDieselFuelPriceView(ViewHolder viewHolder, String priceDiesel, String s) {

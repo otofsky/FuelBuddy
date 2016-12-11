@@ -14,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fuelbuddy.data.FuelPricesUpdated;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
@@ -24,6 +26,7 @@ import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
@@ -52,7 +55,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, OnFuelPriceClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     @Inject
     public MapPresenter mapPresenter;
@@ -66,7 +69,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
     @BindView(R.id.view_progress)
-    FrameLayout progressView;
+    RelativeLayout progressView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -101,7 +104,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         this.initializeInjector();
         FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
-        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode);
+        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode,this);
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
@@ -262,16 +265,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void showLoading() {
         this.progressView.setVisibility(View.VISIBLE);
-        ProgressHelper.animateDefault(progressView, true);
-        setProgressBarIndeterminateVisibility(true);
+        //ProgressHelper.animateDefault(progressView, true);
+       // setProgressBarIndeterminateVisibility(true);
     }
 
     @DebugLog
     @Override
     public void hideLoading() {
-        ProgressHelper.animateDefault(progressView, false);
-        this.progressView.setVisibility(View.GONE);
-        setProgressBarIndeterminateVisibility(false);
+       // this.progressView.setVisibility(View.GONE);
+        //ProgressHelper.animateDefault(progressView, false);
+
+        //setProgressBarIndeterminateVisibility(false);
     }
 
     @DebugLog
@@ -319,5 +323,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onFuelPriceClick(GasStationModel gasStationModel) {
+        mapPresenter.updateFuelPrices(new FuelPricesUpdated(null,null,null,null,null));
     }
 }

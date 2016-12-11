@@ -15,13 +15,13 @@ import rx.Observable;
  * Created by zjuroszek on 20.05.16.
  */
 public interface ApiInterface {
-    //http://api.openweathermap.org/data/2.5/weather?q=Cieszyn&APPID=ab6b80c5f1d39e5f3b6fac39594910c4
 
-    //@"http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
-
-    //"http://fuelbuddy.dk/ws/adduser?userID=&profileName=&email="
     @GET("stations?")
     Observable<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude, @Query("longitude") String longitude);
+
+    @GET("updatestation?")
+    Observable<ResponseEntity> updateStation(@Query("iD") Double iD, @Query("userID") Double userID,@Query("price92") Double price92
+            ,@Query("price95") Double price95,@Query("priceDiesel") Double priceDiesel);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

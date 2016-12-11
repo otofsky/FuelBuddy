@@ -3,13 +3,17 @@ package com.fuelbuddy.mobile.map;
 
 import android.util.Log;
 
+import com.fuelbuddy.data.FuelPricesUpdated;
 import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.data.Response;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationList;
+import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
+import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -25,11 +29,15 @@ import hugo.weaving.DebugLog;
 public class MapPresenter extends BasePresenter<MapMvpView> {
 
     private final GetGasStationList getGasStationList;
+    private final UpdateFuelPricesInteractor mUpdateFuelPricesInteractor;
     private PositionMapper mPositionMapper;
 
+
     @Inject
-    public MapPresenter(@Named("gasStationList")GetGasStationList getGasStationList) {
+    public MapPresenter(@Named("gasStationList")GetGasStationList getGasStationList,
+                        UpdateFuelPricesInteractor updateFuelPricesInteractor) {
         this.getGasStationList =  getGasStationList;
+        this.mUpdateFuelPricesInteractor = updateFuelPricesInteractor;
         mPositionMapper = new PositionMapper();
     }
 
@@ -60,6 +68,11 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         this.getGasStationList.execute(new GasStationsListSubscriber());
     }
 
+    public void updateFuelPrices(FuelPricesUpdated fuelPricesUpdated) {
+        this.mUpdateFuelPricesInteractor.setFuelPricesUpdated(fuelPricesUpdated);
+        this.mUpdateFuelPricesInteractor.execute(new UpdateGasStationSubscriber());
+    }
+
 
     private final class GasStationsListSubscriber extends DefaultSubscriber<List<GasStation>> {
         @DebugLog
@@ -78,6 +91,26 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             getMvpView().hideLoading();
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
             getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
+        }
+    }
+
+    private final class UpdateGasStationSubscriber extends DefaultSubscriber<Response> {
+        @DebugLog
+        @Override public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+        @DebugLog
+        @Override public void onError(Throwable e) {
+            Log.d("UserListSubscriber", "onError: " + e.getMessage());
+            Log.d("UserListSubscriber", "onError: " + e.getLocalizedMessage());
+            getMvpView().hideLoading();
+        }
+
+        @DebugLog
+        @Override public void onNext(Response response) {
+            getMvpView().hideLoading();
+            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
+            //getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
         }
     }
 }

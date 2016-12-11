@@ -4,21 +4,22 @@ import android.util.Log;
 
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
-import com.fuelbuddy.interactor.SetUserInCloudInteractor;
-import com.fuelbuddy.interactor.SetUserLocallyInteractor;
+import com.fuelbuddy.data.net.RetrofitException;
+import com.fuelbuddy.exception.DefaultErrorBundle;
+import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.CheckUserInteractor;
 import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.SetUserInCloudInteractor;
+import com.fuelbuddy.interactor.SetUserLocallyInteractor;
 import com.fuelbuddy.mobile.base.BasePresenter;
+import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.UserModelDataMapper;
 import com.fuelbuddy.mobile.model.UserModel;
-
-import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
-import retrofit2.adapter.rxjava.HttpException;
 
 /**
  * Created by zjuroszek on 15.11.16.
@@ -63,16 +64,23 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.mSetUserLocallyInteractor.execute(new AddUserLocallySubscriber());
     }
 
+    private void showErrorMessage(ErrorBundle errorBundle) {
+        String errorMessage = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+        getMvpView().showError(errorMessage);
+    }
+
     private final class CheckUserSubscriber extends DefaultSubscriber<Response> {
         @DebugLog
         @Override
         public void onCompleted() {
+            Log.d(TAG, "onCompleted: ");
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            addNewUseInCloud(mUserModel);
+            addNewUserLocally(mUserModel);// dodane w error nalzey zmienic do onNext
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
 
         }
 
@@ -91,9 +99,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         public void onCompleted() {
 
         }
+
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
@@ -108,17 +118,20 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
+            getMvpView().showFuelSectionView();
 
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
+            Log.d(TAG, "onNext: ");
         }
     }
 

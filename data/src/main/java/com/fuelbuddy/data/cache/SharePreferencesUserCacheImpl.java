@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
 import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
@@ -89,7 +90,7 @@ public class SharePreferencesUserCacheImpl implements UserCache {
                 try {
                     sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
                     //ResponseEntity responseEntity = new ResponseEntity();
-                    //subscriber.onNext();
+                    subscriber.onCompleted();
                 } catch (JSONException e) {
                     subscriber.onError(e);
                 }
@@ -112,30 +113,5 @@ public class SharePreferencesUserCacheImpl implements UserCache {
 
     }
 
-    public static class EntityJsonMapper {
 
-        @Inject
-        public EntityJsonMapper() {
-        }
-
-        private String toJson(UserEntity entity) throws JSONException {
-            JSONObject obj = new JSONObject();
-            obj.put("userId", entity.getUserId());
-            obj.put("profileName", entity.getProfileName());
-            return obj.toString();
-        }
-
-
-        private UserEntity fromJson(String obj) throws JSONException {
-            UserEntity userEntity = null;
-            if (!obj.equalsIgnoreCase("")) {
-                JSONObject jsonObject = new JSONObject(obj);
-                userEntity = new UserEntity();
-                userEntity.setUserId(jsonObject.getString("userId"));
-                userEntity.setProfileName("profileName");
-            }
-            return userEntity;
-        }
-
-    }
 }

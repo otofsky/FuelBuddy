@@ -5,12 +5,13 @@ package com.fuelbuddy.data.entity;
  */
 public class UserEntity {
 
-    private String userId;
 
+
+    private String userId;
     private String profileName;
-    private String username;
     private String email;
     private String profileLink;
+    private String tokens;
 
     public String getUserId() {
         return userId;
@@ -28,13 +29,6 @@ public class UserEntity {
         this.profileName = profileName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;
@@ -52,12 +46,50 @@ public class UserEntity {
         this.profileLink = profileLink;
     }
 
+    public String getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(String tokens) {
+        this.tokens = tokens;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
                 "userId='" + userId + '\'' +
+                ", profileName='" + profileName + '\'' +
+                ", email='" + email + '\'' +
+                ", profileLink='" + profileLink + '\'' +
+                ", tokens='" + tokens + '\'' +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        UserEntity that = (UserEntity) o;
+
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (profileName != null ? !profileName.equals(that.profileName) : that.profileName != null)
+            return false;
+
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (profileLink != null ? !profileLink.equals(that.profileLink) : that.profileLink != null)
+            return false;
+        return tokens != null ? tokens.equals(that.tokens) : that.tokens == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId != null ? userId.hashCode() : 0;
+        result = 31 * result + (profileName != null ? profileName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (profileLink != null ? profileLink.hashCode() : 0);
+        result = 31 * result + (tokens != null ? tokens.hashCode() : 0);
+        return result;
+    }
 }

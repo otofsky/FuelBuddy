@@ -70,10 +70,13 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
-        Log.d("RestApiImpl ", "gasStationEntityList: " + position.toString());
         return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLongitude());
     }
 
+    @Override
+    public Observable<ResponseEntity> updateStation(Double iD, Double userID, Double price92, Double price95, Double priceDiesel) {
+        return ApiInvoker.getInstance().updateStation(iD, userID, price92, price95, priceDiesel);
+    }
 
 
     public Observable<UserEntity> checkUser(String userId) {

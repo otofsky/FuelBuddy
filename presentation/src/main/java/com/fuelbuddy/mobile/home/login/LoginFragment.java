@@ -31,6 +31,7 @@ import com.fuelbuddy.mobile.di.component.HomeComponent;
 
 
 import com.fuelbuddy.mobile.model.UserModel;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.loginUtil.LoginConfig;
 import com.fuelbuddy.mobile.util.loginUtil.UserUtil;
 import com.google.android.gms.auth.api.Auth;
@@ -60,16 +61,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     private GoogleApiClient mGoogleApiClient;
     CallbackManager callbackManager;
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void showMap() {
-
-    }
 
     public interface FragmentNavigator {
         public void navigateToHome();
@@ -195,55 +186,14 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     }
 
-    private void handleGoogleLoginResult(int requestCode, GoogleSignInResult result) {
-        if (true) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            UserUtil util = new UserUtil();
-            UserModel googleUser = util.populateGoogleUser(acct);
-            Log.d("LoginFragment", "onActivityResult: " + googleUser.toString());
-            googleUser.setUserId("200");
-            googleUser.setEmail("j@begood.tr");
-            googleUser.setProfileName("jimiBegood");
-            mLoginPresenter.checkUser(googleUser);
-            //mLoginPresenter.setUser(googleUser);
-            finishLogin();
-            progress.dismiss();
-
-            //finishLogin(populateGoogleUser);
-        } else {
-            Log.d("GOOGLE SIGN IN", "" + requestCode);
-            // Signed out, show unauthenticated UI.
-            // progress.dismiss();
-            //Toast.makeText(SmartLoginActivity.this, "Google Login Failed", Toast.LENGTH_SHORT).show();
-            //finishLogin(null);
-
-        }
-        if (progress != null) {
-            progress.dismiss();
-        }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
-    private void finishLogin() {
+    @Override
+    public void showFuelSectionView() {
         mFragmentNavigator.navigateToHome();
-        /*if (userModel != null) {
-            mFragmentNavigator.navigateToHome();
-
-        } else {
-            *//*DialogUtil.getErrorDialog(R.string.login_failed, this);
-            finish();*//*
-        }*/
-    }
-
-    public void showLoading() {
-        this.rl_progress.setVisibility(View.VISIBLE);
-        this.getActivity().setProgressBarIndeterminateVisibility(true);
-    }
-
-    public void hideLoading() {
-        this.rl_progress.setVisibility(View.GONE);
-        this.getActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -258,7 +208,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     @Override
     public void showError(String message) {
-
+        DialogFactory.createSimpleSnackBarInfo(rl_progress, message);
     }
 
     @Override
@@ -266,9 +216,46 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     }
 
+
+    private void handleGoogleLoginResult(int requestCode, GoogleSignInResult result) {
+        if (true) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            UserUtil util = new UserUtil();
+            UserModel googleUser = util.populateGoogleUser(acct);
+            mLoginPresenter.checkUser(googleUser);
+            progress.dismiss();
+
+        } else {
+            Log.d("GOOGLE SIGN IN", "" + requestCode);
+            // Signed out, show unauthenticated UI.
+            // progress.dismiss();
+            //Toast.makeText(SmartLoginActivity.this, "Google Login Failed", Toast.LENGTH_SHORT).show();
+            //finishLogin(null);
+
+        }
+        if (progress != null) {
+            progress.dismiss();
+        }
+
+    }
+
+
+    public void showLoading() {
+        this.rl_progress.setVisibility(View.VISIBLE);
+        this.getActivity().setProgressBarIndeterminateVisibility(true);
+    }
+
+    public void hideLoading() {
+        this.rl_progress.setVisibility(View.GONE);
+        this.getActivity().setProgressBarIndeterminateVisibility(false);
+    }
+
+
+
     @Override
     public Context context() {
-        return null;
+        return this.getActivity().getApplicationContext();
     }
 
 
@@ -304,7 +291,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        finishLogin();
                         progress.dismiss();
                         UserUtil util = new UserUtil();
                         UserModel facebookUser = util.populateFacebookUser(object);
@@ -332,4 +318,6 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
         });
 
     }
+
+
 }
