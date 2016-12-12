@@ -18,7 +18,7 @@ public interface GasStationsRepository  {
      */
     Observable<List<GasStation>> gasStations(Position position);
 
-    Observable<Response> updateStation(Double iD, Double userID, Double price92
+    Observable<Response> updateStation(Double iD, String userID, Double price92
             , Double price95, Double priceDiesel);
 
     /**

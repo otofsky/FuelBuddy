@@ -35,7 +35,7 @@ public interface RestApiService {
 
     Observable<List<GasStationEntity>> gasStationEntityList(Position position);
 
-     Observable<ResponseEntity> updateStation(Double iD, Double userID, Double price92
+     Observable<ResponseEntity> updateStation(Double iD, String userID, Double price92
             , Double price95, Double priceDiesel);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);

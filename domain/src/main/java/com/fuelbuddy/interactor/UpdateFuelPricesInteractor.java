@@ -24,7 +24,6 @@ public class UpdateFuelPricesInteractor extends UseCase  {
     @Inject
     public UpdateFuelPricesInteractor(GasStationsRepository gasStationsRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        this.fuelPricesUpdated = fuelPricesUpdated;
         this.gasStationsRepository = gasStationsRepository;
     }
 
@@ -37,5 +36,4 @@ public class UpdateFuelPricesInteractor extends UseCase  {
         return gasStationsRepository.updateStation(fuelPricesUpdated.getiD(),fuelPricesUpdated.getUserID(),fuelPricesUpdated.getPrice92(),
                 fuelPricesUpdated.getPrice95(),fuelPricesUpdated.getPriceDiesel());
     }
-
 }

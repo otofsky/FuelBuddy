@@ -55,7 +55,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, OnFuelPriceClickListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
     @Inject
     public MapPresenter mapPresenter;
@@ -104,7 +104,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         this.initializeInjector();
         FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
-        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode,this);
+        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode,mOnFuelPriceClickListener);
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
@@ -325,8 +325,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     }
 
-    @Override
-    public void onFuelPriceClick(GasStationModel gasStationModel) {
-        mapPresenter.updateFuelPrices(new FuelPricesUpdated(null,null,null,null,null));
-    }
+    OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
+        @Override
+        public void onFuelPriceClick(GasStationModel gasStationModel) {
+          //  mapPresenter.updateFuelPrices(new FuelPricesUpdated(1830,"1",4.64000,5.87000,6.87000));
+        }
+    };
+
+    //2":"10.64000","price95":"14.87000","priceDiesel":"11.43300"
 }

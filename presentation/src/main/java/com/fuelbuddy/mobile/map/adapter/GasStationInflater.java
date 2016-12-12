@@ -33,11 +33,11 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     String TAG = getClass().getName();
 
 
-
     public GasStationInflater(Context context, FuelPriceMode fuelPriceMode,OnFuelPriceClickListener onFuelPriceClickListener) {
         this.context = context;
         inflater = LayoutInflater.from(this.context);
         this.fuelPriceMode = fuelPriceMode;
+        this.onFuelPriceClickListener = onFuelPriceClickListener;
     }
 
     @Override

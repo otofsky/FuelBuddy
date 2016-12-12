@@ -7,16 +7,16 @@ package com.fuelbuddy.data;
 public class FuelPricesUpdated {
 
     private final Double iD;
-    private final Double userID;
+    private final String userID;
     private final Double price92;
     private final Double price95;
     private final Double priceDiesel;
 
-    public FuelPricesUpdated(Double price95, Double iD, Double userID, Double price92, Double priceDiesel) {
-        this.price95 = price95;
+    public FuelPricesUpdated(Double iD, String userID, Double price92, Double price95, Double priceDiesel) {
         this.iD = iD;
         this.userID = userID;
         this.price92 = price92;
+        this.price95 = price95;
         this.priceDiesel = priceDiesel;
     }
 
@@ -24,9 +24,6 @@ public class FuelPricesUpdated {
         return iD;
     }
 
-    public Double getUserID() {
-        return userID;
-    }
 
     public Double getPrice92() {
         return price92;
@@ -40,11 +37,15 @@ public class FuelPricesUpdated {
         return priceDiesel;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     @Override
     public String toString() {
-        return "UpdatedPrices{" +
+        return "FuelPricesUpdated{" +
                 "iD=" + iD +
-                ", userID=" + userID +
+                ", userID='" + userID + '\'' +
                 ", price92=" + price92 +
                 ", price95=" + price95 +
                 ", priceDiesel=" + priceDiesel +

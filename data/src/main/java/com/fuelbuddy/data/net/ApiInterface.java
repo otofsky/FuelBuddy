@@ -20,8 +20,11 @@ public interface ApiInterface {
     Observable<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude, @Query("longitude") String longitude);
 
     @GET("updatestation?")
-    Observable<ResponseEntity> updateStation(@Query("iD") Double iD, @Query("userID") Double userID,@Query("price92") Double price92
-            ,@Query("price95") Double price95,@Query("priceDiesel") Double priceDiesel);
+    Observable<ResponseEntity> updateStation(@Query("iD") Double iD,
+                                             @Query("userID") String userID,
+                                             @Query("price92") Double price92,
+                                             @Query("price95") Double price95,
+                                             @Query("priceDiesel") Double priceDiesel);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);
