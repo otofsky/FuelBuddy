@@ -8,16 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.fuelbuddy.data.FuelPricesUpdated;
+import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
@@ -30,7 +28,6 @@ import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
-import com.fuelbuddy.mobile.util.ProgressHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -328,9 +325,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel) {
-          //  mapPresenter.updateFuelPrices(new FuelPricesUpdated(1830,"1",4.64000,5.87000,6.87000));
+           mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(),"1",4.64000,5.87000,6.87000));
         }
     };
-
-    //2":"10.64000","price95":"14.87000","priceDiesel":"11.43300"
 }

@@ -1,11 +1,9 @@
 package com.fuelbuddy.interactor;
 
-import com.fuelbuddy.data.FuelPricesUpdated;
-import com.fuelbuddy.data.User;
+import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.GasStationsRepository;
-import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 
@@ -19,7 +17,7 @@ import rx.Observable;
 public class UpdateFuelPricesInteractor extends UseCase  {
 
     GasStationsRepository gasStationsRepository;
-    FuelPricesUpdated fuelPricesUpdated;
+    FuelPricesUpdate mFuelPricesUpdate;
 
     @Inject
     public UpdateFuelPricesInteractor(GasStationsRepository gasStationsRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -27,13 +25,13 @@ public class UpdateFuelPricesInteractor extends UseCase  {
         this.gasStationsRepository = gasStationsRepository;
     }
 
-    public void setFuelPricesUpdated(FuelPricesUpdated fuelPricesUpdated) {
-        this.fuelPricesUpdated = fuelPricesUpdated;
+    public void setFuelPricesUpdate(FuelPricesUpdate fuelPricesUpdate) {
+        this.mFuelPricesUpdate = fuelPricesUpdate;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return gasStationsRepository.updateStation(fuelPricesUpdated.getiD(),fuelPricesUpdated.getUserID(),fuelPricesUpdated.getPrice92(),
-                fuelPricesUpdated.getPrice95(),fuelPricesUpdated.getPriceDiesel());
+        return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), mFuelPricesUpdate.getUserID(), mFuelPricesUpdate.getPrice92(),
+                mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
     }
 }

@@ -3,17 +3,15 @@ package com.fuelbuddy.mobile.map;
 
 import android.util.Log;
 
-import com.fuelbuddy.data.FuelPricesUpdated;
+import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationList;
 import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
-import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
-import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -68,8 +66,8 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         this.getGasStationList.execute(new GasStationsListSubscriber());
     }
 
-    public void updateFuelPrices(FuelPricesUpdated fuelPricesUpdated) {
-        this.mUpdateFuelPricesInteractor.setFuelPricesUpdated(fuelPricesUpdated);
+    public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
+        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuelPricesUpdate);
         this.mUpdateFuelPricesInteractor.execute(new UpdateGasStationSubscriber());
     }
 

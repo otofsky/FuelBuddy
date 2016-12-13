@@ -4,15 +4,15 @@ package com.fuelbuddy.data;
  * Created by zjuroszek on 11.12.16.
  */
 
-public class FuelPricesUpdated {
+public class FuelPricesUpdate {
 
-    private final Double iD;
+    private final String iD;
     private final String userID;
     private final Double price92;
     private final Double price95;
     private final Double priceDiesel;
 
-    public FuelPricesUpdated(Double iD, String userID, Double price92, Double price95, Double priceDiesel) {
+    public FuelPricesUpdate(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
         this.iD = iD;
         this.userID = userID;
         this.price92 = price92;
@@ -20,10 +20,9 @@ public class FuelPricesUpdated {
         this.priceDiesel = priceDiesel;
     }
 
-    public Double getiD() {
+    public String getiD() {
         return iD;
     }
-
 
     public Double getPrice92() {
         return price92;
@@ -43,8 +42,8 @@ public class FuelPricesUpdated {
 
     @Override
     public String toString() {
-        return "FuelPricesUpdated{" +
-                "iD=" + iD +
+        return "FuelPricesUpdate{" +
+                "iD='" + iD + '\'' +
                 ", userID='" + userID + '\'' +
                 ", price92=" + price92 +
                 ", price95=" + price95 +
@@ -57,7 +56,7 @@ public class FuelPricesUpdated {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FuelPricesUpdated that = (FuelPricesUpdated) o;
+        FuelPricesUpdate that = (FuelPricesUpdate) o;
 
         if (iD != null ? !iD.equals(that.iD) : that.iD != null) return false;
         if (userID != null ? !userID.equals(that.userID) : that.userID != null) return false;
