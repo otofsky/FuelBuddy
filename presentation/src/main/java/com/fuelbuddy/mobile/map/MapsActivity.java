@@ -101,7 +101,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         this.initializeInjector();
         FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
         LinearLayout fuelPriceHolderView = (LinearLayout) findViewById(R.id.fuelPriceHolderView);
-        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode,mOnFuelPriceClickListener);
+        mFuelPriceController = new FuelPriceController(this, fuelPriceHolderView, fuelPriceMode, mOnFuelPriceClickListener);
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
@@ -130,7 +130,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
         this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-        map.seUserCurrentPosition(currentPositionLatLng);
+        map.showUserCurrentPosition(currentPositionLatLng);
         mapPresenter.submitSearch(locationUpdateEvent.getLatLng());
     }
 
@@ -253,7 +253,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
         map.clear();
-        map.seUserCurrentPosition(currentPositionLatLng);
+        map.showUserCurrentPosition(currentPositionLatLng);
         map.seFuelStationsPositions(gasStationModelList);
         hideLoading();
     }
@@ -263,13 +263,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public void showLoading() {
         this.progressView.setVisibility(View.VISIBLE);
         //ProgressHelper.animateDefault(progressView, true);
-       // setProgressBarIndeterminateVisibility(true);
+        // setProgressBarIndeterminateVisibility(true);
     }
 
     @DebugLog
     @Override
     public void hideLoading() {
-       // this.progressView.setVisibility(View.GONE);
+        // this.progressView.setVisibility(View.GONE);
         //ProgressHelper.animateDefault(progressView, false);
 
         //setProgressBarIndeterminateVisibility(false);
@@ -325,7 +325,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel) {
-           mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(),"1",4.64000,5.87000,6.87000));
+            map.showSelectedGasStation(gasStationModel.getGasStationId());
+            mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 4.64000, 5.87000, 6.87000));
         }
     };
 }

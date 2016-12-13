@@ -13,13 +13,17 @@ import java.util.List;
 public interface Map {
 
 
+
+
     public void adjustMap();
 
     public void initMap(GoogleMap map,GoogleMap.OnMarkerClickListener onMarkerClickListener);
 
     public void clear();
 
-    public void seUserCurrentPosition(LatLng latLng);
+    public void showUserCurrentPosition(LatLng latLng);
+
+    public void showSelectedGasStation(String gasStationId);
 
     public void seFuelStationsPositions(List<GasStationModel> gasStationModelList);
 

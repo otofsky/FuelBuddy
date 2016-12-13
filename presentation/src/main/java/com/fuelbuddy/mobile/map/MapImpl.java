@@ -9,7 +9,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -38,19 +37,19 @@ public class MapImpl implements Map {
     }
 
     @Override
-    public void seUserCurrentPosition(LatLng currentPositionLatLng) {
+    public void showUserCurrentPosition(LatLng currentPositionLatLng) {
         if (mMap != null) {
             mMap.addMarker(initMarkerOptionsForUser(currentPositionLatLng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPositionLatLng, 12));
-        }
-        else {
+        } else {
             //Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
         }
     }
 
+
     @Override
-    public GasStationModel getItem(int position){
-         return gasStationModelList.get(position);
+    public GasStationModel getItem(int position) {
+        return gasStationModelList.get(position);
     }
 
     @Override
@@ -58,8 +57,7 @@ public class MapImpl implements Map {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
             addMarkers(gasStationModelList);
-        }
-        else {
+        } else {
           /*  Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();*/
         }
     }
@@ -75,17 +73,40 @@ public class MapImpl implements Map {
         for (GasStationModel gasStationModel : gasStationModelList) {
             LatLng latLng = getLatLng(gasStationModel);
             listLatLng.add(latLng);
-            mMap.addMarker(initMarkerOptionForStations(gasStationModel, latLng));
+            mMap.addMarker(initMarkerOptionForStations(gasStationModel.getGasStationName(), latLng, R.mipmap.ic_drop_off));
         }
         setZoomlevel(listLatLng);
     }
 
+    @Override
+    public void showSelectedGasStation(String gasStationID) {
+        mMap.clear();
+        List<LatLng> listLatLng = new ArrayList<LatLng>();
+        for (GasStationModel gs : gasStationModelList) {
+            LatLng latLng = getLatLng(gs);
+            listLatLng.add(latLng);
+            if(!gs.getGasStationId().equalsIgnoreCase(gasStationID)) {
+                mMap.addMarker(initMarkerOptionForStations(gs.getGasStationName(), latLng, R.mipmap.ic_drop_off));
+            }
+            else{
+                mMap.addMarker(initMarkerOptionForStations(gs.getGasStationName(), latLng, R.mipmap.drop_on));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+            }
+        }
+        setZoomlevel(listLatLng);
+
+
+
+
+    }
+
+
     @NonNull
-    private MarkerOptions initMarkerOptionForStations(GasStationModel gasStationModel, LatLng latLng) {
+    private MarkerOptions initMarkerOptionForStations(String name, LatLng latLng, int icon) {
         return new MarkerOptions()
                 .position(latLng)
-                .title(gasStationModel.getGasStationName())
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_drop_off));
+                .title(name)
+                .icon(BitmapDescriptorFactory.fromResource(icon));
     }
 
     private MarkerOptions initMarkerOptionsForUser(LatLng currentPositionLatLng) {
