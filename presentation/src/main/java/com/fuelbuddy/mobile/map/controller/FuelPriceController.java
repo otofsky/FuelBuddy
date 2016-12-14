@@ -36,7 +36,7 @@ public class FuelPriceController {
 
     public void populateFuelPriceBarsSection(List<GasStationModel> gasStationModels) {
         gasStationAdapter.clear();
-        gasStationModelList.clear();
+        clearCurrentSectionTable();
         initAdapter(gasStationModels);
         initView();
         gasStationAdapter.notifyDataSetChanged();
@@ -47,8 +47,16 @@ public class FuelPriceController {
         }
     }
     private void initView() {
+        view.removeAllViews();
         for (int i = 0; i < gasStationAdapter.getCount(); ++i) {
             view.addView(gasStationAdapter.getView(i, null, null));
+        }
+    }
+
+    private void clearCurrentSectionTable() {
+        int count = view.getChildCount();
+        if (count > 1) {
+            view.removeViews(0,count - 1);
         }
     }
 }
