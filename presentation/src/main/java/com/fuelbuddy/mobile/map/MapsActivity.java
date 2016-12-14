@@ -60,7 +60,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     private Map map;
 
     private GoogleApiClient googleApiClient;
-
     private MapsComponent mMapsComponent;
 
     @BindView(R.id.fuelPriceHolderView)
@@ -74,6 +73,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     FuelPriceController mFuelPriceController;
     private ArrayList<LatLng> listLatLng;
     private LatLng currentPositionLatLng;
+
+    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"),Double.valueOf("8.514181137084961"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -109,7 +110,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+      //  getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -130,8 +131,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
         this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-        map.showUserCurrentPosition(currentPositionLatLng);
-        mapPresenter.submitSearch(locationUpdateEvent.getLatLng());
+        map.showUserCurrentPosition(fakeCurrentPositionLatLng);
+        mapPresenter.submitSearch(fakeCurrentPositionLatLng);
     }
 
     @Override
@@ -235,7 +236,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-
         DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -246,16 +246,25 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
             }
         }).show();
         return false;
-
     }
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
-        map.clear();
-        map.showUserCurrentPosition(currentPositionLatLng);
         map.seFuelStationsPositions(gasStationModelList);
+        map.showUserCurrentPosition(currentPositionLatLng);
+
         hideLoading();
+    }
+
+    @Override
+    public void showSuccessMessage(String message) {
+        DialogFactory.createSimpleSnackBarInfo(fuelPriceHolderView,message);
+    }
+
+    @Override
+    public void refreshFuelPrices() {
+        mapPresenter.submitSearch(fakeCurrentPositionLatLng);
     }
 
     @DebugLog
@@ -325,7 +334,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel) {
+            map.clear();
             map.showSelectedGasStation(gasStationModel.getGasStationId());
+            map.showUserCurrentPosition(currentPositionLatLng);
             mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 4.64000, 5.87000, 6.87000));
         }
     };

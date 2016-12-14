@@ -6,10 +6,13 @@ import android.util.Log;
 import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
+import com.fuelbuddy.exception.DefaultErrorBundle;
+import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationList;
 import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
 import com.fuelbuddy.mobile.base.BasePresenter;
+import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.google.android.gms.maps.model.LatLng;
@@ -31,6 +34,8 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     private PositionMapper mPositionMapper;
 
 
+
+
     @Inject
     public MapPresenter(@Named("gasStationList")GetGasStationList getGasStationList,
                         UpdateFuelPricesInteractor updateFuelPricesInteractor) {
@@ -43,6 +48,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     public void attachView(MapMvpView mvpView) {
         super.attachView(mvpView);
     }
+
     @DebugLog
     @Override
     public void detachView() {
@@ -71,6 +77,11 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         this.mUpdateFuelPricesInteractor.execute(new UpdateGasStationSubscriber());
     }
 
+    private void showErrorMessage(ErrorBundle errorBundle) {
+        String errorMessage = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+        getMvpView().showError(errorMessage);
+    }
+
 
     private final class GasStationsListSubscriber extends DefaultSubscriber<List<GasStation>> {
         @DebugLog
@@ -78,10 +89,9 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             getMvpView().hideLoading();
         }
         @DebugLog
-        @Override public void onError(Throwable e) {
-            Log.d("UserListSubscriber", "onError: " + e.getMessage());
-            Log.d("UserListSubscriber", "onError: " + e.getLocalizedMessage());
+        @Override public void onError(Throwable throwable) {
             getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
@@ -89,6 +99,7 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             getMvpView().hideLoading();
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
             getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
+
         }
     }
 
@@ -98,17 +109,18 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
             getMvpView().hideLoading();
         }
         @DebugLog
-        @Override public void onError(Throwable e) {
-            Log.d("UserListSubscriber", "onError: " + e.getMessage());
-            Log.d("UserListSubscriber", "onError: " + e.getLocalizedMessage());
+        @Override public void onError(Throwable throwable) {
             getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
         @Override public void onNext(Response response) {
             getMvpView().hideLoading();
-            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
-            //getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
+            getMvpView().showSuccessMessage(response.getMessage());
+            getMvpView().refreshFuelPrices();
+
+
         }
     }
 }

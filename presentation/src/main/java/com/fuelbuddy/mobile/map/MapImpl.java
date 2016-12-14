@@ -80,7 +80,7 @@ public class MapImpl implements Map {
 
     @Override
     public void showSelectedGasStation(String gasStationID) {
-        mMap.clear();
+
         List<LatLng> listLatLng = new ArrayList<LatLng>();
         for (GasStationModel gs : gasStationModelList) {
             LatLng latLng = getLatLng(gs);
@@ -90,14 +90,9 @@ public class MapImpl implements Map {
             }
             else{
                 mMap.addMarker(initMarkerOptionForStations(gs.getGasStationName(), latLng, R.mipmap.drop_on));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
             }
         }
         setZoomlevel(listLatLng);
-
-
-
-
     }
 
 

@@ -21,4 +21,7 @@ public interface MapMvpView extends MvpView {
 
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList);
 
+    public void showSuccessMessage(String message);
+
+    public void refreshFuelPrices();
 }

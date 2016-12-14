@@ -36,6 +36,7 @@ public class FuelPriceController {
 
     public void populateFuelPriceBarsSection(List<GasStationModel> gasStationModels) {
         gasStationAdapter.clear();
+        gasStationModelList.clear();
         initAdapter(gasStationModels);
         initView();
         gasStationAdapter.notifyDataSetChanged();

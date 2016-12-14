@@ -107,7 +107,6 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
             @Override
             public void onClick(View view) {
                 onFuelPriceClickListener.onFuelPriceClick(gasStationModel);
-                DialogFactory.createSimpleSnackBarInfo(view,gasStationModel.getGasStationName());
             }
         });
     }
@@ -142,9 +141,9 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         if (numOfHours < 2) {
             view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
         } else if (numOfHours > 2 && numOfHours < 4) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_yellow_right_rounded));
         } else {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_red_right_rounded));
         }
     }
 

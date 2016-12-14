@@ -47,8 +47,6 @@
 
     </FrameLayout>
 
-
-
     <include
         android:id="@+id/view_progress"
         layout="@layout/progress_overlay"
