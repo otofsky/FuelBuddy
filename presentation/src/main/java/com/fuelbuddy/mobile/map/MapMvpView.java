@@ -11,14 +11,6 @@ import java.util.List;
  */
 public interface MapMvpView extends MvpView {
 
-    public void removeMarkers();
-
-    public void showInfoTest(String info);
-
-    public void showMarkerAt(float latitude, float longitude);
-
-    public void showMarkersAt(float latitude, float longitude);
-
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList);
 
     public void showSuccessMessage(String message);

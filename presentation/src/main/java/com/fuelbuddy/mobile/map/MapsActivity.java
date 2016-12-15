@@ -23,6 +23,8 @@ import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
+import com.fuelbuddy.mobile.map.controller.Map;
+import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
@@ -131,8 +133,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
         this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-        map.showUserCurrentPosition(fakeCurrentPositionLatLng);
-        mapPresenter.submitSearch(fakeCurrentPositionLatLng);
+        map.showUserCurrentPosition(currentPositionLatLng);
+        mapPresenter.submitSearch(currentPositionLatLng);
     }
 
     @Override
@@ -152,7 +154,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -182,20 +183,23 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (status) {
             case ConnectionResult.SUCCESS:
-                googleApiClient = new GoogleApiClient.Builder(this)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .addApi(LocationServices.API)
-                        .build();
+                googleApiClient = buildGoogleClientApi();
                 break;
             case ConnectionResult.SERVICE_MISSING:
             case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
             case ConnectionResult.SERVICE_DISABLED:
-                /*Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, REQUEST_RESOLVE_ERROR);
-                dialog.show();*/
                 break;
         }
         return status;
+    }
+
+    @NonNull
+    private GoogleApiClient buildGoogleClientApi() {
+        return new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     private void startTrackLocationService() {
@@ -209,30 +213,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @DebugLog
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.map = new MapImpl();
-        map.initMap(googleMap, this);
+        this.map = new MapController();
+        map.initMap(getApplicationContext(), googleMap, this);
     }
 
-    @Override
-    public void removeMarkers() {
-
-    }
-
-    @Override
-    public void showInfoTest(String info) {
-        Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showMarkerAt(float latitude, float longitude) {
-
-    }
-
-    @DebugLog
-    @Override
-    public void showMarkersAt(float latitude, float longitude) {
-
-    }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
@@ -264,7 +248,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void refreshFuelPrices() {
-        mapPresenter.submitSearch(fakeCurrentPositionLatLng);
+        mapPresenter.submitSearch(currentPositionLatLng);
     }
 
     @DebugLog

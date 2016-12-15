@@ -1,4 +1,6 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.controller;
+
+import android.content.Context;
 
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,10 +16,7 @@ public interface Map {
 
 
 
-
-    public void adjustMap();
-
-    public void initMap(GoogleMap map,GoogleMap.OnMarkerClickListener onMarkerClickListener);
+    public void initMap(Context context, GoogleMap map, GoogleMap.OnMarkerClickListener onMarkerClickListener);
 
     public void clear();
 
@@ -27,7 +26,7 @@ public interface Map {
 
     public void seFuelStationsPositions(List<GasStationModel> gasStationModelList);
 
-    public GasStationModel getItem(int position);
+
 
 
 }
