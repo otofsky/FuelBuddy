@@ -5,8 +5,8 @@
                                    android:id="@+id/toolbar"
                                    android:layout_width="match_parent"
                                    android:layout_height="?attr/actionBarSize"
-                                   android:background="#80111111"
-                                   app:theme="@style/AppThemeTransparent">
+                                   android:background="@color/app_green"
+                                   app:theme="@style/AppThemeNoActionBar">
 
 
 </android.support.v7.widget.Toolbar>

@@ -33,9 +33,9 @@ public class MapUtil {
             case STATION:
                 bitmapDescriptor =  BitmapDescriptorFactory.fromResource(icon);
                 break;
-            case USER:
+          /*  case USER:
                 bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                break;
+                break;*/
         }
         return bitmapDescriptor;
     }

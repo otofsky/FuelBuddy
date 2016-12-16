@@ -1,13 +1,21 @@
 package com.fuelbuddy.mobile.map.controller;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 
+import com.fuelbuddy.mobile.BuildConfig;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.MapUtil;
+import com.fuelbuddy.mobile.util.StringHelper;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -23,15 +31,54 @@ public class MapController implements Map {
     Context mContext;
     private GoogleMap mMap;
     private List<GasStationModel> gasStationModelList;
+    public static final float MAP_DEFAULTCAMERA_BEARING = 334.04f;
+    public static final float MAP_DEFAULTCAMERA_ZOOM = 17.7f;
+    public static final float MAP_DEFAULTCAMERA_TILT = 0f;
+    /**
+     * Default position of the camera that shows the venue.
+     */
+/*    private static final CameraPosition VENUE_CAMERA =
+            new CameraPosition.Builder().bearing(MAP_DEFAULTCAMERA_BEARING)
+                    .zoom(MAP_DEFAULTCAMERA_ZOOM)
+                    .tilt(MAP_DEFAULTCAMERA_TILT)
+                    .build();*/
+
 
     @Override
-    public void initMap(Context context ,GoogleMap map, GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+    public void initMap(Context context, GoogleMap map, GoogleMap.OnMarkerClickListener onMarkerClickListener) {
         this.mContext = context;
         this.mMap = map;
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+      /*  mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(this);
+        mMap.setOnCameraChangeListener(this);*/
         mMap.setOnMarkerClickListener(onMarkerClickListener);
+
+        UiSettings mapUiSettings = mMap.getUiSettings();
+        mapUiSettings.setZoomControlsEnabled(false);
+        mapUiSettings.setMapToolbarEnabled(false);
+
+
+        if (mMap != null) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                return;
+            }
+            mMap.setMyLocationEnabled(true);
+
+        }
+        //centerOnVenue(false);
     }
+
+/*    private void centerOnVenue(boolean animate) {
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(VENUE_CAMERA);
+        if (animate) {
+            mMap.animateCamera(camera);
+        } else {
+            mMap.moveCamera(camera);
+        }
+    }*/
+
 
     /*
     * Throw exception
@@ -39,16 +86,16 @@ public class MapController implements Map {
     @Override
     public void showUserCurrentPosition(LatLng currentPositionLatLng) {
         if (mMap != null) {
-            mMap.addMarker(MapUtil.initMarkerOptions(mContext.getString(R.string.map_user_current_position), currentPositionLatLng, MapUtil.MarkerType.USER,0));
+            mMap.addMarker(MapUtil.initMarkerOptions(mContext.getString(R.string.map_user_current_position), currentPositionLatLng, MapUtil.MarkerType.USER, 0));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPositionLatLng, MapUtil.ZOOM));
         }
     }
 
     @Override
-    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList) {
+    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
-            addMarkers(gasStationModelList);
+            addMarkers(gasStationModelList,id);
         }
     }
 
@@ -57,15 +104,21 @@ public class MapController implements Map {
         mMap.clear();
     }
 
-    private void addMarkers(List<GasStationModel> gasStationModelList) {
+    private void addMarkers(List<GasStationModel> gasStationModelList, String id) {
         List<LatLng> listLatLng = new ArrayList<LatLng>();
         for (GasStationModel gs : gasStationModelList) {
             LatLng latLng = getLatLng(gs);
-            listLatLng.add(latLng);
-            mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
-                    latLng,
-                    MapUtil.MarkerType.STATION,
-                    R.mipmap.ic_drop_off));
+            if(!StringHelper.isNullOrEmpty(id)) {
+                listLatLng.add(latLng);
+                if (!gs.getGasStationId().equalsIgnoreCase(id)) {
+                    initUnselectedMarker(gs, latLng);
+                } else {
+                    initSelectedMarker(gs, latLng);
+                }
+            }else{
+                initUnselectedMarker(gs, latLng);
+            }
+
         }
         setZoomLevel(listLatLng);
     }
@@ -77,21 +130,27 @@ public class MapController implements Map {
         for (GasStationModel gs : gasStationModelList) {
             LatLng latLng = getLatLng(gs);
             listLatLng.add(latLng);
-            if(!gs.getGasStationId().equalsIgnoreCase(gasStationID)) {
-
-                mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
-                        latLng,
-                        MapUtil.MarkerType.STATION,
-                        R.mipmap.ic_drop_off));
-            }
-            else{
-                mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
-                        latLng,
-                        MapUtil.MarkerType.STATION,
-                        R.mipmap.drop_on));
+            if (!gs.getGasStationId().equalsIgnoreCase(gasStationID)) {
+                initUnselectedMarker(gs, latLng);
+            } else {
+                initSelectedMarker(gs, latLng);
             }
         }
-        setZoomLevel(listLatLng);
+        //setZoomLevel(listLatLng);
+    }
+
+    private void initSelectedMarker(GasStationModel gs, LatLng latLng) {
+        mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
+                latLng,
+                MapUtil.MarkerType.STATION,
+                R.mipmap.drop_on));
+    }
+
+    private void initUnselectedMarker(GasStationModel gs, LatLng latLng) {
+        mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
+                latLng,
+                MapUtil.MarkerType.STATION,
+                R.mipmap.ic_drop_off));
     }
 
 

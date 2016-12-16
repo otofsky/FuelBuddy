@@ -1,8 +1,6 @@
 package com.fuelbuddy.mobile.map;
 
 
-import android.util.Log;
-
 import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
@@ -34,8 +32,6 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     private PositionMapper mPositionMapper;
 
 
-
-
     @Inject
     public MapPresenter(@Named("gasStationList")GetGasStationList getGasStationList,
                         UpdateFuelPricesInteractor updateFuelPricesInteractor) {
@@ -63,19 +59,24 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
 
     @DebugLog
     private void loadUserList(LatLng loLatLng) {
-        this.getGasStationList(loLatLng);
+        this.getFuelPrices(loLatLng);
     }
 
-    private void getGasStationList(LatLng loLatLn) {
-
+    private void getFuelPrices(LatLng loLatLn) {
         this.getGasStationList.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
-        this.getGasStationList.execute(new GasStationsListSubscriber());
+        this.getGasStationList.execute(new FuelPricesListSubscriber());
+    }
+
+    public void getUpdatedFuelPrices(LatLng loLatLn) {
+        this.getGasStationList.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
+        this.getGasStationList.execute(new FuelUpdatedPricesListSubscriber());
     }
 
     public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
         this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuelPricesUpdate);
-        this.mUpdateFuelPricesInteractor.execute(new UpdateGasStationSubscriber());
+        this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
     }
+
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
@@ -83,7 +84,46 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
     }
 
 
-    private final class GasStationsListSubscriber extends DefaultSubscriber<List<GasStation>> {
+    private final class FuelPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
+        @DebugLog
+        @Override public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+        @DebugLog
+        @Override public void onError(Throwable throwable) {
+            getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        }
+
+        @DebugLog
+        @Override public void onNext(List<GasStation> gasStations) {
+            getMvpView().hideLoading();
+            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
+            getMvpView().showFuelPriceBars(gasStationModelDataMapper.transform(gasStations));
+        }
+    }
+
+    private final class UpdateFuelPriceSubscriber extends DefaultSubscriber<Response> {
+        @DebugLog
+        @Override public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+        @DebugLog
+        @Override public void onError(Throwable throwable) {
+            getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        }
+
+        @DebugLog
+        @Override public void onNext(Response response) {
+            getMvpView().hideLoading();
+            getMvpView().showSuccessMessage(response.getMessage());
+            getMvpView().refreshFuelPrices();
+
+        }
+    }
+
+    private final class FuelUpdatedPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
         @DebugLog
         @Override public void onCompleted() {
             getMvpView().hideLoading();
@@ -103,24 +143,5 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         }
     }
 
-    private final class UpdateGasStationSubscriber extends DefaultSubscriber<Response> {
-        @DebugLog
-        @Override public void onCompleted() {
-            getMvpView().hideLoading();
-        }
-        @DebugLog
-        @Override public void onError(Throwable throwable) {
-            getMvpView().hideLoading();
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-        }
 
-        @DebugLog
-        @Override public void onNext(Response response) {
-            getMvpView().hideLoading();
-            getMvpView().showSuccessMessage(response.getMessage());
-            getMvpView().refreshFuelPrices();
-
-
-        }
-    }
 }

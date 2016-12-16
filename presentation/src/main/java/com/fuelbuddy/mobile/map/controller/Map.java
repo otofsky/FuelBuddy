@@ -24,7 +24,7 @@ public interface Map {
 
     public void showSelectedGasStation(String gasStationId);
 
-    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList);
+    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id);
 
 
 

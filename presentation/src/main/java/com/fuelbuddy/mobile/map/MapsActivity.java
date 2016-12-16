@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,12 +32,14 @@ import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -56,6 +60,12 @@ import hugo.weaving.DebugLog;
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
+
+    public static final String[] PERMISSIONS =
+            new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+
     @Inject
     public MapPresenter mapPresenter;
 
@@ -75,8 +85,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     FuelPriceController mFuelPriceController;
     private ArrayList<LatLng> listLatLng;
     private LatLng currentPositionLatLng;
+    private String selectedIdStation;
 
-    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"),Double.valueOf("8.514181137084961"));
+    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -112,11 +123,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-      //  getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //  getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     @Override
     protected void onStart() {
@@ -229,13 +241,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 startActivity(mapIntent);
             }
         }).show();
-        return false;
+        return true;
     }
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
-        map.seFuelStationsPositions(gasStationModelList);
+        map.clear();
+        map.seFuelStationsPositions(gasStationModelList,selectedIdStation);
         map.showUserCurrentPosition(currentPositionLatLng);
 
         hideLoading();
@@ -243,12 +256,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void showSuccessMessage(String message) {
-        DialogFactory.createSimpleSnackBarInfo(fuelPriceHolderView,message);
+        DialogFactory.createSimpleSnackBarInfo(fuelPriceHolderView, message);
     }
 
     @Override
     public void refreshFuelPrices() {
-        mapPresenter.submitSearch(currentPositionLatLng);
+        mapPresenter.getUpdatedFuelPrices(currentPositionLatLng);
     }
 
     @DebugLog
@@ -318,10 +331,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel) {
+            selectedIdStation = gasStationModel.getGasStationId();
             map.clear();
-            map.showSelectedGasStation(gasStationModel.getGasStationId());
+            map.showSelectedGasStation(selectedIdStation);
             map.showUserCurrentPosition(currentPositionLatLng);
-            mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 4.64000, 5.87000, 6.87000));
+            mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 16.64000, 17.87000, 19.87000));
         }
     };
 }
