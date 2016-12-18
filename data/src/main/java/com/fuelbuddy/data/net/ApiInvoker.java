@@ -46,7 +46,6 @@ public class ApiInvoker {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addConverterFactory(PrimitiveConverterFactory.create())
                 .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .client(client)
                 .build();

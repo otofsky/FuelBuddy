@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import com.fuelbuddy.mobile.BuildConfig;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.MapUtil;
@@ -32,16 +31,12 @@ public class MapController implements Map {
     private GoogleMap mMap;
     private List<GasStationModel> gasStationModelList;
     public static final float MAP_DEFAULTCAMERA_BEARING = 334.04f;
-    public static final float MAP_DEFAULTCAMERA_ZOOM = 17.7f;
+    public static final float MAP_DEFAULTCAMERA_ZOOM = 12.7f;
     public static final float MAP_DEFAULTCAMERA_TILT = 0f;
+
     /**
      * Default position of the camera that shows the venue.
      */
-/*    private static final CameraPosition VENUE_CAMERA =
-            new CameraPosition.Builder().bearing(MAP_DEFAULTCAMERA_BEARING)
-                    .zoom(MAP_DEFAULTCAMERA_ZOOM)
-                    .tilt(MAP_DEFAULTCAMERA_TILT)
-                    .build();*/
 
 
     @Override
@@ -70,14 +65,22 @@ public class MapController implements Map {
         //centerOnVenue(false);
     }
 
-/*    private void centerOnVenue(boolean animate) {
-        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(VENUE_CAMERA);
+    private void centerOnGasStation(boolean animate, LatLng latLng) {
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(centerOnPosition(latLng));
         if (animate) {
             mMap.animateCamera(camera);
         } else {
             mMap.moveCamera(camera);
         }
-    }*/
+    }
+
+    private static CameraPosition centerOnPosition(LatLng latLng) {
+        return new CameraPosition.Builder().bearing(MAP_DEFAULTCAMERA_BEARING)
+                .zoom(MAP_DEFAULTCAMERA_ZOOM)
+                .target(latLng)
+                .tilt(MAP_DEFAULTCAMERA_TILT)
+                .build();
+    }
 
 
     /*
@@ -95,7 +98,7 @@ public class MapController implements Map {
     public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
-            addMarkers(gasStationModelList,id);
+            addMarkers(gasStationModelList, id);
         }
     }
 
@@ -108,14 +111,14 @@ public class MapController implements Map {
         List<LatLng> listLatLng = new ArrayList<LatLng>();
         for (GasStationModel gs : gasStationModelList) {
             LatLng latLng = getLatLng(gs);
-            if(!StringHelper.isNullOrEmpty(id)) {
+            if (!StringHelper.isNullOrEmpty(id)) {
                 listLatLng.add(latLng);
                 if (!gs.getGasStationId().equalsIgnoreCase(id)) {
                     initUnselectedMarker(gs, latLng);
                 } else {
                     initSelectedMarker(gs, latLng);
                 }
-            }else{
+            } else {
                 initUnselectedMarker(gs, latLng);
             }
 
@@ -134,9 +137,10 @@ public class MapController implements Map {
                 initUnselectedMarker(gs, latLng);
             } else {
                 initSelectedMarker(gs, latLng);
+                centerOnGasStation(true, latLng);
             }
         }
-        //setZoomLevel(listLatLng);
+
     }
 
     private void initSelectedMarker(GasStationModel gs, LatLng latLng) {

@@ -36,8 +36,8 @@ public class CheckUserInteractor extends UseCase {
         // jesli istnieje
         //to zapisje dane lokalnie
         // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
-        //return userRepository.getCheckUser(mUser.getUserId()).concatMap(StoreRemoteUser);
-        return userRepository.getCheckUser(mUser.getUserId());
+        //return userRepository.getCheckUser(mUser.getUserID()).concatMap(StoreRemoteUser);
+        return userRepository.getCheckUser(mUser.getUserID());
     }
 
 /*

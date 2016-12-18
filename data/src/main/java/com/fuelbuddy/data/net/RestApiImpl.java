@@ -18,7 +18,6 @@ package com.fuelbuddy.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 
 import com.fuelbuddy.data.Position;
@@ -27,11 +26,9 @@ import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * {@link RestApiService} implementation for retrieving data from the network.
@@ -86,7 +83,7 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return ApiInvoker.getInstance().addNewUser(userEntity.getUserId(),userEntity.getProfileName(),userEntity.getEmail());
+        return ApiInvoker.getInstance().addNewUser(userEntity.getUserID(),userEntity.getProfileName(),userEntity.getEmail());
     }
 
 

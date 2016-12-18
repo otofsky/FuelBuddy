@@ -138,16 +138,6 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     }
 
     @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @Override
     public void showError(String message) {
 
     }

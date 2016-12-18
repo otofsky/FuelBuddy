@@ -69,26 +69,39 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         getMvpView().showError(errorMessage);
     }
 
-    private final class CheckUserSubscriber extends DefaultSubscriber<Response> {
+    private final class CheckUserSubscriber extends DefaultSubscriber<User> {
         @DebugLog
         @Override
         public void onCompleted() {
-            Log.d(TAG, "onCompleted: ");
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            addNewUserLocally(mUserModel);// dodane w error nalzey zmienic do onNext
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-
+            addNewUseInCloud(mUserModel);
+            //getMvpView().showFuelSectionView();
+            if (throwable instanceof RetrofitException) {
+                RetrofitException error = (RetrofitException) throwable;
+                error.getKind();
+                switch (error.getKind()) {
+                    case HTTP:
+                        showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+                        break;
+                    case NETWORK:
+                        showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+                        break;
+                    case UNEXPECTED:
+                        addNewUseInCloud(mUserModel);
+                        break;
+                }
+            }
         }
 
         @DebugLog
         @Override
-        public void onNext(Response response) {
-            Log.d(TAG, "CheckUserSubscriber onNext: " + response.toString());
+        public void onNext(User response) {
             addNewUserLocally(mUserModel);
+           // getMvpView().showFuelSectionView();
         }
     }
 
@@ -97,19 +110,20 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
-
+            getMvpView().showFuelSectionView();
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+            //showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
             addNewUserLocally(mUserModel);
+
         }
     }
 
@@ -131,7 +145,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onNext(User user) {
-            Log.d(TAG, "onNext: ");
+           getMvpView().showFuelSectionView();
         }
     }
 

@@ -22,7 +22,7 @@ public class UserEntityMapper {
             throw new IllegalArgumentException("Cannot transformToUser a null value");
         }
         UserEntity userEntity = new UserEntity();
-        userEntity.setUserId(user.getUserId());
+        userEntity.setUserID(user.getUserID());
         userEntity.setProfileName(user.getProfileName());
         userEntity.setEmail(user.getEmail());
         userEntity.setTokens(user.getTokens());
@@ -36,7 +36,7 @@ public class UserEntityMapper {
             throw new IllegalArgumentException("Cannot transformToUser a null value");
         }
         User user = new User();
-        user.setUserId(userEntity.getUserId());
+        user.setUserID(userEntity.getUserID());
         user.setProfileName(userEntity.getProfileName());
         user.setEmail(userEntity.getEmail());
         user.setTokens(userEntity.getTokens());

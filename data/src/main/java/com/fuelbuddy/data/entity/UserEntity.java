@@ -7,18 +7,18 @@ public class UserEntity {
 
 
 
-    private String userId;
+    private String userID;
     private String profileName;
     private String email;
     private String profileLink;
     private String tokens;
 
-    public String getUserId() {
-        return userId;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getProfileName() {
@@ -57,7 +57,7 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "userId='" + userId + '\'' +
+                "userID='" + userID + '\'' +
                 ", profileName='" + profileName + '\'' +
                 ", email='" + email + '\'' +
                 ", profileLink='" + profileLink + '\'' +
@@ -72,7 +72,7 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (userID != null ? !userID.equals(that.userID) : that.userID != null) return false;
         if (profileName != null ? !profileName.equals(that.profileName) : that.profileName != null)
             return false;
 
@@ -85,7 +85,7 @@ public class UserEntity {
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
+        int result = userID != null ? userID.hashCode() : 0;
         result = 31 * result + (profileName != null ? profileName.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (profileLink != null ? profileLink.hashCode() : 0);

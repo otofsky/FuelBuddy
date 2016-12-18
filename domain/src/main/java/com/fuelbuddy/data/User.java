@@ -6,7 +6,7 @@ package com.fuelbuddy.data;
 
 public class User  {
 
-    private String userId;
+    private String userID;
     private String profileName;
     private String email;
     private String profileLink;
@@ -15,12 +15,12 @@ public class User  {
     public User() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getProfileName() {
@@ -58,7 +58,7 @@ public class User  {
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
+                "userID='" + userID + '\'' +
                 ", profileName='" + profileName + '\'' +
                 ", email='" + email + '\'' +
                 ", profileLink='" + profileLink + '\'' +
@@ -73,7 +73,7 @@ public class User  {
 
         User user = (User) o;
 
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
+        if (userID != null ? !userID.equals(user.userID) : user.userID != null) return false;
         if (profileName != null ? !profileName.equals(user.profileName) : user.profileName != null)
             return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
@@ -85,7 +85,7 @@ public class User  {
 
     @Override
     public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
+        int result = userID != null ? userID.hashCode() : 0;
         result = 31 * result + (profileName != null ? profileName.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (profileLink != null ? profileLink.hashCode() : 0);

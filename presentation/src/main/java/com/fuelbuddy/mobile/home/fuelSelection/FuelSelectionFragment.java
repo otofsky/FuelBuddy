@@ -114,15 +114,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
         EventBus.getDefault().post(new LoginViewEvent());
     }
 
-    @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
 
     @Override
     public void showError(String message) {

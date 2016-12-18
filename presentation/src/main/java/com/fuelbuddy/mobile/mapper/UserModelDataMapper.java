@@ -7,10 +7,6 @@ import com.fuelbuddy.data.User;
 import com.fuelbuddy.mobile.di.PerActivity;
 import com.fuelbuddy.mobile.model.UserModel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.inject.Inject;
 
 
@@ -31,7 +27,7 @@ public class UserModelDataMapper {
       throw new IllegalArgumentException("Cannot transformToUser a null value");
     }
     UserModel userModel = new UserModel();
-    userModel.setUserId(user.getUserId());
+    userModel.setUserId(user.getUserID());
     userModel.setProfileName(user.getProfileName());
     userModel.setEmail(user.getEmail());
 
@@ -44,7 +40,7 @@ public class UserModelDataMapper {
       throw new IllegalArgumentException("Cannot transformToUser a null value");
     }
     User user = new User();
-    user.setUserId(userModel.getUserId());
+    user.setUserID(userModel.getUserId());
     user.setProfileName(userModel.getProfileName());
     user.setEmail(userModel.getEmail());
     return user;

@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationRequest;
 public class AndroidApplication extends Application {
 
     private ApplicationComponent component;
-    private LocationRequestData locationRequestData = LocationRequestData.FREQUENCY_MEDIUM_TWO;
+    private LocationRequestData locationRequestData = LocationRequestData.FREQUENCY_MEDIUM;
 
 
     @Override

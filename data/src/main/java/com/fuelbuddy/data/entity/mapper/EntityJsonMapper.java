@@ -18,7 +18,7 @@ public class EntityJsonMapper {
 
     public String toJson(UserEntity entity) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("userId", entity.getUserId());
+        obj.put("userId", entity.getUserID());
         obj.put("profileName", entity.getProfileName());
         obj.put("profileEmail", entity.getEmail());
         obj.put("profileLink", entity.getProfileLink());
@@ -32,7 +32,7 @@ public class EntityJsonMapper {
         if (!obj.equalsIgnoreCase("")) {
             JSONObject jsonObject = new JSONObject(obj);
             userEntity = new UserEntity();
-            userEntity.setUserId(jsonObject.getString("userId"));
+            userEntity.setUserID(jsonObject.getString("userId"));
             userEntity.setProfileName("profileName");
         }
         return userEntity;

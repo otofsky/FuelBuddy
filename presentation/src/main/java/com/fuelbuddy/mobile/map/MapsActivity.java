@@ -76,6 +76,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
+
     @BindView(R.id.view_progress)
     RelativeLayout progressView;
 
@@ -249,7 +250,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
         map.clear();
         map.seFuelStationsPositions(gasStationModelList,selectedIdStation);
-        map.showUserCurrentPosition(currentPositionLatLng);
+        //map.showUserCurrentPosition(currentPositionLatLng);
 
         hideLoading();
     }
@@ -283,20 +284,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @DebugLog
     @Override
-    public void showRetry() {
-
-    }
-
-    @DebugLog
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @DebugLog
-    @Override
     public void showError(String message) {
-
+        DialogFactory.createSimpleSnackBarInfo(toolbar, message);
     }
 
     @Override
@@ -306,7 +295,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public Context context() {
-        return null;
+        return this;
     }
 
     @DebugLog
@@ -330,12 +319,34 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
-        public void onFuelPriceClick(GasStationModel gasStationModel) {
-            selectedIdStation = gasStationModel.getGasStationId();
-            map.clear();
-            map.showSelectedGasStation(selectedIdStation);
-            map.showUserCurrentPosition(currentPositionLatLng);
-            mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 16.64000, 17.87000, 19.87000));
+        public void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate) {
+            switch (fuelPriceUpdate){
+                case GREEN:
+                    selectedIdStation = gasStationModel.getGasStationId();
+                    map.clear();
+                    //map.showUserCurrentPosition(currentPositionLatLng);
+                    map.showSelectedGasStation(selectedIdStation);
+                    DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.update_unavailable));
+                    break;
+                case YELLOW:
+
+                    selectedIdStation = gasStationModel.getGasStationId();
+                    map.showSelectedGasStation(selectedIdStation);
+                    updateFuelPrices(gasStationModel);
+                    break;
+                case RED:
+
+                    selectedIdStation = gasStationModel.getGasStationId();
+                    map.showSelectedGasStation(selectedIdStation);
+                    updateFuelPrices(gasStationModel);
+                    break;
+            }
         }
     };
+
+    private void updateFuelPrices(GasStationModel gasStationModel) {
+        map.clear();
+       /* map.showUserCurrentPosition(currentPositionLatLng);*/
+        mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
+    }
 }

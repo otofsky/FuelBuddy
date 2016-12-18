@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map.listener;
 
+import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.model.GasStationModel;
 
 /**
@@ -8,6 +9,6 @@ import com.fuelbuddy.mobile.model.GasStationModel;
 
 public interface OnFuelPriceClickListener {
 
-    void onFuelPriceClick(GasStationModel gasStationModel);
+    void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate);
 
 }

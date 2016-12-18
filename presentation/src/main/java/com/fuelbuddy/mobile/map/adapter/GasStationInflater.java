@@ -5,15 +5,16 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.DateHelper;
-import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.ResourcesHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
@@ -33,7 +34,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     String TAG = getClass().getName();
 
 
-    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode,OnFuelPriceClickListener onFuelPriceClickListener) {
+    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener) {
         this.context = context;
         inflater = LayoutInflater.from(this.context);
         this.fuelPriceMode = fuelPriceMode;
@@ -42,28 +43,28 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
     @Override
     public View getView(GasStationModel item, View convertView, int positionFlag) {
-         ViewHolder holder = null;
+        ViewHolder holder = null;
         if (convertView == null) {
-            switch (fuelPriceMode){
+            switch (fuelPriceMode) {
                 case BENZIN_92:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
-                    setBtnListener(holder.fuelPriceBtn,item);
+                    setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
                 case BENZIN_95:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
-                    setBtnListener(holder.fuelPriceBtn,item);
+                    setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
                 case DIESEL:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_diesel, null);
                     holder = new ViewHolder();
                     holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
-                    setBtnListener(holder.fuelPriceBtn,item);
+                    setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
             }
@@ -102,11 +103,12 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
 
-    private void setBtnListener(AppCompatButton appCompatButton, final GasStationModel gasStationModel){
+    private void setBtnListener(AppCompatButton appCompatButton, final GasStationModel gasStationModel) {
         appCompatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFuelPriceClickListener.onFuelPriceClick(gasStationModel);
+                FuelPriceUpdate fuelPriceUpdate = isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated());
+                onFuelPriceClickListener.onFuelPriceClick(gasStationModel, fuelPriceUpdate);
             }
         });
     }
@@ -139,13 +141,25 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     public void setSetFuelColorState(String lastUpDatePrice, View view) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_green_right_rounded));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_green_right_rounded));
         } else if (numOfHours > 2 && numOfHours < 4) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_yellow_right_rounded));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_yellow_right_rounded));
         } else {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context,R.drawable.button_red_right_rounded));
+            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_red_right_rounded));
         }
     }
+
+    public FuelPriceUpdate isFuelPriceAvailableForUpdate(String lastUpDatePrice) {
+        int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
+        if (numOfHours < 2) {
+            return FuelPriceUpdate.GREEN;
+        } else if (numOfHours > 2 && numOfHours < 4) {
+            return FuelPriceUpdate.YELLOW;
+        } else {
+            return FuelPriceUpdate.RED;
+        }
+    }
+
 
     public static class ViewHolder {
         AppCompatButton fuelPriceBtn;

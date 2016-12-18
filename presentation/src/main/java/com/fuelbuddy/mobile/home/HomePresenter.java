@@ -44,6 +44,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @DebugLog
         @Override
         public void onCompleted() {
+
         }
 
         @DebugLog
