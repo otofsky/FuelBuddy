@@ -33,6 +33,15 @@ public final class DialogFactory {
         return alertDialog.create();
     }
 
+    public static Dialog createErrorDialog(Context context, Dialog.OnClickListener onClickListener) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
+                .setTitle("Gps is not available")
+                .setMessage("Make sure the GPS is turned on")
+                .setPositiveButton("Yes",onClickListener)
+                .setNegativeButton("No",null);
+        return alertDialog.create();
+    }
+
     public static Dialog createGenericErrorDialog(Context context, @StringRes int messageResource) {
         return createGenericErrorDialog(context, context.getString(messageResource));
     }

@@ -51,7 +51,6 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.initializeInjector();
-
         initPresenter();
         ButterKnife.bind(this);
         setToolbar();

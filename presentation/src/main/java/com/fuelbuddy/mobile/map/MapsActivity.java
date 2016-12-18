@@ -1,11 +1,13 @@
 package com.fuelbuddy.mobile.map;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +34,7 @@ import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.LocationUtil;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.common.ConnectionResult;
@@ -58,7 +61,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, Dialog.OnClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
 
     public static final String[] PERMISSIONS =
@@ -120,16 +123,23 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
+        if(!LocationUtil.isLocationEnabled(MapsActivity.this)){
+            DialogFactory.createErrorDialog(MapsActivity.this,this).show();
+        }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
     }
 
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        //  getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
     @Override
     protected void onStart() {
@@ -324,18 +334,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 case GREEN:
                     selectedIdStation = gasStationModel.getGasStationId();
                     map.clear();
-                    //map.showUserCurrentPosition(currentPositionLatLng);
                     map.showSelectedGasStation(selectedIdStation);
                     DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.update_unavailable));
                     break;
                 case YELLOW:
-
                     selectedIdStation = gasStationModel.getGasStationId();
                     map.showSelectedGasStation(selectedIdStation);
                     updateFuelPrices(gasStationModel);
                     break;
                 case RED:
-
                     selectedIdStation = gasStationModel.getGasStationId();
                     map.showSelectedGasStation(selectedIdStation);
                     updateFuelPrices(gasStationModel);
@@ -349,4 +356,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
        /* map.showUserCurrentPosition(currentPositionLatLng);*/
         mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
     }
+
+
 }
