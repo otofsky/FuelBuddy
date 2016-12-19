@@ -96,6 +96,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'gun0912.ted:tedpermission:1.0.2'
 
     apply plugin: 'com.google.gms.google-services'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {

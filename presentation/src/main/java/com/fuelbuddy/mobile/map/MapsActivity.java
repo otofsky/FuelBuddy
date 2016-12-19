@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,18 +34,18 @@ import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.LocationUtil;
-import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -123,15 +122,36 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
-        if(!LocationUtil.isLocationEnabled(MapsActivity.this)){
-            DialogFactory.createErrorDialog(MapsActivity.this,this).show();
+
+
+        if (!LocationUtil.isLocationEnabled(MapsActivity.this)) {
+            DialogFactory.createErrorDialog(MapsActivity.this, this).show();
         }
+
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .check();
     }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            Toast.makeText(MapsActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(MapsActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
     }
 
     private void setToolbar() {
@@ -259,7 +279,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
         map.clear();
-        map.seFuelStationsPositions(gasStationModelList,selectedIdStation);
+        map.seFuelStationsPositions(gasStationModelList, selectedIdStation);
         //map.showUserCurrentPosition(currentPositionLatLng);
 
         hideLoading();
@@ -330,7 +350,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate) {
-            switch (fuelPriceUpdate){
+            switch (fuelPriceUpdate) {
                 case GREEN:
                     selectedIdStation = gasStationModel.getGasStationId();
                     map.clear();
