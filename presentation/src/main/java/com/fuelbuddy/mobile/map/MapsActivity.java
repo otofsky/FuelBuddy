@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,6 +87,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    BottomSheetBehavior bottomSheetBehavior;
+    View bottomSheet;
+
     FuelPriceController mFuelPriceController;
     private ArrayList<LatLng> listLatLng;
     private LatLng currentPositionLatLng;
@@ -123,6 +128,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
 
+         bottomSheet = findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
 
         if (!LocationUtil.isLocationEnabled(MapsActivity.this)) {
             DialogFactory.createErrorDialog(MapsActivity.this, this).show();
@@ -138,6 +146,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
+
             Toast.makeText(MapsActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
         }
 
@@ -263,7 +272,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        //heading.setText("Welcome");
+
+
+   /*     DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(marker.getPosition()));
@@ -272,6 +289,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 startActivity(mapIntent);
             }
         }).show();
+        return true;*/
         return true;
     }
 
@@ -369,13 +387,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                     break;
             }
         }
+
     };
 
     private void updateFuelPrices(GasStationModel gasStationModel) {
+
         map.clear();
        /* map.showUserCurrentPosition(currentPositionLatLng);*/
         mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
     }
+
+
 
 
 }

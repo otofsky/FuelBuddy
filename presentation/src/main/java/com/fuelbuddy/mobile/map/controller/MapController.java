@@ -52,6 +52,8 @@ public class MapController implements Map {
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
+       // mMap.setMyLocationEnabled(true);
+        mapUiSettings.setMyLocationButtonEnabled(true);
 
 
         if (mMap != null) {
@@ -81,8 +83,6 @@ public class MapController implements Map {
                 .tilt(MAP_DEFAULTCAMERA_TILT)
                 .build();
     }
-
-
     /*
     * Throw exception
     * */

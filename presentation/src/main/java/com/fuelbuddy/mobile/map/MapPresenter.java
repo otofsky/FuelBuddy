@@ -118,7 +118,6 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
         @Override public void onNext(Response response) {
             getMvpView().hideLoading();
             getMvpView().showSuccessMessage(response.getMessage());
-            getMvpView().refreshFuelPrices();
 
         }
     }

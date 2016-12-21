@@ -16,11 +16,15 @@ public class UserUtil {
 
     public UserModel populateGoogleUser(GoogleSignInAccount account){
         UserModel googleUser = new UserModel();
-        if(account!=null) {
-            googleUser.setUserId(account.getId());
+       // if(account!=null) {
+            /*googleUser.setUserId(account.getId());
             googleUser.setProfileName(account.getDisplayName());
-            googleUser.setEmail(account.getEmail());
-        }
+            googleUser.setEmail(account.getEmail());*/
+
+            googleUser.setUserId("33333");
+            googleUser.setProfileName("Bgilly Kid");
+            googleUser.setEmail("killler@ghoust.com");
+       // }
         return googleUser;
     }
 
