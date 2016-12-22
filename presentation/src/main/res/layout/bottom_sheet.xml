@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="#d3d3d3"
                 app:behavior_hideable="true"
                 app:behavior_peekHeight="70dp"
+                android:background="@color/white"
                 app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
-        android:id="@+id/heading"
+        android:id="@+id/gasStationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
-        android:text="Collapsed"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        tools:text="Collapsed"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Main Content"
-        android:textSize="20sp" />
+        android:id="@+id/fuelType92Tv"
+        android:layout_below="@+id/gasStationName"
+        style="@style/TextViewFuelPriceDetail"
+        android:text="Price"/>
+
+    <TextView
+        android:id="@+id/fuelType95Tv"
+        android:layout_below="@+id/fuelType92Tv"
+        style="@style/TextViewFuelPriceDetail"
+        android:text="Price"/>
+
+    <TextView
+        android:id="@+id/fuelTypeDieselTv"
+        android:layout_below="@+id/fuelType95Tv"
+        style="@style/TextViewFuelPriceDetail"
+        android:text="Price"/>
 
 </RelativeLayout>

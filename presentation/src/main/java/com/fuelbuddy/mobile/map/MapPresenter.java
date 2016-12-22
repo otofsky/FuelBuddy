@@ -13,6 +13,7 @@ import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
+import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -79,8 +80,8 @@ public class MapPresenter extends BasePresenter<MapMvpView> {
 
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
-        getMvpView().showError(errorMessage);
+        ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+        getMvpView().showError(errorResponse.getErrorMassage());
     }
 
 

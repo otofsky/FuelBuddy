@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 
 import okhttp3.ResponseBody;
+import okhttp3.internal.framed.ErrorCode;
 import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -21,6 +22,7 @@ public class RetrofitException extends RuntimeException {
     }
 
     public static RetrofitException networkError(IOException exception) {
+
         return new RetrofitException(exception.getMessage(), null, null, Kind.NETWORK, exception, null);
     }
 

@@ -14,6 +14,7 @@ import com.fuelbuddy.interactor.SetUserLocallyInteractor;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.UserModelDataMapper;
+import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.fuelbuddy.mobile.model.UserModel;
 
 import javax.inject.Inject;
@@ -64,8 +65,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.mSetUserLocallyInteractor.execute(new AddUserLocallySubscriber());
     }
 
-    private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+    private void showErrorMessage(String errorMessage) {
+
         getMvpView().showError(errorMessage);
     }
 
@@ -78,22 +79,12 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            addNewUseInCloud(mUserModel);
-            //getMvpView().showFuelSectionView();
             if (throwable instanceof RetrofitException) {
-                RetrofitException error = (RetrofitException) throwable;
-                error.getKind();
-                switch (error.getKind()) {
-                    case HTTP:
-                        showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-                        break;
-                    case NETWORK:
-                        showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-                        break;
-                    case UNEXPECTED:
-                        addNewUseInCloud(mUserModel);
-                        break;
+                ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
+                if (errorResponse.getErrorCode() != null && errorResponse.getErrorCode() == 404) {
+                    addNewUseInCloud(mUserModel);
                 }
+                showErrorMessage(errorResponse.getErrorMassage());
             }
         }
 
@@ -101,7 +92,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @Override
         public void onNext(User response) {
             addNewUserLocally(mUserModel);
-           // getMvpView().showFuelSectionView();
         }
     }
 
@@ -139,13 +129,14 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
+            showErrorMessage(errorResponse.getErrorMassage());
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
-           getMvpView().showFuelSectionView();
+            getMvpView().showFuelSectionView();
         }
     }
 

@@ -6,6 +6,5 @@ package com.fuelbuddy.exception;
  */
 public interface ErrorBundle {
   Exception getException();
-
   String getErrorMessage();
 }

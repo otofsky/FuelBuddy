@@ -17,8 +17,12 @@ package com.fuelbuddy.mobile.exeption;
 
 import android.content.Context;
 
+
 import com.fuelbuddy.data.net.RetrofitException;
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.model.ErrorResponse;
+
+import retrofit2.Response;
 
 
 /**
@@ -29,25 +33,26 @@ public class ErrorMessageFactory {
     private ErrorMessageFactory() {
     }
 
-    public static String create(Context context, Exception exception) {
+    public static ErrorResponse create(Context context, Exception exception) {
         String message = context.getString(R.string.exception_message_generic);
+        ErrorResponse errorResponse = null;
+        Response response;
         if (exception instanceof RetrofitException) {
             RetrofitException error = (RetrofitException) exception;
+           response  = error.getResponse();
             error.getKind();
             switch (error.getKind()) {
                 case HTTP:
-                    message = error.getMessage();
+                    errorResponse = new ErrorResponse(response.code(),response.message());
                     break;
                 case NETWORK:
-                    message = context.getString(R.string.exception_message_no_connection);
+                    errorResponse = new ErrorResponse(response.code(),context.getString(R.string.exception_message_no_connection));
                     break;
                 case UNEXPECTED:
-                    message = context.getString(R.string.exception_message_generic);
+                    errorResponse = new ErrorResponse(response.code(),context.getString(R.string.exception_message_generic));
                     break;
             }
         }
-
-        return message;
+        return errorResponse;
     }
-
 }
