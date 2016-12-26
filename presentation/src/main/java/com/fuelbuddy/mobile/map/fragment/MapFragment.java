@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -33,6 +34,17 @@ import hugo.weaving.DebugLog;
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback, Dialog.OnClickListener {
+
+
+    public interface Callbacks {
+
+        void onInfoHide();
+
+        void onInfoShow();
+
+    }
+
+    private Callbacks mCallbacks;
 
     @Inject
     public MapPresenter mapPresenter;
@@ -85,6 +97,17 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         return mapView;
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof Callbacks)) {
+            throw new ClassCastException(
+                    "Activity must implement fragment's callbacks.");
+        }
+        mCallbacks = (Callbacks) activity;
+    }
+
 
     @DebugLog
     @Override
