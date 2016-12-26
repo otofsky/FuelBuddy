@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.view;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.mobile.base.MvpView;

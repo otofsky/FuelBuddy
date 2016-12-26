@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.mobile.map.presenter;
 
 
 import com.fuelbuddy.data.FuelPricesUpdate;
@@ -11,6 +11,7 @@ import com.fuelbuddy.interactor.GetGasStationList;
 import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
+import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.fuelbuddy.mobile.model.ErrorResponse;

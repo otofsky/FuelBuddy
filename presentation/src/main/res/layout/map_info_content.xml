@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/gasStationName"
+        style="@style/TextViewFuelPriceDetail"
+        android:fontFamily="sans-serif-light"
+        android:text="Collapsed"
+        android:textColor="@color/app_green"
+
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/fuelType92Tv"
+        style="@style/TextViewFuelPriceDetail"
+        android:layout_below="@+id/gasStationName"
+        android:text="Price" />
+
+    <TextView
+        android:id="@+id/fuelType95Tv"
+        style="@style/TextViewFuelPriceDetail"
+        android:layout_below="@+id/fuelType92Tv"
+        android:text="Price" />
+
+    <TextView
+        android:id="@+id/fuelTypeDieselTv"
+        style="@style/TextViewFuelPriceDetail"
+        android:layout_below="@+id/fuelType95Tv"
+        android:text="Price" />
+
+</RelativeLayout>

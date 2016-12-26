@@ -5,19 +5,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fuelbuddy.data.FuelPricesUpdate;
@@ -28,15 +28,17 @@ import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
-import com.fuelbuddy.mobile.map.controller.Map;
 import com.fuelbuddy.mobile.map.controller.MapController;
+import com.fuelbuddy.mobile.map.controller.MapInterface;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
+import com.fuelbuddy.mobile.map.presenter.MapPresenter;
+import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.LocationUtil;
-import com.fuelbuddy.mobile.util.StringHelper;
+import com.fuelbuddy.mobile.util.PriceHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,7 +47,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -62,7 +63,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapMvpView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, Dialog.OnClickListener {
+        GoogleApiClient.OnConnectionFailedListener, MapController.OnMarkerClickCallback, Dialog.OnClickListener {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
 
     public static final String[] PERMISSIONS =
@@ -73,7 +74,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Inject
     public MapPresenter mapPresenter;
 
-    private Map map;
+    private MapInterface mapController;
 
     private GoogleApiClient googleApiClient;
     private MapsComponent mMapsComponent;
@@ -86,6 +87,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
 
     BottomSheetBehavior bottomSheetBehavior;
     View bottomSheet;
@@ -127,10 +132,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         mapPresenter.attachView(this);
         connectGoogleApiClient();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.RIGHT_LEFT);
-
-         bottomSheet = findViewById(R.id.bottom_sheet);
+        bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
 
         if (!LocationUtil.isLocationEnabled(MapsActivity.this)) {
             DialogFactory.createErrorDialog(MapsActivity.this, this).show();
@@ -139,7 +142,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
         new TedPermission(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .check();
     }
 
@@ -185,7 +188,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
         this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-        map.showUserCurrentPosition(currentPositionLatLng);
+        mapController.showUserCurrentPosition(currentPositionLatLng);
         mapPresenter.submitSearch(currentPositionLatLng);
     }
 
@@ -209,8 +212,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            bottomSheetBehavior.setHideable(true);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+            super.onBackPressed();
+            AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+        }
     }
 
     @Override
@@ -265,22 +273,31 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @DebugLog
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.map = new MapController();
-        map.initMap(getApplicationContext(), googleMap, this);
+        this.mapController = new MapController();
+        mapController.initMap(getApplicationContext(), googleMap, this);
     }
 
-
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public void onMarkerClick(GasStationModel gasStationModel) {
 
+        TextView gasStation = (TextView) findViewById(R.id.gasStationName);
+        TextView fuelType92Tv = (TextView) findViewById(R.id.fuelType92Tv);
+        TextView fuelType95Tv = (TextView) findViewById(R.id.fuelType95Tv);
+        TextView fuelTypeDieselTv = (TextView) findViewById(R.id.fuelTypeDieselTv);
+        //bottomSheetBehavior.setPeekHeight(peakView.getHeight());
+        //peakView.requestLayout();
+
+        fab.setVisibility(View.VISIBLE);
+
+        gasStation.setText(gasStationModel.getGasStationName());
+
+        fuelType92Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92, gasStationModel.getPrice92()));
+        fuelType95Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
+        fuelTypeDieselTv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL, gasStationModel.getPriceDiesel()));
+        bottomSheetBehavior.setHideable(false);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        //heading.setText("Welcome");
-
-
-   /*     DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
+      /*  DialogFactory.createSimpleOkDialog(this, marker.getTitle(), marker.getSnippet(), getString(R.string.dialog_navigation_button_txt), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(marker.getPosition()));
@@ -288,17 +305,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
                 mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
                 startActivity(mapIntent);
             }
-        }).show();
-        return true;*/
-        return true;
+        }).show();*/
     }
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
-        map.clear();
-        map.seFuelStationsPositions(gasStationModelList, selectedIdStation);
-        //map.showUserCurrentPosition(currentPositionLatLng);
+        mapController.clear();
+        mapController.seFuelStationsPositions(gasStationModelList, selectedIdStation);
+        //mapController.showUserCurrentPosition(currentPositionLatLng);
 
         hideLoading();
     }
@@ -325,8 +340,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
     @Override
     public void hideLoading() {
         // this.progressView.setVisibility(View.GONE);
-        //ProgressHelper.animateDefault(progressView, false);
-
+        //ProgressHelper.animateDefault(progressView, false)
         //setProgressBarIndeterminateVisibility(false);
     }
 
@@ -371,18 +385,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
             switch (fuelPriceUpdate) {
                 case GREEN:
                     selectedIdStation = gasStationModel.getGasStationId();
-                    map.clear();
-                    map.showSelectedGasStation(selectedIdStation);
+                    mapController.clear();
+                    mapController.showSelectedGasStation(selectedIdStation);
                     DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.update_unavailable));
                     break;
                 case YELLOW:
                     selectedIdStation = gasStationModel.getGasStationId();
-                    map.showSelectedGasStation(selectedIdStation);
+                    mapController.showSelectedGasStation(selectedIdStation);
                     updateFuelPrices(gasStationModel);
                     break;
                 case RED:
                     selectedIdStation = gasStationModel.getGasStationId();
-                    map.showSelectedGasStation(selectedIdStation);
+                    mapController.showSelectedGasStation(selectedIdStation);
                     updateFuelPrices(gasStationModel);
                     break;
             }
@@ -390,14 +404,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Ma
 
     };
 
+
     private void updateFuelPrices(GasStationModel gasStationModel) {
 
-        map.clear();
-       /* map.showUserCurrentPosition(currentPositionLatLng);*/
+        mapController.clear();
+       /* mapController.showUserCurrentPosition(currentPositionLatLng);*/
         mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
     }
-
-
 
 
 }

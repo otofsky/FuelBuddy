@@ -12,11 +12,11 @@ import java.util.List;
  * Created by zjuroszek on 03.12.16.
  */
 
-public interface Map {
+public interface MapInterface {
 
 
 
-    public void initMap(Context context, GoogleMap map, GoogleMap.OnMarkerClickListener onMarkerClickListener);
+    public void initMap(Context context, GoogleMap map, MapController.OnMarkerClickCallback onMarkerClickCallback);
 
     public void clear();
 

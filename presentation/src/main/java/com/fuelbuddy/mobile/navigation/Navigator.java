@@ -21,6 +21,7 @@ import android.content.Intent;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.MapsActivity;
+import com.fuelbuddy.mobile.map.MapsActivityTest;
 
 import static com.fuelbuddy.mobile.Config.FUEL_TYPE;
 
@@ -38,7 +39,7 @@ public class Navigator {
      */
     public static void navigateToMapsActivity(Context context, FuelPriceMode fuelPriceMode) {
         if (context != null) {
-            Intent intentToLaunch = MapsActivity.getCallingIntent(context);
+            Intent intentToLaunch = MapsActivityTest.getCallingIntent(context);
             intentToLaunch.putExtra(FUEL_TYPE, fuelPriceMode);
             context.startActivity(intentToLaunch);
         }

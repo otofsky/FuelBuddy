@@ -8,8 +8,9 @@ import android.support.v4.app.ActivityCompat;
 
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.model.MarkerEntry;
+import com.fuelbuddy.mobile.model.MarkerModel;
 import com.fuelbuddy.mobile.util.MapUtil;
-import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,19 +18,31 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zjuroszek on 03.12.16.
  */
 
-public class MapController implements Map {
+public class MapController implements MapInterface {
+
+
+    public interface OnMarkerClickCallback {
+        void onMarkerClick(GasStationModel gasStationModel);
+    }
 
     Context mContext;
     private GoogleMap mMap;
     private List<GasStationModel> gasStationModelList;
+    private Map<LatLng, MarkerEntry> mapEntries = new HashMap<LatLng, MarkerEntry>();
+    OnMarkerClickCallback onMarkerClickCallback;
+
     public static final float MAP_DEFAULTCAMERA_BEARING = 334.04f;
     public static final float MAP_DEFAULTCAMERA_ZOOM = 12.7f;
     public static final float MAP_DEFAULTCAMERA_TILT = 0f;
@@ -40,22 +53,16 @@ public class MapController implements Map {
 
 
     @Override
-    public void initMap(Context context, GoogleMap map, GoogleMap.OnMarkerClickListener onMarkerClickListener) {
+    public void initMap(Context context, GoogleMap map, OnMarkerClickCallback onMarkerClickCallback) {
         this.mContext = context;
         this.mMap = map;
-
-      /*  mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(this);
-        mMap.setOnCameraChangeListener(this);*/
+        this.onMarkerClickCallback = onMarkerClickCallback;
         mMap.setOnMarkerClickListener(onMarkerClickListener);
 
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
-       // mMap.setMyLocationEnabled(true);
         mapUiSettings.setMyLocationButtonEnabled(true);
-
-
         if (mMap != null) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -66,6 +73,17 @@ public class MapController implements Map {
         }
         //centerOnVenue(false);
     }
+
+    GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            MarkerEntry markerEntry = mapEntries.get(marker.getPosition());
+            MarkerModel markerModel = markerEntry.getModel();
+            onMarkerClickCallback.onMarkerClick(markerModel.getGasStationModel());
+            return true;
+        }
+    };
+
 
     private void centerOnGasStation(boolean animate, LatLng latLng) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(centerOnPosition(latLng));
@@ -83,6 +101,7 @@ public class MapController implements Map {
                 .tilt(MAP_DEFAULTCAMERA_TILT)
                 .build();
     }
+
     /*
     * Throw exception
     * */
@@ -98,67 +117,98 @@ public class MapController implements Map {
     public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
-            addMarkers(gasStationModelList, id);
+            initMapWithMarkers(gasStationModelList);
         }
     }
 
     @Override
     public void clear() {
-        mMap.clear();
-    }
-
-    private void addMarkers(List<GasStationModel> gasStationModelList, String id) {
-        List<LatLng> listLatLng = new ArrayList<LatLng>();
-        for (GasStationModel gs : gasStationModelList) {
-            LatLng latLng = getLatLng(gs);
-            if (!StringHelper.isNullOrEmpty(id)) {
-                listLatLng.add(latLng);
-                if (!gs.getGasStationId().equalsIgnoreCase(id)) {
-                    initUnselectedMarker(gs, latLng);
-                } else {
-                    initSelectedMarker(gs, latLng);
-                }
-            } else {
-                initUnselectedMarker(gs, latLng);
-            }
-
+        if(mMap!=null) {
+            mMap.clear();
         }
-        setZoomLevel(listLatLng);
     }
 
     @Override
-    public void showSelectedGasStation(String gasStationID) {
+    public void showSelectedGasStation(String selectedMarkerId) {
+        initMapWithSelectedMarker(selectedMarkerId);
+    }
 
+    public void setMarkerData(List<GasStationModel> gasStationModelList) {
+        this.gasStationModelList = gasStationModelList;
+
+    }
+
+    private void initMapWithMarkers(List<GasStationModel> gasStationModelList) {
+        List<LatLng> listLatLng = initMarkMarkerEntryList(gasStationModelList);
+        addMarkersToMap();
+        centerOnGasStations(listLatLng);
+    }
+
+    private void initMapWithSelectedMarker(String selectedMarkerId) {
+        LatLng selectedLatLng = initSelectedMarkerEntryList(gasStationModelList, selectedMarkerId);
+        addMarkersToMap();
+        centerOnGasStation(true, selectedLatLng);
+    }
+
+    private void addMarkersToMap() {
+        for (MarkerEntry markerEntry : mapEntries.values()) {
+            mMap.addMarker(markerEntry.options);
+        }
+    }
+
+    private List<LatLng> initMarkMarkerEntryList(List<GasStationModel> gasStationModelList) {
         List<LatLng> listLatLng = new ArrayList<LatLng>();
         for (GasStationModel gs : gasStationModelList) {
             LatLng latLng = getLatLng(gs);
             listLatLng.add(latLng);
-            if (!gs.getGasStationId().equalsIgnoreCase(gasStationID)) {
-                initUnselectedMarker(gs, latLng);
-            } else {
-                initSelectedMarker(gs, latLng);
-                centerOnGasStation(true, latLng);
-            }
+            MarkerModel markerModel = new MarkerModel(gs, null);
+            MarkerOptions markerOptions = getMarkerUnselectedOptions(gs, latLng);
+            MarkerEntry markerEntry = new MarkerEntry(markerModel, markerOptions);
+            mapEntries.put(latLng, markerEntry);
         }
-
+        return listLatLng;
     }
 
-    private void initSelectedMarker(GasStationModel gs, LatLng latLng) {
-        mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
+    private LatLng initSelectedMarkerEntryList(List<GasStationModel> gasStationModelList, String id) {
+        LatLng selectedLatLng = null;
+        for (GasStationModel gs : gasStationModelList) {
+
+            LatLng latLng = getLatLng(gs);
+            MarkerModel markerModel = new MarkerModel(gs, null);
+            MarkerOptions markerOptions = null;
+            if (!gs.getGasStationId().equalsIgnoreCase(id)) {
+                markerOptions = getMarkerUnselectedOptions(gs, latLng);
+            } else {
+                markerOptions = getMarkerSelectedOptions(gs, latLng);
+                selectedLatLng = latLng;
+            }
+            MarkerEntry markerEntry = new MarkerEntry(markerModel, markerOptions);
+            mapEntries.put(latLng, markerEntry);
+        }
+        return selectedLatLng;
+    }
+
+    @NonNull
+    private MarkerOptions getMarkerUnselectedOptions(GasStationModel gs, LatLng latLng) {
+        MarkerOptions markerOptions;
+        markerOptions = MapUtil.initMarkerOptions(gs.getGasStationName(),
                 latLng,
                 MapUtil.MarkerType.STATION,
-                R.mipmap.drop_on));
+                R.mipmap.drop_unselected);
+        return markerOptions;
     }
 
-    private void initUnselectedMarker(GasStationModel gs, LatLng latLng) {
-        mMap.addMarker(MapUtil.initMarkerOptions(gs.getGasStationName(),
+    @NonNull
+    private MarkerOptions getMarkerSelectedOptions(GasStationModel gs, LatLng latLng) {
+        MarkerOptions markerOptions;
+        markerOptions = MapUtil.initMarkerOptions(gs.getGasStationName(),
                 latLng,
                 MapUtil.MarkerType.STATION,
-                R.mipmap.ic_drop_off));
+                R.mipmap.drop_selected);
+        return markerOptions;
     }
 
-
-    public void setZoomLevel(List<LatLng> listLatLng) {
+    public void centerOnGasStations(List<LatLng> listLatLng) {
         if (listLatLng != null && listLatLng.size() == 1) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(listLatLng.get(0), MapUtil.ZOOM));
         } else if (listLatLng != null && listLatLng.size() > 1) {
