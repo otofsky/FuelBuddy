@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.fuelbuddy.mobile.R;
@@ -45,7 +46,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsActivityTest extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
 
     public static final String[] PERMISSIONS =
@@ -313,6 +314,21 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onInfoHide() {
+        if (detailInfoFragment != null) {
+            detailInfoFragment.hide();
+        }
+    }
+
+    @Override
+    public void onInfoShow() {
+        if (detailInfoFragment != null) {
+            detailInfoFragment.showTitleOnly();
+        }
 
     }
 }

@@ -116,6 +116,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mapController.initMap(getActivity(), googleMap, this);
     }
 
+
     public void loadGasStationPositions(List<GasStationModel> gasStationModelList){
         mapController.clear();
         mapController.seFuelStationsPositions(gasStationModelList, "");
@@ -128,12 +129,13 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     @Override
     public void onMapClick(LatLng latLng) {
-
+        mCallbacks.onInfoHide();
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return false;
+        mCallbacks.onInfoShow();
+        return true;
     }
 
 
