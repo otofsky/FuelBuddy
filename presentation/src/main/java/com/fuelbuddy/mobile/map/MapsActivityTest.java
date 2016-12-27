@@ -153,8 +153,6 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
 
 
-
-
 /*        if (mInfoFragment == null) {
             mInfoFragment = MapInfoFragment.newInstace(this);
             getFragmentManager().beginTransaction()
@@ -325,9 +323,9 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
     }
 
     @Override
-    public void onInfoShow() {
+    public void onInfoShow(GasStationModel gasStationModel) {
         if (detailInfoFragment != null) {
-            detailInfoFragment.showTitleOnly();
+            detailInfoFragment.showTitleOnly(gasStationModel);
         }
 
     }

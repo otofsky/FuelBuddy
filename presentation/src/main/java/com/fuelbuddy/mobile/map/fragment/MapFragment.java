@@ -32,7 +32,7 @@ import hugo.weaving.DebugLog;
  */
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
-        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback,
+        GoogleMap.OnMapClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback, Dialog.OnClickListener {
 
 
@@ -40,7 +40,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         void onInfoHide();
 
-        void onInfoShow();
+        void onInfoShow(GasStationModel gasStationModel);
 
     }
 
@@ -86,6 +86,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         }
 
         getMapAsync(this);
+        this.mapController = new MapController();
     }
 
     @Override
@@ -112,7 +113,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     @DebugLog
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.mapController = new MapController();
         mapController.initMap(getActivity(), googleMap, this);
     }
 
@@ -132,11 +132,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mCallbacks.onInfoHide();
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        mCallbacks.onInfoShow();
-        return true;
-    }
 
 
     @Override
@@ -146,6 +141,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     @Override
     public void onMarkerClick(GasStationModel gasStationModel) {
-
+        mCallbacks.onInfoShow(gasStationModel);
     }
 }
