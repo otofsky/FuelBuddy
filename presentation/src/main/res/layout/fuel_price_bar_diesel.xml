@@ -6,18 +6,17 @@
     android:gravity="bottom"
     >
 
-    <android.support.v7.widget.AppCompatButton
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/fuelPriceView"
         style="@style/GreenButton"
-        android:layout_width="140dp"
+        android:text="diesel. 12,87 kt"
+        android:layout_width="wrap_content"
         android:background="@drawable/button_green_right_rounded"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:elevation="10dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="2dp"
         android:textAllCaps="false"
         android:fontFamily="sans-serif-light"
-        android:gravity="left"
+        android:gravity="center_vertical"
         />
 </LinearLayout>

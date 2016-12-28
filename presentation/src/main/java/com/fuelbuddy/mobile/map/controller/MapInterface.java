@@ -26,6 +26,9 @@ public interface MapInterface {
 
     public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id);
 
+    public void seFuelStationsPositions(String id);
+
+    public void centerOnGasStation(boolean animate, LatLng latLng);
 
 
 

@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.util;
 
 import android.support.annotation.NonNull;
 
+import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,5 +39,18 @@ public class MapUtil {
                 break;*/
         }
         return bitmapDescriptor;
+    }
+
+    public static LatLng getLatLng(GasStationModel gasStationModel) {
+        return new LatLng(getLat(gasStationModel.getGasStationLatitude()),
+                getLng(gasStationModel.getGasStationLongitude()));
+    }
+
+    private static double getLng(String gasStationLongitude) {
+        return Double.parseDouble(gasStationLongitude);
+    }
+
+    private static double getLat(String gasStationLatitude) {
+        return Double.parseDouble(gasStationLatitude);
     }
 }

@@ -24,6 +24,7 @@
         android:id="@+id/map_bottomsheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         android:minHeight="80dp"
         app:behavior_hideable="true"
         app:layout_behavior="@string/bottom_sheet_behavior">
@@ -35,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:src="@android:drawable/ic_dialog_map"
+        android:src="@android:drawable/ic_menu_directions"
         app:layout_anchor="@id/map_bottomsheet"
         app:layout_anchorGravity="top|right|end" />
 

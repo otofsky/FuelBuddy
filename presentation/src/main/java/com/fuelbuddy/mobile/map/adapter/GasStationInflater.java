@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.map.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,21 +50,21 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
                 case BENZIN_92:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
-                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    holder.fuelPriceBtn = (AppCompatTextView) convertView.findViewById(R.id.fuelPriceView);
                     setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
                 case BENZIN_95:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
                     holder = new ViewHolder();
-                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    holder.fuelPriceBtn = (AppCompatTextView) convertView.findViewById(R.id.fuelPriceView);
                     setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
                 case DIESEL:
                     convertView = inflater.inflate(R.layout.fuel_price_bar_diesel, null);
                     holder = new ViewHolder();
-                    holder.fuelPriceBtn = (AppCompatButton) convertView.findViewById(R.id.fuelPriceView);
+                    holder.fuelPriceBtn = (AppCompatTextView) convertView.findViewById(R.id.fuelPriceView);
                     setBtnListener(holder.fuelPriceBtn, item);
                     convertView.setTag(holder);
                     break;
@@ -101,7 +102,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
 
-    private void setBtnListener(AppCompatButton appCompatButton, final GasStationModel gasStationModel) {
+    private void setBtnListener(AppCompatTextView appCompatButton, final GasStationModel gasStationModel) {
         appCompatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,7 +161,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
 
     public static class ViewHolder {
-        AppCompatButton fuelPriceBtn;
+        AppCompatTextView fuelPriceBtn;
     }
 }
 

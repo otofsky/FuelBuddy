@@ -2,16 +2,24 @@ package com.fuelbuddy.mobile.map.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fuelbuddy.data.FuelPricesUpdate;
+import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.map.FuelPriceUpdate;
+import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.map.presenter.MapPresenter;
 import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.controller.MapInterface;
+import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.MapUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,15 +34,19 @@ import javax.inject.Inject;
 import hugo.weaving.DebugLog;
 
 
-
 /**
  * Created by zjuroszek on 25.12.16.
  */
 
-public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
+public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements MapMvpView,
         GoogleMap.OnMapClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback, Dialog.OnClickListener {
 
+
+    @Override
+    public Context context() {
+        return null;
+    }
 
     public interface Callbacks {
 
@@ -44,17 +56,19 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     }
 
+    private String selectedIdStation;
+
     private Callbacks mCallbacks;
 
     @Inject
     public MapPresenter mapPresenter;
 
 
-
     private MapInterface mapController;
 
     private GoogleApiClient googleApiClient;
 
+    View mapView;
 
     public static MapFragment newInstance(String highlightedRoomId) {
         MapFragment fragment = new MapFragment();
@@ -92,7 +106,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mapView = super.onCreateView(inflater, container, savedInstanceState);
+        mapView = super.onCreateView(inflater, container, savedInstanceState);
 
         //setMapInsets(mMapInsets);
 
@@ -109,15 +123,22 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mCallbacks = (Callbacks) activity;
     }
 
+    private void updateFuelPrices(GasStationModel gasStationModel) {
+
+        mapController.clear();
+       /* mapController.showUserCurrentPosition(currentPositionLatLng);*/
+        mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
+    }
 
     @DebugLog
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        googleMap.setOnMapClickListener(this);
         mapController.initMap(getActivity(), googleMap, this);
     }
 
 
-    public void loadGasStationPositions(List<GasStationModel> gasStationModelList){
+    public void loadGasStationPositions(List<GasStationModel> gasStationModelList) {
         mapController.clear();
         mapController.seFuelStationsPositions(gasStationModelList, "");
     }
@@ -130,9 +151,8 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     @Override
     public void onMapClick(LatLng latLng) {
         mCallbacks.onInfoHide();
+        mapController.seFuelStationsPositions("");
     }
-
-
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
@@ -141,6 +161,42 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     @Override
     public void onMarkerClick(GasStationModel gasStationModel) {
+        mapController.centerOnGasStation(true, MapUtil.getLatLng(gasStationModel));
         mCallbacks.onInfoShow(gasStationModel);
+    }
+
+    @Override
+    public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
+
+    }
+
+    @Override
+    public void showSuccessMessage(String message) {
+
+    }
+
+    @Override
+    public void refreshFuelPrices() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void logOut() {
+
     }
 }

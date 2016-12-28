@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
@@ -32,9 +33,11 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
 
-    public static PriceListFragment newInstance() {
+    public static PriceListFragment newInstance(FuelPriceMode fuelPriceMode) {
+        Bundle args = new Bundle();
+        args.putSerializable(Config.FUEL_TYPE, fuelPriceMode);
         PriceListFragment fragment = new PriceListFragment();
-      //  fragment.setArguments(savedState);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -49,7 +52,11 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
                              Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.price_holder_fragment, container, false);
         ButterKnife.bind(this, fragmentView);
-        mFuelPriceController = new FuelPriceController(getActivity(), fuelPriceHolderView, FuelPriceMode.BENZIN_92, mOnFuelPriceClickListener);
+        Bundle args = getArguments();
+        FuelPriceMode fuelPriceMode = (FuelPriceMode) args.getSerializable(Config.FUEL_TYPE);
+        if (fuelPriceMode != null) {
+            mFuelPriceController = new FuelPriceController(getActivity(), fuelPriceHolderView, fuelPriceMode, mOnFuelPriceClickListener);
+        }
         return fragmentView;
     }
 

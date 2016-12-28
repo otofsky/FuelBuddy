@@ -1,6 +1,9 @@
 package com.fuelbuddy.mobile.map.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +19,10 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.MapUtil;
 import com.fuelbuddy.mobile.util.PriceHelper;
+import com.fuelbuddy.mobile.util.StringHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by zjuroszek on 25.12.16.
  */
 
-public class DetailInfoFragment extends BaseFragment {
+public class DetailInfoFragment extends BaseFragment implements View.OnClickListener {
 
     private View mBottomSheet;
 
@@ -45,6 +51,8 @@ public class DetailInfoFragment extends BaseFragment {
     TextView fuelTypeDieselTv;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
+    GasStationModel mGasStationModel;
 
 
     public static DetailInfoFragment newInstance() {
@@ -67,6 +75,7 @@ public class DetailInfoFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.map_info_bottom, container, false);
         ButterKnife.bind(this, fragmentView);
+        fab.setOnClickListener(this);
         return fragmentView;
     }
 
@@ -77,33 +86,37 @@ public class DetailInfoFragment extends BaseFragment {
         mBottomSheet = mCoordinator.findViewById(R.id.map_bottomsheet);
         mBehavior = BottomSheetBehavior.from(mBottomSheet);
         mBehavior.setBottomSheetCallback(mBottomSheetCallback);
+        hide();
     }
 
-
     public void showTitleOnly(GasStationModel gasStationModel) {
+        mGasStationModel = gasStationModel;
+        initPriceDetailViews(mGasStationModel);
+        setCollapsedOnly();
+    }
+
+    private void initPriceDetailViews(GasStationModel gasStationModel) {
         gasStation.setText(gasStationModel.getGasStationName());
         fuelType92Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92, gasStationModel.getPrice92()));
         fuelType95Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
         fuelTypeDieselTv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL, gasStationModel.getPriceDiesel()));
-        setCollapsedOnly();
-
     }
 
     private void setCollapsedOnly() {
         // Set up panel: collapsed only with title height and icon
         mBehavior.setPeekHeight(mHeightDetail);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        fab.show();
     }
 
     public void hide() {
         mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        fab.hide();
     }
-
 
     public boolean isExpanded() {
         return mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
-
 
     public void minimize() {
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -131,8 +144,18 @@ public class DetailInfoFragment extends BaseFragment {
 
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
         }
-
     };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel)));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
+                startActivity(mapIntent);
+                break;
+        }
+    }
 }

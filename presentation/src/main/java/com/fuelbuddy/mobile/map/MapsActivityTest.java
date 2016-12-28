@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
@@ -141,7 +142,8 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
         }
 
         if (priceListFragment == null) {
-            priceListFragment = PriceListFragment.newInstance();
+            FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
+            priceListFragment = PriceListFragment.newInstance(fuelPriceMode);
             addFragment(R.id.fragment_price_container_map, priceListFragment);
         }
 

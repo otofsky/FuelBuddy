@@ -44,7 +44,7 @@ public class MapController implements MapInterface {
     OnMarkerClickCallback onMarkerClickCallback;
 
     public static final float MAP_DEFAULTCAMERA_BEARING = 334.04f;
-    public static final float MAP_DEFAULTCAMERA_ZOOM = 12.7f;
+    public static final float MAP_DEFAULTCAMERA_ZOOM = 16.7f;
     public static final float MAP_DEFAULTCAMERA_TILT = 0f;
 
     /**
@@ -85,7 +85,7 @@ public class MapController implements MapInterface {
     };
 
 
-    private void centerOnGasStation(boolean animate, LatLng latLng) {
+    public void centerOnGasStation(boolean animate, LatLng latLng) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(centerOnPosition(latLng));
         if (animate) {
             mMap.animateCamera(camera);
@@ -122,8 +122,15 @@ public class MapController implements MapInterface {
     }
 
     @Override
+    public void seFuelStationsPositions(String id) {
+        if (mMap != null) {
+            initMapWithMarkers(gasStationModelList);
+        }
+    }
+
+    @Override
     public void clear() {
-        if(mMap!=null) {
+        if (mMap != null) {
             mMap.clear();
         }
     }
@@ -209,11 +216,28 @@ public class MapController implements MapInterface {
     }
 
     public void centerOnGasStations(List<LatLng> listLatLng) {
-        if (listLatLng != null && listLatLng.size() == 1) {
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        for (LatLng latLng : listLatLng) {
+            bounds.include(latLng);
+
+        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200));
+
+   /*     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+        } else {
+            mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        }*/
+
+
+
+
+
+      /*  if (listLatLng != null && listLatLng.size() == 1) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(listLatLng.get(0), MapUtil.ZOOM));
         } else if (listLatLng != null && listLatLng.size() > 1) {
             buildLatLngList(listLatLng);
-        }
+        }*/
     }
 
     private void buildLatLngList(List<LatLng> listLatLng) {
