@@ -166,7 +166,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
         attemptEnableMyLocation();*/
 
-        mapPresenter.submitSearch(fakeCurrentPositionLatLng);
+        //mapPresenter.submitSearch(fakeCurrentPositionLatLng);
     }
 
 
@@ -185,7 +185,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
     @Subscribe
     public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
         this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-        //  mapPresenter.submitSearch(currentPositionLatLng);
+         mapPresenter.submitSearch(currentPositionLatLng);
     }
 
     @Override
@@ -280,6 +280,8 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     }
 
+
+
     @DebugLog
     @Override
     public void hideLoading() {
@@ -304,7 +306,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        startTrackLocationService();
     }
 
     @Override

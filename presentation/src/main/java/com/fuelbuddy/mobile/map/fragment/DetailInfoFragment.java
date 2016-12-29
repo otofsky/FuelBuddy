@@ -52,6 +52,10 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    @BindView(R.id.editfab)
+    FloatingActionButton editfab;
+
+
     GasStationModel mGasStationModel;
 
 
@@ -107,11 +111,13 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
         mBehavior.setPeekHeight(mHeightDetail);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         fab.show();
+        editfab.show();
     }
 
     public void hide() {
         mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        fab.hide();
+        fab.setVisibility(View.GONE);
+        editfab.setVisibility(View.GONE);
     }
 
     public boolean isExpanded() {
@@ -133,9 +139,11 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
                     break;
                 case BottomSheetBehavior.STATE_EXPANDED:
                     fab.setVisibility(View.VISIBLE);
+                    editfab.setVisibility(View.VISIBLE);
                     break;
                 case BottomSheetBehavior.STATE_HIDDEN:
                     fab.setVisibility(View.GONE);
+                    editfab.setVisibility(View.GONE);
                   /*  mCallback.onInfoSizeChanged(mBottomSheet.getLeft(), mBottomSheet.getTop(),
                             mBottomSheet.getRight(), mCoordinator.getHeight());*/
                     break;
