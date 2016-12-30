@@ -18,6 +18,7 @@ package com.fuelbuddy.mobile.navigation;
 import android.content.Context;
 import android.content.Intent;
 
+import com.fuelbuddy.mobile.editprice.EditPriceActivity;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.MapsActivity;
@@ -49,6 +50,14 @@ public class Navigator {
     public static void navigateToHomeActivity(Context context) {
         if (context != null) {
             Intent intentToLaunch = HomeActivity.getCallingIntent(context);
+          /*  intentToLaunch.putExtra(FUEL_TYPE, fuelType);*/
+            context.startActivity(intentToLaunch);
+        }
+    }
+
+    public static void navigateToEditPriceActivity(Context context) {
+        if (context != null) {
+            Intent intentToLaunch = EditPriceActivity.getCallingIntent(context);
           /*  intentToLaunch.putExtra(FUEL_TYPE, fuelType);*/
             context.startActivity(intentToLaunch);
         }

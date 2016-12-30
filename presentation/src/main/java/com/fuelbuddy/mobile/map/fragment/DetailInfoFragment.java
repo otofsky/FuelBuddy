@@ -1,6 +1,5 @@
 package com.fuelbuddy.mobile.map.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -19,7 +18,7 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.model.GasStationModel;
-import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.MapUtil;
 import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
@@ -80,6 +79,7 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
         final View fragmentView = inflater.inflate(R.layout.map_info_bottom, container, false);
         ButterKnife.bind(this, fragmentView);
         fab.setOnClickListener(this);
+        editfab.setOnClickListener(this);
         return fragmentView;
     }
 
@@ -163,7 +163,11 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
                 startActivity(mapIntent);
+            case R.id.editfab:
+                Navigator.navigateToEditPriceActivity(getActivity());
                 break;
+
+
         }
     }
 }
