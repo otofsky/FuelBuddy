@@ -114,14 +114,6 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
         navigateBtn.setVisibility(View.GONE);
     }
 
-    public boolean isExpanded() {
-        return mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
-    }
-
-    public void minimize() {
-        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback
             = new BottomSheetBehavior.BottomSheetCallback() {
 
