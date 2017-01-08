@@ -98,6 +98,9 @@
         <item name="background">@android:color/transparent</item>
     </style>
 
+    <style name="NavigationFloatingButton" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/white</item>
+    </style>
 
     <style name="TextViewFuelPriceDetail">
         <item name="android:layout_width">wrap_content</item>

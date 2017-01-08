@@ -13,6 +13,4 @@ public interface PriceListMvpView extends MvpView {
 
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList);
 
-    public void showPriceEditDialog();
-
 }

@@ -70,10 +70,10 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
             if (throwable instanceof IOException) {
                 return RetrofitException.networkError((IOException) throwable);
             }
-
-            // We don't know what happened. We need to simply convert to an unknown error
-
-            return RetrofitException.unexpectedError(throwable);
+            else {
+                // We don't know what happened. We need to simply convert to an unknown error
+                return RetrofitException.unexpectedError(throwable);
+            }
         }
     }
 }

@@ -18,11 +18,12 @@ package com.fuelbuddy.mobile.navigation;
 import android.content.Context;
 import android.content.Intent;
 
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.editprice.EditPriceActivity;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
-import com.fuelbuddy.mobile.map.MapsActivity;
-import com.fuelbuddy.mobile.map.MapsActivityTest;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
+import com.fuelbuddy.mobile.model.GasStationModel;
 
 import static com.fuelbuddy.mobile.Config.FUEL_TYPE;
 
@@ -40,7 +41,7 @@ public class Navigator {
      */
     public static void navigateToMapsActivity(Context context, FuelPriceMode fuelPriceMode) {
         if (context != null) {
-            Intent intentToLaunch = MapsActivityTest.getCallingIntent(context);
+            Intent intentToLaunch = MapsMainActivity.getCallingIntent(context);
             intentToLaunch.putExtra(FUEL_TYPE, fuelPriceMode);
             context.startActivity(intentToLaunch);
         }
@@ -55,10 +56,10 @@ public class Navigator {
         }
     }
 
-    public static void navigateToEditPriceActivity(Context context) {
+    public static void navigateToEditPriceActivity(Context context, GasStationModel gasStationModel) {
         if (context != null) {
             Intent intentToLaunch = EditPriceActivity.getCallingIntent(context);
-          /*  intentToLaunch.putExtra(FUEL_TYPE, fuelType);*/
+            intentToLaunch.putExtra(Config.GAS_STATION_DETAIL, gasStationModel);
             context.startActivity(intentToLaunch);
         }
     }

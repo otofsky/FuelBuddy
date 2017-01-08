@@ -12,16 +12,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
+import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.MapUtil;
-import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +33,7 @@ import butterknife.ButterKnife;
  * Created by zjuroszek on 25.12.16.
  */
 
-public class DetailInfoFragment extends BaseFragment implements View.OnClickListener {
+public class DetailInfoFragment extends BaseFragment implements View.OnClickListener  {
 
     private View mBottomSheet;
 
@@ -42,17 +45,12 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
 
     @BindView(R.id.gasStationName)
     TextView gasStation;
-    @BindView(R.id.fuelType92Tv)
-    TextView fuelType92Tv;
-    @BindView(R.id.fuelType95Tv)
-    TextView fuelType95Tv;
-    @BindView(R.id.fuelTypeDieselTv)
-    TextView fuelTypeDieselTv;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
 
-    @BindView(R.id.editfab)
-    FloatingActionButton editfab;
+    @BindView(R.id.navigationBtn)
+    FloatingActionButton navigateBtn;
+
+    @BindView(R.id.updateBtn)
+    Button updateBtn;
 
 
     GasStationModel mGasStationModel;
@@ -78,8 +76,8 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.map_info_bottom, container, false);
         ButterKnife.bind(this, fragmentView);
-        fab.setOnClickListener(this);
-        editfab.setOnClickListener(this);
+        navigateBtn.setOnClickListener(this);
+        updateBtn.setOnClickListener(this);
         return fragmentView;
     }
 
@@ -101,23 +99,19 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
 
     private void initPriceDetailViews(GasStationModel gasStationModel) {
         gasStation.setText(gasStationModel.getGasStationName());
-        fuelType92Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92, gasStationModel.getPrice92()));
-        fuelType95Tv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
-        fuelTypeDieselTv.setText(PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL, gasStationModel.getPriceDiesel()));
+
     }
 
     private void setCollapsedOnly() {
         // Set up panel: collapsed only with title height and icon
         mBehavior.setPeekHeight(mHeightDetail);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        fab.show();
-        editfab.show();
+        navigateBtn.show();
     }
 
     public void hide() {
         mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        fab.setVisibility(View.GONE);
-        editfab.setVisibility(View.GONE);
+        navigateBtn.setVisibility(View.GONE);
     }
 
     public boolean isExpanded() {
@@ -138,12 +132,10 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
                     mCoordinator.requestLayout();
                     break;
                 case BottomSheetBehavior.STATE_EXPANDED:
-                    fab.setVisibility(View.VISIBLE);
-                    editfab.setVisibility(View.VISIBLE);
+                    navigateBtn.setVisibility(View.VISIBLE);
                     break;
                 case BottomSheetBehavior.STATE_HIDDEN:
-                    fab.setVisibility(View.GONE);
-                    editfab.setVisibility(View.GONE);
+                    navigateBtn.setVisibility(View.GONE);
                   /*  mCallback.onInfoSizeChanged(mBottomSheet.getLeft(), mBottomSheet.getTop(),
                             mBottomSheet.getRight(), mCoordinator.getHeight());*/
                     break;
@@ -158,13 +150,14 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab:
+            case R.id.navigationBtn:
                 Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel)));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
                 startActivity(mapIntent);
-            case R.id.editfab:
-                Navigator.navigateToEditPriceActivity(getActivity());
+                break;
+            case R.id.updateBtn:
+                Navigator.navigateToEditPriceActivity(getActivity(),mGasStationModel);
                 break;
 
 

@@ -18,5 +18,7 @@ public class Config {
 
     public static String GOOGLE_MAP_PACKAGE = "com.google.android.apps.maps";
 
+    public static String GAS_STATION_DETAIL = "gasStationDetail";
+
 
 }

@@ -19,6 +19,8 @@ import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.home.HomeActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Base {@link android.app.Fragment} class for every fragment in this application.
  */
@@ -32,6 +34,7 @@ public abstract class BaseFragment extends Fragment {
     return super.onCreateView(inflater, container, savedInstanceState);
 
   }
+
 
 
 

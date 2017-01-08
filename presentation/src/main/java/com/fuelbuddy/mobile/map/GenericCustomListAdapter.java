@@ -36,9 +36,6 @@ public class GenericCustomListAdapter<T> extends ArrayAdapter<T> {
     }
 
 
-
-
-
     public static interface ListItemInflater<T> {
 
         public View getView(T item, View convertView, int positionFlag);

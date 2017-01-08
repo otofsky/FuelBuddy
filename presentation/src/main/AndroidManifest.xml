@@ -51,15 +51,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".map.MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
 
         <activity
-            android:name=".map.MapsActivityTest"
+            android:name=".map.MapsMainActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">

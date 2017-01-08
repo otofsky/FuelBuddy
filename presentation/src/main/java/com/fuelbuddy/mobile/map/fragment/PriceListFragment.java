@@ -3,6 +3,7 @@ package com.fuelbuddy.mobile.map.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,15 @@ import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
+import com.fuelbuddy.mobile.map.event.Event;
+import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.map.view.PriceListMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -44,7 +51,6 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -60,33 +66,32 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
         return fragmentView;
     }
 
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEventMainThread(Event event) {
+    }
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
     }
 
-    @Override
-    public void showPriceEditDialog() {
-
-    }
-
     OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
         @Override
         public void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate) {
-            switch (fuelPriceUpdate) {
-                case GREEN:
-
-                    break;
-                case YELLOW:
-
-                    break;
-                case RED:
-
-                    break;
-            }
+         EventBus.getDefault().post(new OnPriceClickEvent(gasStationModel));
         }
-
     };
 
 

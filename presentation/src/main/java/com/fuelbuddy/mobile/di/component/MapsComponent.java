@@ -3,8 +3,7 @@ package com.fuelbuddy.mobile.di.component;
 import com.fuelbuddy.mobile.di.PerActivity;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.di.module.MapsModule;
-import com.fuelbuddy.mobile.map.MapsActivity;
-import com.fuelbuddy.mobile.map.MapsActivityTest;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
 
 import dagger.Component;
 
@@ -17,9 +16,7 @@ import dagger.Component;
 
 public interface MapsComponent extends ActivityComponent {
 
-    void inject(MapsActivity MapsActivity);
-
-    void inject(MapsActivityTest mapsActivityTest);
+    void inject(MapsMainActivity mapsActivityTest);
 
 
 

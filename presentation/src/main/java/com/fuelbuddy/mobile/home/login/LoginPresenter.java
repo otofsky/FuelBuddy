@@ -66,7 +66,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     private void showErrorMessage(String errorMessage) {
-
         getMvpView().showError(errorMessage);
     }
 

@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Config;
@@ -18,14 +20,17 @@ import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.map.event.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.map.fragment.DetailInfoFragment;
 import com.fuelbuddy.mobile.map.fragment.MapFragment;
 import com.fuelbuddy.mobile.map.fragment.PriceListFragment;
-import com.fuelbuddy.mobile.map.presenter.MapPresenter;
+import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,7 +51,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
-public class MapsActivityTest extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
+public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
 
@@ -56,32 +61,27 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     @Inject
-    public MapPresenter mapPresenter;
+    public MapMainPresenter mMapPresenter;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
+    @BindView(R.id.view_progress)
+    RelativeLayout progressView;
 
-    private GoogleApiClient googleApiClient;
+    private GoogleApiClient mGoogleApiClient;
     private MapsComponent mMapsComponent;
-
     protected MapFragment mMapFragment;
-
-    protected PriceListFragment priceListFragment;
-
-    protected DetailInfoFragment detailInfoFragment;
-
-    // private MapInfoFragment mInfoFragment;
-
-
-    private LatLng currentPositionLatLng;
+    protected PriceListFragment mPriceListFragment;
+    protected DetailInfoFragment mDetailInfoFragment;
+    private LatLng mCurrentPositionLatLng;
     ;
 
     private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
 
 
     public static Intent getCallingIntent(Context context) {
-        return new Intent(context, MapsActivityTest.class);
+        return new Intent(context, MapsMainActivity.class);
     }
 
     private void initializeInjector() {
@@ -102,7 +102,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
         this.initializeInjector();
 
-        mapPresenter.attachView(this);
+        mMapPresenter.attachView(this);
         connectGoogleApiClient();
         new TedPermission(this)
                 .setPermissionListener(permissionlistener)
@@ -114,78 +114,73 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-
-            Toast.makeText(MapsActivityTest.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsMainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(MapsActivityTest.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapsMainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
         }
     };
 
-
     private void setToolbar() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mMapFragment == null) {
-            mMapFragment = MapFragment.newInstance("");
-            addFragment(R.id.fragment_container_map, mMapFragment);
+            initMapFragment();
         }
-
-        if (priceListFragment == null) {
-            FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
-            priceListFragment = PriceListFragment.newInstance(fuelPriceMode);
-            addFragment(R.id.fragment_price_container_map, priceListFragment);
+        if (mPriceListFragment == null) {
+            initPriceListFragment();
         }
-
-        if (detailInfoFragment == null) {
-            detailInfoFragment = DetailInfoFragment.newInstance();
-            addFragment(R.id.fragment_container_map_info, detailInfoFragment);
+        if (mDetailInfoFragment == null) {
+            initDetailInfoFragment();
         }
-
-
-
-
-/*        if (mInfoFragment == null) {
-            mInfoFragment = MapInfoFragment.newInstace(this);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
-                    .commit();
-        }
-
-        mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
-
-        attemptEnableMyLocation();*/
-
-        //mapPresenter.submitSearch(fakeCurrentPositionLatLng);
     }
 
+    private void initDetailInfoFragment() {
+        mDetailInfoFragment = DetailInfoFragment.newInstance();
+        addFragment(R.id.fragment_container_map_info, mDetailInfoFragment);
+    }
+
+    private void initPriceListFragment() {
+        FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
+        mPriceListFragment = PriceListFragment.newInstance(fuelPriceMode);
+        addFragment(R.id.fragment_price_container_map, mPriceListFragment);
+    }
+
+    private void initMapFragment() {
+        mMapFragment = MapFragment.newInstance();
+        addFragment(R.id.fragment_container_map, mMapFragment);
+    }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
     @Subscribe
-    public void onEventMainThread(LocationUpdateEvent locationUpdateEvent) {
-        this.currentPositionLatLng = locationUpdateEvent.getLatLng();
-         mapPresenter.submitSearch(currentPositionLatLng);
+    public void onEventMainThread(Event event) {
+        if (event instanceof LocationUpdateEvent) {
+            this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
+            mMapPresenter.submitSearch(mCurrentPositionLatLng);
+        }
+        if (event instanceof OnPriceClickEvent) {
+            Log.d(TAG, "onEventMainThread: ");
+        }
     }
 
     @Override
@@ -212,13 +207,13 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
     }
 
     private void connectGoogleApiClient() {
-        if (googleApiClient == null) {
+        if (mGoogleApiClient == null) {
             if (createGoogleApiClient() != ConnectionResult.SUCCESS) {
                 return;
             }
         }
-        if (!(googleApiClient.isConnected() || googleApiClient.isConnecting())) {
-            googleApiClient.connect();
+        if (!(mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting())) {
+            mGoogleApiClient.connect();
         } else {
             startTrackLocationService();
         }
@@ -228,7 +223,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (status) {
             case ConnectionResult.SUCCESS:
-                googleApiClient = buildGoogleClientApi();
+                mGoogleApiClient = buildGoogleClientApi();
                 break;
             case ConnectionResult.SERVICE_MISSING:
             case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
@@ -257,10 +252,9 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
 
     @Override
-    public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
-        priceListFragment.showFuelPriceBars(gasStationModelList);
-        mMapFragment.loadGasStationPositions(gasStationModelList);
-        //  mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
+    public void showGasStations(List<GasStationModel> gasStationModelList) {
+        mPriceListFragment.showFuelPriceBars(gasStationModelList);
+        mMapFragment.showGasStationPositions(gasStationModelList);
     }
 
     @Override
@@ -270,28 +264,25 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void refreshFuelPrices() {
-        mapPresenter.getUpdatedFuelPrices(currentPositionLatLng);
+        mMapPresenter.getUpdatedFuelPrices(mCurrentPositionLatLng);
     }
 
     @DebugLog
     @Override
     public void showLoading() {
-        // this.progressView.setVisibility(View.VISIBLE);
+         this.progressView.setVisibility(View.VISIBLE);
 
     }
-
-
-
     @DebugLog
     @Override
     public void hideLoading() {
-
+        this.progressView.setVisibility(View.GONE);
     }
 
     @DebugLog
     @Override
     public void showError(String message) {
-        // DialogFactory.createSimpleSnackBarInfo(toolbar, message);
+        DialogFactory.createSimpleSnackBarInfo(mToolbar, message);
     }
 
     @Override
@@ -301,7 +292,7 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public Context context() {
-        return this;
+        return this.getApplicationContext();
     }
 
     @Override
@@ -321,16 +312,15 @@ public class MapsActivityTest extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void onInfoHide() {
-        if (detailInfoFragment != null) {
-            detailInfoFragment.hide();
+        if (mDetailInfoFragment != null) {
+            mDetailInfoFragment.hide();
         }
     }
 
     @Override
     public void onInfoShow(GasStationModel gasStationModel) {
-        if (detailInfoFragment != null) {
-            detailInfoFragment.showTitleOnly(gasStationModel);
+        if (mDetailInfoFragment != null) {
+            mDetailInfoFragment.showTitleOnly(gasStationModel);
         }
-
     }
 }

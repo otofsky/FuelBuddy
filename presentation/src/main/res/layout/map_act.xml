@@ -62,7 +62,12 @@ of the map.-->
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-
+    <include
+        android:id="@+id/view_progress"
+        android:visibility="gone"
+        layout="@layout/progress_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
 
 

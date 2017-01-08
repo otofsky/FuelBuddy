@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
+import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
-
-import org.greenrobot.eventbus.EventBus;
+import com.fuelbuddy.mobile.model.GasStationModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,8 +19,9 @@ import butterknife.ButterKnife;
  */
 public class EditPriceActivity extends BaseActivity {
 
-    /*@BindView(R.id.toolbar)
-    Toolbar toolbar;*/
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    GasStationModel gasStationModel;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, EditPriceActivity.class);
@@ -27,15 +29,27 @@ public class EditPriceActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_edit_gas_station);
+        setContentView(R.layout.activity_edit_price);
+        Intent i = getIntent();
+        gasStationModel = (GasStationModel) i.getParcelableExtra(Config.GAS_STATION_DETAIL);
+        Log.d("Activity Edit price", "newInstance: " + gasStationModel.toString());
         ButterKnife.bind(this);
-       // setToolbar();
+        setToolbar();
     }
-/*
+
     private void setToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }*/
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        addFragment(R.id.fragmentContainer, EditPriceFragment.newInstance(gasStationModel));
+    }
 
     @Override
     public void onStart() {
@@ -46,7 +60,7 @@ public class EditPriceActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-       // EventBus.getDefault().unregister(this);
+        // EventBus.getDefault().unregister(this);
     }
 
     @Override

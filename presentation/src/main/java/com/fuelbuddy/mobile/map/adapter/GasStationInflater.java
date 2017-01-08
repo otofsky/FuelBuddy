@@ -77,7 +77,6 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
     private void initFuelPriceDataViews(GasStationModel gasStationModel, ViewHolder viewHolder) {
-
         switch (fuelPriceMode) {
             case BENZIN_92:
                 init92FuelPriceView(viewHolder, gasStationModel.getPrice92(),
@@ -86,7 +85,8 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
                 setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case BENZIN_95:
-                init95FuelPriceView(viewHolder, gasStationModel.getPrice95(), PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
+                init95FuelPriceView(viewHolder, gasStationModel.getPrice95(),
+                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
                 setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case DIESEL:

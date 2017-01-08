@@ -10,22 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fuelbuddy.data.FuelPricesUpdate;
-import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.map.FuelPriceUpdate;
-import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
-import com.fuelbuddy.mobile.map.presenter.MapPresenter;
 import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.controller.MapInterface;
+import com.fuelbuddy.mobile.map.event.Event;
+import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
+import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
-import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.MapUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -38,15 +37,10 @@ import hugo.weaving.DebugLog;
  * Created by zjuroszek on 25.12.16.
  */
 
-public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements MapMvpView,
+public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
         GoogleMap.OnMapClickListener, OnMapReadyCallback,
-        GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback, Dialog.OnClickListener {
+        GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback {
 
-
-    @Override
-    public Context context() {
-        return null;
-    }
 
     public interface Callbacks {
 
@@ -56,49 +50,26 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     }
 
-    private String selectedIdStation;
-
     private Callbacks mCallbacks;
 
     @Inject
-    public MapPresenter mapPresenter;
-
+    public MapMainPresenter mapPresenter;
 
     private MapInterface mapController;
 
-    private GoogleApiClient googleApiClient;
-
     View mapView;
 
-    public static MapFragment newInstance(String highlightedRoomId) {
+    public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
-
         Bundle arguments = new Bundle();
-        arguments.putString("", highlightedRoomId);
         fragment.setArguments(arguments);
 
-        return fragment;
-    }
-
-    public static MapFragment newInstance(Bundle savedState) {
-        MapFragment fragment = new MapFragment();
-        fragment.setArguments(savedState);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // get DPI
-        //mDPI = getActivity().getResources().getDisplayMetrics().densityDpi / 160f;
-
-        // Get the arguments and restore the highlighted room or displayed floor.
-        Bundle data = getArguments();
-        if (data != null) {
-           /* mHighlightedRoomId = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
-            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, VENUE_DEFAULT_LEVEL_INDEX);*/
-        }
-
         getMapAsync(this);
         this.mapController = new MapController();
     }
@@ -107,9 +78,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mapView = super.onCreateView(inflater, container, savedInstanceState);
-
-        //setMapInsets(mMapInsets);
-
         return mapView;
     }
 
@@ -123,10 +91,20 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mCallbacks = (Callbacks) activity;
     }
 
-    private void updateFuelPrices(GasStationModel gasStationModel) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void updateFuelPrices(GasStationModel gasStationModel) {
         mapController.clear();
-       /* mapController.showUserCurrentPosition(currentPositionLatLng);*/
         mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
     }
 
@@ -138,9 +116,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
 
-    public void loadGasStationPositions(List<GasStationModel> gasStationModelList) {
+    public void showGasStationPositions(List<GasStationModel> gasStationModelList) {
         mapController.clear();
-        mapController.seFuelStationsPositions(gasStationModelList, "");
+        mapController.setFuelStationsPositions(gasStationModelList, "");
     }
 
     @Override
@@ -151,12 +129,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     @Override
     public void onMapClick(LatLng latLng) {
         mCallbacks.onInfoHide();
-        mapController.seFuelStationsPositions("");
-    }
-
-    @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
-
+        mapController.setFuelStationsPositions();
     }
 
     @Override
@@ -165,38 +138,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mCallbacks.onInfoShow(gasStationModel);
     }
 
-    @Override
-    public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
-
-    }
-
-    @Override
-    public void showSuccessMessage(String message) {
-
-    }
-
-    @Override
-    public void refreshFuelPrices() {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public void logOut() {
-
+    @Subscribe
+    public void onEventMainThread(Event event) {
+        if (event instanceof OnPriceClickEvent) {
+            GasStationModel gasStationModel = ((OnPriceClickEvent) event).getGasStationModel();
+            mapController.centerOnGasStation(true, MapUtil.getLatLng(gasStationModel));
+            mCallbacks.onInfoShow(gasStationModel);
+        }
     }
 }

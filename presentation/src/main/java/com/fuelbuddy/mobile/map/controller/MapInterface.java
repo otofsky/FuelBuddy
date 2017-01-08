@@ -14,8 +14,6 @@ import java.util.List;
 
 public interface MapInterface {
 
-
-
     public void initMap(Context context, GoogleMap map, MapController.OnMarkerClickCallback onMarkerClickCallback);
 
     public void clear();
@@ -24,9 +22,9 @@ public interface MapInterface {
 
     public void showSelectedGasStation(String gasStationId);
 
-    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id);
+    public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, String id);
 
-    public void seFuelStationsPositions(String id);
+    public void setFuelStationsPositions();
 
     public void centerOnGasStation(boolean animate, LatLng latLng);
 

@@ -34,7 +34,6 @@ public class ErrorMessageFactory {
     }
 
     public static ErrorResponse create(Context context, Exception exception) {
-        String message = context.getString(R.string.exception_message_generic);
         ErrorResponse errorResponse = null;
         Response response;
         if (exception instanceof RetrofitException) {
@@ -46,10 +45,10 @@ public class ErrorMessageFactory {
                     errorResponse = new ErrorResponse(response.code(),response.message());
                     break;
                 case NETWORK:
-                    errorResponse = new ErrorResponse(response.code(),context.getString(R.string.exception_message_no_connection));
+                    errorResponse = new ErrorResponse(context.getString(R.string.exception_message_no_connection));
                     break;
                 case UNEXPECTED:
-                    errorResponse = new ErrorResponse(response.code(),context.getString(R.string.exception_message_generic));
+                    errorResponse = new ErrorResponse(context.getString(R.string.exception_message_generic));
                     break;
             }
         }

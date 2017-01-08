@@ -14,6 +14,10 @@ public class ErrorResponse {
         this.errorMassage = errorMassage;
     }
 
+    public ErrorResponse(String errorMassage) {
+        this.errorMassage = errorMassage;
+    }
+
     public Integer getErrorCode() {
         return errorCode;
     }

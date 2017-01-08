@@ -114,7 +114,7 @@ public class MapController implements MapInterface {
     }
 
     @Override
-    public void seFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
+    public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
             initMapWithMarkers(gasStationModelList);
@@ -122,8 +122,8 @@ public class MapController implements MapInterface {
     }
 
     @Override
-    public void seFuelStationsPositions(String id) {
-        if (mMap != null) {
+    public void setFuelStationsPositions() {
+        if (mMap != null && gasStationModelList != null) {
             initMapWithMarkers(gasStationModelList);
         }
     }

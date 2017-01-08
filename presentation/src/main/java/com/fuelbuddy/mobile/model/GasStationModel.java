@@ -1,9 +1,12 @@
 package com.fuelbuddy.mobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class GasStationModel {
+public class GasStationModel implements Parcelable {
 
 
     private String gasStationId;
@@ -23,6 +26,10 @@ public class GasStationModel {
     private String priceDiesel;
 
     private String distance;
+
+    public GasStationModel() {
+
+    }
 
     /**
      * @return The gasStationId
@@ -203,4 +210,47 @@ public class GasStationModel {
         result = 31 * result + (distance != null ? distance.hashCode() : 0);
         return result;
     }
+
+    public GasStationModel(Parcel in) {
+        gasStationId = in.readString();
+        gasStationLatitude = in.readString();
+        gasStationLongitude = in.readString();
+        gasStationName = in.readString();
+        timeUpdated = in.readString();
+        price92 = in.readString();
+        price95 = in.readString();
+        priceDiesel = in.readString();
+        distance = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(gasStationId);
+        dest.writeString(gasStationLatitude);
+        dest.writeString(gasStationLongitude);
+        dest.writeString(gasStationName);
+        dest.writeString(timeUpdated);
+        dest.writeString(price92);
+        dest.writeString(price95);
+        dest.writeString(priceDiesel);
+        dest.writeString(distance);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<GasStationModel> CREATOR = new Parcelable.Creator<GasStationModel>() {
+        @Override
+        public GasStationModel createFromParcel(Parcel in) {
+            return new GasStationModel(in);
+        }
+
+        @Override
+        public GasStationModel[] newArray(int size) {
+            return new GasStationModel[size];
+        }
+    };
 }

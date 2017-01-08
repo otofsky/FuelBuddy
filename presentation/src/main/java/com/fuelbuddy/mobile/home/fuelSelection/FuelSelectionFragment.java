@@ -77,7 +77,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     @DebugLog
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
-
         // AnimationHelper.startAnimatedActivity(getActivity(), AnimationHelper.AnimationDirection.RIGHT_LEFT);
         Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.BENZIN_92);
         //homePresenter.verifyCurrentUser();

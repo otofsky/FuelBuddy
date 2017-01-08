@@ -10,6 +10,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.model.FuelModel;
+import com.fuelbuddy.mobile.util.PriceHelper;
 
 import java.util.Date;
 
@@ -88,29 +90,34 @@ public class PricePicker extends LinearLayout implements SeekBar.OnSeekBarChange
         this.checkBox = (CheckBox) inflate.findViewById(R.id.fuel_checkbox);
         this.seekBar = (SeekBar) inflate.findViewById(R.id.pump_price_seekbar);
         this.seekBar.setOnSeekBarChangeListener(this);
-       // inflate.findViewById(R.id.btn_minus).setOnClickListener(new com.pumpdroid.widget.PricePicker.C04521());
+        // inflate.findViewById(R.id.btn_minus).setOnClickListener(new com.pumpdroid.widget.PricePicker.C04521());
         //inflate.findViewById(R.id.btn_plus).setOnClickListener(new com.pumpdroid.widget.PricePicker.C04532());
         this.seekBarPanel = (ViewGroup) inflate.findViewById(R.id.seekbar_panel);
-       // this.checkBox.setOnCheckedChangeListener(new com.pumpdroid.widget.PricePicker.C04543());
+
+        // this.checkBox.setOnCheckedChangeListener(new com.pumpdroid.widget.PricePicker.C04543());
     }
 
     public PricePicker(Context context) {
         this(context, null);
     }
 
-/*    public void init(Fuel fuel, Date date, Double d, boolean z, Settings settings) {
-        PriceRange range = settings.getRange(fuel);
-        this.min = range.getMin() * 10;
-        this.size = (range.getMax() * 10) - this.min;
-        this.value = d != null ? Integer.valueOf((int) ((d.doubleValue() * 10.0d) - ((double) this.min))) : null;
+    public void init(FuelModel fuelModel) {
+        //  PriceRange range = settings.getRange(fuel);
+        //this.min = range.getMin() * 10;
+        // this.size = (range.getMax() * 10) - this.min;
+        // this.value = d != null ? Integer.valueOf((int) ((d.doubleValue() * 10.0d) - ((double) this.min))) : null;
         this.date = date;
-        this.fuel = fuel;
-        this.checkBox.setChecked(z);
-        this.seekBarPanel.setVisibility(z ? 0 : 8);
-        this.checkBox.setText(fuel.getDisplayName());
-        this.checkBox.setTextColor(settings.getTextColor());
-        adjust(0);
-    }*/
+        //this.fuel = fuel;
+        this.checkBox.setChecked(true);
+        //this.seekBarPanel.setVisibility(z ? 0 : 8);
+        this.checkBox.setText(fuelModel.getFuelName());
+
+        priceView.setText(PriceHelper.toFormattedPrice(fuelModel.getPrice()));
+
+
+        //this.checkBox.setTextColor(settings.getTextColor());
+        //adjust(0);
+    }
 
 /*    private void adjust(int i) {
         if (i != 0) {
