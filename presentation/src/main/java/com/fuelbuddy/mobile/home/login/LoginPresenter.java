@@ -35,7 +35,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private SetUserLocallyInteractor mSetUserLocallyInteractor;
     private SetUserInCloudInteractor mSetUserInCloudInteractor;
     private CheckUserInteractor mCheckUserInteractor;
-    private UserModel mUserModel;
+    private UserModel mUserModel; //
 
     @Inject
     public LoginPresenter(@Named("setUserLocally") SetUserLocallyInteractor setUserLocallyInteractor,
