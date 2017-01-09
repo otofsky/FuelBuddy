@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="bottom"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:gravity="bottom"
     >
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/fuelPriceView"
         style="@style/GreenButton"
-        android:text="95. 12,87 kt"
+        tools:text="95. 12,87 kt"
         android:layout_width="wrap_content"
         android:background="@drawable/button_green_right_rounded"
         android:layout_height="wrap_content"

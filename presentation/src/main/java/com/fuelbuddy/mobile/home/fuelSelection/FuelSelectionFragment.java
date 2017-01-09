@@ -61,6 +61,12 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override public void onDestroy() {
+        super.onDestroy();
+        this.mFuelSelectionPresenter.detachView();
+    }
+
+
     @DebugLog
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

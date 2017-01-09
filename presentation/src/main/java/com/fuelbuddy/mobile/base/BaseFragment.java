@@ -18,6 +18,7 @@ import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,53 +28,52 @@ import org.greenrobot.eventbus.EventBus;
 public abstract class BaseFragment extends Fragment {
 
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
 
-  @Nullable
-  @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
-
-  }
-
-
-
-
-  /**
-   * Shows a {@link android.widget.Toast} message.
-   *
-   * @param message An string representing a message to be shown.
-   */
-
-
-  protected void showToastMessage(String message) {
-
-    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-  }
-
-
-  /**
-   * Get an Activity module for dependency injection.
-   */
-
-  /**
-   * Gets a component for dependency injection by its type.
-   */
-  @SuppressWarnings("unchecked")
-  protected <C> C getComponent(Class<C> componentType) {
-    if(getActivity()instanceof HomeActivity){
-      Log.d("id", "getComponent: ");
     }
 
-    return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
-  }
+
+    /**
+     * Shows a {@link android.widget.Toast} message.
+     *
+     * @param message An string representing a message to be shown.
+     */
 
 
-  public void showSpinnerLoader(String text) {
+    protected void showToastMessage(String message) {
 
-  }
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 
-  public void hideSpinnerLoader() {
+
+    /**
+     * Get an Activity module for dependency injection.
+     */
+
+    /**
+     * Gets a component for dependency injection by its type.
+     */
+    @SuppressWarnings("unchecked")
+    protected <C> C getComponent(Class<C> componentType) {
+        if (getActivity() instanceof HomeActivity) {
+            Log.d("id", "getComponent: ");
+        }  if (getActivity() instanceof MapsMainActivity) {
+            Log.d("id", "getComponent: ");
+        }
+
+        return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
+    }
 
 
-  }
+    public void showSpinnerLoader(String text) {
+
+    }
+
+    public void hideSpinnerLoader() {
+
+
+    }
 }

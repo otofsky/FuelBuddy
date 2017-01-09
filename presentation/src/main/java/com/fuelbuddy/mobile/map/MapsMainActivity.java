@@ -18,7 +18,10 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.HasComponent;
+import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
+import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.event.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
@@ -52,7 +55,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks , HasComponent<MapsComponent> {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
 
     public static final String[] PERMISSIONS =
@@ -92,15 +95,15 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         mMapsComponent.inject(this);
     }
 
+
     @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_act);
+        this.initializeInjector();
         ButterKnife.bind(this);
         setToolbar();
-
-        this.initializeInjector();
 
         mMapPresenter.attachView(this);
         connectGoogleApiClient();
@@ -322,5 +325,10 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         if (mDetailInfoFragment != null) {
             mDetailInfoFragment.showTitleOnly(gasStationModel);
         }
+    }
+
+    @Override
+    public MapsComponent getComponent() {
+        return mMapsComponent;
     }
 }

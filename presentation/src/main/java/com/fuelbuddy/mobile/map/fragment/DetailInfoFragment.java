@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
-import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
+import com.fuelbuddy.mobile.di.component.HomeComponent;
+import com.fuelbuddy.mobile.di.component.MapsComponent;
+import com.fuelbuddy.mobile.map.presenter.DetailInfoPresenter;
+import com.fuelbuddy.mobile.map.view.DetailInfoView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.MapUtil;
@@ -33,7 +37,9 @@ import butterknife.ButterKnife;
  * Created by zjuroszek on 25.12.16.
  */
 
-public class DetailInfoFragment extends BaseFragment implements View.OnClickListener  {
+public class DetailInfoFragment extends BaseFragment implements DetailInfoView, View.OnClickListener {
+    @Inject
+    DetailInfoPresenter mPresenter;
 
     private View mBottomSheet;
 
@@ -63,12 +69,12 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Load heights
+        this.getComponent(MapsComponent.class).inject(this);
+        mPresenter.attachView(this);
         final Resources resources = getResources();
         mHeightDetail = resources
                 .getDimensionPixelOffset(R.dimen.map_slideableinfo_height);
     }
-
 
     @Nullable
     @Override
@@ -143,16 +149,49 @@ public class DetailInfoFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.navigationBtn:
-                Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel)));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
-                startActivity(mapIntent);
+                mPresenter.startNavigation();
                 break;
             case R.id.updateBtn:
-                Navigator.navigateToEditPriceActivity(getActivity(),mGasStationModel);
+                mPresenter.startUpdate();
                 break;
-
-
         }
+    }
+
+    @Override
+    public void showNavigationView() {
+        Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel)));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
+        startActivity(mapIntent);
+    }
+
+    @Override
+    public void showEditPriceView() {
+        Navigator.navigateToEditPriceActivity(getActivity(), mGasStationModel);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void logOut() {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
     }
 }

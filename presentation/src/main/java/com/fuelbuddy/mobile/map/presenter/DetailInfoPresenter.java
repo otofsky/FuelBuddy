@@ -32,16 +32,25 @@ public class DetailInfoPresenter extends BasePresenter<DetailInfoView> {
 
 
     @Inject
-    public DetailInfoPresenter() {
+    public DetailInfoPresenter() {}
 
-
+    @DebugLog
+    @Override
+    public void detachView() {
+        super.detachView();
     }
 
-    private void startNavigation(){
+    @DebugLog
+    @Override
+    public void attachView(DetailInfoView mvpView) {
+        super.attachView(mvpView);
+    }
+
+    public void startNavigation(){
         getMvpView().showNavigationView();
     }
 
-    private void startEdit(){
+    public void startUpdate(){
         getMvpView().showEditPriceView();
     }
 
