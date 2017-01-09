@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by zjuroszek on 25.12.16.
@@ -58,8 +59,9 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     @BindView(R.id.updateBtn)
     Button updateBtn;
 
-
     GasStationModel mGasStationModel;
+
+    Unbinder mUnbinder;
 
 
     public static DetailInfoFragment newInstance() {
@@ -81,7 +83,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.map_info_bottom, container, false);
-        ButterKnife.bind(this, fragmentView);
+        mUnbinder = ButterKnife.bind(this, fragmentView);
         navigateBtn.setOnClickListener(this);
         updateBtn.setOnClickListener(this);
         return fragmentView;
@@ -95,6 +97,11 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         mBehavior = BottomSheetBehavior.from(mBottomSheet);
         mBehavior.setBottomSheetCallback(mBottomSheetCallback);
         hide();
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     public void showTitleOnly(GasStationModel gasStationModel) {

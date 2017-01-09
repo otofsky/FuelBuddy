@@ -52,9 +52,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     private Callbacks mCallbacks;
 
-    @Inject
-    public MapMainPresenter mapPresenter;
-
     private MapInterface mapController;
 
     View mapView;
@@ -103,10 +100,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         EventBus.getDefault().unregister(this);
     }
 
-    private void updateFuelPrices(GasStationModel gasStationModel) {
-        mapController.clear();
-        mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
-    }
 
     @DebugLog
     @Override

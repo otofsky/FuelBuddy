@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
@@ -28,15 +29,6 @@ import butterknife.ButterKnife;
 
 public class EditPriceFragment extends BaseFragment implements EditPriceView {
 
-
-/*    @BindView(R.id.price_picker_92)
-    PricePicker pricePicker92;
-
-    @BindView(R.id.price_picker_95)
-    PricePicker pricePicker95;
-
-    @BindView(R.id.price_picker_diesel)
-    PricePicker pricePickerDiesel;*/
 
     @BindView(R.id.fuel_price_panel)
     LinearLayout fuelPricePanel;
@@ -80,6 +72,12 @@ public class EditPriceFragment extends BaseFragment implements EditPriceView {
          initializePricePicker(fuelModel);
         }
     }
+
+    private void updateFuelPrices(GasStationModel gasStationModel) {
+       // mapController.clear();
+      //  mapPresenter.updateFuelPrices(new FuelPricesUpdate(gasStationModel.getGasStationId(), "1", 1.64000, 1.87000, 1.87000));
+    }
+
 
     private void initializePricePicker(FuelModel fuelModel) {
  /*       Date date = null;
