@@ -1,7 +1,10 @@
 package com.fuelbuddy.data.net;
 
 import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -29,15 +32,18 @@ public interface RestApiService {
      * Retrieves an {@link rx.Observable} which will emit a List of {@link GasStationEntity}.
      */
 
-    @GET("/")
-    Observable<List<GasStationEntity>> gasStationEntityList();
 
-    /**
-     * Retrieves an {@link rx.Observable} which will emit a {@link GasStationEntity}.
-     *
-     * @param gasStationId The user id used to get user data.
-     */
+    Observable<List<GasStationEntity>> gasStationEntityList(Position position);
+
+     Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
+            , Double price95, Double priceDiesel);
+
+    Observable<ResponseEntity> addNewUser(UserEntity userEntity);
+
+    Observable<UserEntity> checkUser(String userId);
+
     Observable<GasStationEntity> gasStationEntityById(final int gasStationId);
+
 
 
     class Creator {

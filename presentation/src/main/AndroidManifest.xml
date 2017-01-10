@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.fuelbuddy.mobile">
+    package="com.fuelbuddy.mobile">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -9,13 +9,15 @@
     -->
 
     />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
-        android:name=".FuelBuddyApplication"
+        android:name=".AndroidApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -32,31 +34,50 @@
         -->
 
         <activity
+            android:label=""
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
+
+        </activity>
+
+        <activity
             android:name=".home.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".map.MapsActivity"
-            android:theme="@style/AppThemeNoActionBar"
-            android:label="@string/title_activity_maps">
+            android:name=".map.MapsMainActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullyTranslucent"/>
+        <activity
+            android:name=".editprice.EditPriceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
+
         </activity>
 
         <service
             android:name=".TrackLocationService"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
 
 
-        <activity
-            android:name=".map.MapActivity"
-            android:label="@string/title_activity_map">
-        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -67,12 +88,18 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c6404702819f1671dfa29bfea00e0100b74fe6fb" />
     </application>
 
 </manifest>

@@ -20,28 +20,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * {@link RestApiService} implementation for retrieving data from the network.
  */
 public class RestApiImpl implements RestApiService {
 
-
-   // http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961
-
-    String ENDPOINT = "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
-
-
     private final Context context;
+
     GasStationEntityDataMapper mGasStationEntityDataMapper;
+
     public RestApiImpl(Context context) {
         this.context = context;
     }
@@ -69,21 +66,30 @@ public class RestApiImpl implements RestApiService {
     }
 
     @Override
-    public Observable<List<GasStationEntity>> gasStationEntityList() {
-        Observable<List<GasStationEntity>> observable = Observable.create(new Observable.OnSubscribe<List<GasStationEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<GasStationEntity>> subscriber) {
-                subscriber.onNext(getUserEntitiesFromApi());
+    public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
+        return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLongitude());
+    }
 
-            }
-        });
-        return observable;
+    @Override
+    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
+        return ApiInvoker.getInstance().updateStation(iD, userID, price92, price95, priceDiesel);
+    }
 
+
+    public Observable<UserEntity> checkUser(String userId) {
+        return ApiInvoker.getInstance().checkUser(userId);
+    }
+
+
+    @Override
+    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
+        return ApiInvoker.getInstance().addNewUser(userEntity.getUserID(),userEntity.getProfileName(),userEntity.getEmail());
     }
 
 
 
-/*    @Override
+/*
+    @Override
     public Observable<List<GasStationEntity>> gasStationEntityList() {
         return Observable.create(subscriber -> {
             if (isThereInternetConnection()) {
@@ -99,17 +105,19 @@ public class RestApiImpl implements RestApiService {
                 subscriber.onError(new NetworkConnectionException());
             }
         });
-    }*/
+    }
+*/
 
     @Override
     public Observable<GasStationEntity> gasStationEntityById(int gasStationId) {
         return null;
     }
-
+/*
     public List<GasStationEntity> getUserEntitiesFromApi() {
+        RestApiService.Creator.newRestApiService().gasStationEntityList();
         GasStationEntity gasStationEntity = new GasStationEntity("Statoil");
         List<GasStationEntity> gasStationEntityList = new ArrayList<GasStationEntity>();
         gasStationEntityList.add(gasStationEntity);
         return gasStationEntityList;
-    }
+    }*/
 }

@@ -1,0 +1,99 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/viewA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fuel_price_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:padding="50dp">
+
+            <TextView
+                android:id="@+id/fuel92"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="92"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:id="@+id/fuel95"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fuel92"
+                android:text="92"
+                android:textSize="32sp"/>
+
+            <TextView
+                android:id="@+id/fuelDiesel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fuel95"
+                android:text="Diesel"
+                android:textSize="32sp"/>
+
+            <EditText
+                android:id="@+id/fuelInputDiesel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="Diesel"
+                android:layout_alignTop="@+id/fuelDiesel"
+                android:layout_toRightOf="@+id/fuelDiesel"
+                android:layout_toEndOf="@+id/fuelDiesel"/>
+
+            <EditText
+                android:id="@+id/fuelInput92"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="Price"
+                android:layout_alignBaseline="@+id/fuel92"
+                android:layout_alignBottom="@+id/fuel92"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+            <EditText
+                android:id="@+id/fuelInput95"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="95"
+                android:layout_below="@+id/fuelInput92"
+                android:layout_alignLeft="@+id/fuelInput92"
+                android:layout_alignStart="@+id/fuelInput92"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/navigationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_anchor="@id/viewA"
+        app:layout_anchorGravity="bottom|right|end"/>
+
+</android.support.design.widget.CoordinatorLayout>

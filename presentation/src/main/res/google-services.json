@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "153313395728",
+    "project_id": "fuelbuddy-147813"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153313395728:android:5d569cb1057260fa",
+        "android_client_info": {
+          "package_name": "com.fuelbuddy.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153313395728-50t95sdn6oqf6e2f2itunkdhhchkr9dg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuelbuddy.mobile",
+            "certificate_hash": "687C12B3E43A66A386173858108E558D2D84E5E1"
+          }
+        },
+        {
+          "client_id": "153313395728-86k9vvk8djgel3i3rb71u05n3jj13ln4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw0VDaINJb0FpdWrjOmRwQqpxtSELPVmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
