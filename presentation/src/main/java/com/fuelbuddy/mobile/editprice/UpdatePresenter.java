@@ -1,9 +1,25 @@
 package com.fuelbuddy.mobile.editprice;
 
+import com.fuelbuddy.data.FuelPricesUpdate;
+import com.fuelbuddy.data.GasStation;
+import com.fuelbuddy.data.Response;
+import com.fuelbuddy.exception.DefaultErrorBundle;
+import com.fuelbuddy.exception.ErrorBundle;
+import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.GetGasStationList;
+import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.map.view.DetailInfoView;
+import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
+import com.fuelbuddy.mobile.map.view.MapMvpView;
+import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
+import com.fuelbuddy.mobile.mapper.PositionMapper;
+import com.fuelbuddy.mobile.model.ErrorResponse;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
 
@@ -13,27 +29,84 @@ import hugo.weaving.DebugLog;
 
 public class UpdatePresenter extends BasePresenter<UpdateView> {
 
+
+    private final UpdateFuelPricesInteractor mUpdateFuelPricesInteractor;
+    private PositionMapper mPositionMapper;
+
     @Inject
-    public UpdatePresenter() {}
+    public UpdatePresenter(UpdateFuelPricesInteractor updateFuelPricesInteractor) {
+        this.mUpdateFuelPricesInteractor = updateFuelPricesInteractor;
+        mPositionMapper = new PositionMapper();
+    }
+
+    @Override
+    public void attachView(UpdateView mvpView) {
+        super.attachView(mvpView);
+    }
 
     @DebugLog
     @Override
     public void detachView() {
         super.detachView();
+        this.mUpdateFuelPricesInteractor.unsubscribe();
     }
 
-    @DebugLog
-    @Override
-    public void attachView(UpdateView updateView) {
-        super.attachView(updateView);
+    public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
+        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuelPricesUpdate);
+        this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
     }
 
-    public void startNavigation(){
-        getMvpView().showCamera();
+    private void showErrorMessage(ErrorBundle errorBundle) {
+        getMvpView().context();
+        ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+        getMvpView().showError(errorResponse.getErrorMassage());
     }
 
-    public void startUpdate(){
-        getMvpView().updatePrice();
+
+    private final class UpdateFuelPriceSubscriber extends DefaultSubscriber<Response> {
+        @DebugLog
+        @Override
+        public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable throwable) {
+            getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(Response response) {
+            getMvpView().hideLoading();
+            //getMvpView().showSuccessMessage(response.getMessage());
+
+        }
     }
 
+    private final class FuelUpdatedPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
+        @DebugLog
+        @Override
+        public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable throwable) {
+            getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(List<GasStation> gasStations) {
+            getMvpView().hideLoading();
+            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
+           // getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
+
+        }
+    }
 }

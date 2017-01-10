@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
+import com.fuelbuddy.mobile.editprice.UpdateActivity;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.map.MapsMainActivity;
 
@@ -61,6 +62,9 @@ public abstract class BaseFragment extends Fragment {
         if (getActivity() instanceof HomeActivity) {
             Log.d("id", "getComponent: ");
         }  if (getActivity() instanceof MapsMainActivity) {
+            Log.d("id", "getComponent: ");
+        }
+        if (getActivity() instanceof UpdateActivity) {
             Log.d("id", "getComponent: ");
         }
 

@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:text="Price"
+                android:text="92"
                 android:layout_alignBaseline="@+id/fuel92"
                 android:layout_alignBottom="@+id/fuel92"
                 android:layout_alignParentRight="true"
