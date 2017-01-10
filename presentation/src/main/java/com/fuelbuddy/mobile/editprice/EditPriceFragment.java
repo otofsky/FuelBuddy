@@ -120,16 +120,6 @@ public class EditPriceFragment extends BaseFragment implements UpdateView {
     }
 
     @Override
-    public void decreasePrice() {
-
-    }
-
-    @Override
-    public void increasePrice() {
-        //  Collections.sort();
-    }
-
-    @Override
     public void updatePrice() {
 
     }
