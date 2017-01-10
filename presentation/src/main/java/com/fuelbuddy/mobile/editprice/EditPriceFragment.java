@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
@@ -27,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by zjuroszek on 25.12.16.
  */
 
-public class EditPriceFragment extends BaseFragment implements EditPriceView {
+public class EditPriceFragment extends BaseFragment implements UpdateView {
 
 
     @BindView(R.id.fuel_price_panel)
