@@ -75,7 +75,6 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
     }
 
     public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
-        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuelPricesUpdate);
         this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
     }
 

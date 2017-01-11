@@ -11,6 +11,7 @@ import javax.inject.Inject;
 public class FuelUpdateFactory {
     @Inject
     public FuelUpdateFactory() {
+
     }
 
     public FuelPricesUpdate createFuelUpdate(String iD, String userID, String fuel92, String fuel95, String diesel) {
