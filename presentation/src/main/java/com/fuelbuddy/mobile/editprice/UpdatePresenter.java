@@ -14,6 +14,7 @@ import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.fuelbuddy.mobile.model.ErrorResponse;
+import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -51,8 +52,9 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
         this.mUpdateFuelPricesInteractor.unsubscribe();
     }
 
-    public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
-        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuelPricesUpdate);
+    public void updateFuelPrices(String fuel92, String fuel95, String diesel) {
+
+        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuel92,fuel95,diesel);
         this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
     }
 

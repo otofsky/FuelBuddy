@@ -12,6 +12,7 @@ public class FuelPricesUpdate {
     private final Double price95;
     private final Double priceDiesel;
 
+
     public FuelPricesUpdate(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
         this.iD = iD;
         this.userID = userID;

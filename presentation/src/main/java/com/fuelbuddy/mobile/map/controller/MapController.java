@@ -142,7 +142,6 @@ public class MapController implements MapInterface {
 
     public void setMarkerData(List<GasStationModel> gasStationModelList) {
         this.gasStationModelList = gasStationModelList;
-
     }
 
     private void initMapWithMarkers(List<GasStationModel> gasStationModelList) {
