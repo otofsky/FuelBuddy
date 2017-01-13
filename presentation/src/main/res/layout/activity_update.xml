@@ -1,9 +1,9 @@
 <LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true" />
         <!-- placeholder, empty except on L -->
 
     </LinearLayout>
@@ -33,8 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/viewA"
@@ -43,73 +42,52 @@
                 android:layout_weight="0.6"
                 android:background="@color/gray"
                 android:gravity="center"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/fuel_price_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="20dp"
-                android:layout_weight="0.4"
-                android:gravity="center_vertical">
+                android:layout_weight="0.4">
+
+                <include
+                    android:id="@+id/address_view"
+                    layout="@layout/address_view" />
 
                 <RelativeLayout
-                    android:id="@+id/fuel92holder"
+                    android:id="@+id/fuel95holder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fuel92holder">
+
                     <TextView
-                        android:id="@+id/fuel92"
+                        android:id="@+id/fuel95"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
-                        android:text="92:"
-                        android:textSize="32sp"/>
+                        android:text="95:"
+                        android:textSize="32sp" />
 
                     <EditText
-                        android:id="@+id/fuelInput92"
+                        android:id="@+id/fuelInput95"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:ems="10"
-                        android:inputType="numberDecimal"/>
-
-
+                        android:inputType="numberDecimal" />
                 </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/fuel95holder"
-                android:layout_below="@+id/fuel92holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/fuel95"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="95:"
-                    android:textSize="32sp"/>
-
-                <EditText
-                    android:id="@+id/fuelInput95"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:ems="10"
-                    android:inputType="numberDecimal"/>
-            </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/fuelDieselholder"
-                    android:layout_below="@+id/fuel95holder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fuel95holder">
 
                     <TextView
                         android:id="@+id/fuelDiesel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Diesel"
-                        android:textSize="32sp"/>
+                        android:textSize="32sp" />
 
                     <EditText
                         android:id="@+id/fuelInputDiesel"
@@ -118,21 +96,47 @@
                         android:layout_alignParentRight="true"
                         android:ems="10"
 
-                        android:inputType="numberDecimal"
-                       />
+                        android:inputType="numberDecimal" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fuel92holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/address_view"
+                  >
+
+                    <TextView
+                        android:id="@+id/fuel92"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="92:"
+                        android:textSize="32sp" />
+
+                    <EditText
+                        android:id="@+id/fuelInput92"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:ems="10"
+                        android:inputType="numberDecimal" />
+
+
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/openCameraBtn"
-            app:layout_anchor="@id/viewA"
-            app:layout_anchorGravity="bottom|right|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_camera"/>
+            android:src="@android:drawable/ic_menu_camera"
+            app:layout_anchor="@id/viewA"
+            app:layout_anchorGravity="bottom|right|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

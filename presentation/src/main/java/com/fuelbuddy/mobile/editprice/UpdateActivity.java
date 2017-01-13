@@ -3,6 +3,7 @@ package com.fuelbuddy.mobile.editprice;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
@@ -41,6 +44,18 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.stationNameTv)
+    TextView stationNameTv;
+
+    @BindView(R.id.stationAddressTv)
+    TextView stationAddressTv;
+
+    @BindView(R.id.infoTv)
+    TextView infoTv;
+
+    @BindView(R.id.locationIconImg)
+    ImageView locationIconImg;
+
     @BindView(R.id.fuelInput92)
     EditText fuelInput92;
     @BindView(R.id.fuelInput95)
@@ -54,6 +69,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     GasStationModel gasStationModel;
     FuelMapper fuelMapper;
+
+    String videoPath;
+    Uri videoUri;
 
 
     private UpdateComponent mUpdateComponent;
@@ -76,7 +94,13 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     private void obtainData() {
         Intent i = getIntent();
         gasStationModel = (GasStationModel) i.getParcelableExtra(Config.GAS_STATION_DETAIL);
+         stationNameTv.setText(gasStationModel.getGasStationName());
+        // stationAddressTv;
+         infoTv.setText("Optag pris");
     }
+
+
+
 
     private void initPresenter() {
         mPresenter.attachView(this);
@@ -117,7 +141,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
-                mPresenter.updateFuelPrices(fuelInput92.getText().toString(), fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
+                //  mPresenter.updateFuelPrices(fuelInput92.getText().toString(), fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -139,26 +163,28 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
     }
 
+    //   content://media/external/video/media/5490
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String photoPath = "";
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
-                // photoPath = getRealPathFromURI(data.getData());
+                videoUri = data.getData();
+                videoPath = videoUri.getPath();
             }
         }
     }
 
     @Override
     public void updatePrice() {
-        String fuel92 = null, fuel95 = null,fuelDiesel = null;
-        if(!StringHelper.isNullOrEmpty(fuelInput92.getText().toString())){
+        String fuel92 = null, fuel95 = null, fuelDiesel = null;
+        if (!StringHelper.isNullOrEmpty(fuelInput92.getText().toString())) {
             fuel92 = fuelInput92.getText().toString();
         }
-        if(!StringHelper.isNullOrEmpty(fuelInput95.getText().toString())){
+        if (!StringHelper.isNullOrEmpty(fuelInput95.getText().toString())) {
             fuel95 = fuelInput95.getText().toString();
         }
-        if(!StringHelper.isNullOrEmpty(fuelInputDiesel.getText().toString())){
+        if (!StringHelper.isNullOrEmpty(fuelInputDiesel.getText().toString())) {
             fuelDiesel = fuelInputDiesel.getText().toString();
         }
         mPresenter.updateFuelPrices(fuel92,fuel95,fuelDiesel);

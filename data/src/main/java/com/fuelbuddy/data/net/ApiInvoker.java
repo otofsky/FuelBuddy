@@ -9,6 +9,7 @@ import com.fuelbuddy.data.net.utils.RxErrorHandlingCallAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -29,8 +30,6 @@ public class ApiInvoker {
     // public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     // "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
     String BASE_URL = "http://fuelbuddy.dk/ws/";
-
-
     private ApiInterface apiInterface;
 
     private ApiInvoker() {
@@ -55,6 +54,7 @@ public class ApiInvoker {
     }
 
     public static ApiInvoker getInstance() {
+
         if (httpsInvoker == null) {
             httpsInvoker = new ApiInvoker();
         }
@@ -76,6 +76,8 @@ public class ApiInvoker {
     }
 
     public Observable<UserEntity> checkUser(String userID) {
+
+
         return apiInterface.checkUser(userID);
     }
 

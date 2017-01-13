@@ -1,5 +1,7 @@
 package com.fuelbuddy.mobile.editprice;
 
+import android.net.Uri;
+
 import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
@@ -53,7 +55,6 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
     }
 
     public void updateFuelPrices(String fuel92, String fuel95, String diesel) {
-
         this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuel92,fuel95,diesel);
         this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
     }

@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
-import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.presenter.DetailInfoPresenter;
 import com.fuelbuddy.mobile.map.view.DetailInfoView;
@@ -50,8 +50,17 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     private int mHeightDetail;
 
-    @BindView(R.id.gasStationName)
+    @BindView(R.id.stationNameTv)
     TextView gasStation;
+
+    @BindView(R.id.stationAddressTv)
+    TextView stationAddressTv;
+
+    @BindView(R.id.infoTv)
+    TextView infoTv;
+
+    @BindView(R.id.locationIconImg)
+    ImageView locationIconImg;
 
     @BindView(R.id.navigationBtn)
     FloatingActionButton navigateBtn;
@@ -112,6 +121,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     private void initPriceDetailViews(GasStationModel gasStationModel) {
         gasStation.setText(gasStationModel.getGasStationName());
+        infoTv.setText("Vis vej");
 
     }
 

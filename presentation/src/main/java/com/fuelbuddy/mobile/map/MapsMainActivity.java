@@ -179,7 +179,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     public void onEventMainThread(Event event) {
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
-            mMapPresenter.submitSearch(mCurrentPositionLatLng);
+            mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
         }
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
