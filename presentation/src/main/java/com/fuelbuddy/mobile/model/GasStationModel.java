@@ -3,6 +3,9 @@ package com.fuelbuddy.mobile.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by zjuroszek on 07.10.16.
  */
@@ -16,6 +19,8 @@ public class GasStationModel implements Parcelable {
     String gasStationLongitude;
 
     private String gasStationName;
+
+    private String companyName;
 
     private String timeUpdated;
 
@@ -85,6 +90,14 @@ public class GasStationModel implements Parcelable {
      */
     public void setGasStationName(String gasStationName) {
         this.gasStationName = gasStationName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     /**
@@ -159,11 +172,12 @@ public class GasStationModel implements Parcelable {
 
     @Override
     public String toString() {
-        return "GasStation{" +
+        return "GasStationModel{" +
                 "gasStationId='" + gasStationId + '\'' +
                 ", gasStationLatitude='" + gasStationLatitude + '\'' +
                 ", gasStationLongitude='" + gasStationLongitude + '\'' +
                 ", gasStationName='" + gasStationName + '\'' +
+                ", companyName='" + companyName + '\'' +
                 ", timeUpdated='" + timeUpdated + '\'' +
                 ", price92='" + price92 + '\'' +
                 ", price95='" + price95 + '\'' +
@@ -187,6 +201,8 @@ public class GasStationModel implements Parcelable {
             return false;
         if (gasStationName != null ? !gasStationName.equals(that.gasStationName) : that.gasStationName != null)
             return false;
+        if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null)
+            return false;
         if (timeUpdated != null ? !timeUpdated.equals(that.timeUpdated) : that.timeUpdated != null)
             return false;
         if (price92 != null ? !price92.equals(that.price92) : that.price92 != null) return false;
@@ -203,6 +219,7 @@ public class GasStationModel implements Parcelable {
         result = 31 * result + (gasStationLatitude != null ? gasStationLatitude.hashCode() : 0);
         result = 31 * result + (gasStationLongitude != null ? gasStationLongitude.hashCode() : 0);
         result = 31 * result + (gasStationName != null ? gasStationName.hashCode() : 0);
+        result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
         result = 31 * result + (timeUpdated != null ? timeUpdated.hashCode() : 0);
         result = 31 * result + (price92 != null ? price92.hashCode() : 0);
         result = 31 * result + (price95 != null ? price95.hashCode() : 0);
@@ -216,6 +233,7 @@ public class GasStationModel implements Parcelable {
         gasStationLatitude = in.readString();
         gasStationLongitude = in.readString();
         gasStationName = in.readString();
+        companyName = in.readString();
         timeUpdated = in.readString();
         price92 = in.readString();
         price95 = in.readString();
@@ -234,6 +252,7 @@ public class GasStationModel implements Parcelable {
         dest.writeString(gasStationLatitude);
         dest.writeString(gasStationLongitude);
         dest.writeString(gasStationName);
+        dest.writeString(companyName);
         dest.writeString(timeUpdated);
         dest.writeString(price92);
         dest.writeString(price95);

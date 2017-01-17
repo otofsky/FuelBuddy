@@ -51,13 +51,13 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     private int mHeightDetail;
 
     @BindView(R.id.stationNameTv)
-    TextView gasStation;
+    TextView gasStationName;
 
     @BindView(R.id.stationAddressTv)
-    TextView stationAddressTv;
+    TextView stationAddress;
 
     @BindView(R.id.infoTv)
-    TextView infoTv;
+    TextView info;
 
     @BindView(R.id.locationIconImg)
     ImageView locationIconImg;
@@ -110,6 +110,8 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     @Override public void onDestroyView() {
         super.onDestroyView();
+
+
         mUnbinder.unbind();
     }
 
@@ -120,8 +122,9 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     }
 
     private void initPriceDetailViews(GasStationModel gasStationModel) {
-        gasStation.setText(gasStationModel.getGasStationName());
-        infoTv.setText("Vis vej");
+        gasStationName.setText(gasStationModel.getCompanyName());
+        stationAddress.setText(gasStationModel.getGasStationName());
+        info.setText(R.string.map_direction_btn_text);
 
     }
 

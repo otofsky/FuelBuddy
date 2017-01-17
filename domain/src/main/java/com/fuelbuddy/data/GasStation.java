@@ -1,5 +1,8 @@
 package com.fuelbuddy.data;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by zjuroszek on 07.10.16.
  */
@@ -13,6 +16,8 @@ public class GasStation {
     String gasStationLongitude;
 
     private String gasStationName;
+
+    private String companyName;
 
     private String timeUpdated;
 
@@ -150,6 +155,14 @@ public class GasStation {
         this.distance = distance;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     @Override
     public String toString() {
         return "GasStation{" +
@@ -157,6 +170,7 @@ public class GasStation {
                 ", gasStationLatitude='" + gasStationLatitude + '\'' +
                 ", gasStationLongitude='" + gasStationLongitude + '\'' +
                 ", gasStationName='" + gasStationName + '\'' +
+                ", companyName='" + companyName + '\'' +
                 ", timeUpdated='" + timeUpdated + '\'' +
                 ", price92='" + price92 + '\'' +
                 ", price95='" + price95 + '\'' +
@@ -180,6 +194,8 @@ public class GasStation {
             return false;
         if (gasStationName != null ? !gasStationName.equals(that.gasStationName) : that.gasStationName != null)
             return false;
+        if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null)
+            return false;
         if (timeUpdated != null ? !timeUpdated.equals(that.timeUpdated) : that.timeUpdated != null)
             return false;
         if (price92 != null ? !price92.equals(that.price92) : that.price92 != null) return false;
@@ -196,6 +212,7 @@ public class GasStation {
         result = 31 * result + (gasStationLatitude != null ? gasStationLatitude.hashCode() : 0);
         result = 31 * result + (gasStationLongitude != null ? gasStationLongitude.hashCode() : 0);
         result = 31 * result + (gasStationName != null ? gasStationName.hashCode() : 0);
+        result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
         result = 31 * result + (timeUpdated != null ? timeUpdated.hashCode() : 0);
         result = 31 * result + (price92 != null ? price92.hashCode() : 0);
         result = 31 * result + (price95 != null ? price95.hashCode() : 0);

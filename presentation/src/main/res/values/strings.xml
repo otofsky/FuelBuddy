@@ -35,6 +35,11 @@
     <string name="sign_in_google_failed">Google Login Failed</string>
 
     <string name="update_unavailable">Update is temporarily unavailable</string>
+    <string name="map_direction_btn_text">Vis vej</string>
+    <string name="update_price_btn_text">Optag pris</string>
+    <string name="update_diesel">Diesel</string>
+    <string name="update_blyfri_95">Blyfri 95</string>
+    <string name="update_blyfri_92">Blyfri 92</string>
 
 
 </resources>

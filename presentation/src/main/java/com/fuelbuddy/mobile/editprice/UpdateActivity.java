@@ -45,19 +45,19 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     Toolbar toolbar;
 
     @BindView(R.id.stationNameTv)
-    TextView stationNameTv;
+    TextView gasStationName;
 
     @BindView(R.id.stationAddressTv)
-    TextView stationAddressTv;
+    TextView stationAddress;
 
     @BindView(R.id.infoTv)
-    TextView infoTv;
+    TextView info;
 
     @BindView(R.id.locationIconImg)
     ImageView locationIconImg;
 
-    @BindView(R.id.fuelInput92)
-    EditText fuelInput92;
+    /*@BindView(R.id.fuelInput92)
+    EditText fuelInput92;*/
     @BindView(R.id.fuelInput95)
     EditText fuelInput95;
     @BindView(R.id.fuelInputDiesel)
@@ -94,13 +94,11 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     private void obtainData() {
         Intent i = getIntent();
         gasStationModel = (GasStationModel) i.getParcelableExtra(Config.GAS_STATION_DETAIL);
-         stationNameTv.setText(gasStationModel.getGasStationName());
-        // stationAddressTv;
-         infoTv.setText("Optag pris");
+        gasStationName.setText(gasStationModel.getCompanyName());
+        stationAddress.setText(gasStationModel.getGasStationName());
+        info.setText(R.string.map_direction_btn_text);
+        info.setText(R.string.update_price_btn_text);
     }
-
-
-
 
     private void initPresenter() {
         mPresenter.attachView(this);
@@ -177,7 +175,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void updatePrice() {
-        String fuel92 = null, fuel95 = null, fuelDiesel = null;
+    /*    String fuel92 = null, fuel95 = null, fuelDiesel = null;
         if (!StringHelper.isNullOrEmpty(fuelInput92.getText().toString())) {
             fuel92 = fuelInput92.getText().toString();
         }
@@ -187,7 +185,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         if (!StringHelper.isNullOrEmpty(fuelInputDiesel.getText().toString())) {
             fuelDiesel = fuelInputDiesel.getText().toString();
         }
-        mPresenter.updateFuelPrices(fuel92,fuel95,fuelDiesel);
+        mPresenter.updateFuelPrices(fuel92, fuel95, fuelDiesel);*/
     }
 
     @Override

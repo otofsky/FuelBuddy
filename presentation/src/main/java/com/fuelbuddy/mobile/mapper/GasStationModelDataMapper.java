@@ -34,6 +34,7 @@ public class GasStationModelDataMapper {
             gasStationModel.setGasStationLatitude(gasStation.getGasStationLatitude());
             gasStationModel.setGasStationLongitude(gasStation.getGasStationLongitude());
             gasStationModel.setGasStationName(gasStation.getGasStationName());
+            gasStationModel.setCompanyName(gasStation.getCompanyName());
             gasStationModel.setPrice92(gasStation.getPrice92());
             gasStationModel.setPrice95(gasStation.getPrice95());
             gasStationModel.setPriceDiesel(gasStation.getPriceDiesel());

@@ -27,12 +27,15 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -54,89 +57,134 @@
                     android:id="@+id/address_view"
                     layout="@layout/address_view" />
 
-                <RelativeLayout
-                    android:id="@+id/fuel95holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/fuel92holder">
-
-                    <TextView
-                        android:id="@+id/fuel95"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="95:"
-                        android:textSize="32sp" />
-
-                    <EditText
-                        android:id="@+id/fuelInput95"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:ems="10"
-                        android:inputType="numberDecimal" />
-                </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/fuelDieselholder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/fuel95holder">
-
-                    <TextView
-                        android:id="@+id/fuelDiesel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Diesel"
-                        android:textSize="32sp" />
-
-                    <EditText
-                        android:id="@+id/fuelInputDiesel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:ems="10"
-
-                        android:inputType="numberDecimal" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/fuel92holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/address_view"
-                  >
+                    android:gravity="center_horizontal|center_vertical">
 
-                    <TextView
-                        android:id="@+id/fuel92"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/fuel95holder"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/fuel92holder"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
 
-                        android:text="92:"
-                        android:textSize="32sp" />
+                        <TextView
+                            android:id="@+id/fuel95"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_blyfri_95"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                    <EditText
-                        android:id="@+id/fuelInput92"
-                        android:layout_width="wrap_content"
+                        <EditText
+                            android:id="@+id/fuelInput95"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+
+                            android:ems="10"
+                            android:inputType="numberDecimal" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fuelDieselholder"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:ems="10"
-                        android:inputType="numberDecimal" />
+                        android:layout_below="@+id/fuel95holder"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/fuelDiesel"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_diesel"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/fuelInputDiesel"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:ems="10"
+
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fuel92holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="53dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
 
 
+                        <TextView
+                            android:id="@+id/fuel92"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_blyfri_92"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <com.github.pinball83.maskededittext.MaskedEditText
+                            android:id="@+id/masked_edit_text"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:inputType="number"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            app:mask="**,** kr"
+                            app:notMaskedSymbol="*"
+                            android:layout_alignParentRight="true"
+                            app:maskIconColor="@color/colorPrimary"
+                            />
+
+
+
+                      <!--  <EditText
+                            android:id="@+id/fuelInput92"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:ems="10"
+                            android:inputType="numberDecimal" />-->
+
+
+                    </LinearLayout>
                 </RelativeLayout>
+
+
             </RelativeLayout>
         </LinearLayout>
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/openCameraBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:layout_margin="16dp"
+            android:background="@color/white"
             android:clickable="true"
             android:src="@android:drawable/ic_menu_camera"
             app:layout_anchor="@id/viewA"
             app:layout_anchorGravity="bottom|right|end" />
-
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

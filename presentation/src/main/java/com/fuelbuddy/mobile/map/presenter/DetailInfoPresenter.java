@@ -51,6 +51,7 @@ public class DetailInfoPresenter extends BasePresenter<DetailInfoView> {
     }
 
     public void startUpdate(){
+
         getMvpView().showEditPriceView();
     }
 

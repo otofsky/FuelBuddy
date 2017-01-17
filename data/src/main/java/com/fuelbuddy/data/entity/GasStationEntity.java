@@ -24,6 +24,10 @@ public class GasStationEntity {
     @Expose
     private String gasStationName;
 
+    @SerializedName("companyName")
+    @Expose
+    private String companyName;
+
     @SerializedName("timeUpdated")
     @Expose
     private String timeUpdated;
@@ -208,4 +212,31 @@ public class GasStationEntity {
     }
 
 
+    public String getGasStation_id() {
+        return gasStation_id;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    @Override
+    public String toString() {
+        return "GasStationEntity{" +
+                "gasStation_id='" + gasStation_id + '\'' +
+                ", gasStationLatitude='" + gasStationLatitude + '\'' +
+                ", gasStationLongitude='" + gasStationLongitude + '\'' +
+                ", gasStationName='" + gasStationName + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", timeUpdated='" + timeUpdated + '\'' +
+                ", price92='" + price92 + '\'' +
+                ", price95='" + price95 + '\'' +
+                ", priceDiesel='" + priceDiesel + '\'' +
+                ", distance='" + distance + '\'' +
+                '}';
+    }
 }
