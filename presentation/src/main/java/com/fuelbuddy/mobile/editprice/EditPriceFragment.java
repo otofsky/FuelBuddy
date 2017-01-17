@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
@@ -30,7 +31,7 @@ public class EditPriceFragment extends BaseFragment implements UpdateView {
 
 
     @BindView(R.id.fuel_price_panel)
-    LinearLayout fuelPricePanel;
+    RelativeLayout fuelPricePanel;
 
     GasStationModel gasStationModel;
 
@@ -67,9 +68,9 @@ public class EditPriceFragment extends BaseFragment implements UpdateView {
             gasStationModel = data.getParcelable(Config.GAS_STATION_DETAIL);
         }
         List<FuelModel> transferToFuelModelList = fuelMapper.transferToFuelModelList(gasStationModel);
-        for (FuelModel fuelModel : transferToFuelModelList) {
+        /*for (FuelModel fuelModel : transferToFuelModelList) {
          initializePricePicker(fuelModel);
-        }
+        }*/
     }
 
     private void updateFuelPrices(GasStationModel gasStationModel) {

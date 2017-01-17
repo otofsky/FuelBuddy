@@ -26,6 +26,7 @@ import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
+import java.io.File;
 import java.util.List;
 
 import rx.Observable;
@@ -71,8 +72,8 @@ public class RestApiImpl implements RestApiService {
     }
 
     @Override
-    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
-        return ApiInvoker.getInstance().updateStation(iD, userID, price92, price95, priceDiesel);
+    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel, File file) {
+        return ApiInvoker.getInstance().updateStation(iD, userID, price92, price95, priceDiesel,file);
     }
 
 

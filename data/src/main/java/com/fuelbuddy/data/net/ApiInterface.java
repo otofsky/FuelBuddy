@@ -7,7 +7,10 @@ import com.fuelbuddy.data.entity.UserEntity;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.GET;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -25,6 +28,13 @@ public interface ApiInterface {
                                              @Query("price92") Double price92,
                                              @Query("price95") Double price95,
                                              @Query("priceDiesel") Double priceDiesel);
+
+    @GET("updatestation?")
+    Observable<ResponseEntity> updateStation(@Query("ID") String iD,
+                                             @Query("userID") String userID,
+                                             @Query("price92") Double price92,
+                                             @Query("price95") Double price95,
+                                             @Query("priceDiesel") Double priceDiesel, @Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

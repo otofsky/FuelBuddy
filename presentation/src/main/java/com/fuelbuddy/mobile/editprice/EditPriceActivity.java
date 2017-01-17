@@ -2,7 +2,11 @@ package com.fuelbuddy.mobile.editprice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
@@ -44,6 +48,25 @@ public class EditPriceActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+/*
+    private String getRealPathFromURI(Uri contentUri) {
+        // dla wszystkich telefonów oprócz Samsungów
+        if (contentUri != null) {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
+            Cursor cursor = cursorLoader.loadInBackground();
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String result = cursor.getString(columnIndex);
+                cursor.close();
+                return result;
+            } else {
+                return contentUri.getPath();
+            }
+        }
+
+    }*/
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

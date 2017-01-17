@@ -32,6 +32,6 @@ public class UpdateFuelPricesInteractor extends UseCase  {
     @Override
     protected Observable buildUseCaseObservable() {
         return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), mFuelPricesUpdate.getUserID(), mFuelPricesUpdate.getPrice92(),
-                mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
+                mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel(),mFuelPricesUpdate.getVideoFile());
     }
 }

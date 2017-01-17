@@ -24,6 +24,7 @@ import com.fuelbuddy.data.net.ApiInvoker;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,8 +50,8 @@ class CloudGasStationStore implements GasStationDataStore {
   }
 
   @Override
-  public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
-    return mRestApiService.updateStation(iD, userID, price92, price95, priceDiesel);
+  public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel, File file) {
+    return mRestApiService.updateStation(iD, userID, price92, price95, priceDiesel, file);
   }
 
   @Override

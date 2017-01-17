@@ -6,12 +6,17 @@ import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.net.utils.PrimitiveConverterFactory;
 import com.fuelbuddy.data.net.utils.RxErrorHandlingCallAdapterFactory;
+import com.fuelbuddy.data.util.RequestHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -70,6 +75,30 @@ public class ApiInvoker {
             , Double price95, Double priceDiesel) {
         return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel);
     }
+
+    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
+            , Double price95, Double priceDiesel, File file) {
+
+        /*File file = FileUtils.getFile(this, fileUri);*/
+        // create RequestBody instance from file
+
+        MediaType mediaType = RequestHelper.getMediaType("video/mp4");
+        RequestBody requestFile1 = RequestBody.create(mediaType, file);
+
+        MediaType mediaType2 = MediaType.parse("multipart/form-data");
+        RequestBody requestFile = RequestBody.create(mediaType2, file);
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
+
+        // add another part within the multipart request
+        String descriptionString = "hello, this is description speaking";
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
+
+
+        return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel, description, body);
+    }
+
 
     public Observable<ResponseEntity> addNewUser(String userID, String profileName, String email) {
         return apiInterface.addNewUser(userID, profileName, email);
