@@ -36,8 +36,7 @@ public class PermissionsUtils {
      */
     public static boolean anyPermissionDenied(Context context, String[] permissions) {
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(context, permission) ==
-                    PackageManager.PERMISSION_DENIED) {
+            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
                 return true;
             }
         }

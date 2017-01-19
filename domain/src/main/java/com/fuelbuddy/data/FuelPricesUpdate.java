@@ -1,5 +1,7 @@
 package com.fuelbuddy.data;
 
+import java.io.File;
+
 /**
  * Created by zjuroszek on 11.12.16.
  */
@@ -11,15 +13,17 @@ public class FuelPricesUpdate {
     private final Double price92;
     private final Double price95;
     private final Double priceDiesel;
+    private final File videoFile;
 
 
-
-    public FuelPricesUpdate(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
+    public FuelPricesUpdate(String iD, String userID, Double price92, Double price95, Double priceDiesel, File videoFile) {
         this.iD = iD;
         this.userID = userID;
         this.price92 = price92;
         this.price95 = price95;
         this.priceDiesel = priceDiesel;
+        this.videoFile = videoFile;
+
     }
 
     public String getiD() {
@@ -40,6 +44,10 @@ public class FuelPricesUpdate {
 
     public String getUserID() {
         return userID;
+    }
+
+    public File getVideoFile() {
+        return videoFile;
     }
 
     @Override

@@ -18,10 +18,8 @@ import dagger.Component;
 
 public interface MapsComponent extends ActivityComponent {
 
+
     void inject(MapsMainActivity mapsActivityTest);
     void inject(DetailInfoFragment detailInfoFragment);
-
-
-
 
 }

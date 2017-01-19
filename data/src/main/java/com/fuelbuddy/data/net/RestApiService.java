@@ -8,6 +8,7 @@ import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -36,7 +37,7 @@ public interface RestApiService {
     Observable<List<GasStationEntity>> gasStationEntityList(Position position);
 
      Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
-            ,Double price95, Double priceDiesel);
+            , Double price95, Double priceDiesel, File file);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
 

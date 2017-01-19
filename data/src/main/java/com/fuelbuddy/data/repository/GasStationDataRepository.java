@@ -11,6 +11,7 @@ import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDa
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationStoreFactory;
 import com.fuelbuddy.repository.GasStationsRepository;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,8 +31,6 @@ public class GasStationDataRepository implements GasStationsRepository {
     private final GasStationStoreFactory mGasStationStoreFactory;
     GasStationEntityDataMapper mGasStationEntityDataMapper;
     ResponseEntityMapper responseEntityMapper;
-
-
 
 
 
@@ -55,9 +54,9 @@ public class GasStationDataRepository implements GasStationsRepository {
     }
 
     @Override
-    public Observable<Response> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
+    public Observable<Response> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel,File file) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.updateStation(iD,userID,price92,price95,priceDiesel).map(new Func1<ResponseEntity, Response>() {
+        return  gasStationDataStore.updateStation(iD,userID,price92,price95,priceDiesel,file).map(new Func1<ResponseEntity, Response>() {
             @Override
             public Response call(ResponseEntity responseEntity) {
                 return responseEntityMapper.transformToResponse(responseEntity);

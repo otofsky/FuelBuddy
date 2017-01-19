@@ -173,6 +173,25 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         }
     }
 
+    /*
+    private String getRealPathFromURI(Uri contentUri) {
+        // dla wszystkich telefonów oprócz Samsungów
+        if (contentUri != null) {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
+            Cursor cursor = cursorLoader.loadInBackground();
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String result = cursor.getString(columnIndex);
+                cursor.close();
+                return result;
+            } else {
+                return contentUri.getPath();
+            }
+        }
+    }*/
+
     @Override
     public void updatePrice() {
     /*    String fuel92 = null, fuel95 = null, fuelDiesel = null;

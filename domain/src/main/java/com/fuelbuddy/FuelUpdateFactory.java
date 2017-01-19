@@ -2,6 +2,8 @@ package com.fuelbuddy;
 
 import com.fuelbuddy.data.FuelPricesUpdate;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 /**
@@ -14,8 +16,8 @@ public class FuelUpdateFactory {
 
     }
 
-    public FuelPricesUpdate createFuelUpdate(String iD, String userID, String fuel92, String fuel95, String diesel) {
-        return new FuelPricesUpdate(iD, userID, Double.valueOf(fuel92), Double.valueOf(fuel95), Double.valueOf(diesel));
+    public FuelPricesUpdate createFuelUpdate(String iD, String userID, String fuel92, String fuel95, String diesel, File file) {
+        return new FuelPricesUpdate(iD, userID, Double.valueOf(fuel92), Double.valueOf(fuel95), Double.valueOf(diesel),file);
     }
 
 }
