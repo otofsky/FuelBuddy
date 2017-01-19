@@ -1,19 +1,25 @@
 package com.fuelbuddy.mobile.editprice;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
@@ -21,10 +27,16 @@ import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
 import com.fuelbuddy.mobile.mapper.FuelMapper;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
+import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.StringHelper;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -89,7 +101,26 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         initPresenter();
         setToolbar();
         obtainData();
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .check();
+
     }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     private void obtainData() {
         Intent i = getIntent();
@@ -153,6 +184,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void showCamera() {
+        PermissionsUtils.initPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
         openCamera();
     }
 
@@ -168,14 +200,14 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
                 videoUri = data.getData();
-                videoPath = videoUri.getPath();
+                getRealPathFromURI(videoUri);
+                Log.d("OnActivityresult", "onActivityResult: " + getRealPathFromURI(videoUri));
             }
         }
     }
 
-    /*
     private String getRealPathFromURI(Uri contentUri) {
-        // dla wszystkich telefonów oprócz Samsungów
+        String videoPath = "";
         if (contentUri != null) {
             String[] proj = {MediaStore.Images.Media.DATA};
             CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
@@ -183,14 +215,17 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
             if (cursor != null) {
                 int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
-                String result = cursor.getString(columnIndex);
+                videoPath = cursor.getString(columnIndex);
                 cursor.close();
-                return result;
             } else {
-                return contentUri.getPath();
+
+                videoPath = contentUri.getPath();
             }
         }
-    }*/
+
+        return videoPath;
+    }
+
 
     @Override
     public void updatePrice() {

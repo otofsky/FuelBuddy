@@ -14,22 +14,55 @@
 
 package com.fuelbuddy.mobile.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
+
+import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.editprice.UpdateActivity;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 
 /**
  * Set of runtime permission utility methods.
  */
 public class PermissionsUtils {
     private static final String TAG = "PermissionsUtils";
+
+
+    public static void initPermission(Context context,String... permissions) {
+        new TedPermission(context)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(permissions)
+                .check();
+    }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            //Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            //Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     /**
      * Determine if any permission is in the denied state.
@@ -45,7 +78,7 @@ public class PermissionsUtils {
 
 
     public static boolean permissionsAlreadyGranted(@NonNull Context context,
-            @NonNull String[] permissions) {
+                                                    @NonNull String[] permissions) {
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(context, permission) !=
                     PackageManager.PERMISSION_GRANTED) {
@@ -59,7 +92,7 @@ public class PermissionsUtils {
      * Determines if {@code permission} rationale should be displayed for any {@code permission}.
      */
     public static boolean shouldShowAnyPermissionRationale(@NonNull Activity activity,
-            String[] permissions) {
+                                                           String[] permissions) {
         for (String permission : permissions) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 return true;
