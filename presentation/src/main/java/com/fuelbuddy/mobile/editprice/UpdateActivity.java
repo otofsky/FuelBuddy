@@ -101,26 +101,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         initPresenter();
         setToolbar();
         obtainData();
-        new TedPermission(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .check();
-
     }
-
-    PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-        }
-    };
-
 
     private void obtainData() {
         Intent i = getIntent();
@@ -154,9 +135,27 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.openCameraBtn:
-                showCamera();
+                PermissionsUtils.initPermission(this,permissionlistener,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
                 break;
         }
+    }
+
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            showCamera();
+            Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
+    public void showCamera() {
+        openCamera();
     }
 
     @Override
@@ -181,12 +180,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         }
     }
 
-
-    @Override
-    public void showCamera() {
-        PermissionsUtils.initPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
-        openCamera();
-    }
 
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);

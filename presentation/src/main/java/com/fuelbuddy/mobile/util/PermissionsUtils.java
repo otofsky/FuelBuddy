@@ -44,24 +44,13 @@ public class PermissionsUtils {
     private static final String TAG = "PermissionsUtils";
 
 
-    public static void initPermission(Context context,String... permissions) {
+    public static void initPermission(Context context, PermissionListener permissionlistener,String... permissions) {
         new TedPermission(context)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissionListener(permissionlistener)
                 .setPermissions(permissions)
                 .check();
     }
-
-    PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            //Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            //Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-        }
-    };
 
 
     /**
