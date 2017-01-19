@@ -145,11 +145,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         @Override
         public void onPermissionGranted() {
             showCamera();
-            Toast.makeText(UpdateActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
         }
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(UpdateActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -186,21 +184,18 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
     }
 
-    //   content://media/external/video/media/5490
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String photoPath = "";
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
                 videoUri = data.getData();
                 getRealPathFromURI(videoUri);
-                Log.d("OnActivityresult", "onActivityResult: " + getRealPathFromURI(videoUri));
             }
         }
     }
 
     private String getRealPathFromURI(Uri contentUri) {
-        String videoPath = "";
+         videoPath = "";
         if (contentUri != null) {
             String[] proj = {MediaStore.Images.Media.DATA};
             CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
@@ -211,11 +206,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
                 videoPath = cursor.getString(columnIndex);
                 cursor.close();
             } else {
-
                 videoPath = contentUri.getPath();
             }
         }
-
         return videoPath;
     }
 

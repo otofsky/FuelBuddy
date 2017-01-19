@@ -3,7 +3,8 @@
     >
     <item
         android:id="@+id/actionLogOut"
-        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_dialog_info"
         android:title="Log out"/>
 </menu>
 

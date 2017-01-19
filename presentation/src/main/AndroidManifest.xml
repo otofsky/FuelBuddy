@@ -40,15 +40,13 @@
         <activity
             android:label=""
             android:name=".login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity
             android:name=".home.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,8 +57,7 @@
         <activity
             android:name=".map.MapsMainActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
@@ -71,8 +68,7 @@
             android:theme="@style/FullyTranslucent"/>
         <activity
             android:name=".editprice.UpdateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
+            android:screenOrientation="portrait">
 
         </activity>
 

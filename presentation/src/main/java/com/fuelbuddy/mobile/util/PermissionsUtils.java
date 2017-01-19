@@ -46,7 +46,6 @@ public class PermissionsUtils {
 
     public static void initPermission(Context context, PermissionListener permissionlistener,String... permissions) {
         new TedPermission(context)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissionListener(permissionlistener)
                 .setPermissions(permissions)
                 .check();
