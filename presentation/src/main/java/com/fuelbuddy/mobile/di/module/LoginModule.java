@@ -1,11 +1,11 @@
 package com.fuelbuddy.mobile.di.module;
 
 
-import com.fuelbuddy.interactor.SetUserInCloudInteractor;
-import com.fuelbuddy.interactor.SetUserLocallyInteractor;
-import com.fuelbuddy.interactor.CheckUserInteractor;
-import com.fuelbuddy.interactor.GetCurrentUser;
-import com.fuelbuddy.interactor.LogOutInteractor;
+import com.fuelbuddy.interactor.CheckUserUseCase;
+import com.fuelbuddy.interactor.GetCurrentUserUseCase;
+import com.fuelbuddy.interactor.LogOutUseCase;
+import com.fuelbuddy.interactor.SetUserInCloudUseCae;
+import com.fuelbuddy.interactor.SetUserLocallyUseCase;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.di.PerActivity;
 
@@ -22,31 +22,31 @@ public class LoginModule {
 
     @Provides @PerActivity
     @Named("currentUser")
-    UseCase provideGetUserUseCase(GetCurrentUser getCurrentUser) {
-        return getCurrentUser;
+    UseCase provideGetUserUseCase(GetCurrentUserUseCase getCurrentUserUseCase) {
+        return getCurrentUserUseCase;
     }
 
     @Provides
     @Named("setUserLocally")
-    SetUserLocallyInteractor provideSetUserLocally(SetUserLocallyInteractor addNewUserInteractor) {
+    SetUserLocallyUseCase provideSetUserLocally(SetUserLocallyUseCase addNewUserInteractor) {
         return addNewUserInteractor;
     }
 
     @Provides
     @Named("setUserInCloud")
-    SetUserInCloudInteractor provideSetUserInCloud(SetUserInCloudInteractor setUserInCloudInteractor) {
-        return setUserInCloudInteractor;
+    SetUserInCloudUseCae provideSetUserInCloud(SetUserInCloudUseCae setUserInCloudUseCae) {
+        return setUserInCloudUseCae;
     }
 
     @Provides
     @Named("logOut")
-    UseCase provideLogOutUseCase(LogOutInteractor logOutInteractor) {
-        return logOutInteractor;
+    UseCase provideLogOutUseCase(LogOutUseCase logOutUseCase) {
+        return logOutUseCase;
     }
 
     @Provides
     @Named("checkUser")
-    UseCase provideCheckUser(CheckUserInteractor checkUserInteractor) {
-        return checkUserInteractor;
+    UseCase provideCheckUser(CheckUserUseCase checkUserUseCase) {
+        return checkUserUseCase;
     }
 }

@@ -50,4 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
     }
+
+
+
 }

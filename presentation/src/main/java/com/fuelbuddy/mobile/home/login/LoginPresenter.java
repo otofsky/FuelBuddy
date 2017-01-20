@@ -1,16 +1,11 @@
 package com.fuelbuddy.mobile.home.login;
 
-import android.util.Log;
-
-import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.net.RetrofitException;
-import com.fuelbuddy.exception.DefaultErrorBundle;
-import com.fuelbuddy.exception.ErrorBundle;
-import com.fuelbuddy.interactor.CheckUserInteractor;
+import com.fuelbuddy.interactor.CheckUserUseCase;
 import com.fuelbuddy.interactor.DefaultSubscriber;
-import com.fuelbuddy.interactor.SetUserInCloudInteractor;
-import com.fuelbuddy.interactor.SetUserLocallyInteractor;
+import com.fuelbuddy.interactor.SetUserInCloudUseCae;
+import com.fuelbuddy.interactor.SetUserLocallyUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.UserModelDataMapper;
@@ -32,37 +27,37 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private static String TAG = "LoginPresenter";
 
     UserModelDataMapper userModelDataMapper;
-    private SetUserLocallyInteractor mSetUserLocallyInteractor;
-    private SetUserInCloudInteractor mSetUserInCloudInteractor;
-    private CheckUserInteractor mCheckUserInteractor;
+    private SetUserLocallyUseCase mSetUserLocallyUseCase;
+    private SetUserInCloudUseCae mSetUserInCloudUseCae;
+    private CheckUserUseCase mCheckUserUseCase;
     private UserModel mUserModel; //
 
     @Inject
-    public LoginPresenter(@Named("setUserLocally") SetUserLocallyInteractor setUserLocallyInteractor,
-                          @Named("setUserInCloud") SetUserInCloudInteractor mSetUserInCloudInteractor,
-                          CheckUserInteractor checkUserInteractor,
+    public LoginPresenter(@Named("setUserLocally") SetUserLocallyUseCase setUserLocallyUseCase,
+                          @Named("setUserInCloud") SetUserInCloudUseCae mSetUserInCloudUseCae,
+                          CheckUserUseCase checkUserUseCase,
                           UserModelDataMapper userModelDataMapper) {
-        this.mSetUserLocallyInteractor = setUserLocallyInteractor;
-        this.mSetUserInCloudInteractor = mSetUserInCloudInteractor;
-        this.mCheckUserInteractor = checkUserInteractor;
+        this.mSetUserLocallyUseCase = setUserLocallyUseCase;
+        this.mSetUserInCloudUseCae = mSetUserInCloudUseCae;
+        this.mCheckUserUseCase = checkUserUseCase;
         this.userModelDataMapper = userModelDataMapper;
     }
 
     public void checkUser(UserModel userModel) {
         mUserModel = userModel;
-        mCheckUserInteractor.setUser(userModelDataMapper.transformToUser(userModel));
-        this.mCheckUserInteractor.execute(new CheckUserSubscriber());
+        mCheckUserUseCase.setUser(userModelDataMapper.transformToUser(userModel));
+        this.mCheckUserUseCase.execute(new CheckUserSubscriber());
     }
 
 
     public void addNewUseInCloud(UserModel user) {
-        mSetUserInCloudInteractor.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserInCloudInteractor.execute(new AddUserInCloudSubscriber());
+        mSetUserInCloudUseCae.setUser(userModelDataMapper.transformToUser(user));
+        this.mSetUserInCloudUseCae.execute(new AddUserInCloudSubscriber());
     }
 
     public void addNewUserLocally(UserModel user) {
-        mSetUserLocallyInteractor.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserLocallyInteractor.execute(new AddUserLocallySubscriber());
+        mSetUserLocallyUseCase.setUser(userModelDataMapper.transformToUser(user));
+        this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber());
     }
 
     private void showErrorMessage(String errorMessage) {

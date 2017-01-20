@@ -7,8 +7,8 @@ import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
-import com.fuelbuddy.interactor.GetGasStationList;
-import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
+import com.fuelbuddy.interactor.GetGasStationsUseCase;
+import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
@@ -29,16 +29,16 @@ import hugo.weaving.DebugLog;
  */
 public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
-    private final GetGasStationList getGasStationList;
-    private final UpdateFuelPricesInteractor mUpdateFuelPricesInteractor;
+    private final GetGasStationsUseCase mGetGasStationsUseCase;
+    private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private PositionMapper mPositionMapper;
 
 
     @Inject
-    public MapMainPresenter(@Named("gasStationList")GetGasStationList getGasStationList,
-                            UpdateFuelPricesInteractor updateFuelPricesInteractor) {
-        this.getGasStationList =  getGasStationList;
-        this.mUpdateFuelPricesInteractor = updateFuelPricesInteractor;
+    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase,
+                            UpdateFuelPricesUseCase updateFuelPricesUseCase) {
+        this.mGetGasStationsUseCase = getGasStationsUseCase;
+        this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
         mPositionMapper = new PositionMapper();
     }
 
@@ -51,7 +51,7 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        this.getGasStationList.unsubscribe();
+        this.mGetGasStationsUseCase.unsubscribe();
     }
     @DebugLog
     public void submitSearch(LatLng loLatLng) {
@@ -65,17 +65,17 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
     }
 
     private void getFuelPrices(LatLng loLatLn) {
-        this.getGasStationList.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
-        this.getGasStationList.execute(new FuelPricesListSubscriber());
+        this.mGetGasStationsUseCase.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
+        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber());
     }
 
     public void getUpdatedFuelPrices(LatLng loLatLn) {
-        this.getGasStationList.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
-        this.getGasStationList.execute(new FuelUpdatedPricesListSubscriber());
+        this.mGetGasStationsUseCase.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
+        this.mGetGasStationsUseCase.execute(new FuelUpdatedPricesListSubscriber());
     }
 
     public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
-        this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
+        this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
     }
 
 

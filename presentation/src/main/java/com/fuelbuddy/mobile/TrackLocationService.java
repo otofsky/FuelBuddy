@@ -11,15 +11,20 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fuelbuddy.mobile.map.MapsMainActivity;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.gun0912.tedpermission.PermissionListener;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
 
@@ -49,15 +54,14 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-
         app = (AndroidApplication) getApplication();
+        createGoogleApiClient();
+        connectGoogleApiClient();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-        createGoogleApiClient();
-        connectGoogleApiClient();
         TrackLocationService.setIsServiceRunning(true);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -113,6 +117,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     }
 
     private void connectGoogleApiClient() {
+        Log.d(TAG, "connectGoogleApiClient: ");
         if (googleApiClient != null) {
             if (!(googleApiClient.isConnected() || googleApiClient.isConnecting())) {
                 googleApiClient.connect();
@@ -129,14 +134,15 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     private void startLocationUpdates() {
         Log.d(TAG, "startLocationUpdates: ");
         LocationRequest locationRequest = app.createLocationRequest();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "\"  permision is not granted: ");
             return;
+        } else {
+            Log.d(TAG, "permision is granted");
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
-        Log.d(TAG, "permision is granted");
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
+
 
     private void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
@@ -148,6 +154,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
-        Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
     }
 }

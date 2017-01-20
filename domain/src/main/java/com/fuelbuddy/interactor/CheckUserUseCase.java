@@ -16,13 +16,13 @@ import rx.functions.Func1;
  */
 
 
-public class CheckUserInteractor extends UseCase {
+public class CheckUserUseCase extends UseCase {
 
     UserRepository userRepository;
     private User mUser;
 
     @Inject
-    public CheckUserInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public CheckUserUseCase(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }

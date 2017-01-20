@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by zjuroszek on 25.12.16.
@@ -39,6 +40,7 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     FuelPriceController mFuelPriceController;
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
+    Unbinder mUnbinder;
 
     public static PriceListFragment newInstance(FuelPriceMode fuelPriceMode) {
         Bundle args = new Bundle();
@@ -57,7 +59,7 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(R.layout.price_holder_fragment, container, false);
-        ButterKnife.bind(this, fragmentView);
+        mUnbinder = ButterKnife.bind(this, fragmentView);
         Bundle args = getArguments();
         FuelPriceMode fuelPriceMode = (FuelPriceMode) args.getSerializable(Config.FUEL_TYPE);
         if (fuelPriceMode != null) {
@@ -76,6 +78,11 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Subscribe

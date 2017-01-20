@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +36,7 @@ import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import hugo.weaving.DebugLog;
 
 /**
@@ -78,6 +81,8 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @BindView(R.id.openCameraBtn)
     FloatingActionButton openCameraBtn;
 
+    Unbinder mUnbinder;
+
 
     GasStationModel gasStationModel;
     FuelMapper fuelMapper;
@@ -95,13 +100,31 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
-        ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
         openCameraBtn.setOnClickListener(this);
         initializeInjector();
         initPresenter();
         setToolbar();
         obtainData();
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener(
+                "[00],[00]",
+                true,
+                fuelInputDiesel,
+                null,
+                new MaskedTextChangedListener.ValueListener() {
+                    @Override
+                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+                        Log.d(UpdateActivity.class.getSimpleName(), extractedValue);
+                        Log.d(UpdateActivity.class.getSimpleName(), String.valueOf(maskFilled));
+                    }
+                }
+        );
+        fuelInputDiesel.addTextChangedListener(listener);
+        fuelInputDiesel.setOnFocusChangeListener(listener);
+        fuelInputDiesel.setHint(listener.placeholder());
     }
+
+
 
     private void obtainData() {
         Intent i = getIntent();
@@ -135,7 +158,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.openCameraBtn:
-                PermissionsUtils.initPermission(this,permissionlistener,
+                PermissionsUtils.initPermission(this, permissionlistener,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
                 break;
         }
@@ -146,6 +169,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         public void onPermissionGranted() {
             showCamera();
         }
+
         @Override
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
         }
@@ -158,7 +182,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.send, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -195,7 +219,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private String getRealPathFromURI(Uri contentUri) {
-         videoPath = "";
+        videoPath = "";
         if (contentUri != null) {
             String[] proj = {MediaStore.Images.Media.DATA};
             CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
@@ -238,6 +262,12 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public void onStop() {
         super.onStop();
         // EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 
     @Override

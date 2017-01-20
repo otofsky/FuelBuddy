@@ -6,7 +6,6 @@ import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import rx.Observable;
 
@@ -14,18 +13,26 @@ import rx.Observable;
  * Created by zjuroszek on 20.11.16.
  */
 
-public class LogOutInteractor extends UseCase {
+
+public class SetUserInCloudUseCae extends UseCase  {
+
 
     UserRepository userRepository;
+    private User mUser;
 
     @Inject
-    public LogOutInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SetUserInCloudUseCae(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
 
+    public void setUser(User user){
+        this.mUser = user;
+    }
+
     @Override
     protected Observable buildUseCaseObservable() {
-        return userRepository.logOut();
+        return userRepository.addNewUser(mUser);
     }
+
 }

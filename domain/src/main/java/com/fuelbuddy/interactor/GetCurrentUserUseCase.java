@@ -14,12 +14,12 @@ import rx.functions.Func1;
  * Created by zjuroszek on 14.11.16.
  */
 
-public class GetCurrentUser extends UseCase {
+public class GetCurrentUserUseCase extends UseCase {
 
     UserRepository userRepository;
 
     @Inject
-    public GetCurrentUser(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public GetCurrentUserUseCase(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }

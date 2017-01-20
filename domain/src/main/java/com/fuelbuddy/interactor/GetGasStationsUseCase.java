@@ -26,7 +26,7 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * retrieving a collection of all {@link com.fuelbuddy.data.GasStation}.
  */
-public class GetGasStationList extends UseCase {
+public class GetGasStationsUseCase extends UseCase {
 
   private Position mCurrentPoistion;
 
@@ -34,8 +34,8 @@ public class GetGasStationList extends UseCase {
   private final GasStationsRepository gasStationsRepository;
 
   @Inject
-  public GetGasStationList(GasStationsRepository gasStationsRepository, ThreadExecutor threadExecutor,
-                           PostExecutionThread postExecutionThread) {
+  public GetGasStationsUseCase(GasStationsRepository gasStationsRepository, ThreadExecutor threadExecutor,
+                               PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.gasStationsRepository = gasStationsRepository;
   }

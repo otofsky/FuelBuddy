@@ -110,8 +110,6 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-
-
         mUnbinder.unbind();
     }
 

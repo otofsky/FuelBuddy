@@ -14,14 +14,14 @@ import rx.Observable;
  */
 
 
-public class SetUserInCloudInteractor extends UseCase  {
+public class SetUserLocallyUseCase extends UseCase  {
 
 
     UserRepository userRepository;
     private User mUser;
 
     @Inject
-    public SetUserInCloudInteractor(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SetUserLocallyUseCase(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
@@ -32,7 +32,7 @@ public class SetUserInCloudInteractor extends UseCase  {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return userRepository.addNewUser(mUser);
+        return userRepository.setCurrentUser(mUser);
     }
 
 }

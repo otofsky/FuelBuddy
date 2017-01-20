@@ -29,14 +29,14 @@ import rx.Observable;
  * This class is an implementation of {@link GasStation} that represents a use case for
  * retrieving data related to an specific {@link GasStation}.
  */
-public class GetGasStationDetails extends UseCase {
+public class GetGasStationDetailsUseCase extends UseCase {
 
     private final int gasStationId;
     private final GasStationsRepository gasStationsRepository;
 
     @Inject
-    public GetGasStationDetails(int gasStationId, GasStationsRepository gasStationsRepository,
-                                ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public GetGasStationDetailsUseCase(int gasStationId, GasStationsRepository gasStationsRepository,
+                                       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.gasStationId = gasStationId;
         this.gasStationsRepository = gasStationsRepository;

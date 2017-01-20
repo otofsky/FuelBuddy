@@ -1,28 +1,20 @@
 package com.fuelbuddy.mobile.editprice;
 
-import android.net.Uri;
-
-import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
-import com.fuelbuddy.interactor.GetGasStationList;
-import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
+import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
-import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.fuelbuddy.mobile.model.ErrorResponse;
-import com.fuelbuddy.mobile.util.StringHelper;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
 
@@ -33,12 +25,12 @@ import hugo.weaving.DebugLog;
 public class UpdatePresenter extends BasePresenter<UpdateView> {
 
 
-    private final UpdateFuelPricesInteractor mUpdateFuelPricesInteractor;
+    private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private PositionMapper mPositionMapper;
 
     @Inject
-    public UpdatePresenter(UpdateFuelPricesInteractor updateFuelPricesInteractor) {
-        this.mUpdateFuelPricesInteractor = updateFuelPricesInteractor;
+    public UpdatePresenter(UpdateFuelPricesUseCase updateFuelPricesUseCase) {
+        this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
         mPositionMapper = new PositionMapper();
     }
 
@@ -51,12 +43,12 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
     @Override
     public void detachView() {
         super.detachView();
-        this.mUpdateFuelPricesInteractor.unsubscribe();
+        this.mUpdateFuelPricesUseCase.unsubscribe();
     }
 
     public void updateFuelPrices(String fuel92, String fuel95, String diesel) {
-        this.mUpdateFuelPricesInteractor.setFuelPricesUpdate(fuel92,fuel95,diesel);
-        this.mUpdateFuelPricesInteractor.execute(new UpdateFuelPriceSubscriber());
+        this.mUpdateFuelPricesUseCase.setFuelPricesUpdate(fuel92,fuel95,diesel);
+        this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {

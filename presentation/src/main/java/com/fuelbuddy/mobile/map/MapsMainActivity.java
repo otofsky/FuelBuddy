@@ -34,6 +34,7 @@ import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,20 +56,14 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks , HasComponent<MapsComponent> {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, HasComponent<MapsComponent> {
     private static final String TAG = TrackLocationService.class.getCanonicalName();
-
-    public static final String[] PERMISSIONS =
-            new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     @Inject
     public MapMainPresenter mMapPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
     @BindView(R.id.view_progress)
     RelativeLayout progressView;
 
@@ -78,7 +73,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     protected PriceListFragment mPriceListFragment;
     protected DetailInfoFragment mDetailInfoFragment;
     private LatLng mCurrentPositionLatLng;
-    ;
+
 
     private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
 
@@ -95,7 +90,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         mMapsComponent.inject(this);
     }
 
-
     @DebugLog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,20 +98,16 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         this.initializeInjector();
         ButterKnife.bind(this);
         setToolbar();
-
         mMapPresenter.attachView(this);
-        connectGoogleApiClient();
-        new TedPermission(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .check();
+        PermissionsUtils.initPermission(this, permissionlistener,
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
+
     }
 
     PermissionListener permissionlistener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            Toast.makeText(MapsMainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            connectGoogleApiClient();
         }
 
         @Override
@@ -163,17 +153,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         addFragment(R.id.fragment_container_map, mMapFragment);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
 
     @Subscribe
     public void onEventMainThread(Event event) {
@@ -208,6 +188,22 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     public void navigateToHomeActivity() {
         finish();
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        connectGoogleApiClient();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        stopTracking();
+        super.onStop();
+    }
+
 
     private void connectGoogleApiClient() {
         if (mGoogleApiClient == null) {
@@ -246,10 +242,13 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     private void startTrackLocationService() {
+        Log.d(TAG, "onConnected: start tracking");
         startService(new Intent(this, TrackLocationService.class));
     }
 
+    
     private void stopTracking() {
+        Log.d(TAG, "stopTracking: ");
         stopService(new Intent(this, TrackLocationService.class));
     }
 
@@ -273,9 +272,10 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @DebugLog
     @Override
     public void showLoading() {
-         this.progressView.setVisibility(View.VISIBLE);
+        this.progressView.setVisibility(View.VISIBLE);
 
     }
+
     @DebugLog
     @Override
     public void hideLoading() {
@@ -301,6 +301,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         startTrackLocationService();
+    
     }
 
     @Override

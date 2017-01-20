@@ -1,8 +1,8 @@
 package com.fuelbuddy.mobile.di.module;
 
 
-import com.fuelbuddy.interactor.GetGasStationList;
-import com.fuelbuddy.interactor.UpdateFuelPricesInteractor;
+import com.fuelbuddy.interactor.GetGasStationsUseCase;
+import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.di.PerActivity;
 
 import javax.inject.Named;
@@ -22,14 +22,14 @@ public class MapsModule {
     @Provides
     @PerActivity
     @Named("gasStationList")
-    GetGasStationList provideGetGasStationsListUseCase(GetGasStationList getGasStationList) {
-        return getGasStationList;
+    GetGasStationsUseCase provideGetGasStationsListUseCase(GetGasStationsUseCase getGasStationsUseCase) {
+        return getGasStationsUseCase;
     }
 
     @Provides
     @PerActivity
-    @Named("updateFuelPricesInteractor")
-    UpdateFuelPricesInteractor provideUpdateFuelPricesInteractor(UpdateFuelPricesInteractor updateFuelPricesInteractor) {
-        return updateFuelPricesInteractor;
+    @Named("updateFuelPricesUseCase")
+    UpdateFuelPricesUseCase provideUpdateFuelPricesInteractor(UpdateFuelPricesUseCase updateFuelPricesUseCase) {
+        return updateFuelPricesUseCase;
     }
 }
