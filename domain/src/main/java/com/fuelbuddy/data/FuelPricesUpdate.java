@@ -8,22 +8,25 @@ import java.io.File;
 
 public class FuelPricesUpdate {
 
-    private final String iD;
-    private final String userID;
-    private final Double price92;
-    private final Double price95;
-    private final Double priceDiesel;
-    private final File videoFile;
+    private  String iD;
+    private  String userID;
+    private  Double price92;
+    private  Double price95;
+    private  Double priceDiesel;
+    private  File videoFile;
 
 
-    public FuelPricesUpdate(String iD, String userID, Double price92, Double price95, Double priceDiesel, File videoFile) {
+    public FuelPricesUpdate(String iD, Double price92, Double price95, Double priceDiesel, File videoFile) {
         this.iD = iD;
-        this.userID = userID;
         this.price92 = price92;
         this.price95 = price95;
         this.priceDiesel = priceDiesel;
         this.videoFile = videoFile;
 
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getiD() {

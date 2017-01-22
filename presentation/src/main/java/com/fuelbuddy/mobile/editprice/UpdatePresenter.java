@@ -1,5 +1,7 @@
 package com.fuelbuddy.mobile.editprice;
 
+import android.util.Log;
+
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
@@ -46,15 +48,15 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
         this.mUpdateFuelPricesUseCase.unsubscribe();
     }
 
-    public void updateFuelPrices(String fuel92, String fuel95, String diesel) {
-        this.mUpdateFuelPricesUseCase.setFuelPricesUpdate(fuel92,fuel95,diesel);
+    public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
+        this.mUpdateFuelPricesUseCase.setFuelPricesUpdate(gasStationId,fuel92,fuel95,diesel);
         this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        getMvpView().context();
         ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
-        getMvpView().showError(errorResponse.getErrorMassage());
+       // Log.d("showErrorMessage", "showErrorMessage: " + errorResponse.getErrorMassage());
+        //getMvpView().showError(errorResponse.getErrorMassage());
     }
 
 

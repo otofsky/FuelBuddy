@@ -38,6 +38,8 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -71,8 +73,8 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @BindView(R.id.locationIconImg)
     ImageView locationIconImg;
 
-    /*@BindView(R.id.fuelInput92)
-    EditText fuelInput92;*/
+    @BindView(R.id.fuelInput92)
+    EditText fuelInput92;
     @BindView(R.id.fuelInput95)
     EditText fuelInput95;
     @BindView(R.id.fuelInputDiesel)
@@ -81,17 +83,25 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @BindView(R.id.openCameraBtn)
     FloatingActionButton openCameraBtn;
 
-    Unbinder mUnbinder;
-
-
     GasStationModel gasStationModel;
-    FuelMapper fuelMapper;
 
     String videoPath;
     Uri videoUri;
 
+    Unbinder mUnbinder;
+
 
     private UpdateComponent mUpdateComponent;
+
+
+    MaskedTextChangedListener.ValueListener valueListener = new MaskedTextChangedListener.ValueListener() {
+        @Override
+        public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
+            Log.d(UpdateActivity.class.getSimpleName(), extractedValue);
+            Log.d(UpdateActivity.class.getSimpleName(), String.valueOf(maskFilled));
+        }
+    };
+
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, UpdateActivity.class);
@@ -106,24 +116,31 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         initPresenter();
         setToolbar();
         obtainData();
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener(
-                "[00],[00]",
-                true,
-                fuelInputDiesel,
-                null,
-                new MaskedTextChangedListener.ValueListener() {
-                    @Override
-                    public void onTextChanged(boolean maskFilled, @NonNull final String extractedValue) {
-                        Log.d(UpdateActivity.class.getSimpleName(), extractedValue);
-                        Log.d(UpdateActivity.class.getSimpleName(), String.valueOf(maskFilled));
-                    }
-                }
-        );
+        init92PriceListener();
+        init95PriceListener();
+        initDieselPriceListener();
+    }
+
+    private void init92PriceListener() {
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null,valueListener);
+        fuelInput92.addTextChangedListener(listener);
+        fuelInput92.setOnFocusChangeListener(listener);
+        fuelInput92.setHint(listener.placeholder());
+    }
+
+    private void init95PriceListener() {
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null,valueListener);
+        fuelInput95.addTextChangedListener(listener);
+        fuelInput95.setOnFocusChangeListener(listener);
+        fuelInput95.setHint(listener.placeholder());
+    }
+
+    private void initDieselPriceListener() {
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null,valueListener);
         fuelInputDiesel.addTextChangedListener(listener);
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
     }
-
 
 
     private void obtainData() {
@@ -182,7 +199,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.send, menu);
         return true;
     }
 
@@ -191,7 +208,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
-                //  mPresenter.updateFuelPrices(fuelInput92.getText().toString(), fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
+                 mPresenter.updateFuelPrices(gasStationModel.getGasStationId(),fuelInput92.getText().toString(), fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
                 return true;
             case android.R.id.home:
                 onBackPressed();

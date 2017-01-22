@@ -16,8 +16,8 @@ public class FuelUpdateFactory {
 
     }
 
-    public FuelPricesUpdate createFuelUpdate(String iD, String userID, String fuel92, String fuel95, String diesel, File file) {
-        return new FuelPricesUpdate(iD, userID, Double.valueOf(fuel92), Double.valueOf(fuel95), Double.valueOf(diesel),file);
+    public FuelPricesUpdate createFuelUpdate(String iD, String fuel92, String fuel95, String diesel, File file) {
+        return new FuelPricesUpdate(iD, Double.valueOf(fuel92), Double.valueOf(fuel95), Double.valueOf(diesel),file);
     }
 
 }

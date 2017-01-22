@@ -1,16 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/actionLogOut"
-        android:icon="@android:drawable/ic_lock_idle_lock"
-        android:title="Log out"
-        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/actionUpdatePrice"
-        android:icon="@android:drawable/ic_menu_upload"
-        android:showAsAction="ifRoom"
-        android:title="send"/>
+        android:icon="@drawable/ic_action_send_24dp"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionLogOut"
+        android:icon="@drawable/ic_action_refresh_24dp"
+        android:title="Log out"
+        app:showAsAction="ifRoom"/>
 </menu>
 
 

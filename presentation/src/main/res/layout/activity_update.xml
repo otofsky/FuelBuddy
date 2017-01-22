@@ -85,11 +85,14 @@
 
                         <EditText
                             android:id="@+id/fuelInput95"
+                            android:inputType="phone"
+                            android:text="62.34"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
-
-                            android:ems="10"
-                            android:inputType="numberDecimal" />
+                            android:gravity="center"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/white"
+                          />
 
 
                     </LinearLayout>
@@ -118,6 +121,7 @@
                             android:inputType="phone"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
+                            android:text="32.34"
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white"
@@ -160,7 +164,7 @@
                             android:textColor="@color/white"
                             android:textSize="14sp" />
 
-                        <com.github.pinball83.maskededittext.MaskedEditText
+                      <!--  <com.github.pinball83.maskededittext.MaskedEditText
                             android:id="@+id/masked_edit_text"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
@@ -172,17 +176,19 @@
                             android:layout_alignParentRight="true"
                             app:maskIconColor="@color/colorPrimary"
                             android:background="@color/white"
-                            />
+                            />-->
 
 
 
-                      <!--  <EditText
+                        <EditText
                             android:id="@+id/fuelInput92"
+                            android:inputType="phone"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
+                            android:text="99.34"
+                            android:gravity="center"
                             android:layout_alignParentRight="true"
-                            android:ems="10"
-                            android:inputType="numberDecimal" />-->
+                            android:background="@color/white" />
 
 
                     </LinearLayout>
@@ -198,7 +204,7 @@
             android:layout_margin="16dp"
             android:background="@color/white"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_camera"
+            android:src="@drawable/ic_action_camera_24dp"
             app:layout_anchor="@id/viewA"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>

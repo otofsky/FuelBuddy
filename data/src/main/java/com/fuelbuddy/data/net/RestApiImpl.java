@@ -72,8 +72,8 @@ public class RestApiImpl implements RestApiService {
     }
 
     @Override
-    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel, File file) {
-        return ApiInvoker.getInstance().updateStation(iD, userID, price92, price95, priceDiesel,file);
+    public Observable<ResponseEntity> updateStation(String ID, String userID, Double price92, Double price95, Double priceDiesel, File file) {
+        return ApiInvoker.getInstance().updateStation(ID, userID, price92, price95, priceDiesel);
     }
 
 
