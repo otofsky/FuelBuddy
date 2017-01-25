@@ -49,7 +49,7 @@ public class ApiInvoker {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                .addCallAdapterFactory(rxAdapter)
                 .client(client)
                 .build();
 
@@ -72,13 +72,13 @@ public class ApiInvoker {
 
     public Observable<ResponseEntity> updateStation(String ID, String userID, Double price92
             , Double price95, Double priceDiesel) {
-        return apiInterface.updateStation("3", userID, price92, price95, priceDiesel);
+        return apiInterface.updateStation(ID, userID, price92, price95, priceDiesel);
     }
 
-    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
+  /*  public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
             , Double price95, Double priceDiesel, File file) {
 
-        /*File file = FileUtils.getFile(this, fileUri);*/
+        *//*File file = FileUtils.getFile(this, fileUri);*//*
         // create RequestBody instance from file
 
         MediaType mediaType = RequestHelper.getMediaType("video/mp4");
@@ -96,7 +96,7 @@ public class ApiInvoker {
 
 
         return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel, description, body);
-    }
+    }*/
 
 
     public Observable<ResponseEntity> addNewUser(String userID, String profileName, String email) {

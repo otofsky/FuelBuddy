@@ -41,20 +41,12 @@ public class UpdateFuelPricesUseCase extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return getCurrentUser().map(update);
-    }
-
-    private final Func1<User, Observable<Response>> update = new Func1<User, Observable<Response>>() {
-        @Override
-        public Observable<Response> call(User user) {
-            mFuelPricesUpdate.setUserID(user.getUserID());
-            mFuelPricesUpdate.toString();
-
-            return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(),user.getUserID(),
-                    mFuelPricesUpdate.getPrice92(),mFuelPricesUpdate.getPrice95(),mFuelPricesUpdate.getPriceDiesel(),null);
-        }
-    };
-    public Observable<User> getCurrentUser() {
-        return userRepository.getCurrentUser();
+        return userRepository.getCurrentUser().flatMap(
+                new Func1<User, Observable<Response>>() {
+                    @Override
+                    public Observable<Response> call(User user) {
+                        return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), user.getUserID(), mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel(), null);
+                    }
+                });
     }
 }

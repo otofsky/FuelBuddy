@@ -62,7 +62,6 @@ public class RestApiImpl implements RestApiService {
                 (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-
         return isConnected;
     }
 
