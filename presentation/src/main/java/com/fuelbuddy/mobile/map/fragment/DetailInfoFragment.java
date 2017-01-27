@@ -83,8 +83,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         this.getComponent(MapsComponent.class).inject(this);
         mPresenter.attachView(this);
         final Resources resources = getResources();
-        mHeightDetail = resources
-                .getDimensionPixelOffset(R.dimen.map_slideableinfo_height);
+        mHeightDetail = resources.getDimensionPixelOffset(R.dimen.map_slideableinfo_height);
     }
 
     @Nullable
@@ -123,11 +122,9 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
         info.setText(R.string.map_direction_btn_text);
-
     }
 
     private void setCollapsedOnly() {
-        // Set up panel: collapsed only with title height and icon
         mBehavior.setPeekHeight(mHeightDetail);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         navigateBtn.show();
@@ -152,8 +149,6 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
                     break;
                 case BottomSheetBehavior.STATE_HIDDEN:
                     navigateBtn.setVisibility(View.GONE);
-                  /*  mCallback.onInfoSizeChanged(mBottomSheet.getLeft(), mBottomSheet.getTop(),
-                            mBottomSheet.getRight(), mCoordinator.getHeight());*/
                     break;
             }
         }

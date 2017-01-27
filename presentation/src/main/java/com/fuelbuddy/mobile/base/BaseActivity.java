@@ -10,8 +10,6 @@ import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.di.module.ActivityModule;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 
-import org.greenrobot.eventbus.EventBus;
-
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -44,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return ((AndroidApplication) getApplication()).getApplicationComponent();
     }
 
+
     /**
      * Get an Activity module for dependency injection.
      */
@@ -51,6 +50,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return new ActivityModule(this);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+    }
 
 }

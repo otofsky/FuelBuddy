@@ -70,9 +70,9 @@ public class ApiInvoker {
         return apiInterface.getGasStations(latitude, longitude);
     }
 
-    public Observable<ResponseEntity> updateStation(String ID, String userID, Double price92
+    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
             , Double price95, Double priceDiesel) {
-        return apiInterface.updateStation("3", userID, price92, price95, priceDiesel);
+        return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel);
     }
 
     public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92

@@ -103,7 +103,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     };
 
 
-    public static Intent getCallingIntent(Context context) {
+    public static Intent getCallingIntent(Activity context) {
         return new Intent(context, UpdateActivity.class);
     }
 

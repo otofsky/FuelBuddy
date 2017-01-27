@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.util;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ public class AnimationHelper {
         ft.replace(container, fragment, null).commit();
     }
 
-    public static void startAnimatedActivity(AppCompatActivity activity, AnimationDirection animation) {
+    public static void startAnimatedActivity(FragmentActivity activity, AnimationDirection animation) {
         switch (animation) {
             case LEFT_RIGHT:
                 activity.overridePendingTransition(R.anim.left_slide_in, R.anim.left_slide_out);
