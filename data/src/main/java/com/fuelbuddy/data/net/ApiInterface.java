@@ -22,8 +22,6 @@ public interface ApiInterface {
     @GET("stations?")
     Observable<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude, @Query("longitude") String longitude);
 
-   // fuelbuddy.dk/ws/updatestation?ID=512&userID=3&price92=12.12&price95=32.13&priceDiesel=34.37
-
     @GET("updatestation?")
     Observable<ResponseEntity> updateStation(@Query("ID") String iD,
                                              @Query("userID") String userID,

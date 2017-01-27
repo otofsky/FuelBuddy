@@ -77,6 +77,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
         @DebugLog
         @Override
         public void onNext(Response response) {
+            Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
             //getMvpView().showSuccessMessage(response.getMessage());
 
