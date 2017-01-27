@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
@@ -28,17 +26,11 @@ import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
-import com.fuelbuddy.mobile.map.MapsMainActivity;
-import com.fuelbuddy.mobile.mapper.FuelMapper;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
-import com.fuelbuddy.mobile.util.StringHelper;
 import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -116,30 +108,33 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         initPresenter();
         setToolbar();
         obtainData();
-        init92PriceListener();
-        init95PriceListener();
-        initDieselPriceListener();
+        init92PriceView();
+        init95PriceView();
+        initDieselPriceView();
     }
 
-    private void init92PriceListener() {
+    private void init92PriceView() {
         final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null,valueListener);
         fuelInput92.addTextChangedListener(listener);
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
+        fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
     }
 
-    private void init95PriceListener() {
+    private void init95PriceView() {
         final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null,valueListener);
         fuelInput95.addTextChangedListener(listener);
         fuelInput95.setOnFocusChangeListener(listener);
         fuelInput95.setHint(listener.placeholder());
+        fuelInput95.setBackgroundResource(R.drawable.border_line_gray);
     }
 
-    private void initDieselPriceListener() {
+    private void initDieselPriceView() {
         final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null,valueListener);
         fuelInputDiesel.addTextChangedListener(listener);
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
+        fuelInputDiesel.setBackgroundResource(R.drawable.border_line_gray);
     }
 
 
@@ -256,17 +251,22 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void updatePrice() {
-    /*    String fuel92 = null, fuel95 = null, fuelDiesel = null;
-        if (!StringHelper.isNullOrEmpty(fuelInput92.getText().toString())) {
-            fuel92 = fuelInput92.getText().toString();
-        }
-        if (!StringHelper.isNullOrEmpty(fuelInput95.getText().toString())) {
-            fuel95 = fuelInput95.getText().toString();
-        }
-        if (!StringHelper.isNullOrEmpty(fuelInputDiesel.getText().toString())) {
-            fuelDiesel = fuelInputDiesel.getText().toString();
-        }
-        mPresenter.updateFuelPrices(fuel92, fuel95, fuelDiesel);*/
+
+    }
+
+    @Override
+    public void show92Error() {
+        fuelInput92.setBackgroundResource(R.drawable.border_line_red);
+    }
+
+    @Override
+    public void show95Error() {
+        fuelInput95.setBackgroundResource(R.drawable.border_line_red);
+    }
+
+    @Override
+    public void showDieselError() {
+        fuelInputDiesel.setBackgroundResource(R.drawable.border_line_red);
     }
 
     @Override

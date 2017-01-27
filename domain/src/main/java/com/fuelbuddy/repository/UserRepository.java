@@ -1,5 +1,6 @@
 package com.fuelbuddy.repository;
 
+import com.fuelbuddy.data.Auth;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 
@@ -10,9 +11,8 @@ import rx.Observable;
  */
 public interface UserRepository {
 
-    /*
-    return current logged user
-    * */
+
+    Observable<Auth> auth(String userId, String email);
 
     Observable<User> getCurrentUser();
 

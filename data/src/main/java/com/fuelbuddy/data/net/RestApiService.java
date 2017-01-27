@@ -2,6 +2,7 @@ package com.fuelbuddy.data.net;
 
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Position;
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
@@ -36,10 +37,11 @@ public interface RestApiService {
 
     Observable<List<GasStationEntity>> gasStationEntityList(Position position);
 
-     Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
-            , Double price95, Double priceDiesel, File file);
+     Observable<ResponseEntity> updateStation(String iD, String userID, Double price92 ,Double price95, Double priceDiesel, File file);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
+
+    Observable<AuthEntity> auth(String userId, String email);
 
     Observable<UserEntity> checkUser(String userId);
 

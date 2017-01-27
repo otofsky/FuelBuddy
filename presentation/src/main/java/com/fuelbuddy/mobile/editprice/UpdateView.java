@@ -12,4 +12,12 @@ public interface UpdateView extends MvpView {
 
     void updatePrice();
 
+    void show92Error();
+
+    void show95Error();
+
+    void showDieselError();
+
+
+
 }

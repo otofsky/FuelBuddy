@@ -13,15 +13,15 @@ public class FuelPricesUpdate {
     private  Double price92;
     private  Double price95;
     private  Double priceDiesel;
-    private  File videoFile;
 
 
-    public FuelPricesUpdate(String iD, Double price92, Double price95, Double priceDiesel, File videoFile) {
+
+    public FuelPricesUpdate(String iD, Double price92, Double price95, Double priceDiesel) {
         this.iD = iD;
         this.price92 = price92;
         this.price95 = price95;
         this.priceDiesel = priceDiesel;
-        this.videoFile = videoFile;
+
 
     }
 
@@ -49,9 +49,7 @@ public class FuelPricesUpdate {
         return userID;
     }
 
-    public File getVideoFile() {
-        return videoFile;
-    }
+
 
     @Override
     public String toString() {

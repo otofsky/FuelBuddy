@@ -21,6 +21,7 @@ import android.net.NetworkInfo;
 
 
 import com.fuelbuddy.data.Position;
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
@@ -78,6 +79,10 @@ public class RestApiImpl implements RestApiService {
 
     public Observable<UserEntity> checkUser(String userId) {
         return ApiInvoker.getInstance().checkUser(userId);
+    }
+
+    public Observable<AuthEntity> auth(String userId, String email) {
+        return ApiInvoker.getInstance().auth(userId,email);
     }
 
 

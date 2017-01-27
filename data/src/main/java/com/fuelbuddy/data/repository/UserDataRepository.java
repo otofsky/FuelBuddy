@@ -1,9 +1,12 @@
 package com.fuelbuddy.data.repository;
 
+import com.fuelbuddy.data.Auth;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.entity.mapper.AuthEntityMapper;
 import com.fuelbuddy.data.entity.mapper.ResponseEntityMapper;
 import com.fuelbuddy.data.entity.mapper.UserEntityMapper;
 import com.fuelbuddy.data.repository.datasource.UserDataStore.UserDataStore;
@@ -27,13 +30,29 @@ public class UserDataRepository implements UserRepository {
     private final UserStoreFactory mUserStoreFactory;
     ResponseEntityMapper mResponseEntityMapper;
     UserEntityMapper mUserEntityMapper;
+    AuthEntityMapper authEntityMapper;
 
     @Inject
-    public UserDataRepository(UserStoreFactory userStoreFactory, UserEntityMapper userEntityMapper, ResponseEntityMapper responseEntityMapper) {
+    public UserDataRepository(UserStoreFactory userStoreFactory, UserEntityMapper userEntityMapper,
+                              ResponseEntityMapper responseEntityMapper,
+                              AuthEntityMapper authEntityMapper) {
         mUserStoreFactory = userStoreFactory;
         mUserEntityMapper = userEntityMapper;
         mResponseEntityMapper = responseEntityMapper;
+        this.authEntityMapper = authEntityMapper;
     }
+
+    @Override
+    public Observable<Auth> auth(String userId, String email) {
+        UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
+        return userDataStore.auth(userId,email).map(new Func1<AuthEntity, Auth>() {
+            @Override
+            public Auth call(AuthEntity authEntity) {
+                return authEntityMapper.transformToAuth(authEntity);
+            }
+        });
+    }
+
 
     @Override
     public Observable<User> getCurrentUser() {

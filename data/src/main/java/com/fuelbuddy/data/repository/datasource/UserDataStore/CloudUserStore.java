@@ -18,6 +18,7 @@ package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 
 import com.fuelbuddy.data.Response;
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
@@ -39,6 +40,11 @@ class CloudUserStore implements UserDataStore {
 CloudUserStore(RestApiService restApiService) {
     this.mRestApiService = restApiService;
   }
+
+    @Override
+    public Observable<AuthEntity> auth(String userId, String email) {
+        return this.mRestApiService.auth(userId,email);
+    }
 
     @Override
     public Observable<UserEntity> checkUser(String userId) {

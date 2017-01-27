@@ -86,7 +86,6 @@
                         <EditText
                             android:id="@+id/fuelInput95"
                             android:inputType="phone"
-                            android:text="62.34"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
                             android:gravity="center"
@@ -121,7 +120,6 @@
                             android:inputType="phone"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
-                            android:text="32.34"
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white"
@@ -129,14 +127,7 @@
 
 
 
-                       <!-- <EditText
-                            android:id="@+id/fuelInputDiesel"
-                            android:layout_width="100dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:ems="10"
 
-                            android:inputType="numberDecimal" />-->
 
 
                     </LinearLayout>
@@ -164,19 +155,7 @@
                             android:textColor="@color/white"
                             android:textSize="14sp" />
 
-                      <!--  <com.github.pinball83.maskededittext.MaskedEditText
-                            android:id="@+id/masked_edit_text"
-                            android:layout_width="100dp"
-                            android:layout_height="40dp"
-                            android:inputType="number"
-                            android:gravity="center"
-                            android:textSize="14sp"
-                            app:mask="**,** kr"
-                            app:notMaskedSymbol="*"
-                            android:layout_alignParentRight="true"
-                            app:maskIconColor="@color/colorPrimary"
-                            android:background="@color/white"
-                            />-->
+
 
 
 
@@ -185,7 +164,7 @@
                             android:inputType="phone"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
-                            android:text="99.34"
+
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white" />

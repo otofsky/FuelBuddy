@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.net;
 
 
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
@@ -104,10 +105,11 @@ public class ApiInvoker {
     }
 
     public Observable<UserEntity> checkUser(String userID) {
-
-
         return apiInterface.checkUser(userID);
     }
 
+    public Observable<AuthEntity> auth(String userID,String email) {
+        return apiInterface.auth(userID,email);
+    }
 
 }

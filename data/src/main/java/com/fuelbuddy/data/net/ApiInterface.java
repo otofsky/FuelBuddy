@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.net;
 
 
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
@@ -14,9 +15,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
-/**
- * Created by zjuroszek on 20.05.16.
- */
+
 public interface ApiInterface {
 
     @GET("stations?")
@@ -41,5 +40,8 @@ public interface ApiInterface {
 
     @GET("checkuser?")
     Observable<UserEntity> checkUser(@Query("userID") String userID);
+
+    @GET("auth?")
+    Observable<AuthEntity> auth(@Query("userID") String userID, @Query("email") String email );
 
 }

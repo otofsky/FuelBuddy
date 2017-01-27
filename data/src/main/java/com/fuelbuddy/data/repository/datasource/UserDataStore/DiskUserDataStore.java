@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 import com.fuelbuddy.data.cache.UserCache;
+import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
@@ -15,6 +16,11 @@ public class DiskUserDataStore implements UserDataStore {
 
     public DiskUserDataStore(UserCache userCache) {
         mUserCache = userCache;
+    }
+
+    @Override
+    public Observable<AuthEntity> auth(String userId, String email) {
+        return null;
     }
 
     @Override

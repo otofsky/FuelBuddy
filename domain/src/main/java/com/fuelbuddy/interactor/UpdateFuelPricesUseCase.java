@@ -2,6 +2,7 @@ package com.fuelbuddy.interactor;
 
 
 import com.fuelbuddy.FuelUpdateFactory;
+import com.fuelbuddy.PriceValidator;
 import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
@@ -22,25 +23,36 @@ import rx.functions.Func1;
 
 public class UpdateFuelPricesUseCase extends UseCase {
 
+
     FuelUpdateFactory mFuelUpdateFactory;
     GasStationsRepository gasStationsRepository;
     UserRepository userRepository;
     FuelPricesUpdate mFuelPricesUpdate;
+    PriceValidator priceValidator;
+
 
     @Inject
-    public UpdateFuelPricesUseCase(FuelUpdateFactory fuelUpdateFactory, GasStationsRepository gasStationsRepository, UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public UpdateFuelPricesUseCase(FuelUpdateFactory fuelUpdateFactory, PriceValidator priceValidator, GasStationsRepository gasStationsRepository, UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mFuelUpdateFactory = fuelUpdateFactory;
+        this.priceValidator = priceValidator;
         this.userRepository = userRepository;
         this.gasStationsRepository = gasStationsRepository;
     }
 
-    public void setFuelPricesUpdate(String gasStationId, String fuel92, String fuel95, String diesel) {
-        mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(gasStationId, fuel92, fuel95, diesel, null);
+    public boolean validateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel, PriceValidator.UpdateFinishedListener updateFinishedListener) {
+
+        if (priceValidator.validatePrice(fuel92, fuel95, diesel, updateFinishedListener)) {
+            mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(gasStationId, fuel92, fuel95, diesel);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
+
         return userRepository.getCurrentUser().flatMap(
                 new Func1<User, Observable<Response>>() {
                     @Override
@@ -49,4 +61,5 @@ public class UpdateFuelPricesUseCase extends UseCase {
                     }
                 });
     }
+
 }

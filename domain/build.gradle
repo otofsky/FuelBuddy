@@ -8,4 +8,5 @@ dependencies {
     compile 'com.jakewharton.hugo:hugo-annotations:1.2.1'
 
     compile 'com.google.code.gson:gson:2.6.1'
+
 }

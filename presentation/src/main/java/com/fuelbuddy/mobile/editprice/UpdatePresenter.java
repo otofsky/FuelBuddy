@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.editprice;
 
 import android.util.Log;
 
+import com.fuelbuddy.PriceValidator;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
@@ -24,10 +25,10 @@ import hugo.weaving.DebugLog;
  * Created by zjuroszek on 08.01.17.
  */
 
-public class UpdatePresenter extends BasePresenter<UpdateView> {
-
+public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceValidator.UpdateFinishedListener {
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
+
     private PositionMapper mPositionMapper;
 
     @Inject
@@ -49,13 +50,32 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
     }
 
     public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
-        this.mUpdateFuelPricesUseCase.setFuelPricesUpdate(gasStationId,fuel92,fuel95,diesel);
-        this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
+        Log.d("updateFuelPrices", "updateFuelPrices: " + fuel92 + " " + fuel95 + " " + diesel);
+        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel, this);
+        if (result) {
+            this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
+        }
+    }
+
+
+    @Override
+    public void show92Error() {
+        getMvpView().show92Error();
+    }
+
+    @Override
+    public void show95Error() {
+        getMvpView().show95Error();
+    }
+
+    @Override
+    public void showDieselError() {
+        getMvpView().showDieselError();
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
-       // Log.d("showErrorMessage", "showErrorMessage: " + errorResponse.getErrorMassage());
+        // Log.d("showErrorMessage", "showErrorMessage: " + errorResponse.getErrorMassage());
         //getMvpView().showError(errorResponse.getErrorMassage());
     }
 
@@ -103,7 +123,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> {
         public void onNext(List<GasStation> gasStations) {
             getMvpView().hideLoading();
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
-           // getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
+            // getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
 
         }
     }
