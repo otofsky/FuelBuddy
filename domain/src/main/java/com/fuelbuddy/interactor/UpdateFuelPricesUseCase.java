@@ -41,7 +41,9 @@ public class UpdateFuelPricesUseCase extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return getCurrentUser().map(update);
+        return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(),"1",
+                mFuelPricesUpdate.getPrice92(),mFuelPricesUpdate.getPrice95(),mFuelPricesUpdate.getPriceDiesel(),null);
+        //return getCurrentUser().map(update);
     }
 
     private final Func1<User, Observable<Response>> update = new Func1<User, Observable<Response>>() {

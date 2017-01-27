@@ -1,7 +1,7 @@
 package com.fuelbuddy.mobile.util;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -22,11 +22,11 @@ public class DateHelper {
 
 
     public static int isOlderThanData(String fuelLastUpDateString) {
-        if(!StringHelper.isNullOrEmpty(fuelLastUpDateString)) {
+        if (!StringHelper.isNullOrEmpty(fuelLastUpDateString)) {
             DateTime dt = convertStringToDate(fuelLastUpDateString);
             DateTime dateTime = new DateTime();
-            Period p = new Period(dt, dateTime);
-            int hours = p.getHours();
+            Duration p = new Duration(dt, dateTime);
+            int hours = (int) p.getStandardHours();
             return hours;
         }
         return UNKOWN_HOURS;

@@ -75,7 +75,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
 
 
-    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
+  //  private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -159,7 +159,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     public void onEventMainThread(Event event) {
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
-            mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
+            mMapPresenter.submitSearch(mCurrentPositionLatLng);
         }
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
