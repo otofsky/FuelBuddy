@@ -81,7 +81,8 @@
                             android:gravity="center"
                             android:text="@string/update_blyfri_95"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp" />
 
                         <EditText
                             android:id="@+id/fuelInput95"
@@ -91,7 +92,7 @@
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white"
-                          />
+                            android:layout_marginLeft="2dp" />
 
 
                     </LinearLayout>
@@ -113,7 +114,8 @@
                             android:gravity="center"
                             android:text="@string/update_diesel"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp" />
 
                         <EditText
                             android:id="@+id/fuelInputDiesel"
@@ -123,7 +125,7 @@
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white"
-                            />
+                            android:layout_marginLeft="2dp" />
 
 
 
@@ -136,7 +138,6 @@
                         android:id="@+id/fuel92holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="53dp"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingBottom="6dp"
@@ -153,7 +154,8 @@
                             android:gravity="center"
                             android:text="@string/update_blyfri_92"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp" />
 
 
 
@@ -167,7 +169,8 @@
 
                             android:gravity="center"
                             android:layout_alignParentRight="true"
-                            android:background="@color/white" />
+                            android:background="@color/white"
+                            android:layout_marginLeft="2dp" />
 
 
                     </LinearLayout>

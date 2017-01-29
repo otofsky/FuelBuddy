@@ -89,8 +89,9 @@ public class SharePreferencesUserCacheImpl implements UserCache {
             public void call(Subscriber<? super ResponseEntity> subscriber) {
                 try {
                     sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
-                    //ResponseEntity responseEntity = new ResponseEntity();
-                    subscriber.onCompleted();
+                    ResponseEntity responseEntity = new ResponseEntity();
+                    responseEntity.setMessage("User added");
+                    subscriber.onNext(responseEntity);
                 } catch (JSONException e) {
                     subscriber.onError(e);
                 }

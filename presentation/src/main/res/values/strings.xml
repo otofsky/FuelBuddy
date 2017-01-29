@@ -3,6 +3,8 @@
 
     <string name="app_name">Fuel Buddy</string>
 
+    <string name="title_activity_update">Optag pris</string>
+
     <string name="title_activity_maps">Map</string>
 
     <string name="dialog_action_ok">OK</string>

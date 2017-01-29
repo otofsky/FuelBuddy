@@ -270,6 +270,12 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     @Override
+    public void showMap() {
+        onBackPressed();
+        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         //EventBus.getDefault().register(this);

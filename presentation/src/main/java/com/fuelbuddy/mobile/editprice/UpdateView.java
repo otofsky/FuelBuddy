@@ -18,6 +18,6 @@ public interface UpdateView extends MvpView {
 
     void showDieselError();
 
-
+    void showMap();
 
 }

@@ -57,7 +57,7 @@ import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, HasComponent<MapsComponent> {
-    private static final String TAG = TrackLocationService.class.getCanonicalName();
+    private static final String TAG = MapsMainActivity.class.getCanonicalName();
 
     @Inject
     public MapMainPresenter mMapPresenter;
@@ -153,10 +153,9 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         addFragment(R.id.fragment_container_map, mMapFragment);
     }
 
-
-
     @Subscribe
     public void onEventMainThread(Event event) {
+        Log.d(TAG, "onEventMainThread:  ");
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
             mMapPresenter.submitSearch(mCurrentPositionLatLng);
@@ -189,7 +188,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         finish();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -204,7 +202,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         super.onStop();
     }
 
-
     private void connectGoogleApiClient() {
         if (mGoogleApiClient == null) {
             if (createGoogleApiClient() != ConnectionResult.SUCCESS) {
@@ -214,6 +211,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         if (!(mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.connect();
         } else {
+            Log.d(TAG, "start location connectGoogleApiClient: ");
             startTrackLocationService();
         }
     }
@@ -300,8 +298,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        startTrackLocationService();
-    
+
     }
 
     @Override

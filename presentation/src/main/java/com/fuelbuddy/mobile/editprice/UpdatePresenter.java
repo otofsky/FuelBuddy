@@ -99,6 +99,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
         public void onNext(Response response) {
             Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
+            getMvpView().showMap();
             //getMvpView().showSuccessMessage(response.getMessage());
 
         }

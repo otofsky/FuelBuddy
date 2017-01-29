@@ -37,55 +37,30 @@ public class CheckUserUseCase extends UseCase {
         //to zapisje dane lokalnie
         // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
         //return userRepository.getCheckUser(mUser.getUserID()).concatMap(StoreRemoteUser);
-        return userRepository.getCheckUser(mUser.getUserID());
+        return userRepository.getCheckUser(mUser.getUserID())
+                .flatMap(onUserExist) // to zapisje dane lokalnie
+                ;
+
+
+        //wysyłam dane na server i zapisuje lokalnie
     }
 
-/*
-    private final Func1<Response, Observable<Response>> StoreRemoteUser =
-            new Func1<Response, Observable<Response>>() {
-                @Override
-                public Observable<Response> call(Response response) {
-                    if (response.getResultType() == Response.ResultTypeEnum.UserNotFound) {
 
-                        return userRepository.addNewUser(mUser).concatMap(storeUserLocally);
-                    } else {
+    private final Func1<User, Observable<Response>> onUserExist = new Func1<User, Observable<Response>>() {
+        @Override
+        public Observable<Response> call(User response) {
+            return userRepository.setCurrentUser(mUser);
+        }
+    };
 
-                        return userRepository.setCurrentUser(mUser);
-                    }
-                }
-            };*/
+    private final Func1<Throwable, Observable<Response>> errorHandling = new Func1<Throwable, Observable<Response>>() {
 
+        @Override
+        public Observable<Response> call(Throwable throwable) {
 
-    private final Func1<Response, Observable<Response>> storeUserLocally =
-            new Func1<Response, Observable<Response>>() {
-                @Override
-                public Observable<Response> call(Response response) {
-                    if (response != null && response.getCode() == 200) {
-                        return userRepository.setCurrentUser(mUser);
-                    } else {
-                        return getResponse(getErrorResponse());
-                    }
-                }
-            };
+            return userRepository.addNewUser(mUser);
+        }
+    };
 
-    private Response getErrorResponse() {
-        Response response1 = new Response();
-        response1.setResultType(Response.ResultTypeEnum.GeneralError);
-        response1.setCode(500);
-        response1.setMessage("User not found");
-        return response1;
-    }
-
-    protected Observable getLocalUserObservable() {
-        return userRepository.getCurrentUser();
-    }
-
-    protected Observable getRemoteUserObservable(String userId) {
-        return userRepository.getCheckUser(userId);
-    }
-
-    public Observable<Response> getResponse(Response response) {
-        return Observable.just(response);
-    }
 
 }

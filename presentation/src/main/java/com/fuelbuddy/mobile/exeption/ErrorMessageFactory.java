@@ -16,6 +16,7 @@
 package com.fuelbuddy.mobile.exeption;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import com.fuelbuddy.data.net.RetrofitException;
@@ -34,6 +35,7 @@ public class ErrorMessageFactory {
     }
 
     public static ErrorResponse create(Context context, Exception exception) {
+
         ErrorResponse errorResponse = null;
         Response response;
         if (exception instanceof RetrofitException) {

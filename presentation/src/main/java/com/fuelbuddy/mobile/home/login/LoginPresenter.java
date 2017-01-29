@@ -1,5 +1,8 @@
 package com.fuelbuddy.mobile.home.login;
 
+import android.util.Log;
+
+import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.net.RetrofitException;
 import com.fuelbuddy.interactor.CheckUserUseCase;
@@ -64,28 +67,32 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         getMvpView().showError(errorMessage);
     }
 
-    private final class CheckUserSubscriber extends DefaultSubscriber<User> {
+    private final class CheckUserSubscriber extends DefaultSubscriber<Response> {
         @DebugLog
         @Override
         public void onCompleted() {
+            Log.d(TAG, "onCompleted: ");
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            Log.d(TAG, "check user onError: ");
             if (throwable instanceof RetrofitException) {
                 ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
                 if (errorResponse.getErrorCode() != null && errorResponse.getErrorCode() == 404) {
                     addNewUseInCloud(mUserModel);
+                } else {
+                    showErrorMessage(errorResponse.getErrorMassage());
                 }
-                showErrorMessage(errorResponse.getErrorMassage());
             }
         }
 
         @DebugLog
         @Override
-        public void onNext(User response) {
-            addNewUserLocally(mUserModel);
+        public void onNext(Response response) {
+            Log.d(TAG, "onNext: " + response.getMessage());
+            getMvpView().showFuelSectionView();
         }
     }
 
@@ -94,18 +101,23 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
+            Log.d(TAG, " incloud onCompleted: ");
             getMvpView().showFuelSectionView();
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            Log.d(TAG, " inCloud onError: ");
+            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
+            showErrorMessage(errorResponse.getErrorMassage());
             //showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
         @Override
         public void onNext(User user) {
+            Log.d(TAG, "onNext: add user inCloud");
             addNewUserLocally(mUserModel);
 
         }
@@ -116,13 +128,13 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
-            getMvpView().showFuelSectionView();
-
+            Log.d(TAG, "onCompleted: locally");
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            Log.d(TAG, "onError: locally");
             ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
             showErrorMessage(errorResponse.getErrorMassage());
         }
@@ -130,9 +142,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onNext(User user) {
+            Log.d(TAG, "onNext: locally");
             getMvpView().showFuelSectionView();
         }
     }
-
-
 }

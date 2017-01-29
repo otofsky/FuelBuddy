@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:src="@android:drawable/ic_menu_directions"
-        android:theme="@style/NavigationFloatingButton"
         app:layout_anchor="@id/map_bottomsheet"
         app:layout_anchorGravity="top|right|end" />
 </android.support.design.widget.CoordinatorLayout>
