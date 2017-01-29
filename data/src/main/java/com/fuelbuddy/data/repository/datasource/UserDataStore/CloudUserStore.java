@@ -42,7 +42,7 @@ CloudUserStore(RestApiService restApiService) {
   }
 
     @Override
-    public Observable<AuthEntity> auth(String userId, String email) {
+    public Observable<ResponseEntity> auth(String userId, String email) {
         return this.mRestApiService.auth(userId,email);
     }
 

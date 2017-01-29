@@ -13,7 +13,7 @@ import rx.Observable;
  */
 public interface UserDataStore {
 
-    Observable<AuthEntity> auth(String userId, String email);
+    Observable<ResponseEntity> auth(String userId, String email);
 
     Observable<UserEntity> checkUser(String userId);
 

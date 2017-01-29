@@ -49,6 +49,7 @@ public class ApiInvoker {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .client(client)
@@ -76,8 +77,7 @@ public class ApiInvoker {
         return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel);
     }
 
-    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
-            , Double price95, Double priceDiesel, File file) {
+    public Observable<ResponseEntity> uploadVideo(File file) {
 
         /*File file = FileUtils.getFile(this, fileUri);*/
         // create RequestBody instance from file
@@ -95,8 +95,7 @@ public class ApiInvoker {
         String descriptionString = "hello, this is description speaking";
         RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
 
-
-        return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel, description, body);
+        return apiInterface.updateStation(description, body);
     }
 
 
@@ -108,7 +107,7 @@ public class ApiInvoker {
         return apiInterface.checkUser(userID);
     }
 
-    public Observable<AuthEntity> auth(String userID,String email) {
+    public Observable<ResponseEntity> auth(String userID,String email) {
         return apiInterface.auth(userID,email);
     }
 

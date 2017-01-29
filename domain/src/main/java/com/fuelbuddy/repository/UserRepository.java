@@ -12,7 +12,7 @@ import rx.Observable;
 public interface UserRepository {
 
 
-    Observable<Auth> auth(String userId, String email);
+    Observable<Response> auth(String userId, String email);
 
     Observable<User> getCurrentUser();
 

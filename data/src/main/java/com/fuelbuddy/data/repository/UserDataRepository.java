@@ -43,12 +43,12 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<Auth> auth(String userId, String email) {
+    public Observable<Response> auth(String userId, String email) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.auth(userId,email).map(new Func1<AuthEntity, Auth>() {
+        return userDataStore.auth(userId,email).map(new Func1<ResponseEntity, Response>() {
             @Override
-            public Auth call(AuthEntity authEntity) {
-                return authEntityMapper.transformToAuth(authEntity);
+            public Response call(ResponseEntity responseEntity) {
+                return mResponseEntityMapper.transformToResponse(responseEntity);
             }
         });
     }

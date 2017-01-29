@@ -53,10 +53,12 @@ public class GasStationDataRepository implements GasStationsRepository {
         });
     }
 
+
+
     @Override
-    public Observable<Response> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel,File file) {
+    public Observable<Response> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.updateStation(iD,userID,price92,price95,priceDiesel,file).map(new Func1<ResponseEntity, Response>() {
+        return  gasStationDataStore.updateStation(iD,userID,price92,price95,priceDiesel).map(new Func1<ResponseEntity, Response>() {
             @Override
             public Response call(ResponseEntity responseEntity) {
                 return responseEntityMapper.transformToResponse(responseEntity);
@@ -64,6 +66,21 @@ public class GasStationDataRepository implements GasStationsRepository {
         });
 
     }
+
+    @Override
+    public Observable<Response> uploadVideo(File file) {
+        GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
+        return  gasStationDataStore.uploadVideo(file).map(new Func1<ResponseEntity, Response>() {
+            @Override
+            public Response call(ResponseEntity responseEntity) {
+                return responseEntityMapper.transformToResponse(responseEntity);
+            }
+        });
+
+    }
+
+
+
 
     @Override
     public Observable<GasStation> gasStation(int userId) {

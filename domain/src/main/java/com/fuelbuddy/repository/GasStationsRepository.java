@@ -12,7 +12,7 @@ import rx.Observable;
 /**
  * Created by zjuroszek on 06.11.16.
  */
-public interface GasStationsRepository  {
+public interface GasStationsRepository {
 
     /**
      * Get an {@link rx.Observable} which will emit a List of {@link GasStation}.
@@ -20,7 +20,9 @@ public interface GasStationsRepository  {
     Observable<List<GasStation>> gasStations(Position position);
 
     Observable<Response> updateStation(String iD, String userID, Double price92
-            , Double price95, Double priceDiesel, File file);
+            , Double price95, Double priceDiesel);
+
+    Observable<Response> uploadVideo(File file);
 
     /**
      * Get an {@link rx.Observable} which will emit a {@link GasStation}.

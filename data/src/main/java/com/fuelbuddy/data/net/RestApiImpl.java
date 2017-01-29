@@ -81,7 +81,7 @@ public class RestApiImpl implements RestApiService {
         return ApiInvoker.getInstance().checkUser(userId);
     }
 
-    public Observable<AuthEntity> auth(String userId, String email) {
+    public Observable<ResponseEntity> auth(String userId, String email) {
         return ApiInvoker.getInstance().auth(userId,email);
     }
 

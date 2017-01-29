@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.net.RetrofitException;
+import com.fuelbuddy.interactor.AuthUseCase;
 import com.fuelbuddy.interactor.CheckUserUseCase;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.SetUserInCloudUseCae;
@@ -33,16 +34,19 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private SetUserLocallyUseCase mSetUserLocallyUseCase;
     private SetUserInCloudUseCae mSetUserInCloudUseCae;
     private CheckUserUseCase mCheckUserUseCase;
+    private AuthUseCase authUseCase;
     private UserModel mUserModel; //
 
     @Inject
     public LoginPresenter(@Named("setUserLocally") SetUserLocallyUseCase setUserLocallyUseCase,
                           @Named("setUserInCloud") SetUserInCloudUseCae mSetUserInCloudUseCae,
                           CheckUserUseCase checkUserUseCase,
+                          AuthUseCase authUseCase,
                           UserModelDataMapper userModelDataMapper) {
         this.mSetUserLocallyUseCase = setUserLocallyUseCase;
         this.mSetUserInCloudUseCae = mSetUserInCloudUseCae;
         this.mCheckUserUseCase = checkUserUseCase;
+        this.authUseCase = authUseCase;
         this.userModelDataMapper = userModelDataMapper;
     }
 
@@ -62,6 +66,12 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         mSetUserLocallyUseCase.setUser(userModelDataMapper.transformToUser(user));
         this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber());
     }
+
+    public void auth(String userId, String email) {
+        this.authUseCase.setFuelPricesUpdate(userId, email);
+
+    }
+
 
     private void showErrorMessage(String errorMessage) {
         getMvpView().showError(errorMessage);
@@ -119,11 +129,34 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         public void onNext(User user) {
             Log.d(TAG, "onNext: add user inCloud");
             addNewUserLocally(mUserModel);
-
         }
     }
 
     private final class AddUserLocallySubscriber extends DefaultSubscriber<User> {
+
+        @DebugLog
+        @Override
+        public void onCompleted() {
+            Log.d(TAG, "onCompleted: locally");
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable throwable) {
+            Log.d(TAG, "onError: locally");
+            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
+            showErrorMessage(errorResponse.getErrorMassage());
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(User user) {
+            Log.d(TAG, "onNext: locally");
+            getMvpView().showFuelSectionView();
+        }
+    }
+
+    private final class AuthSubscriber extends DefaultSubscriber<User> {
 
         @DebugLog
         @Override

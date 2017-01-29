@@ -38,10 +38,9 @@ public class CheckUserUseCase extends UseCase {
         // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
         //return userRepository.getCheckUser(mUser.getUserID()).concatMap(StoreRemoteUser);
         return userRepository.getCheckUser(mUser.getUserID())
-                .flatMap(onUserExist) // to zapisje dane lokalnie
-                ;
-
-
+                .flatMap(onUserExist)
+                .flatMap(onUserAdded);
+        // to zapisje dane lokalnie
         //wysyłam dane na server i zapisuje lokalnie
     }
 
@@ -50,6 +49,13 @@ public class CheckUserUseCase extends UseCase {
         @Override
         public Observable<Response> call(User response) {
             return userRepository.setCurrentUser(mUser);
+        }
+    };
+
+    private final Func1<Response, Observable<Response>> onUserAdded = new Func1<Response, Observable<Response>>() {
+        @Override
+        public Observable<Response> call(Response response) {
+            return userRepository.auth(mUser.getUserID(),mUser.getEmail());
         }
     };
 

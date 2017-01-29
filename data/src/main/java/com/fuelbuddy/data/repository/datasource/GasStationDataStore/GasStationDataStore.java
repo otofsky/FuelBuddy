@@ -18,7 +18,9 @@ public interface GasStationDataStore {
     Observable<List<GasStationEntity>> gasStationsEntityList(Position position);
 
     Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
-            ,Double price95, Double priceDiesel, File file);
+            , Double price95, Double priceDiesel);
+
+    Observable<ResponseEntity> uploadVideo(File file);
 
     Observable<GasStationEntity> gasStationEntityDetails(final int userId);
 

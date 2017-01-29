@@ -10,6 +10,7 @@ import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
+import com.fuelbuddy.interactor.UploadVideoUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
@@ -31,13 +32,17 @@ import hugo.weaving.DebugLog;
 public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceValidator.UpdateFinishedListener {
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
+    private final UploadVideoUseCase uploadVideoUseCase;
     private final LogOutUseCase logOutUseCase;
 
 
     @Inject
     public UpdatePresenter(UpdateFuelPricesUseCase updateFuelPricesUseCase,
+                           UploadVideoUseCase uploadVideoUseCase,
                            @Named("logOut") LogOutUseCase logOutUseCase) {
+
         this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
+        this.uploadVideoUseCase = uploadVideoUseCase;
         this.logOutUseCase = logOutUseCase;
     }
 
@@ -90,6 +95,30 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
 
 
     private final class UpdateFuelPriceSubscriber extends DefaultSubscriber<Response> {
+        @DebugLog
+        @Override
+        public void onCompleted() {
+            getMvpView().hideLoading();
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable throwable) {
+            getMvpView().hideLoading();
+            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(Response response) {
+            Log.d("update ", "onNext: " + response.toString());
+            getMvpView().hideLoading();
+            getMvpView().showMap();
+            //getMvpView().showSuccessMessage(response.getMessage());
+        }
+    }
+
+    private final class UploadVideoSubscriber extends DefaultSubscriber<Response> {
         @DebugLog
         @Override
         public void onCompleted() {
