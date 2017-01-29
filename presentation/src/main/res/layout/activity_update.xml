@@ -82,7 +82,10 @@
                             android:text="@string/update_blyfri_95"
                             android:textColor="@color/white"
                             android:textSize="14sp"
-                            android:layout_marginRight="2dp" />
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"
+                            />
 
                         <EditText
                             android:id="@+id/fuelInput95"
@@ -115,7 +118,9 @@
                             android:text="@string/update_diesel"
                             android:textColor="@color/white"
                             android:textSize="14sp"
-                            android:layout_marginRight="2dp" />
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"/>
 
                         <EditText
                             android:id="@+id/fuelInputDiesel"
@@ -155,7 +160,9 @@
                             android:text="@string/update_blyfri_92"
                             android:textColor="@color/white"
                             android:textSize="14sp"
-                            android:layout_marginRight="2dp" />
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"/>
 
 
 

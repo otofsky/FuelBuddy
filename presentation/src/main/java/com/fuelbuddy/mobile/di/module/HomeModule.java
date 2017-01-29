@@ -22,11 +22,4 @@ public class HomeModule {
         return homeActivity;
     }
 
-  /*  @Provides
-    @ActivityScope
-    HomePresenter provideHomeActivityPresenter() {
-        return new HomePresenter();
-    }*/
-
-
 }

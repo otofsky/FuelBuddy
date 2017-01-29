@@ -19,9 +19,7 @@ import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.HasComponent;
-import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
-import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.event.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
@@ -32,6 +30,7 @@ import com.fuelbuddy.mobile.map.fragment.PriceListFragment;
 import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
@@ -41,7 +40,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,7 +73,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
 
 
-  //  private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
+    //  private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -178,6 +176,13 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
+
+          /*  case R.id.actionLogOut:
+                mMapPresenter.logout();
+                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+                return true;
+*/
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -244,7 +249,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         startService(new Intent(this, TrackLocationService.class));
     }
 
-    
+
     private void stopTracking() {
         Log.d(TAG, "stopTracking: ");
         stopService(new Intent(this, TrackLocationService.class));
@@ -288,7 +293,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void logOut() {
-
+        Navigator.navigateToHomeActivity(this);
     }
 
     @Override

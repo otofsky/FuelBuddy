@@ -27,6 +27,7 @@ import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.gun0912.tedpermission.PermissionListener;
@@ -209,11 +210,14 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
+          /*  case R.id.actionLogOut:
+                mPresenter.logout();
+                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -314,7 +318,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void logOut() {
-
+        Navigator.navigateToHomeActivity(this);
     }
 
     @Override

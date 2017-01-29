@@ -38,11 +38,7 @@ public class LoginModule {
         return setUserInCloudUseCae;
     }
 
-    @Provides
-    @Named("logOut")
-    UseCase provideLogOutUseCase(LogOutUseCase logOutUseCase) {
-        return logOutUseCase;
-    }
+
 
     @Provides
     @Named("checkUser")

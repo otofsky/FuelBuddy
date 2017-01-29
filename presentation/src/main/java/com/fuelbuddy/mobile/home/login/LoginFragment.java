@@ -167,6 +167,7 @@ public class LoginFragment extends BaseFragment implements LoginView, GoogleApiC
 
     @Override
     public void showFuelSectionView() {
+
         mFragmentNavigator.navigateToHome();
     }
 

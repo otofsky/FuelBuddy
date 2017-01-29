@@ -1,13 +1,15 @@
 package com.fuelbuddy.mobile.map.presenter;
 
 
-import com.fuelbuddy.data.FuelPricesUpdate;
+import android.util.Log;
+
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationsUseCase;
+import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
@@ -31,14 +33,16 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
     private final GetGasStationsUseCase mGetGasStationsUseCase;
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
+    private final LogOutUseCase logOutUseCase;
     private PositionMapper mPositionMapper;
 
 
     @Inject
     public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase,
-                            UpdateFuelPricesUseCase updateFuelPricesUseCase) {
+                            UpdateFuelPricesUseCase updateFuelPricesUseCase,LogOutUseCase logOutUseCase) {
         this.mGetGasStationsUseCase = getGasStationsUseCase;
         this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
+        this.logOutUseCase = logOutUseCase;
         mPositionMapper = new PositionMapper();
     }
 
@@ -74,10 +78,10 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
         this.mGetGasStationsUseCase.execute(new FuelUpdatedPricesListSubscriber());
     }
 
-    public void updateFuelPrices(FuelPricesUpdate fuelPricesUpdate) {
-        this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
+    public void logout() {
+        getMvpView().showLoading();
+        this.logOutUseCase.execute(new LogOutSubscriber());
     }
-
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         getMvpView().context();
@@ -141,6 +145,28 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
             getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
 
+        }
+    }
+
+    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
+
+        @DebugLog
+        @Override
+        public void onCompleted() {
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(Boolean isLogout) {
+            Log.d("Logout", "onNext: " + isLogout);
+            getMvpView().hideLoading();
+            getMvpView().logOut();
         }
     }
 }

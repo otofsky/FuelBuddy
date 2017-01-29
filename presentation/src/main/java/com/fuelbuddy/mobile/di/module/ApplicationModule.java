@@ -13,11 +13,14 @@ import com.fuelbuddy.data.repository.UserDataRepository;
 import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
+import com.fuelbuddy.interactor.LogOutUseCase;
+import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.UIThread;
 import com.fuelbuddy.repository.GasStationsRepository;
 import com.fuelbuddy.repository.UserRepository;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -84,5 +87,7 @@ public class ApplicationModule {
     UserCache provideUserCache(SharePreferencesUserCacheImpl userCache) {
         return userCache;
     }
+
+
 }
 

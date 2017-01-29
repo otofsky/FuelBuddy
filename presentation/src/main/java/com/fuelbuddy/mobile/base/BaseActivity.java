@@ -4,6 +4,7 @@ package com.fuelbuddy.mobile.base;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
@@ -49,6 +50,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
     }
+
+
+
 
     @Override
     public void onBackPressed() {

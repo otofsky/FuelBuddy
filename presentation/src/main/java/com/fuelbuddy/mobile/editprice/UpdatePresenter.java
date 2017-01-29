@@ -8,9 +8,11 @@ import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
+import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.fuelbuddy.mobile.model.ErrorResponse;
@@ -18,6 +20,7 @@ import com.fuelbuddy.mobile.model.ErrorResponse;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
 
@@ -28,13 +31,14 @@ import hugo.weaving.DebugLog;
 public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceValidator.UpdateFinishedListener {
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
+    private final LogOutUseCase logOutUseCase;
 
-    private PositionMapper mPositionMapper;
 
     @Inject
-    public UpdatePresenter(UpdateFuelPricesUseCase updateFuelPricesUseCase) {
+    public UpdatePresenter(UpdateFuelPricesUseCase updateFuelPricesUseCase,
+                           @Named("logOut") LogOutUseCase logOutUseCase) {
         this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
-        mPositionMapper = new PositionMapper();
+        this.logOutUseCase = logOutUseCase;
     }
 
     @Override
@@ -55,6 +59,11 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
+    }
+
+    public void logout() {
+        getMvpView().showLoading();
+        this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
 
@@ -101,31 +110,29 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
             getMvpView().hideLoading();
             getMvpView().showMap();
             //getMvpView().showSuccessMessage(response.getMessage());
-
         }
     }
 
-    private final class FuelUpdatedPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
+    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
+
         @DebugLog
         @Override
         public void onCompleted() {
-            getMvpView().hideLoading();
         }
 
         @DebugLog
         @Override
-        public void onError(Throwable throwable) {
-            getMvpView().hideLoading();
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        public void onError(Throwable e) {
+
         }
 
         @DebugLog
         @Override
-        public void onNext(List<GasStation> gasStations) {
+        public void onNext(Boolean isLogout) {
+            Log.d("Logout", "onNext: " + isLogout);
             getMvpView().hideLoading();
-            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
-            // getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
-
+            getMvpView().logOut();
         }
     }
+
 }

@@ -83,9 +83,7 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     @DebugLog
     @OnClick(R.id.fuelType92Btn)
     public void submitFuelType92() {
-        // AnimationHelper.startAnimatedActivity(getActivity(), AnimationHelper.AnimationDirection.RIGHT_LEFT);
         Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.BENZIN_92);
-        //homePresenter.verifyCurrentUser();
     }
 
     @DebugLog
@@ -97,7 +95,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     @DebugLog
     @OnClick(R.id.fuelTypeDieselBtn)
     public void submitFuelTypeDiesel() {
-        // mFuelSelectionPresenter.logout();
         Navigator.navigateToMapsActivity(getActivity(), FuelPriceMode.DIESEL);
     }
 
@@ -118,7 +115,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     public void logOut() {
         EventBus.getDefault().post(new LoginViewEvent());
     }
-
 
     @Override
     public void showError(String message) {

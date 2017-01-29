@@ -3,6 +3,7 @@ package com.fuelbuddy.mobile.home.fuelSelection;
 import android.util.Log;
 
 import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 
@@ -16,16 +17,17 @@ import hugo.weaving.DebugLog;
  */
 public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
 
-    private UseCase logOutInteractor;
+
+    private final LogOutUseCase logOutUseCase;
 
     @Inject
-    public FuelSelectionPresenter(@Named("logOut") UseCase logOutInteractor) {
-        this.logOutInteractor = logOutInteractor;
+    public FuelSelectionPresenter(@Named("logOut") LogOutUseCase logOutUseCase) {
+        this.logOutUseCase = logOutUseCase;
     }
 
     public void logout() {
         getMvpView().showLoading();
-        this.logOutInteractor.execute(new LogOutSubscriber());
+        this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
 
@@ -34,16 +36,12 @@ public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
         @DebugLog
         @Override
         public void onCompleted() {
-            //UserListPresenter.this.hideViewLoading();
         }
 
         @DebugLog
         @Override
         public void onError(Throwable e) {
 
-            //UserListPresenter.this.hideViewLoading();
-            //UserListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-            //UserListPresenter.this.showViewRetry();
         }
 
         @DebugLog

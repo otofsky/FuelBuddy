@@ -51,11 +51,13 @@ public class Navigator {
         }
     }
 
-    public static void navigateToHomeActivity(Context context) {
+    public static void navigateToHomeActivity(FragmentActivity context) {
         if (context != null) {
             Intent intentToLaunch = HomeActivity.getCallingIntent(context);
-          /*  intentToLaunch.putExtra(FUEL_TYPE, fuelType);*/
+            context.finish();
             context.startActivity(intentToLaunch);
+
+
         }
     }
 

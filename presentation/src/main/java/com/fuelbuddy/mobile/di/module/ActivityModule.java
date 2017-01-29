@@ -19,7 +19,11 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 
 
+import com.fuelbuddy.interactor.LogOutUseCase;
+import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.di.PerActivity;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,5 +46,11 @@ public class ActivityModule {
   @PerActivity
   AppCompatActivity activity() {
     return this.activity;
+  }
+
+  @Provides
+  @Named("logOut")
+  LogOutUseCase provideLogOutUseCase(LogOutUseCase logOutUseCase) {
+    return logOutUseCase;
   }
 }

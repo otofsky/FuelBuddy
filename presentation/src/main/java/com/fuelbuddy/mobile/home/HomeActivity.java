@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -92,9 +93,9 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         homeComponent.inject(this);
     }
 
-
     @Override
     public void navigateToHome() {
+        Log.d("home ", "navigateToHome: FuelSelectionFragment");
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
         toolbar.showOverflowMenu();
     }
@@ -117,12 +118,13 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showLoginView() {
+        Log.d("home", "showLoginView: loginFragment");
         addFragment(R.id.fragmentContainer, new LoginFragment());
     }
 
     @Override
     public void showFuelTypeView() {
-
+        Log.d("home", "showFuelTypeView: FuelSelectionFragment");
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
 
