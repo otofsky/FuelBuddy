@@ -33,7 +33,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private final UploadVideoUseCase uploadVideoUseCase;
-    private final LogOutUseCase logOutUseCase;
+    private final LogOutUseCase logOutUseCase;  //
 
 
     @Inject
