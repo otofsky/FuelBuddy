@@ -3,7 +3,6 @@ package com.fuelbuddy.mobile.editprice;
 import android.util.Log;
 
 import com.fuelbuddy.PriceValidator;
-import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
@@ -13,12 +12,9 @@ import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.interactor.UploadVideoUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
-import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
-import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
-import com.fuelbuddy.mobile.mapper.PositionMapper;
 import com.fuelbuddy.mobile.model.ErrorResponse;
 
-import java.util.List;
+import java.io.File;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -58,13 +54,21 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
         this.mUpdateFuelPricesUseCase.unsubscribe();
     }
 
-    public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
+
+    public void updateFuelPrices(File file) {
+        Log.d("updateFuelPrices", "updateFuelPrices: ");
+        mUpdateFuelPricesUseCase.validateFuelPrices(file);
+        this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
+
+    }
+
+/*    public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
         Log.d("updateFuelPrices", "updateFuelPrices: " + fuel92 + " " + fuel95 + " " + diesel);
         boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel, this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
-    }
+    }*/
 
     public void logout() {
         getMvpView().showLoading();

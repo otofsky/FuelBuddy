@@ -79,7 +79,7 @@ public class ApiInvoker {
 
     public Observable<ResponseEntity> uploadVideo(File file) {
 
-        /*File file = FileUtils.getFile(this, fileUri);*/
+        //File file = FileUtils.getFile(this, fileUri);
         // create RequestBody instance from file
 
         MediaType mediaType = RequestHelper.getMediaType("video/mp4");

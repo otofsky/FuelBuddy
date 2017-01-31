@@ -50,8 +50,13 @@ class CloudGasStationStore implements GasStationDataStore {
   }
 
   @Override
-  public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel, File file) {
-    return mRestApiService.updateStation(iD, userID, price92, price95, priceDiesel, file);
+  public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
+    return mRestApiService.updateStation(iD, userID, price92, price95, priceDiesel);
+  }
+
+  @Override
+  public Observable<ResponseEntity> uploadVideo(File file) {
+    return mRestApiService.uploadVideo(file);
   }
 
   @Override

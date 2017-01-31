@@ -11,6 +11,8 @@ import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.GasStationsRepository;
 import com.fuelbuddy.repository.UserRepository;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -29,6 +31,7 @@ public class UpdateFuelPricesUseCase extends UseCase {
     UserRepository userRepository;
     FuelPricesUpdate mFuelPricesUpdate;
     PriceValidator priceValidator;
+    File file;
 
 
     @Inject
@@ -40,7 +43,18 @@ public class UpdateFuelPricesUseCase extends UseCase {
         this.gasStationsRepository = gasStationsRepository;
     }
 
-    public boolean validateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel, PriceValidator.UpdateFinishedListener updateFinishedListener) {
+
+    public void validateFuelPrices(File file) {
+        this.file = file;
+    }
+
+    @Override
+    protected Observable buildUseCaseObservable() {
+        return gasStationsRepository.uploadVideo(file);
+
+    }
+
+/*    public boolean validateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel, PriceValidator.UpdateFinishedListener updateFinishedListener) {
 
         if (priceValidator.validatePrice(fuel92, fuel95, diesel, updateFinishedListener)) {
             mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(gasStationId, fuel92, fuel95, diesel);
@@ -57,9 +71,9 @@ public class UpdateFuelPricesUseCase extends UseCase {
                 new Func1<User, Observable<Response>>() {
                     @Override
                     public Observable<Response> call(User user) {
-                        return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), user.getUserID(), mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel(), null);
+                        return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), user.getUserID(), mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
                     }
                 });
-    }
+    }*/
 
 }

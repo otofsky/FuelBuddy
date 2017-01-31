@@ -29,10 +29,12 @@ import com.fuelbuddy.mobile.di.component.UpdateComponent;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
+import com.fuelbuddy.mobile.util.FileUtils;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.gun0912.tedpermission.PermissionListener;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -204,7 +206,11 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
-                 mPresenter.updateFuelPrices(gasStationModel.getGasStationId(),fuelInput92.getText().toString(), fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
+               File file  = FileUtils.getFile(this,videoUri);
+                mPresenter.updateFuelPrices(file);
+                /* mPresenter.updateFuelPrices(gasStationModel.getGasStationId(),
+                         fuelInput92.getText().toString(), fuelInput95.getText().toString(),
+                         fuelInputDiesel.getText().toString());*/
                 return true;
             case android.R.id.home:
                 onBackPressed();

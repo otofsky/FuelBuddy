@@ -38,7 +38,9 @@ public interface RestApiService {
 
     Observable<List<GasStationEntity>> gasStationEntityList(Position position);
 
-    Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel, File file);
+    Observable<ResponseEntity> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel);
+
+    Observable<ResponseEntity> uploadVideo(File file);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
 
