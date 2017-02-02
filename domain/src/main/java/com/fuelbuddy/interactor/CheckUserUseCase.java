@@ -39,7 +39,9 @@ public class CheckUserUseCase extends UseCase {
         //return userRepository.getCheckUser(mUser.getUserID()).concatMap(StoreRemoteUser);
         return userRepository.getCheckUser(mUser.getUserID())
                 .flatMap(onUserExist)
-                .flatMap(onUserAdded);
+                .onErrorResumeNext(errorHandling);
+
+            //    .flatMap(onUserAdded);
         // to zapisje dane lokalnie
         //wysyłam dane na server i zapisuje lokalnie
     }

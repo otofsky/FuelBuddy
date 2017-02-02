@@ -1,6 +1,8 @@
 package com.fuelbuddy.mobile.home;
 
 
+import android.util.Log;
+
 import com.fuelbuddy.data.User;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.UseCase;
@@ -40,6 +42,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            Log.d("HomePresenter", "onError: show login view " );
             getMvpView().showLoginView();
         }
 

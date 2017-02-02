@@ -1,20 +1,43 @@
 package com.fuelbuddy.mobile.login;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
+import com.fuelbuddy.mobile.di.component.DaggerLoginComponent;
+import com.fuelbuddy.mobile.di.component.HomeComponent;
+import com.fuelbuddy.mobile.di.component.LoginComponent;
+import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.home.login.LoginFragment;
+import com.fuelbuddy.mobile.home.login.LoginPresenter;
+import com.fuelbuddy.mobile.home.login.LoginView;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
+import com.fuelbuddy.mobile.model.UserModel;
+import com.fuelbuddy.mobile.navigation.Navigator;
+import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.loginUtil.LoginConfig;
+import com.fuelbuddy.mobile.util.loginUtil.UserUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,145 +46,264 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 
 
-public class LoginActivity extends AppCompatActivity  implements   View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends BaseActivity implements LoginView, GoogleApiClient.OnConnectionFailedListener {
+
 
     private GoogleApiClient mGoogleApiClient;
-    private static final int RC_SIGN_IN = 007;
-    private LoginButton loginButton;
-    private CallbackManager callbackManager;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.fragment_login);
-        ButterKnife.bind(this);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-         SignInButton signInButton;
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
-        //loginButton = (LoginButton)findViewById(R.id.login_button);
-
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                /*"User ID: "
-                        + loginResult.getAccessToken().getProfileName()
-                        + "\n" +
-                        "Auth Token: "
-                        + loginResult.getAccessToken().getToken()*/
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-
-            }
-        });
-
-
-    /*    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestId()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-
-                .build();*/
-    }
-
-    @DebugLog
-    /*@OnClick(R.id.sign_in_button)*/
-    public void signInWithGoogle() {
-      /*  Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);*/
-
-/*        SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
-
-        //Set facebook permissions
-        ArrayList<String> permissions = new ArrayList<>();
-        permissions.add("public_profile");
-        permissions.add("email");
-        permissions.add("user_birthday");
-        permissions.add("user_friends");
-
-
-        Intent intent = loginBuilder.with(getApplicationContext())
-                .setAppLogo(R.mipmap.ic_launcher)
-                .isFacebookLoginEnabled(true)
-                .withFacebookAppId(getNavigationUrl(R.string.facebook_app_id)).withFacebookPermissions(permissions)
-                .isGoogleLoginEnabled(true)
-                .isCustomLoginEnabled(true, SmartLoginConfig.LoginType.withEmail)
-                .setSmartCustomLoginHelper(LoginActivity.this)
-                .build();
-
-        startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);*/
-    }
-
-    @DebugLog
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    @DebugLog
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("HomeActivity", "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-
-            Log.e("HomeActivity", "display name: " + acct.getDisplayName());
-
-            String personName = acct.getDisplayName();
-
-            String email = acct.getEmail();
-            String id = acct.getId();//
-
-
-           /* Log.e("HomeActivity", "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);*/
-            Toast.makeText(getApplicationContext(), personName + " " + email + " " + id, Toast.LENGTH_SHORT).show();
-        } else {
-
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-
-    }
+    CallbackManager callbackManager;
 
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
+    }
+
+    @BindView(R.id.login_google_button)
+    AppCompatButton mloginGoogleButton;
+    @BindView(R.id.login_fb_button)
+    AppCompatButton mLoginFbButton;
+
+    @BindView(R.id.progressView)
+    RelativeLayout rl_progress;
+
+    LoginFragment.FragmentNavigator mFragmentNavigator;
+
+    ProgressDialog progress;
+    private static final int RC_SIGN_IN = 007;
+    @Inject
+    LoginPresenter mLoginPresenter;
+
+    private LoginComponent mLoginComponent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_login);
+        initializeInjector();
+        ButterKnife.bind(this);
+        initButtonView();
+        FacebookSdk.sdkInitialize(this);
+        mLoginPresenter.attachView(this);
+        callbackManager = CallbackManager.Factory.create();
+        initGoogleApi();
+    }
+
+
+    private void initButtonView() {
+        initFacebookButton();
+        initGoogleButton();
+    }
+
+    private void initGoogleButton() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.google_plus_vector, 0, 0, 0);
+        } else {
+            mloginGoogleButton.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_google_plus_white_36dp, 0, 0, 0);
+        }
+    }
+
+    private void initFacebookButton() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.facebook_vector, 0, 0, 0);
+        } else {
+            mLoginFbButton.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_facebook_white_36dp, 0, 0, 0);
+        }
+    }
+
+    private void initGoogleApi() {
+        GoogleSignInOptions gso = initGoogleSignInOptions();
+        initGoogleApiClient(gso);
+    }
+
+    private void initGoogleApiClient(GoogleSignInOptions gso) {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* On~ConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    @NonNull
+    private GoogleSignInOptions initGoogleSignInOptions() {
+        return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestId()
+                .requestEmail()
+                .requestProfile()
+                .build();
+    }
+
+    @Override
+    public void navigateToHomeActivity() {
+
+    }
+
+    private void initializeInjector() {
+        this.mLoginComponent = DaggerLoginComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+        mLoginComponent.inject(this);
+    }
+
+
+    public LoginComponent getLoginComponent() {
+        return mLoginComponent;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(this);
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.stopAutoManage(this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void showFuelSectionView() {
+        mFragmentNavigator.navigateToHome(); // navigate to activity
+    }
+
+    @DebugLog
+    @OnClick(R.id.login_google_button)
+    public void loginGoogleButton() {
+        doGoogleLogin();
+    }
+
+    @DebugLog
+    @OnClick(R.id.login_fb_button)
+    public void loginFbButton() {
+        doFacebookLogin();
+    }
+
+    private void doGoogleLogin() {
+        progress = ProgressDialog.show(this, "", getString(R.string.google_login_text), true);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+        progress.dismiss();
+    }
+
+    private void doFacebookLogin() {
+        progress = ProgressDialog.show(this, "", getString(R.string.fb_login_text), true);
+        ArrayList<String> permissions = LoginConfig.getDefaultFacebookPermissions();
+        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, permissions);
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        progessDismiss();
+                        UserUtil util = new UserUtil();
+                        UserModel facebookUser = util.populateFacebookUser(object);
+                        if (facebookUser != null) {
+                            mLoginPresenter.checkUser(facebookUser);
+                            progessDismiss();
+                        } else {
+                            showError(getString(R.string.login_failed));
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                progessDismiss();
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                progessDismiss();
+            }
+        });
+    }
+
+    @DebugLog
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleGoogleLoginResult(requestCode, result);
+        }
+
+    }
+
+    private void handleGoogleLoginResult(int requestCode, GoogleSignInResult result) {
+        if (true) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            UserUtil util = new UserUtil();
+            UserModel googleUser = util.populateGoogleUser(acct);
+            mLoginPresenter.checkUser(googleUser);
+            progress.dismiss();
+
+        } else {
+            progessDismiss();
+            showError(getString(R.string.sign_in_google_failed));
+        }
+        progessDismiss();
+    }
+
+    private void progessDismiss() {
+        if (progress != null) {
+            progress.dismiss();
+        }
+    }
+
+    public void showLoading() {
+        this.rl_progress.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+    }
+
+    public void hideLoading() {
+        this.rl_progress.setVisibility(View.GONE);
+        setProgressBarIndeterminateVisibility(false);
+    }
+
+    @Override
+    public Context context() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void showError(String message) {
+        DialogFactory.createSimpleSnackBarInfo(rl_progress, message);
+        progessDismiss();
+    }
+
+    @Override
+    public void logOut() {
+
+    }
+
 }

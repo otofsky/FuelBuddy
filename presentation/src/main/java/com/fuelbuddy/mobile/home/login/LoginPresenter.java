@@ -91,7 +91,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             if (throwable instanceof RetrofitException) {
                 ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
                 if (errorResponse.getErrorCode() != null && errorResponse.getErrorCode() == 404) {
-                    addNewUseInCloud(mUserModel);
+                   // addNewUseInCloud(mUserModel);
                 } else {
                     showErrorMessage(errorResponse.getErrorMassage());
                 }
@@ -101,7 +101,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onNext(Response response) {
-            Log.d(TAG, "onNext: " + response.getMessage());
+            Log.d(TAG, "check onNext: " + response.getMessage());
             getMvpView().showFuelSectionView();
         }
     }

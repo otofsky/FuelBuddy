@@ -12,12 +12,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -34,6 +38,40 @@ public class ApiInvoker {
 
     // public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     // "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
+
+
+
+
+
+
+
+/*
+    ApiClient apiClient = new ApiClient();
+    final CredentialsStore.HawkCredentialsStore hawkCredentialsStore = new CredentialsStore.HawkCredentialsStore();
+    apiClient.addAuthorization(HttpHelper.AUTHENTICATION_NAME, new Interceptor() {
+        @Override
+        public Response intercept(Interceptor.Chain chain) throws IOException {
+            Request request = null;
+            if (!StringHelper.isNullOrEmpty(hawkCredentialsStore.getCredentials().getToken())) {
+                request = chain.request().newBuilder().addHeader(HttpHelper.AUTHENTICATION_NAME, BuildConfig.KEY). // token identyfikuje sklep=
+                        addHeader(HttpHelper.HEADER, HttpHelper.buildValueHeader(hawkCredentialsStore.getCredentials().getToken())). //identyfikuje użytkownika
+                        build(); // token
+            } else {
+                request = chain.request().newBuilder().addHeader(HttpHelper.AUTHENTICATION_NAME, BuildConfig.KEY). // token identyfikuje sklep
+                        build();
+            }
+            return chain.proceed(request);
+        }
+    });
+
+    return apiClient;
+}*/
+
+
+
+
+
+
     String BASE_URL = "http://fuelbuddy.dk/ws/";
     private ApiInterface apiInterface;
 

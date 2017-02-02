@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.editprice.UpdateActivity;
 import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.login.LoginActivity;
 import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.MapsMainActivity;
 import com.fuelbuddy.mobile.model.GasStationModel;
@@ -42,7 +43,20 @@ public class Navigator {
      * Goes to the populateGoogleUser list screen.
      *
      * @param context A Context needed to open the destiny activity.
+     *
+     *
+     *
+     *
      */
+    public static void navigateToLoginActivity(FragmentActivity context) {
+        if (context != null) {
+            Intent intentToLaunch = LoginActivity.getCallingIntent(context);
+            context.startActivity(intentToLaunch);
+        }
+    }
+
+
+
     public static void navigateToMapsActivity(Context context, FuelPriceMode fuelPriceMode) {
         if (context != null) {
             Intent intentToLaunch = MapsMainActivity.getCallingIntent(context);

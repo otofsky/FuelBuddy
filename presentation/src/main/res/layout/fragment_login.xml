@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/background">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/fuelbuddy_logo"/>
 
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/login_google_button"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
+    <TextView
+        android:id="@+id/welcomeTextTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logoImg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Velkomen til Fuel Buddy Vaelg dit brandstof"
+        android:textColor="@color/white"
+        android:textSize="14sp"/>
 
-            android:layout_marginBottom="10dp"
-            android:text="@string/google_login_text"
-            android:textColor="@color/white"
-            android:background="@drawable/button_google_all_rounded"
-            android:layout_centerInParent="true"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-light"
-            android:layout_margin="5dp" />
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/login_fb_button"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/fb_login_text"
-            android:background="@drawable/button_facebook_all_rounded"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:fontFamily="sans-serif-light"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/login_google_button"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
 
-            />
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_google_all_rounded"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/google_login_text"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
 
-        <include
-            layout="@layout/view_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/login_fb_button"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/login_google_button"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_facebook_all_rounded"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/fb_login_text"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
 
+        />
 
-</LinearLayout>
+    <include
+        layout="@layout/view_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

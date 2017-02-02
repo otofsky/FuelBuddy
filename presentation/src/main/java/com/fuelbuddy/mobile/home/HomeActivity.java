@@ -18,6 +18,7 @@ import com.fuelbuddy.mobile.di.component.HomeComponent;
 
 import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
+import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -49,6 +50,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     }
 
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("home", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.initializeInjector();
@@ -58,6 +60,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     }
 
     private void initPresenter() {
+        Log.d("home", "onCreate: initPresenter");
         homePresenter.attachView(this);
         homePresenter.verifyCurrentUser();
     }
@@ -71,13 +74,12 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -100,12 +102,6 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         toolbar.showOverflowMenu();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LoginViewEvent event) {
-        showLoginView();
-    };
-
-
     @Override
     public void showMap() {
 
@@ -118,8 +114,9 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showLoginView() {
-        Log.d("home", "showLoginView: loginFragment");
-        addFragment(R.id.fragmentContainer, new LoginFragment());
+        Log.d("home", "showLoginView: ");
+        Navigator.navigateToLoginActivity(this);
+        finish();
     }
 
     @Override
