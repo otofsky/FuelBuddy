@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.login;
+package com.fuelbuddy.mobile.login;
 
 import com.fuelbuddy.mobile.base.MvpView;
 

@@ -5,13 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,18 +18,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 import com.fuelbuddy.mobile.di.component.DaggerLoginComponent;
-import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.di.component.LoginComponent;
-import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.home.login.LoginFragment;
-import com.fuelbuddy.mobile.home.login.LoginPresenter;
-import com.fuelbuddy.mobile.home.login.LoginView;
-import com.fuelbuddy.mobile.map.MapsMainActivity;
+
 import com.fuelbuddy.mobile.model.UserModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.DialogFactory;
@@ -43,7 +34,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONObject;
@@ -183,7 +173,7 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
 
     @Override
     public void showFuelSectionView() {
-        mFragmentNavigator.navigateToHome(); // navigate to activity
+        Navigator.navigateToHomeActivity(this); // navigate to activity
     }
 
     @DebugLog

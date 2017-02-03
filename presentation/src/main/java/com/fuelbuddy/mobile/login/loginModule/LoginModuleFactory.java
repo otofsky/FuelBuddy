@@ -1,8 +1,6 @@
-package com.fuelbuddy.mobile.home.login.loginModule;
+package com.fuelbuddy.mobile.login.loginModule;
 
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 

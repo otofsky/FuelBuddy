@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.login.loginModule;
+package com.fuelbuddy.mobile.login.loginModule;
 
 import android.content.Intent;
 

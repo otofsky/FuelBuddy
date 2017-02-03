@@ -28,7 +28,7 @@ public interface ApiInterface {
 
 
     @GET("stations?")
-    Observable<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude,
+    Observable<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String token, @Query("latitude") String latitude,
                                                       @Query("longitude") String longitude);
 
     @GET("updatestation?")
@@ -39,7 +39,7 @@ public interface ApiInterface {
                                              @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<ResponseEntity> updateStation( @Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<ResponseEntity> updateStation(@Header("TokenAuth") String token, @Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

@@ -52,6 +52,7 @@ public class Navigator {
         if (context != null) {
             Intent intentToLaunch = LoginActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
+            AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.LEFT_RIGHT);
         }
     }
 
@@ -70,7 +71,7 @@ public class Navigator {
             Intent intentToLaunch = HomeActivity.getCallingIntent(context);
             context.finish();
             context.startActivity(intentToLaunch);
-
+            AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.RIGHT_LEFT);
 
         }
     }

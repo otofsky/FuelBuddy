@@ -21,7 +21,11 @@ public interface UserCache {
      *
      * @param userEntity Element to insert in the cache.
      */
-    Observable<ResponseEntity> put(UserEntity userEntity);
+    Observable<ResponseEntity> putUser(UserEntity userEntity);
+
+    Observable<ResponseEntity> putToken(String token);
+
+    String getToken();
 
     /**
      * Checks if an element (User) exists in the cache.

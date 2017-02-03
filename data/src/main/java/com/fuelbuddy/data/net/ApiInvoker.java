@@ -1,6 +1,7 @@
 package com.fuelbuddy.data.net;
 
 
+import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -26,6 +29,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Header;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -36,12 +40,15 @@ public class ApiInvoker {
     private String TAG = "WeatherInvoker";
     private static ApiInvoker httpsInvoker;
 
+    @Inject
+    SharePreferencesUserCacheImpl mSharePreferencesUserCache;
+
     // public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     // "http://fuelbuddy.dk/ws/stations?latitude=55.951869964599610&longitude=8.514181137084961";
 
 
 
-
+// "message": "YToyOntzOjU6ImVtYWlsIjtzOjE3OiJraWxsbGVyQGdob3VkLmNvbSI7czo2OiJ1c2VySUQiO3M6OToiMjEyMzEyMzMzIjt9"
 
 
 
@@ -105,9 +112,9 @@ public class ApiInvoker {
         return httpsInvoker;
     }
 
-
-    public Observable<List<GasStationEntity>> getGasStations(String latitude, String longitude) {
-        return apiInterface.getGasStations(latitude, longitude);
+    public Observable<List<GasStationEntity>> getGasStations( String latitude, String longitude) {
+       // mSharePreferencesUserCache.getToken();
+        return apiInterface.getGasStations("YToyOntzOjU6ImVtYWlsIjtzOjE3OiJraWxsbGVyQGdob3VkLmNvbSI7czo2OiJ1c2VySUQiO3M6OToiMjEyMzEyMzMzIjt9",latitude, longitude);
     }
 
     public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
@@ -116,26 +123,13 @@ public class ApiInvoker {
     }
 
     public Observable<ResponseEntity> uploadVideo(File file) {
-
-        //File file = FileUtils.getFile(this, fileUri);
-        // create RequestBody instance from file
-
-        MediaType mediaType = RequestHelper.getMediaType("video/mp4");
-        RequestBody requestFile1 = RequestBody.create(mediaType, file);
-
         MediaType mediaType2 = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType2, file);
-
-        // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
-
-        // add another part within the multipart request
         String descriptionString = "hello, this is description speaking";
         RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-
-        return apiInterface.updateStation(description, body);
+        return apiInterface.updateStation("YToyOntzOjU6ImVtYWlsIjtzOjE3OiJraWxsbGVyQGdob3VkLmNvbSI7czo2OiJ1c2VySUQiO3M6OToiMjEyMzEyMzMzIjt9",description, body);
     }
-
 
     public Observable<ResponseEntity> addNewUser(String userID, String profileName, String email) {
         return apiInterface.addNewUser(userID, profileName, email);

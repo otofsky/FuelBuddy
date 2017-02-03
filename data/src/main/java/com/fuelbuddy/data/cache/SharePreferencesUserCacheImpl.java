@@ -35,6 +35,8 @@ import rx.Subscriber;
 public class SharePreferencesUserCacheImpl implements UserCache {
 
     private static final String SP_USER_ENTITY = "USER_ENTITY";
+    private static final String SP_TOKEN_ENTITY = "TOKEN_ENTITY";
+
     public SharedPreferences sharedPreferences;
     private final EntityJsonMapper entityJsonMapper;
     Context mContext;
@@ -75,6 +77,7 @@ public class SharePreferencesUserCacheImpl implements UserCache {
             public void call(Subscriber<? super Boolean> subscriber) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove(SP_USER_ENTITY);
+                editor.remove(SP_TOKEN_ENTITY);
                 editor.apply();
                 subscriber.onNext(true);
             }
@@ -83,7 +86,7 @@ public class SharePreferencesUserCacheImpl implements UserCache {
     }
 
     @Override
-    public Observable<ResponseEntity> put(final UserEntity userEntity) {
+    public Observable<ResponseEntity> putUser(final UserEntity userEntity) {
         return Observable.create(new Observable.OnSubscribe<ResponseEntity>() {
             @Override
             public void call(Subscriber<? super ResponseEntity> subscriber) {
@@ -98,6 +101,25 @@ public class SharePreferencesUserCacheImpl implements UserCache {
             }
         });
     }
+
+    @Override
+    public Observable<ResponseEntity> putToken(final String token) {
+        return Observable.create(new Observable.OnSubscribe<ResponseEntity>() {
+            @Override
+            public void call(Subscriber<? super ResponseEntity> subscriber) {
+                    sharedPreferences.edit().putString(SP_USER_ENTITY, token).apply();
+                    ResponseEntity responseEntity = new ResponseEntity();
+                    responseEntity.setMessage("Token added");
+                    subscriber.onNext(responseEntity);
+            }
+        });
+    }
+
+    @Override
+    public String getToken() {
+        return  sharedPreferences.getString(SP_TOKEN_ENTITY, "");
+    }
+
 
     @Override
     public boolean isCached(int userId) {

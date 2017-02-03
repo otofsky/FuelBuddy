@@ -41,11 +41,17 @@ public class CheckUserUseCase extends UseCase {
                 .flatMap(onUserExist)
                 .onErrorResumeNext(errorHandling);
 
-            //    .flatMap(onUserAdded);
         // to zapisje dane lokalnie
         //wysyłam dane na server i zapisuje lokalnie
     }
 
+    private final Func1<Throwable, Observable<Response>> errorHandling = new Func1<Throwable, Observable<Response>>() {
+
+        @Override
+        public Observable<Response> call(Throwable throwable) {
+            return userRepository.addNewUser(mUser);
+        }
+    };
 
     private final Func1<User, Observable<Response>> onUserExist = new Func1<User, Observable<Response>>() {
         @Override
@@ -60,15 +66,5 @@ public class CheckUserUseCase extends UseCase {
             return userRepository.auth(mUser.getUserID(),mUser.getEmail());
         }
     };
-
-    private final Func1<Throwable, Observable<Response>> errorHandling = new Func1<Throwable, Observable<Response>>() {
-
-        @Override
-        public Observable<Response> call(Throwable throwable) {
-
-            return userRepository.addNewUser(mUser);
-        }
-    };
-
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 /**
  * Created by zjuroszek on 07.10.16.
@@ -39,7 +41,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
     @Inject
-    public  HomePresenter homePresenter;
+    public HomePresenter homePresenter;
     private HomeComponent homeComponent;
 
     @BindView(R.id.toolbar)
@@ -69,6 +71,25 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @DebugLog
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.actionLogOut:
+                homePresenter.logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -109,7 +130,7 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void showInfo(String userId) {
-        Toast.makeText(this,  userId , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -142,7 +163,8 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
 
     @Override
     public void logOut() {
-
+        Navigator.navigateToLoginActivity(this);
+        finish();
     }
 
     @Override

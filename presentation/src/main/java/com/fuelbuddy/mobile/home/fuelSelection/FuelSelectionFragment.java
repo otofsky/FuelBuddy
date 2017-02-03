@@ -43,7 +43,7 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getComponent(HomeComponent.class).inject(this);
-        setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -55,29 +55,10 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
         return fragmentView;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override public void onDestroy() {
         super.onDestroy();
         this.mFuelSelectionPresenter.detachView();
-    }
-
-
-    @DebugLog
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.actionLogOut:
-                mFuelSelectionPresenter.logout();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @DebugLog

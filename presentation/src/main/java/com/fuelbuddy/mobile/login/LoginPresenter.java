@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.home.login;
+package com.fuelbuddy.mobile.login;
 
 import android.util.Log;
 
@@ -81,7 +81,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onCompleted() {
-            Log.d(TAG, "onCompleted: ");
+            Log.d(TAG, "check onCompleted: ");
         }
 
         @DebugLog
@@ -102,7 +102,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @Override
         public void onNext(Response response) {
             Log.d(TAG, "check onNext: " + response.getMessage());
-            getMvpView().showFuelSectionView();
+            addNewUserLocally(mUserModel);
         }
     }
 
@@ -132,7 +132,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         }
     }
 
-    private final class AddUserLocallySubscriber extends DefaultSubscriber<User> {
+    private final class AddUserLocallySubscriber extends DefaultSubscriber<Response> {
 
         @DebugLog
         @Override
@@ -150,7 +150,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
         @DebugLog
         @Override
-        public void onNext(User user) {
+        public void onNext(Response response) {
             Log.d(TAG, "onNext: locally");
             getMvpView().showFuelSectionView();
         }

@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,6 +25,8 @@ import com.facebook.login.LoginResult;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
+import com.fuelbuddy.mobile.login.LoginPresenter;
+import com.fuelbuddy.mobile.login.LoginView;
 import com.fuelbuddy.mobile.model.UserModel;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.loginUtil.LoginConfig;
@@ -41,7 +41,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
