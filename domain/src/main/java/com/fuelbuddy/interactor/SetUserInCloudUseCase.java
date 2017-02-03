@@ -16,14 +16,14 @@ import rx.functions.Func1;
  */
 
 
-public class SetUserInCloudUseCae extends UseCase  {
+public class SetUserInCloudUseCase extends UseCase  {
 
 
     UserRepository userRepository;
     private User mUser;
 
     @Inject
-    public SetUserInCloudUseCae(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public SetUserInCloudUseCase(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }

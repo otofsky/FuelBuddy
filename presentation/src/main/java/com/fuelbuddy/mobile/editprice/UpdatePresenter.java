@@ -55,20 +55,20 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
     }
 
 
-    public void updateFuelPrices(File file) {
-        Log.d("updateFuelPrices", "updateFuelPrices: ");
-        mUpdateFuelPricesUseCase.validateFuelPrices(file);
+    public void updateVideo(File file) {
+        Log.d("updateVideo", "updateVideo: ");
+       // mUpdateFuelPricesUseCase.validateFuelPrices(file);
         this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
 
     }
 
-/*    public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
-        Log.d("updateFuelPrices", "updateFuelPrices: " + fuel92 + " " + fuel95 + " " + diesel);
-        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel, this);
+    public void updateVideo(String gasStationId, String fuel92, String fuel95, String diesel) {
+        Log.d("updateVideo", "updateVideo: " + fuel92 + " " + fuel95 + " " + diesel);
+        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
-    }*/
+    }
 
     public void logout() {
         getMvpView().showLoading();

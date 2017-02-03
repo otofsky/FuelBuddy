@@ -53,6 +53,16 @@ public class UserDataRepository implements UserRepository {
         });
     }
 
+    @Override
+    public Observable<Response> putToken(String token) {
+        UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
+        return userDataStore.putToken(token).map(new Func1<ResponseEntity, Response>() {
+            @Override
+            public Response call(ResponseEntity responseEntity) {
+                return mResponseEntityMapper.transformToResponse(responseEntity);
+            }
+        });
+    }
 
     @Override
     public Observable<User> getCurrentUser() {
@@ -66,7 +76,7 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<User> getCheckUser(String userId) {
+    public Observable<User> checkUser(String userId) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
         return userDataStore.checkUser(userId).map(new Func1<UserEntity, User>() {
             @Override

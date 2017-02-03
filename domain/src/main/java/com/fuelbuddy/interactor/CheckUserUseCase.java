@@ -36,8 +36,8 @@ public class CheckUserUseCase extends UseCase {
         // jesli istnieje
         //to zapisje dane lokalnie
         // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
-        //return userRepository.getCheckUser(mUser.getUserID()).concatMap(StoreRemoteUser);
-        return userRepository.getCheckUser(mUser.getUserID())
+        //return userRepository.checkUser(mUser.getUserID()).concatMap(StoreRemoteUser);
+        return userRepository.checkUser(mUser.getUserID())
                 .flatMap(onUserExist)
                 .onErrorResumeNext(errorHandling);
 

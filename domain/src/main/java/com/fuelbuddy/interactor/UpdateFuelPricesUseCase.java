@@ -48,13 +48,13 @@ public class UpdateFuelPricesUseCase extends UseCase {
         this.file = file;
     }
 
-    @Override
+/*    @Override
     protected Observable buildUseCaseObservable() {
         return gasStationsRepository.uploadVideo(file);
 
-    }
+    }*/
 
-/*    public boolean validateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel, PriceValidator.UpdateFinishedListener updateFinishedListener) {
+    public boolean validateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel, PriceValidator.UpdateFinishedListener updateFinishedListener) {
 
         if (priceValidator.validatePrice(fuel92, fuel95, diesel, updateFinishedListener)) {
             mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(gasStationId, fuel92, fuel95, diesel);
@@ -74,6 +74,6 @@ public class UpdateFuelPricesUseCase extends UseCase {
                         return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), user.getUserID(), mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
                     }
                 });
-    }*/
+    }
 
 }

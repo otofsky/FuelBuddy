@@ -7,10 +7,12 @@ import android.preference.PreferenceManager;
 
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.executor.JobExecutor;
+import com.fuelbuddy.data.net.ApiInvoker;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.data.repository.UserDataRepository;
 import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
+import com.fuelbuddy.data.repository.datasource.UserDataStore.UserStoreFactory;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.interactor.LogOutUseCase;
@@ -67,13 +69,11 @@ public class ApplicationModule {
         return userDataRepository;
     }
 
-
     @Provides
     @Singleton
-    RestApiService provideRestApiService() {
-        return RestApiService.Creator.newRestApiService();
+    ApiInvoker provideApiInvoker(UserCache sharePreferencesUserCacheImpl) {
+        return new ApiInvoker(sharePreferencesUserCacheImpl);
     }
-
 
     @Provides
     @Singleton

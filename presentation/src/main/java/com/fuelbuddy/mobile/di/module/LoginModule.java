@@ -3,8 +3,7 @@ package com.fuelbuddy.mobile.di.module;
 
 import com.fuelbuddy.interactor.CheckUserUseCase;
 import com.fuelbuddy.interactor.GetCurrentUserUseCase;
-import com.fuelbuddy.interactor.LogOutUseCase;
-import com.fuelbuddy.interactor.SetUserInCloudUseCae;
+import com.fuelbuddy.interactor.SetUserInCloudUseCase;
 import com.fuelbuddy.interactor.SetUserLocallyUseCase;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.di.PerActivity;
@@ -34,8 +33,8 @@ public class LoginModule {
 
     @Provides
     @Named("setUserInCloud")
-    SetUserInCloudUseCae provideSetUserInCloud(SetUserInCloudUseCae setUserInCloudUseCae) {
-        return setUserInCloudUseCae;
+    SetUserInCloudUseCase provideSetUserInCloud(SetUserInCloudUseCase setUserInCloudUseCase) {
+        return setUserInCloudUseCase;
     }
 
 

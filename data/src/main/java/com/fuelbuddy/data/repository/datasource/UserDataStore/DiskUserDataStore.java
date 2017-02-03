@@ -23,6 +23,15 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
+    public Observable<ResponseEntity> putToken(String token) {
+        return mUserCache.putToken(token);
+    }
+
+    public  String getToken(){
+       return mUserCache.getToken();
+    }
+
+    @Override
     public Observable<UserEntity> checkUser(String userId) {
         return null;
     }

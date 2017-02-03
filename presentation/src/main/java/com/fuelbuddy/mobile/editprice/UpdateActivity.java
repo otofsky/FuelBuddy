@@ -207,10 +207,10 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
                File file  = FileUtils.getFile(this,videoUri);
-                mPresenter.updateFuelPrices(file);
-                /* mPresenter.updateFuelPrices(gasStationModel.getGasStationId(),
+               // mPresenter.updateVideo(file);
+                 mPresenter.updateVideo(gasStationModel.getGasStationId(),
                          fuelInput92.getText().toString(), fuelInput95.getText().toString(),
-                         fuelInputDiesel.getText().toString());*/
+                         fuelInputDiesel.getText().toString());
                 return true;
             case android.R.id.home:
                 onBackPressed();
