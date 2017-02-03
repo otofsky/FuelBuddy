@@ -16,6 +16,7 @@
 package com.fuelbuddy.interactor;
 
 
+import com.fuelbuddy.data.Position;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 
@@ -37,6 +38,7 @@ public abstract class UseCase {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
+
 
   private Subscription subscription = Subscriptions.empty();
 
@@ -73,4 +75,6 @@ public abstract class UseCase {
       subscription.unsubscribe();
     }
   }
+
+
 }

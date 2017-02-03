@@ -15,11 +15,22 @@
  */
 package com.fuelbuddy.mobile.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
-import com.fuelbuddy.mobile.map.MapsActivity;
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE;
+import com.fuelbuddy.mobile.Config;
+import com.fuelbuddy.mobile.editprice.UpdateActivity;
+import com.fuelbuddy.mobile.home.HomeActivity;
+import com.fuelbuddy.mobile.login.LoginActivity;
+import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.mobile.map.MapsMainActivity;
+import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.AnimationHelper;
+
+import static com.fuelbuddy.mobile.Config.FUEL_TYPE;
 
 
 /**
@@ -29,16 +40,48 @@ import static com.fuelbuddy.mobile.Constants.FUEL_TYPE;
 public class Navigator {
 
     /**
-     * Goes to the user list screen.
+     * Goes to the populateGoogleUser list screen.
      *
      * @param context A Context needed to open the destiny activity.
+     *
+     *
+     *
+     *
      */
-    public static void navigateToMapsActivity(Context context, String fuelType) {
+    public static void navigateToLoginActivity(FragmentActivity context) {
         if (context != null) {
-            Intent intentToLaunch = MapsActivity.getCallingIntent(context);
-            intentToLaunch.putExtra(FUEL_TYPE, fuelType);
+            Intent intentToLaunch = LoginActivity.getCallingIntent(context);
+            context.startActivity(intentToLaunch);
+            AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+        }
+    }
+
+
+
+    public static void navigateToMapsActivity(Context context, FuelPriceMode fuelPriceMode) {
+        if (context != null) {
+            Intent intentToLaunch = MapsMainActivity.getCallingIntent(context);
+            intentToLaunch.putExtra(FUEL_TYPE, fuelPriceMode);
             context.startActivity(intentToLaunch);
         }
     }
 
+    public static void navigateToHomeActivity(FragmentActivity context) {
+        if (context != null) {
+            Intent intentToLaunch = HomeActivity.getCallingIntent(context);
+            context.finish();
+            context.startActivity(intentToLaunch);
+            AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.RIGHT_LEFT);
+
+        }
+    }
+
+    public static void navigateToEditPriceActivity(FragmentActivity context, GasStationModel gasStationModel) {
+        if (context != null) {
+            Intent intentToLaunch = UpdateActivity.getCallingIntent(context);
+            intentToLaunch.putExtra(Config.GAS_STATION_DETAIL, gasStationModel);
+            context.startActivity(intentToLaunch);
+            AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.RIGHT_LEFT);
+        }
+    }
 }

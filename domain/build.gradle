@@ -5,4 +5,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'javax.inject:javax.inject:1'
+    compile 'com.jakewharton.hugo:hugo-annotations:1.2.1'
+
+    compile 'com.google.code.gson:gson:2.6.1'
+
 }

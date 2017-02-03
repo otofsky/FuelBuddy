@@ -1,24 +1,86 @@
 package com.fuelbuddy.mobile.home;
 
 
+import android.util.Log;
+
+import com.fuelbuddy.data.User;
+import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.LogOutUseCase;
+import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import hugo.weaving.DebugLog;
 
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomePresenter extends BasePresenter<HomeMvpView> {
+public class HomePresenter extends BasePresenter<HomeView> {
 
+    private UseCase getCurrentUser;
+    private final LogOutUseCase logOutUseCase;
 
     @Inject
-    public HomePresenter() {
+    public HomePresenter(@Named("currentUser") UseCase getCurrentUser,LogOutUseCase logOutUseCase) {
+        this.getCurrentUser = getCurrentUser;
+        this.logOutUseCase = logOutUseCase;
+    }
 
+    @DebugLog
+    public void verifyCurrentUser() {
+        this.getCurrentUser.execute(new HomePresenter.CurrentUserSubscriber());
+    }
+
+    public void logout() {
+        getMvpView().showLoading();
+        this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
 
-    public void showInfo(){
-        getMvpView().showInfo();
+    private final class CurrentUserSubscriber extends DefaultSubscriber<User> {
+        @DebugLog
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable throwable) {
+            Log.d("HomePresenter", "onError: show login view " );
+            getMvpView().showLoginView();
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(User user) {
+            getMvpView().showFuelTypeView();
+        }
+    }
+
+    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
+
+        @DebugLog
+        @Override
+        public void onCompleted() {
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(Boolean isLogout) {
+            Log.d("Logout", "onNext: " + isLogout);
+            getMvpView().hideLoading();
+            getMvpView().logOut();
+        }
     }
 }
 

@@ -1,0 +1,200 @@
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/headerbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_shadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <!-- placeholder, empty except on L -->
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/viewA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@color/gray"
+                android:gravity="center"
+                android:orientation="vertical"></LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/fuel_price_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4">
+
+                <include
+                    android:id="@+id/address_view"
+                    layout="@layout/address_view" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/address_view"
+                    android:gravity="center_horizontal|center_vertical">
+
+                    <LinearLayout
+                        android:id="@+id/fuel95holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fuel92holder"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/fuel95"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_blyfri_95"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"
+                            />
+
+                        <EditText
+                            android:id="@+id/fuelInput95"
+                            android:inputType="phone"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/white"
+                            android:layout_marginLeft="2dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fuelDieselholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fuel95holder"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/fuelDiesel"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_diesel"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"/>
+
+                        <EditText
+                            android:id="@+id/fuelInputDiesel"
+                            android:inputType="phone"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/white"
+                            android:layout_marginLeft="2dp" />
+
+
+
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fuel92holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true">
+
+
+                        <TextView
+                            android:id="@+id/fuel92"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/button_green_all_rounded"
+                            android:gravity="center"
+                            android:text="@string/update_blyfri_92"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:layout_marginRight="2dp"
+                            android:textAllCaps="false"
+                            android:textStyle = "bold"/>
+
+
+
+
+
+                        <EditText
+                            android:id="@+id/fuelInput92"
+                            android:inputType="phone"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+
+                            android:gravity="center"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/white"
+                            android:layout_marginLeft="2dp" />
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/openCameraBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:src="@drawable/ic_action_camera_24dp"
+            app:layout_anchor="@id/viewA"
+            app:layout_anchorGravity="bottom|right|end" />
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
