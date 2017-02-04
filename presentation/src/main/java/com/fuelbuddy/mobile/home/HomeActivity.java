@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -18,14 +17,8 @@ import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
 
 import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
-import com.fuelbuddy.mobile.home.login.LoginFragment;
 import com.fuelbuddy.mobile.navigation.Navigator;
-import com.fuelbuddy.mobile.util.DialogFactory;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -36,7 +29,7 @@ import hugo.weaving.DebugLog;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends BaseActivity implements HomeView, LoginFragment.FragmentNavigator, HasComponent<HomeComponent> {
+public class HomeActivity extends BaseActivity implements HomeView, HasComponent<HomeComponent> {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
@@ -116,12 +109,12 @@ public class HomeActivity extends BaseActivity implements HomeView, LoginFragmen
         homeComponent.inject(this);
     }
 
-    @Override
+ /*   @Override
     public void navigateToHome() {
         Log.d("home ", "navigateToHome: FuelSelectionFragment");
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
         toolbar.showOverflowMenu();
-    }
+    }*/
 
     @Override
     public void showMap() {

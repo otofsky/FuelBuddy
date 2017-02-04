@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
+import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.module.ApplicationModule;
 import com.fuelbuddy.repository.GasStationsRepository;
@@ -27,6 +28,7 @@ public interface ApplicationComponent {
     PostExecutionThread postExecutionThread();
     GasStationsRepository gasStationsRepository();
     UserRepository userRepository();
+    UpdateFuelPricesUseCase updateFuelPricesUseCase();
 
 
 

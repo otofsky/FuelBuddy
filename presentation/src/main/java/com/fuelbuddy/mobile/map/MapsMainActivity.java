@@ -177,11 +177,10 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
 
-          /*  case R.id.actionLogOut:
+            case R.id.actionLogOut:
                 mMapPresenter.logout();
-                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+                //AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
-*/
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -293,7 +292,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void logOut() {
-        Navigator.navigateToHomeActivity(this);
+      /*  Navigator.navigateToLoginActivity(this);
+        finish();*/
     }
 
     @Override

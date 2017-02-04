@@ -117,7 +117,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void init92PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null,valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener);
         fuelInput92.addTextChangedListener(listener);
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
@@ -125,7 +125,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void init95PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null,valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null, valueListener);
         fuelInput95.addTextChangedListener(listener);
         fuelInput95.setOnFocusChangeListener(listener);
         fuelInput95.setHint(listener.placeholder());
@@ -133,7 +133,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void initDieselPriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null,valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null, valueListener);
         fuelInputDiesel.addTextChangedListener(listener);
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
@@ -206,11 +206,10 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
-               File file  = FileUtils.getFile(this,videoUri);
-               // mPresenter.updateVideo(file);
-                 mPresenter.updateVideo(gasStationModel.getGasStationId(),
-                         fuelInput92.getText().toString(), fuelInput95.getText().toString(),
-                         fuelInputDiesel.getText().toString());
+                File file = FileUtils.getFile(this, videoUri);
+                // mPresenter.updateVideo(file);
+                mPresenter.updateVideo(file, gasStationModel.getGasStationId(), fuelInput92.getText().toString(),
+                        fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
                 return true;
             case android.R.id.home:
                 onBackPressed();

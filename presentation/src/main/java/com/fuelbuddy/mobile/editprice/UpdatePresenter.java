@@ -2,7 +2,7 @@ package com.fuelbuddy.mobile.editprice;
 
 import android.util.Log;
 
-import com.fuelbuddy.PriceValidator;
+import com.fuelbuddy.validator.InputValidator;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
@@ -25,7 +25,7 @@ import hugo.weaving.DebugLog;
  * Created by zjuroszek on 08.01.17.
  */
 
-public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceValidator.UpdateFinishedListener {
+public class UpdatePresenter extends BasePresenter<UpdateView> implements InputValidator.UpdateFinishedListener {
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private final UploadVideoUseCase uploadVideoUseCase;
@@ -62,9 +62,9 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
 
     }
 
-    public void updateVideo(String gasStationId, String fuel92, String fuel95, String diesel) {
+    public void updateVideo(File file, String gasStationId, String fuel92, String fuel95, String diesel) {
         Log.d("updateVideo", "updateVideo: " + fuel92 + " " + fuel95 + " " + diesel);
-        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel,this);
+        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(file,gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
@@ -75,6 +75,11 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
         this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
+
+    @Override
+    public void showFileError() {
+
+    }
 
     @Override
     public void show92Error() {

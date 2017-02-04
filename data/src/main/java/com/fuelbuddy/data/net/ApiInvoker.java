@@ -112,9 +112,10 @@ public class ApiInvoker {
         return apiInterface.getGasStations(latitude, longitude);
     }
 
-    public Observable<ResponseEntity> updateStation(String iD, String userID, Double price92
-            , Double price95, Double priceDiesel) {
-        return apiInterface.updateStation(iD, userID, price92, price95, priceDiesel);
+    public Observable<ResponseEntity> updateStation(String iD, String userID,
+                                                    String photoID, Double price92,
+                                                    Double price95, Double priceDiesel) {
+        return apiInterface.updateStation(iD, userID,photoID, price92, price95, priceDiesel);
     }
 
     public Observable<ResponseEntity> uploadVideo(File file) {

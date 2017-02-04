@@ -56,9 +56,9 @@ public class GasStationDataRepository implements GasStationsRepository {
 
 
     @Override
-    public Observable<Response> updateStation(String iD, String userID, Double price92, Double price95, Double priceDiesel) {
+    public Observable<Response> updateStation(String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.updateStation(iD,userID,price92,price95,priceDiesel).map(new Func1<ResponseEntity, Response>() {
+        return  gasStationDataStore.updateStation(iD,userID,photoID,price92,price95,priceDiesel).map(new Func1<ResponseEntity, Response>() {
             @Override
             public Response call(ResponseEntity responseEntity) {
                 return responseEntityMapper.transformToResponse(responseEntity);

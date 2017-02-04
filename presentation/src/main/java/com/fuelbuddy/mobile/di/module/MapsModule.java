@@ -26,10 +26,4 @@ public class MapsModule {
         return getGasStationsUseCase;
     }
 
-    @Provides
-    @PerActivity
-    @Named("updateFuelPricesUseCase")
-    UpdateFuelPricesUseCase provideUpdateFuelPricesInteractor(UpdateFuelPricesUseCase updateFuelPricesUseCase) {
-        return updateFuelPricesUseCase;
-    }
 }

@@ -29,6 +29,7 @@ public interface ApiInterface {
     @GET("updatestation?")
     Observable<ResponseEntity> updateStation(@Query("ID") String iD,
                                              @Query("userID") String userID,
+                                             @Query("photoID") String photoID,
                                              @Query("price92") Double price92,
                                              @Query("price95") Double price95,
                                              @Query("priceDiesel") Double priceDiesel);
