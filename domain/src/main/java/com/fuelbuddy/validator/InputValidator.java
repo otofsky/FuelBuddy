@@ -12,7 +12,7 @@ public class InputValidator {
 
     public interface UpdateFinishedListener {
 
-        void showFileError();
+        void showVideoError();
 
         void show92Error();
 
@@ -36,7 +36,7 @@ public class InputValidator {
         boolean isValidate = true;
 
         if (!mFileValidator.validate(file)) {
-            updateFinishedListener.showFileError();
+            updateFinishedListener.showVideoError();
             isValidate = false;
         }
 

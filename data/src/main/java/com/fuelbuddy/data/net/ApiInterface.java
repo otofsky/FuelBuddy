@@ -35,7 +35,7 @@ public interface ApiInterface {
                                              @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<ResponseEntity> updateStation( @Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<ResponseEntity> updateStation(@Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

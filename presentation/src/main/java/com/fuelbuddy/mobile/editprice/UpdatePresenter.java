@@ -57,14 +57,14 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
 
     public void updateVideo(File file) {
         Log.d("updateVideo", "updateVideo: ");
-       // mUpdateFuelPricesUseCase.validateFuelPrices(file);
+       // mUpdateFuelPricesUseCase.validateInputData(file);
         this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
 
     }
 
     public void updateVideo(File file, String gasStationId, String fuel92, String fuel95, String diesel) {
         Log.d("updateVideo", "updateVideo: " + fuel92 + " " + fuel95 + " " + diesel);
-        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(file,gasStationId, fuel92, fuel95, diesel,this);
+        boolean result = mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
@@ -75,10 +75,9 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
         this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
-
     @Override
-    public void showFileError() {
-
+    public void showVideoError() {
+      getMvpView().showVideoError();
     }
 
     @Override
@@ -167,7 +166,6 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
         @DebugLog
         @Override
         public void onNext(Boolean isLogout) {
-            Log.d("Logout", "onNext: " + isLogout);
             getMvpView().hideLoading();
             getMvpView().logOut();
         }

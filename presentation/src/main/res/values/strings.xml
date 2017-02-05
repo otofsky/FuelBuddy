@@ -42,6 +42,7 @@
     <string name="update_diesel">Diesel</string>
     <string name="update_blyfri_95">Blyfri 95</string>
     <string name="update_blyfri_92">Blyfri 92</string>
+    <string name="video_not_selected_info">Video not selected</string>
 
 
 </resources>

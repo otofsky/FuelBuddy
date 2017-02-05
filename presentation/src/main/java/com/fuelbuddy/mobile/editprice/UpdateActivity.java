@@ -29,6 +29,7 @@ import com.fuelbuddy.mobile.di.component.UpdateComponent;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.FileUtils;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.gun0912.tedpermission.PermissionListener;
@@ -207,7 +208,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
                 File file = FileUtils.getFile(this, videoUri);
-                // mPresenter.updateVideo(file);
                 mPresenter.updateVideo(file, gasStationModel.getGasStationId(), fuelInput92.getText().toString(),
                         fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
                 return true;
@@ -239,7 +239,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         }
     }
 
-    private String getRealPathFromURI(Uri contentUri) {
+    private void getRealPathFromURI(Uri contentUri) {
         videoPath = "";
         if (contentUri != null) {
             String[] proj = {MediaStore.Images.Media.DATA};
@@ -252,14 +252,19 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
                 cursor.close();
             } else {
                 videoPath = contentUri.getPath();
+                cursor.close();
             }
         }
-        return videoPath;
     }
-
-
+    
     @Override
     public void updatePrice() {
+
+    }
+
+    @Override
+    public void showVideoError() {
+        DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.video_not_selected_info));
 
     }
 

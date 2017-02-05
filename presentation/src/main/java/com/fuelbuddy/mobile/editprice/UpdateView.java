@@ -12,6 +12,8 @@ public interface UpdateView extends MvpView {
 
     void updatePrice();
 
+    void showVideoError();
+
     void show92Error();
 
     void show95Error();
