@@ -163,11 +163,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,11 +171,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
             case android.R.id.home:
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
-                return true;
-
-            case R.id.actionLogOut:
-                mMapPresenter.logout();
-                //AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
 
             default:

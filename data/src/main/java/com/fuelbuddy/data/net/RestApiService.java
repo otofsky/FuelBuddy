@@ -3,6 +3,7 @@ package com.fuelbuddy.data.net;
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,7 +24,7 @@ public interface RestApiService {
 
     Observable<ResponseEntity> updateStation(String iD, String userID,  String photoID, Double price92, Double price95, Double priceDiesel);
 
-    Observable<ResponseEntity> uploadVideo(File file);
+    Observable<UploadResponseEntity> uploadVideo(File file);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
 

@@ -24,6 +24,7 @@ import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
@@ -81,7 +82,7 @@ public class RestApiImpl implements RestApiService {
     }
 
     @Override
-    public Observable<ResponseEntity> uploadVideo(File file) {
+    public Observable<UploadResponseEntity> uploadVideo(File file) {
         return mApiInvoker.uploadVideo(file);
     }
 

@@ -3,8 +3,10 @@ package com.fuelbuddy.data.repository;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.Response;
+import com.fuelbuddy.data.UploadResponse;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.entity.mapper.ResponseEntityMapper;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
@@ -68,19 +70,16 @@ public class GasStationDataRepository implements GasStationsRepository {
     }
 
     @Override
-    public Observable<Response> uploadVideo(File file) {
+    public Observable<UploadResponse> uploadVideo(File file) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.uploadVideo(file).map(new Func1<ResponseEntity, Response>() {
+        return  gasStationDataStore.uploadVideo(file).map(new Func1<UploadResponseEntity, UploadResponse>() {
             @Override
-            public Response call(ResponseEntity responseEntity) {
-                return responseEntityMapper.transformToResponse(responseEntity);
+            public UploadResponse call(UploadResponseEntity responseEntity) {
+                return responseEntityMapper.transformToUploadResponse(responseEntity);
             }
         });
 
     }
-
-
-
 
     @Override
     public Observable<GasStation> gasStation(int userId) {

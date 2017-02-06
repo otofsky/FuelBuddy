@@ -215,10 +215,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
-          /*  case R.id.actionLogOut:
-                mPresenter.logout();
-                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
-                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

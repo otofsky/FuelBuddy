@@ -2,6 +2,7 @@ package com.fuelbuddy.interactor;
 
 
 import com.fuelbuddy.FuelUpdateFactory;
+import com.fuelbuddy.data.UploadResponse;
 import com.fuelbuddy.validator.InputValidator;
 import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.data.Response;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 /**
  * Created by zjuroszek on 20.11.16.
@@ -55,11 +57,17 @@ public class UpdateFuelPricesUseCase extends UseCase {
     @Override
     protected Observable buildUseCaseObservable() {
 
-        return userRepository.getCurrentUser()
-                .flatMap(updateVideo);
+        return  Observable.zip(
+                gasStationsRepository.uploadVideo(mFuelPricesUpdate.getFile()),userRepository.getCurrentUser(), new Func2<UploadResponse, User, Observable<Response>>() {
+                    @Override
+                    public Observable<Response> call(UploadResponse uploadResponse, User user) {
+                        return gasStationsRepository.updateStation(mFuelPricesUpdate.getStationID(), user.getUserID(), uploadResponse.getFileID() ,
+                                mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
+                    }
+                });
     }
 
-    Func1<User, Observable<Response>> updateVideo = new Func1<User, Observable<Response>>() {
+/*    Func1<User, Observable<Response>> updateVideo = new Func1<User, Observable<Response>>() {
         @Override
         public Observable<Response> call(final User user) {
             return gasStationsRepository.uploadVideo(mFuelPricesUpdate.getFile())
@@ -67,10 +75,10 @@ public class UpdateFuelPricesUseCase extends UseCase {
                     .flatMap(new Func1<Response, Observable<Response>>() {
                         @Override
                         public Observable<Response> call(Response response) {
-                            return gasStationsRepository.updateStation(mFuelPricesUpdate.getiD(), user.getUserID(), response.getMessage(),
+                            return gasStationsRepository.updateStation(mFuelPricesUpdate.getStationID(), user.getUserID(), response.getMessage(),
                                     mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
                         }
                     });
         }
-    };
+    };*/
 }

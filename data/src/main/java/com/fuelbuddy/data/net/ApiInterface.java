@@ -4,6 +4,7 @@ package com.fuelbuddy.data.net;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface ApiInterface {
                                              @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<ResponseEntity> updateStation(@Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<UploadResponseEntity> updateStation(@Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

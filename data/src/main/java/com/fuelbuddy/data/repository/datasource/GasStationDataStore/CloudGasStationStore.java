@@ -19,6 +19,7 @@ package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.net.RestApiService;
 
 import java.io.File;
@@ -51,7 +52,7 @@ class CloudGasStationStore implements GasStationDataStore {
     }
 
     @Override
-    public Observable<ResponseEntity> uploadVideo(File file) {
+    public Observable<UploadResponseEntity> uploadVideo(File file) {
         return mRestApiService.uploadVideo(file);
     }
 

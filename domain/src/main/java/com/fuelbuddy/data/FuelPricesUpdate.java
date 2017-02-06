@@ -9,17 +9,17 @@ import java.io.File;
 public class FuelPricesUpdate {
 
     private File file;
-    private String iD;
+    private String stationID;
     private String userID;
     private Double price92;
     private Double price95;
     private Double priceDiesel;
 
 
-    public FuelPricesUpdate(File file, String iD, Double price92, Double price95, Double priceDiesel) {
+    public FuelPricesUpdate(File file, String stationID, Double price92, Double price95, Double priceDiesel) {
 
         this.file = file;
-        this.iD = iD;
+        this.stationID = stationID;
         this.price92 = price92;
         this.price95 = price95;
         this.priceDiesel = priceDiesel;
@@ -37,8 +37,8 @@ public class FuelPricesUpdate {
         this.userID = userID;
     }
 
-    public String getiD() {
-        return iD;
+    public String getStationID() {
+        return stationID;
     }
 
     public Double getPrice92() {
@@ -65,7 +65,7 @@ public class FuelPricesUpdate {
         FuelPricesUpdate that = (FuelPricesUpdate) o;
 
         if (file != null ? !file.equals(that.file) : that.file != null) return false;
-        if (iD != null ? !iD.equals(that.iD) : that.iD != null) return false;
+        if (stationID != null ? !stationID.equals(that.stationID) : that.stationID != null) return false;
         if (userID != null ? !userID.equals(that.userID) : that.userID != null) return false;
         if (price92 != null ? !price92.equals(that.price92) : that.price92 != null) return false;
         if (price95 != null ? !price95.equals(that.price95) : that.price95 != null) return false;
@@ -76,7 +76,7 @@ public class FuelPricesUpdate {
     @Override
     public int hashCode() {
         int result = file != null ? file.hashCode() : 0;
-        result = 31 * result + (iD != null ? iD.hashCode() : 0);
+        result = 31 * result + (stationID != null ? stationID.hashCode() : 0);
         result = 31 * result + (userID != null ? userID.hashCode() : 0);
         result = 31 * result + (price92 != null ? price92.hashCode() : 0);
         result = 31 * result + (price95 != null ? price95.hashCode() : 0);

@@ -6,6 +6,7 @@ import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.net.utils.NetworkUtil;
 import com.fuelbuddy.data.net.utils.PrimitiveConverterFactory;
@@ -118,7 +119,7 @@ public class ApiInvoker {
         return apiInterface.updateStation(iD, userID,photoID, price92, price95, priceDiesel);
     }
 
-    public Observable<ResponseEntity> uploadVideo(File file) {
+    public Observable<UploadResponseEntity> uploadVideo(File file) {
         MediaType mediaType2 = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType2, file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);

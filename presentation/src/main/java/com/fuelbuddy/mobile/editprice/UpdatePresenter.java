@@ -122,7 +122,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
             Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
             getMvpView().showMap();
-            //getMvpView().showSuccessMessage(response.getMessage());
+            //getMvpView().showSuccessMessage(response.getFileID());
         }
     }
 
@@ -146,7 +146,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
             Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
             getMvpView().showMap();
-            //getMvpView().showSuccessMessage(response.getMessage());
+            //getMvpView().showSuccessMessage(response.getFileID());
         }
     }
 
