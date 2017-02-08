@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.fuelbuddy.mobile.map.MapsMainActivity;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
+import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.util.LocationUtil;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,6 +30,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
+
+import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
 
 
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
@@ -141,6 +146,12 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
             return;
         } else {
             Log.d(TAG, "permision is granted");
+
+            if (!LocationUtil.isLocationEnabled(getApplicationContext())){
+                EventBus.getDefault().post(new MissingLocationEvent());
+            }
+
+
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
     }
@@ -153,10 +164,10 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @DebugLog
     private void updateLocationData(Location location) {
-        Log.d("service", "updateLocationData: ");
+        Log.d(TAG, "updateLocationData: ");
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
-        //Toast.makeText(getApplicationContext(), "updateLocationData " + latitude, Toast.LENGTH_SHORT).show();
+
     }
 }
