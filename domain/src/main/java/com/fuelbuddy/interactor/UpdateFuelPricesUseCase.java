@@ -45,8 +45,9 @@ public class UpdateFuelPricesUseCase extends UseCase {
 
 
     public boolean validateInputData(File file, String gasStationId, String fuel92, String fuel95, String diesel, InputValidator.UpdateFinishedListener updateFinishedListener) {
-        if (priceValidator.validatePrice(file, fuel92, fuel95, diesel, updateFinishedListener)) {
-            mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(file, gasStationId, fuel92, fuel95, diesel);
+
+        if (priceValidator.validatePrice(file,fuel92, fuel95, diesel, updateFinishedListener)) {
+            mFuelPricesUpdate = mFuelUpdateFactory.createFuelUpdate(file,gasStationId, fuel92, fuel95, diesel);
             return true;
         } else {
             return false;
@@ -56,8 +57,7 @@ public class UpdateFuelPricesUseCase extends UseCase {
     @Override
     protected Observable buildUseCaseObservable() {
 
-        return  Observable.zip(
-                gasStationsRepository.uploadVideo(mFuelPricesUpdate.getFile()),userRepository.getCurrentUser(), new Func2<UploadResponse, User, Observable<Response>>() {
+        return  Observable.zip(gasStationsRepository.uploadVideo(mFuelPricesUpdate.getFile()),userRepository.getCurrentUser(), new Func2<UploadResponse, User, Observable<Response>>() {
                     @Override
                     public Observable<Response> call(UploadResponse uploadResponse, User user) {
                         return gasStationsRepository.updateStation(mFuelPricesUpdate.getStationID(), user.getUserID(), uploadResponse.getFileID() ,
@@ -68,9 +68,18 @@ public class UpdateFuelPricesUseCase extends UseCase {
 
 
 
+/*    Func1<User, Observable<Response>> updateVideo = new Func1<User, Observable<Response>>() {
+        @Override
+        public Observable<Response> call(final User user) {
+            return gasStationsRepository.uploadVideo(mFuelPricesUpdate.getFile())
 
+                    .flatMap(new Func1<Response, Observable<Response>>() {
+                        @Override
+                        public Observable<Response> call(Response response) {
+                            return gasStationsRepository.updateStation(mFuelPricesUpdate.getStationID(), user.getUserID(), response.getMessage(),
+                                    mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());
+                        }
+                    });
+        }
+    };*/
 }
-
-
-/*return gasStationsRepository.updateStation(mFuelPricesUpdate.getStationID(), "2", "13",
-                mFuelPricesUpdate.getPrice92(), mFuelPricesUpdate.getPrice95(), mFuelPricesUpdate.getPriceDiesel());*/

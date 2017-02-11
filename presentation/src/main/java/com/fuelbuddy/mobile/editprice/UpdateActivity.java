@@ -260,7 +260,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void showVideoError() {
-        DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.video_not_selected_info));
+        DialogFactory.createSimpleSnackBarInfo(context(),toolbar, getString(R.string.video_not_selected_info));
 
     }
 

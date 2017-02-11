@@ -286,7 +286,7 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
 
     @Override
     public void showError(String message) {
-        DialogFactory.createSimpleSnackBarInfo(rl_progress, message);
+        DialogFactory.createSimpleSnackBarInfo(context(),rl_progress, message);
         progessDismiss();
     }
 

@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.editprice;
 
 import android.util.Log;
 
+import com.fuelbuddy.data.UploadResponse;
 import com.fuelbuddy.validator.InputValidator;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;

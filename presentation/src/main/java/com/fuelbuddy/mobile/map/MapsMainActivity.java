@@ -1,7 +1,9 @@
 package com.fuelbuddy.mobile.map;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -56,7 +58,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, HasComponent<MapsComponent> {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks,Dialog.OnClickListener  ,  HasComponent<MapsComponent> {
     private static final String TAG = MapsMainActivity.class.getCanonicalName();
 
     @Inject
@@ -164,8 +166,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
             Log.d(TAG, "onEventMainThread: ");
         }
         if (event instanceof MissingLocationEvent) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+            DialogFactory.createErrorDialog(this,this).show();
         }
     }
 
@@ -259,6 +260,12 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     @Override
+    public void onClick(DialogInterface dialog, int which) {
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
+    }
+
+    @Override
     public void showSuccessMessage(String message) {
         // DialogFactory.createSimpleSnackBarInfo(fuelPriceHolderView, message);
     }
@@ -284,7 +291,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @DebugLog
     @Override
     public void showError(String message) {
-        DialogFactory.createSimpleSnackBarInfo(mToolbar, message);
+        DialogFactory.createSimpleSnackBarInfo(context(),mToolbar, message);
     }
 
     @Override
@@ -331,4 +338,5 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     public MapsComponent getComponent() {
         return mMapsComponent;
     }
+
 }
