@@ -170,8 +170,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         }
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -291,7 +289,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @DebugLog
     @Override
     public void showError(String message) {
-        DialogFactory.createSimpleSnackBarInfo(context(),mToolbar, message);
+        DialogFactory.createSimpleSnackBarInfo(mToolbar, message);
     }
 
     @Override

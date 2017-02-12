@@ -5,6 +5,7 @@ import android.content.Context;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
+import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.module.ApplicationModule;
 import com.fuelbuddy.repository.GasStationsRepository;
@@ -21,6 +22,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
+    void inject(TrackLocationService trackLocationService);
 
     //Exposed to sub-graphs.
     Context context();
@@ -29,6 +31,7 @@ public interface ApplicationComponent {
     GasStationsRepository gasStationsRepository();
     UserRepository userRepository();
     UpdateFuelPricesUseCase updateFuelPricesUseCase();
+
 
 
 

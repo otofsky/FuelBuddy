@@ -3,45 +3,63 @@ package com.fuelbuddy.mobile;
 import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.fuelbuddy.mobile.map.MapsMainActivity;
+import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
+import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
+import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
+import com.fuelbuddy.data.net.ApiInvoker;
+import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
-import com.fuelbuddy.mobile.util.DialogFactory;
+import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.util.LocationUtil;
-import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.gun0912.tedpermission.PermissionListener;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
+import java.io.File;
+
+import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
-
-import static android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    public static final String PARAM_SYNC_TYPE = "com.fuelbuddy.mobile.SYNC_TYPE";
+    public static final String FUEL_PRICE_UPDATE_TASK = "FUEL_PRICE_UPDATE_TASK";
+    public static final String VIDEO_FILE_TO_UPDATE = "VIDEO_FILE_TO_UPDATE";
+
+    public static final int PARAM_UPDATE_FUEL = 1;
+
+
+    //private ApiInvoker apiInvoker;
+
+
     private static boolean isServiceRunning;
     private static final String TAG = TrackLocationService.class.getCanonicalName();
-    private int notificationId = 9999;
+
     private GoogleApiClient googleApiClient;
     private AndroidApplication app;
+   private SharePreferencesUserCacheImpl sharePreferencesUserCache;
 
     public static boolean isServiceRunning() {
         return isServiceRunning;
@@ -49,27 +67,79 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private static void setIsServiceRunning(boolean isServiceRunning) {
         TrackLocationService.isServiceRunning = isServiceRunning;
-        //EventBus.getDefault().post(AppEvent.SERVICE_STATE_CHANGED);
     }
 
     public TrackLocationService() {
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
+        sharePreferencesUserCache = new SharePreferencesUserCacheImpl(this,PreferenceManager.getDefaultSharedPreferences(this),new EntityJsonMapper());
+
         app = (AndroidApplication) getApplication();
         createGoogleApiClient();
         connectGoogleApiClient();
+        initializeInjector();
+    }
+
+    private void initializeInjector() {
+        getApplicationComponent().inject(this);
+
+    }
+
+    protected ApplicationComponent getApplicationComponent() {
+        return ((AndroidApplication) getApplication()).getApplicationComponent();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
-        TrackLocationService.setIsServiceRunning(true);
+        if (intent.getIntExtra(PARAM_SYNC_TYPE, 0) == PARAM_UPDATE_FUEL) {
+            File videoFile = (File) intent.getSerializableExtra(VIDEO_FILE_TO_UPDATE);
+            FuelPricesUpdateEntry fuelPricesUpdateEntry = (FuelPricesUpdateEntry) intent.getParcelableExtra(FUEL_PRICE_UPDATE_TASK);
+            updateFuelStation(videoFile, fuelPricesUpdateEntry);
+        } else {
+            TrackLocationService.setIsServiceRunning(true);
+        }
         return super.onStartCommand(intent, flags, startId);
     }
+
+    private void updateFuelStation(File file, FuelPricesUpdateEntry fuelPricesUpdateEntry) {
+        uploadVideoFile(file, fuelPricesUpdateEntry);
+
+    }
+
+    private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
+        ApiInvoker.getInstance().uploadVideo(sharePreferencesUserCache.getToken(),file, new Callback<UploadResponseEntity>() {
+            @Override
+            public void onResponse(Call<UploadResponseEntity> call, Response<UploadResponseEntity> response) {
+                Log.d(TAG, "onResponse:  file upload" + response.body().getFileID());
+                updatePrices(fuelPricesUpdateEntry, response.body().getFileID());
+            }
+
+            @Override
+            public void onFailure(Call<UploadResponseEntity> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updatePrices(FuelPricesUpdateEntry fuelPricesUpdateEntry, String photoID) {
+        ApiInvoker.getInstance().updateStation(sharePreferencesUserCache.getToken(),fuelPricesUpdateEntry.getStationID(), fuelPricesUpdateEntry.getUserID(), photoID, fuelPricesUpdateEntry.getPrice92(), fuelPricesUpdateEntry.getPrice95(), fuelPricesUpdateEntry.getPriceDiesel(), new Callback<ResponseEntity>() {
+            @Override
+            public void onResponse(Call<ResponseEntity> call, Response<ResponseEntity> response) {
+                Log.d(TAG, "onResponse:  price update" + response.body().getMessage());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseEntity> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onDestroy() {
@@ -147,7 +217,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         } else {
             Log.d(TAG, "permision is granted");
 
-            if (!LocationUtil.isLocationEnabled(getApplicationContext())){
+            if (!LocationUtil.isLocationEnabled(getApplicationContext())) {
                 EventBus.getDefault().post(new MissingLocationEvent());
             }
 

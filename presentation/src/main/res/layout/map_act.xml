@@ -39,9 +39,11 @@ of the map.-->
 
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
         <!-- placeholder, empty except on L -->
 
     </LinearLayout>
+
     <!-- Content of screen. Contains a map and optional info bottom sheet. -->
     <FrameLayout
         android:layout_width="match_parent"
@@ -51,6 +53,7 @@ of the map.-->
             android:id="@+id/fragment_container_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
 
         <FrameLayout
             android:id="@+id/fragment_price_container_map"

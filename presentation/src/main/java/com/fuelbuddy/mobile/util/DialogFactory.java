@@ -54,7 +54,7 @@ public final class DialogFactory {
                                                       @StringRes int messageResource) {
         return createProgressDialog(context, context.getString(messageResource));
     }
-    public static void createSimpleSnackBarInfo(Context context, View view, String message) {
+    public static void createSimpleSnackBarInfo(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }

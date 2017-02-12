@@ -139,12 +139,6 @@
                             android:layout_alignParentRight="true"
                             android:background="@color/white"
                             android:layout_marginLeft="2dp" />
-
-
-
-
-
-
                     </LinearLayout>
 
                     <LinearLayout
