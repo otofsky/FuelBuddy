@@ -32,7 +32,7 @@ public interface ApiInterface {
 
     //fuelbuddy.dk/ws/updatestation?userID=5&ID=512&price92=1.20&price95=1.35&priceDiesel=1.1&photoID=2
     @GET("updatestation?")
-    Observable<ResponseEntity> updatePrices(@Query("ID") String iD,
+    Observable<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
                                             @Query("userID") String userID,
                                             @Query("photoID") String photoID,
                                             @Query("price92") Double price92,
@@ -40,7 +40,7 @@ public interface ApiInterface {
                                             @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<UploadResponseEntity> uploadVideo(@Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header,@Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("updatestation?")
     Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +19,7 @@ import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
 import com.fuelbuddy.data.net.ApiInvoker;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
+import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
@@ -39,6 +41,12 @@ import hugo.weaving.DebugLog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
@@ -59,7 +67,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private GoogleApiClient googleApiClient;
     private AndroidApplication app;
-   private SharePreferencesUserCacheImpl sharePreferencesUserCache;
+    private SharePreferencesUserCacheImpl sharePreferencesUserCache;
 
     public static boolean isServiceRunning() {
         return isServiceRunning;
@@ -77,7 +85,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-        sharePreferencesUserCache = new SharePreferencesUserCacheImpl(this,PreferenceManager.getDefaultSharedPreferences(this),new EntityJsonMapper());
+        sharePreferencesUserCache = new SharePreferencesUserCacheImpl(this, PreferenceManager.getDefaultSharedPreferences(this), new EntityJsonMapper());
 
         app = (AndroidApplication) getApplication();
         createGoogleApiClient();
@@ -108,38 +116,50 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void updateFuelStation(File file, FuelPricesUpdateEntry fuelPricesUpdateEntry) {
         uploadVideoFile(file, fuelPricesUpdateEntry);
-
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new OnReturnToMapEvent());
+            }
+        }, 1000);
     }
 
     private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
-        ApiInvoker.getInstance().uploadVideo(sharePreferencesUserCache.getToken(),file, new Callback<UploadResponseEntity>() {
-            @Override
-            public void onResponse(Call<UploadResponseEntity> call, Response<UploadResponseEntity> response) {
-                Log.d(TAG, "onResponse:  file upload" + response.body().getFileID());
-                updatePrices(fuelPricesUpdateEntry, response.body().getFileID());
-            }
+        ApiInvoker.getInstance().uploadVideo(sharePreferencesUserCache.getToken(), file)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<UploadResponseEntity, Observable<ResponseEntity>>() {
+                    @Override
+                    public Observable<ResponseEntity> call(UploadResponseEntity uploadResponseEntity) {
+                        return (Observable<ResponseEntity>) ApiInvoker.getInstance()
+                                .updateStation(sharePreferencesUserCache.getToken(),
+                                        fuelPricesUpdateEntry.getStationID(),
+                                        fuelPricesUpdateEntry.getUserID(),
+                                        uploadResponseEntity.getFileID(),
+                                        fuelPricesUpdateEntry.getPrice92(),
+                                        fuelPricesUpdateEntry.getPrice95(),
+                                        fuelPricesUpdateEntry.getPriceDiesel());
 
-            @Override
-            public void onFailure(Call<UploadResponseEntity> call, Throwable t) {
+                    }
+                })
+                .subscribe(new Subscriber<ResponseEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted: ");
+                    }
 
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError:  " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseEntity responseEntity) {
+                        Log.d(TAG, "onNext: " + responseEntity.toString());
+                    }
+                });
     }
-
-    private void updatePrices(FuelPricesUpdateEntry fuelPricesUpdateEntry, String photoID) {
-        ApiInvoker.getInstance().updateStation(sharePreferencesUserCache.getToken(),fuelPricesUpdateEntry.getStationID(), fuelPricesUpdateEntry.getUserID(), photoID, fuelPricesUpdateEntry.getPrice92(), fuelPricesUpdateEntry.getPrice95(), fuelPricesUpdateEntry.getPriceDiesel(), new Callback<ResponseEntity>() {
-            @Override
-            public void onResponse(Call<ResponseEntity> call, Response<ResponseEntity> response) {
-                Log.d(TAG, "onResponse:  price update" + response.body().getMessage());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseEntity> call, Throwable t) {
-
-            }
-        });
-    }
-
 
     @Override
     public void onDestroy() {

@@ -25,9 +25,14 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
+import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
+import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
+import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
@@ -40,6 +45,9 @@ import com.fuelbuddy.mobile.util.StringHelper;
 import com.fuelbuddy.validator.FileValidator;
 import com.gun0912.tedpermission.PermissionListener;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,7 +95,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     GasStationModel gasStationModel;
 
-    String videoPath;
     Uri videoUri;
 
     Unbinder mUnbinder;
@@ -214,6 +221,14 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         openCamera();
     }
 
+    @Subscribe
+    public void onEventMainThread(Event event) {
+        if (event instanceof OnReturnToMapEvent) {
+            onBackPressed();
+            AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -292,13 +307,13 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     public void onStart() {
         super.onStart();
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

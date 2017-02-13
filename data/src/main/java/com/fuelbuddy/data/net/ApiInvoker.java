@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -91,6 +92,8 @@ public class ApiInvoker {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -151,23 +154,23 @@ public class ApiInvoker {
         return apiInterface.getGasStations(latitude, longitude);
     }
 
-    public Observable<ResponseEntity> updateStation(String iD, String userID,
+    public Observable<ResponseEntity> updateStation(String token,String iD, String userID,
                                                     String photoID, Double price92,
                                                     Double price95, Double priceDiesel) {
-        return apiInterface.updatePrices(iD, userID,photoID, price92, price95, priceDiesel);
+        return apiInterface.updatePrices(token,iD, userID,photoID, price92, price95, priceDiesel);
     }
 
     public void updateStation(String token, String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel, Callback<ResponseEntity> callback) {
          apiInterface.updatePrices(token,iD, userID,photoID, price92, price95, priceDiesel,callback);
     }
 
-    public Observable<UploadResponseEntity> uploadVideo(File file) {
+    public Observable<UploadResponseEntity> uploadVideo(String token,File file) {
         MediaType mediaType2 = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType2, file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
         String descriptionString = "hello, this is description speaking";
         RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-        return apiInterface.uploadVideo(description, body);
+        return apiInterface.uploadVideo(token,description, body);
     }
 
     public void uploadVideo(String token, File file, Callback<UploadResponseEntity> callback) {

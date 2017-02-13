@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.map.event;
+package com.fuelbuddy.mobile.base;
 
 /**
  * Created by zjuroszek on 07.01.17.
