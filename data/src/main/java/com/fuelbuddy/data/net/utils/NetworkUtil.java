@@ -8,6 +8,10 @@ import android.net.NetworkInfo;
 
 public class NetworkUtil {
 
+    public static String BASE_URL = "http://fuelbuddy.dk/ws/";
+
+    public static String HEADER = "TokenAuth";
+
     /**
      * Returns true if the Throwable is an instance of RetrofitError with an
      * http status code equals to the given one.

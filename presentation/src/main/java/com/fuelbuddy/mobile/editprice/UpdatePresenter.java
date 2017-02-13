@@ -2,7 +2,7 @@ package com.fuelbuddy.mobile.editprice;
 
 import android.util.Log;
 
-import com.fuelbuddy.PriceValidator;
+import com.fuelbuddy.validator.InputValidator;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
@@ -25,7 +25,7 @@ import hugo.weaving.DebugLog;
  * Created by zjuroszek on 08.01.17.
  */
 
-public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceValidator.UpdateFinishedListener {
+public class UpdatePresenter extends BasePresenter<UpdateView> implements InputValidator.UpdateFinishedListener {
 
     private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private final UploadVideoUseCase uploadVideoUseCase;
@@ -55,26 +55,30 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
     }
 
 
-    public void updateFuelPrices(File file) {
-        Log.d("updateFuelPrices", "updateFuelPrices: ");
-        mUpdateFuelPricesUseCase.validateFuelPrices(file);
+    public void updateVideo(File file) {
+        Log.d("updateVideo", "updateVideo: ");
+       // mUpdateFuelPricesUseCase.validateInputData(file);
         this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
 
     }
 
-/*    public void updateFuelPrices(String gasStationId, String fuel92, String fuel95, String diesel) {
-        Log.d("updateFuelPrices", "updateFuelPrices: " + fuel92 + " " + fuel95 + " " + diesel);
-        boolean result = mUpdateFuelPricesUseCase.validateFuelPrices(gasStationId, fuel92, fuel95, diesel, this);
+    public void updateVideo(File file, String gasStationId, String fuel92, String fuel95, String diesel) {
+        Log.d("updateVideo", "updateVideo: " + fuel92 + " " + fuel95 + " " + diesel);
+        boolean result = mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
-    }*/
+    }
 
     public void logout() {
         getMvpView().showLoading();
         this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
+    @Override
+    public void showVideoError() {
+      getMvpView().showVideoError();
+    }
 
     @Override
     public void show92Error() {
@@ -118,7 +122,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
             Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
             getMvpView().showMap();
-            //getMvpView().showSuccessMessage(response.getMessage());
+            //getMvpView().showSuccessMessage(response.getFileID());
         }
     }
 
@@ -142,7 +146,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
             Log.d("update ", "onNext: " + response.toString());
             getMvpView().hideLoading();
             getMvpView().showMap();
-            //getMvpView().showSuccessMessage(response.getMessage());
+            //getMvpView().showSuccessMessage(response.getFileID());
         }
     }
 
@@ -162,7 +166,6 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements PriceV
         @DebugLog
         @Override
         public void onNext(Boolean isLogout) {
-            Log.d("Logout", "onNext: " + isLogout);
             getMvpView().hideLoading();
             getMvpView().logOut();
         }

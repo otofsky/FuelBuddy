@@ -14,9 +14,11 @@ public interface UserRepository {
 
     Observable<Response> auth(String userId, String email);
 
+    Observable<Response> putToken(String token);
+
     Observable<User> getCurrentUser();
 
-    Observable<User> getCheckUser(String UserId);
+    Observable<User> checkUser(String UserId);
 
     Observable<Response> setCurrentUser(User user);
 

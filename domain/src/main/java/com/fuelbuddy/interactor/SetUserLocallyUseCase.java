@@ -40,7 +40,14 @@ public class SetUserLocallyUseCase extends UseCase  {
     private final Func1<Response, Observable<Response>> onUserExist = new Func1<Response, Observable<Response>>() {
         @Override
         public Observable<Response> call(Response response) {
-            return userRepository.auth(mUser.getUserID(),mUser.getEmail());
+            return userRepository.auth(mUser.getUserID(),mUser.getEmail()).flatMap(putToken);
+        }
+    };
+
+    private final Func1<Response, Observable<Response>> putToken = new Func1<Response, Observable<Response>>() {
+        @Override
+        public Observable<Response> call(Response response) {
+            return userRepository.putToken(response.getMessage());
         }
     };
 }

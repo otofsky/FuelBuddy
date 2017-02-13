@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.entity.mapper.UserJsonEntityMapper;
+import com.fuelbuddy.data.net.ApiInvoker;
 import com.fuelbuddy.data.net.RestApiImpl;
 import com.fuelbuddy.data.net.RestApiService;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
@@ -22,12 +23,13 @@ public class UserStoreFactory {
 
     private final Context context;
     private final UserCache userCache;
-
+    private ApiInvoker mApiInvoker;
 
     @Inject
-    public UserStoreFactory(@NonNull Context context,@NonNull UserCache userCache ) {
+    public UserStoreFactory(@NonNull Context context,@NonNull UserCache userCache ,ApiInvoker apiInvoker ) {
         this.context = context;
         this.userCache = userCache;
+        this.mApiInvoker = apiInvoker;
     }
 
     public UserDataStore createDiskUserDataStore() {
@@ -38,7 +40,7 @@ public class UserStoreFactory {
 
     public UserDataStore createCloudDataStore() {
         GasStationEntityDataMapper gasStationEntityDataMapper = new GasStationEntityDataMapper();
-        RestApiService restApiService = new RestApiImpl(this.context, gasStationEntityDataMapper);
+        RestApiService restApiService = new RestApiImpl(mApiInvoker,this.context, gasStationEntityDataMapper);
         return new CloudUserStore(restApiService);
 
     }

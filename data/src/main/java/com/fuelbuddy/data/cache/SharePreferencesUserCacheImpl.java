@@ -107,7 +107,7 @@ public class SharePreferencesUserCacheImpl implements UserCache {
         return Observable.create(new Observable.OnSubscribe<ResponseEntity>() {
             @Override
             public void call(Subscriber<? super ResponseEntity> subscriber) {
-                    sharedPreferences.edit().putString(SP_USER_ENTITY, token).apply();
+                    sharedPreferences.edit().putString(SP_TOKEN_ENTITY, token).apply();
                     ResponseEntity responseEntity = new ResponseEntity();
                     responseEntity.setMessage("Token added");
                     subscriber.onNext(responseEntity);

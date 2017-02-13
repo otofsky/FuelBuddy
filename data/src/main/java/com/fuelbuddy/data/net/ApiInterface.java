@@ -4,6 +4,7 @@ package com.fuelbuddy.data.net;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import java.util.List;
@@ -21,25 +22,21 @@ import rx.Observable;
 
 public interface ApiInterface {
 
-   /* @GET("stations?")
-    Observable<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String token,
-                                                      @Query("latitude") String latitude,
-                                                      @Query("longitude") String longitude);*/
-
 
     @GET("stations?")
-    Observable<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String token, @Query("latitude") String latitude,
+    Observable<List<GasStationEntity>> getGasStations( @Query("latitude") String latitude,
                                                       @Query("longitude") String longitude);
 
     @GET("updatestation?")
     Observable<ResponseEntity> updateStation(@Query("ID") String iD,
                                              @Query("userID") String userID,
+                                             @Query("photoID") String photoID,
                                              @Query("price92") Double price92,
                                              @Query("price95") Double price95,
                                              @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<ResponseEntity> updateStation(@Header("TokenAuth") String token, @Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<UploadResponseEntity> updateStation(@Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

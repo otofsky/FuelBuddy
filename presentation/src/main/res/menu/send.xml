@@ -4,11 +4,9 @@
     <item
         android:id="@+id/actionUpdatePrice"
         android:title="Optag"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="withText|always"
 
-    <item
-        android:id="@+id/actionLogOut"
-        android:title="Log out"/>
+        />
 </menu>
 
 

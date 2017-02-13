@@ -1,26 +1,26 @@
 package com.fuelbuddy.mobile.di.module;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.executor.JobExecutor;
-import com.fuelbuddy.data.net.RestApiService;
+import com.fuelbuddy.data.net.ApiInvoker;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.data.repository.UserDataRepository;
-import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
-import com.fuelbuddy.interactor.LogOutUseCase;
-import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.UIThread;
 import com.fuelbuddy.repository.GasStationsRepository;
 import com.fuelbuddy.repository.UserRepository;
+import com.fuelbuddy.validator.FileValidator;
+import com.fuelbuddy.validator.InputValidator;
+import com.fuelbuddy.validator.PriceValidator;
+import com.fuelbuddy.validator.Validator;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -68,19 +68,39 @@ public class ApplicationModule {
     }
 
 
+/*
     @Provides
     @Singleton
-    RestApiService provideRestApiService() {
-        return RestApiService.Creator.newRestApiService();
+    InputValidator provideInputValidator(InputValidator inputValidator) {
+        return inputValidator;
+    }
+*/
+
+    @Provides
+    @Singleton
+    InputValidator provideInputValidator(PriceValidator priceValidator, FileValidator fileValidator) {
+        return new InputValidator(priceValidator, fileValidator);
+    }
+
+    @Provides
+    @Singleton
+    Validator provideFileValidator(FileValidator fileValidator) {
+        return fileValidator;
     }
 
 
     @Provides
     @Singleton
-    SharedPreferences provideSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext() );
-
+    Validator<String> providePriceValidator(PriceValidator priceValidator) {
+        return priceValidator;
     }
+
+    @Provides
+    @Singleton
+    ApiInvoker provideApiInvoker(UserCache sharePreferencesUserCacheImpl) {
+        return new ApiInvoker(sharePreferencesUserCacheImpl);
+    }
+
 
     @Provides
     @Singleton
@@ -88,6 +108,11 @@ public class ApplicationModule {
         return userCache;
     }
 
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
 
+    }
 }
 

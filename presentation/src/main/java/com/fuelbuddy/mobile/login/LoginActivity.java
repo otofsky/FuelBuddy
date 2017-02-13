@@ -22,7 +22,6 @@ import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerLoginComponent;
 import com.fuelbuddy.mobile.di.component.LoginComponent;
-import com.fuelbuddy.mobile.home.login.LoginFragment;
 
 import com.fuelbuddy.mobile.model.UserModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
@@ -72,7 +71,7 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
     @BindView(R.id.progressView)
     RelativeLayout rl_progress;
 
-    LoginFragment.FragmentNavigator mFragmentNavigator;
+
 
     ProgressDialog progress;
     private static final int RC_SIGN_IN = 007;

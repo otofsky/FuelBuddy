@@ -6,6 +6,8 @@ package com.fuelbuddy.mobile;
 
 public class Config {
 
+
+
     public static String FUEL_TYPE = "fuelType";
 
     public static String FUEL_TYPE_92 = "92";

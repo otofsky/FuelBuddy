@@ -10,7 +10,6 @@ import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationsUseCase;
 import com.fuelbuddy.interactor.LogOutUseCase;
-import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
@@ -32,16 +31,14 @@ import hugo.weaving.DebugLog;
 public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
     private final GetGasStationsUseCase mGetGasStationsUseCase;
-    private final UpdateFuelPricesUseCase mUpdateFuelPricesUseCase;
     private final LogOutUseCase logOutUseCase;
     private PositionMapper mPositionMapper;
 
 
     @Inject
-    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase,
-                            UpdateFuelPricesUseCase updateFuelPricesUseCase,LogOutUseCase logOutUseCase) {
+    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase
+            ,LogOutUseCase logOutUseCase) {
         this.mGetGasStationsUseCase = getGasStationsUseCase;
-        this.mUpdateFuelPricesUseCase = updateFuelPricesUseCase;
         this.logOutUseCase = logOutUseCase;
         mPositionMapper = new PositionMapper();
     }

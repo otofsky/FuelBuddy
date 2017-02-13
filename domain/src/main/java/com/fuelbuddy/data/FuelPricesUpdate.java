@@ -8,29 +8,37 @@ import java.io.File;
 
 public class FuelPricesUpdate {
 
-    private  String iD;
-    private  String userID;
-    private  Double price92;
-    private  Double price95;
-    private  Double priceDiesel;
+    private File file;
+    private String stationID;
+    private String userID;
+    private Double price92;
+    private Double price95;
+    private Double priceDiesel;
 
 
+    public FuelPricesUpdate(File file, String stationID, Double price92, Double price95, Double priceDiesel) {
 
-    public FuelPricesUpdate(String iD, Double price92, Double price95, Double priceDiesel) {
-        this.iD = iD;
+        this.file = file;
+        this.stationID = stationID;
         this.price92 = price92;
         this.price95 = price95;
         this.priceDiesel = priceDiesel;
+    }
 
+    public File getFile() {
+        return file;
+    }
 
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
-    public String getiD() {
-        return iD;
+    public String getStationID() {
+        return stationID;
     }
 
     public Double getPrice92() {
@@ -49,19 +57,6 @@ public class FuelPricesUpdate {
         return userID;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "FuelPricesUpdate{" +
-                "iD='" + iD + '\'' +
-                ", userID='" + userID + '\'' +
-                ", price92=" + price92 +
-                ", price95=" + price95 +
-                ", priceDiesel=" + priceDiesel +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +64,8 @@ public class FuelPricesUpdate {
 
         FuelPricesUpdate that = (FuelPricesUpdate) o;
 
-        if (iD != null ? !iD.equals(that.iD) : that.iD != null) return false;
+        if (file != null ? !file.equals(that.file) : that.file != null) return false;
+        if (stationID != null ? !stationID.equals(that.stationID) : that.stationID != null) return false;
         if (userID != null ? !userID.equals(that.userID) : that.userID != null) return false;
         if (price92 != null ? !price92.equals(that.price92) : that.price92 != null) return false;
         if (price95 != null ? !price95.equals(that.price95) : that.price95 != null) return false;
@@ -79,7 +75,8 @@ public class FuelPricesUpdate {
 
     @Override
     public int hashCode() {
-        int result = iD != null ? iD.hashCode() : 0;
+        int result = file != null ? file.hashCode() : 0;
+        result = 31 * result + (stationID != null ? stationID.hashCode() : 0);
         result = 31 * result + (userID != null ? userID.hashCode() : 0);
         result = 31 * result + (price92 != null ? price92.hashCode() : 0);
         result = 31 * result + (price95 != null ? price95.hashCode() : 0);

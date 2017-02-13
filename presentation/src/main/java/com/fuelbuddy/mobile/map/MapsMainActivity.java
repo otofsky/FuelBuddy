@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.event.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.map.fragment.DetailInfoFragment;
 import com.fuelbuddy.mobile.map.fragment.MapFragment;
@@ -161,13 +163,13 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
         }
+        if (event instanceof MissingLocationEvent) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -176,12 +178,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
                 return true;
-
-          /*  case R.id.actionLogOut:
-                mMapPresenter.logout();
-                AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
-                return true;
-*/
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -293,7 +289,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void logOut() {
-        Navigator.navigateToHomeActivity(this);
+      /*  Navigator.navigateToLoginActivity(this);
+        finish();*/
     }
 
     @Override

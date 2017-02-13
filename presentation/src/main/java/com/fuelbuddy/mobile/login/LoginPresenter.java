@@ -8,7 +8,7 @@ import com.fuelbuddy.data.net.RetrofitException;
 import com.fuelbuddy.interactor.AuthUseCase;
 import com.fuelbuddy.interactor.CheckUserUseCase;
 import com.fuelbuddy.interactor.DefaultSubscriber;
-import com.fuelbuddy.interactor.SetUserInCloudUseCae;
+import com.fuelbuddy.interactor.SetUserInCloudUseCase;
 import com.fuelbuddy.interactor.SetUserLocallyUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
@@ -32,19 +32,19 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     UserModelDataMapper userModelDataMapper;
     private SetUserLocallyUseCase mSetUserLocallyUseCase;
-    private SetUserInCloudUseCae mSetUserInCloudUseCae;
+    private SetUserInCloudUseCase mSetUserInCloudUseCase;
     private CheckUserUseCase mCheckUserUseCase;
     private AuthUseCase authUseCase;
     private UserModel mUserModel; //
 
     @Inject
     public LoginPresenter(@Named("setUserLocally") SetUserLocallyUseCase setUserLocallyUseCase,
-                          @Named("setUserInCloud") SetUserInCloudUseCae mSetUserInCloudUseCae,
+                          @Named("setUserInCloud") SetUserInCloudUseCase mSetUserInCloudUseCase,
                           CheckUserUseCase checkUserUseCase,
                           AuthUseCase authUseCase,
                           UserModelDataMapper userModelDataMapper) {
         this.mSetUserLocallyUseCase = setUserLocallyUseCase;
-        this.mSetUserInCloudUseCae = mSetUserInCloudUseCae;
+        this.mSetUserInCloudUseCase = mSetUserInCloudUseCase;
         this.mCheckUserUseCase = checkUserUseCase;
         this.authUseCase = authUseCase;
         this.userModelDataMapper = userModelDataMapper;
@@ -58,8 +58,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
 
     public void addNewUseInCloud(UserModel user) {
-        mSetUserInCloudUseCae.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserInCloudUseCae.execute(new AddUserInCloudSubscriber());
+        mSetUserInCloudUseCase.setUser(userModelDataMapper.transformToUser(user));
+        this.mSetUserInCloudUseCase.execute(new AddUserInCloudSubscriber());
     }
 
     public void addNewUserLocally(UserModel user) {

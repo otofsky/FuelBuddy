@@ -24,6 +24,7 @@ import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
+import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 
@@ -41,12 +42,15 @@ public class RestApiImpl implements RestApiService {
 
     GasStationEntityDataMapper mGasStationEntityDataMapper;
 
+    ApiInvoker mApiInvoker;
+
     public RestApiImpl(Context context) {
         this.context = context;
     }
 
 
-    public RestApiImpl(Context context, GasStationEntityDataMapper gasStationEntityDataMapper) {
+    public RestApiImpl( ApiInvoker apiInvoker,Context context, GasStationEntityDataMapper gasStationEntityDataMapper) {
+        this.mApiInvoker = apiInvoker;
         this.context = context;
         mGasStationEntityDataMapper = gasStationEntityDataMapper;
     }
@@ -68,33 +72,33 @@ public class RestApiImpl implements RestApiService {
 
     @Override
     public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
-        return ApiInvoker.getInstance().getGasStations(position.getLatitude(),position.getLongitude());
+        return mApiInvoker.getGasStations(position.getLatitude(),position.getLongitude());
     }
 
     @Override
-    public Observable<ResponseEntity> updateStation(String ID, String userID, Double price92, Double price95, Double priceDiesel) {
+    public Observable<ResponseEntity> updateStation(String ID, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
     //    return ApiInvoker.getInstance().uploadVideo(file);
-        return ApiInvoker.getInstance().updateStation(ID, userID, price92, price95, priceDiesel);
+        return mApiInvoker.updateStation(ID, userID,photoID, price92, price95, priceDiesel);
     }
 
     @Override
-    public Observable<ResponseEntity> uploadVideo(File file) {
-        return ApiInvoker.getInstance().uploadVideo(file);
+    public Observable<UploadResponseEntity> uploadVideo(File file) {
+        return mApiInvoker.uploadVideo(file);
     }
 
 
     public Observable<UserEntity> checkUser(String userId) {
-        return ApiInvoker.getInstance().checkUser(userId);
+        return mApiInvoker.checkUser(userId);
     }
 
     public Observable<ResponseEntity> auth(String userId, String email) {
-        return ApiInvoker.getInstance().auth(userId,email);
+        return mApiInvoker.auth(userId,email);
     }
 
 
     @Override
     public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return ApiInvoker.getInstance().addNewUser(userEntity.getUserID(),userEntity.getProfileName(),userEntity.getEmail());
+        return mApiInvoker.addNewUser(userEntity.getUserID(),userEntity.getProfileName(),userEntity.getEmail());
     }
 
 

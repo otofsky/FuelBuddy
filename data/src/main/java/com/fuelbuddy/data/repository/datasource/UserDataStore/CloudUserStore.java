@@ -70,4 +70,10 @@ CloudUserStore(RestApiService restApiService) {
     public Observable<Boolean> logOut() {
         return null;
     }
+
+    @Override
+    public Observable<ResponseEntity> putToken(String token) {
+        return null;
+    }
+
 }
