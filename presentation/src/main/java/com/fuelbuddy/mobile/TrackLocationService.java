@@ -22,6 +22,7 @@ import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
+import com.fuelbuddy.mobile.map.event.ResponseEvent;
 import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.util.LocationUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -150,12 +151,13 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError:  " + e.getMessage());
+                    public void onError(Throwable throwable) {
+                        EventBus.getDefault().post(new ResponseEvent(0,((Exception) throwable).getMessage()));
                     }
 
                     @Override
                     public void onNext(ResponseEntity responseEntity) {
+                        EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(),responseEntity.getMessage()));
                         Log.d(TAG, "onNext: " + responseEntity.toString());
                     }
                 });

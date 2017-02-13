@@ -27,6 +27,7 @@ import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
+import com.fuelbuddy.mobile.map.event.ResponseEvent;
 import com.fuelbuddy.mobile.map.fragment.DetailInfoFragment;
 import com.fuelbuddy.mobile.map.fragment.MapFragment;
 import com.fuelbuddy.mobile.map.fragment.PriceListFragment;
@@ -165,6 +166,9 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         }
         if (event instanceof MissingLocationEvent) {
             DialogFactory.createErrorDialog(this,this).show();
+        }
+        if (event instanceof ResponseEvent) {
+            DialogFactory.createSimpleSnackBarInfo(mToolbar,((ResponseEvent) event).getMessage());
         }
     }
 

@@ -127,17 +127,16 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
         info.setText(R.string.map_direction_btn_text);
-        updateBtn.setEnabled(true);
-        updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
-        /*if(isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())){
+
+        if(isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())){
             updateBtn.setEnabled(true);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
         }
         else{
             updateBtn.setEnabled(false);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.gray));
-            DialogFactory.createSimpleSnackBarInfo(mBottomSheet, "This price is not available for update");
-        }*/
+            DialogFactory.createSimpleSnackBarInfo(mBottomSheet, "This price is not available for update !");
+        }
     }
 
     public boolean isFuelPriceAvailableForUpdate(String lastUpDatePrice) {

@@ -10,6 +10,8 @@ import com.fuelbuddy.mobile.model.GasStationModel;
 public class OnPriceClickEvent extends Event {
     GasStationModel gasStationModel;
 
+
+
     public OnPriceClickEvent(GasStationModel gasStationModel) {
         this.gasStationModel = gasStationModel;
     }

@@ -79,6 +79,8 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
         this.logOutUseCase.execute(new LogOutSubscriber());
     }
 
+
+
     private void showErrorMessage(ErrorBundle errorBundle) {
         getMvpView().context();
         ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
