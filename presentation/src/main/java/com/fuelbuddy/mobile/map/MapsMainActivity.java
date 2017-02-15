@@ -57,7 +57,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks,Dialog.OnClickListener  ,  HasComponent<MapsComponent> {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, Dialog.OnClickListener, HasComponent<MapsComponent> {
     private static final String TAG = MapsMainActivity.class.getCanonicalName();
 
     @Inject
@@ -76,7 +76,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
 
 
-    //  private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.951869964599610"), Double.valueOf("8.514181137084961"));
+    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("52.229770"), Double.valueOf("21.011780"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -159,16 +159,17 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         Log.d(TAG, "onEventMainThread:  ");
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
-            mMapPresenter.submitSearch(mCurrentPositionLatLng);
+            //mMapPresenter.submitSearch(mCurrentPositionLatLng);
+            mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
         }
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
         }
         if (event instanceof MissingLocationEvent) {
-            DialogFactory.createErrorDialog(this,this).show();
+            DialogFactory.createErrorDialog(this, this).show();
         }
         if (event instanceof ResponseEvent) {
-            DialogFactory.createSimpleSnackBarInfo(mToolbar,((ResponseEvent) event).getMessage());
+            DialogFactory.createSimpleSnackBarInfo(mToolbar, ((ResponseEvent) event).getMessage());
         }
     }
 
@@ -246,17 +247,21 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         startService(new Intent(this, TrackLocationService.class));
     }
 
-
     private void stopTracking() {
         Log.d(TAG, "stopTracking: ");
         stopService(new Intent(this, TrackLocationService.class));
     }
 
-
     @Override
     public void showGasStations(List<GasStationModel> gasStationModelList) {
-        mPriceListFragment.showFuelPriceBars(gasStationModelList);
-        mMapFragment.showGasStationPositions(gasStationModelList);
+        if (!gasStationModelList.isEmpty()) {
+            mPriceListFragment.showFuelPriceBars(gasStationModelList);
+            mMapFragment.showGasStationPositions(gasStationModelList);
+        } else {
+            //mMapFragment.showClientPositions(mCurrentPositionLatLng);
+            mMapFragment.showClientPositions(fakeCurrentPositionLatLng);
+            showError(getString(R.string.error_massage_no_gas_stations));
+        }
     }
 
     @Override

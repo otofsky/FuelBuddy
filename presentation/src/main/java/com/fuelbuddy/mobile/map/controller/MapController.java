@@ -114,6 +114,13 @@ public class MapController implements MapInterface {
     }
 
     @Override
+    public void setClientPositions(LatLng latLng) {
+        if (mMap != null) {
+            centerOnClientPosition(latLng);
+        }
+    }
+
+    @Override
     public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
         this.gasStationModelList = gasStationModelList;
         if (mMap != null) {
@@ -178,7 +185,6 @@ public class MapController implements MapInterface {
     private LatLng initSelectedMarkerEntryList(List<GasStationModel> gasStationModelList, String id) {
         LatLng selectedLatLng = null;
         for (GasStationModel gs : gasStationModelList) {
-
             LatLng latLng = getLatLng(gs);
             MarkerModel markerModel = new MarkerModel(gs, null);
             MarkerOptions markerOptions = null;
@@ -218,32 +224,14 @@ public class MapController implements MapInterface {
         LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         for (LatLng latLng : listLatLng) {
             bounds.include(latLng);
-
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200));
-
-   /*     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-        } else {
-            mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        }*/
-
-
-
-
-
-      /*  if (listLatLng != null && listLatLng.size() == 1) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(listLatLng.get(0), MapUtil.ZOOM));
-        } else if (listLatLng != null && listLatLng.size() > 1) {
-            buildLatLngList(listLatLng);
-        }*/
     }
 
-    private void buildLatLngList(List<LatLng> listLatLng) {
-        final LatLngBounds.Builder builder = LatLngBounds.builder();
-        for (int i = 0; i < listLatLng.size(); i++) {
-            builder.include(listLatLng.get(i));
-        }
+    public void centerOnClientPosition(LatLng latLng) {
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        bounds.include(latLng);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200));
     }
 
     @NonNull

@@ -47,6 +47,7 @@
     <string name="start_location_message">Make sure the GPS is turned on</string>
     <string name="start_location_positive_button">Open location settings</string>
     <string name="start_location_negative_message">Cancel</string>
+    <string name="error_massage_no_gas_stations">Sorry! there are no gas stations within 5km distance</string>
 
 
 </resources>

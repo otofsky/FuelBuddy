@@ -28,6 +28,6 @@ public interface MapInterface {
 
     public void centerOnGasStation(boolean animate, LatLng latLng);
 
-
+    public void setClientPositions(LatLng latLng);
 
 }

@@ -10,6 +10,7 @@ import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.GetGasStationsUseCase;
 import com.fuelbuddy.interactor.LogOutUseCase;
+import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;

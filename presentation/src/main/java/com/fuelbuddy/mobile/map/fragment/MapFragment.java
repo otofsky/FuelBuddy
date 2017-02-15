@@ -106,6 +106,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mapController.setFuelStationsPositions(gasStationModelList, "");
     }
 
+    public void showClientPositions(LatLng latLng) {
+        mapController.clear();
+        mapController.setClientPositions(latLng);
+    }
+
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
 

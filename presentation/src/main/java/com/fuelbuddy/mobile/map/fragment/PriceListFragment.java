@@ -35,10 +35,19 @@ import butterknife.Unbinder;
 
 public class PriceListFragment extends BaseFragment implements PriceListMvpView {
 
+    OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
+        @Override
+        public void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate) {
+            EventBus.getDefault().post(new OnPriceClickEvent(gasStationModel));
+        }
+    };
+
     FuelPriceController mFuelPriceController;
     @BindView(R.id.fuelPriceHolderView)
     LinearLayout fuelPriceHolderView;
     Unbinder mUnbinder;
+
+
 
     public static PriceListFragment newInstance(FuelPriceMode fuelPriceMode) {
         Bundle args = new Bundle();
@@ -92,12 +101,6 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
     }
 
-    OnFuelPriceClickListener mOnFuelPriceClickListener = new OnFuelPriceClickListener() {
-        @Override
-        public void onFuelPriceClick(GasStationModel gasStationModel, FuelPriceUpdate fuelPriceUpdate) {
-         EventBus.getDefault().post(new OnPriceClickEvent(gasStationModel));
-        }
-    };
 
 
     @Override
