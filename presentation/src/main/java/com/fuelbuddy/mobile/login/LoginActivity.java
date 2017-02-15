@@ -194,6 +194,8 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
         progress.dismiss();
     }
 
+    //{"id":"10154705524014127","name":"Zbigniew Juroszek","email":"zbigniewjuroszek@interia.pl","gender":"male","birthday":"02\/08\/1983"}
+
     private void doFacebookLogin() {
         progress = ProgressDialog.show(this, "", getString(R.string.fb_login_text), true);
         ArrayList<String> permissions = LoginConfig.getDefaultFacebookPermissions();

@@ -1,21 +1,15 @@
 package com.fuelbuddy.mobile.map.fragment;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.controller.MapInterface;
-import com.fuelbuddy.mobile.map.event.Event;
+import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
-import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
-import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.MapUtil;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,8 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import hugo.weaving.DebugLog;
 

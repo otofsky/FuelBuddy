@@ -24,19 +24,43 @@ public class PriceHelper {
     }
 
 
-    public static String generateFuelPrice(String fuelType, String price) {
+    public static String generateFuelPriceWithCurrency(String fuelType, String price) {
         StringBuilder sb = new StringBuilder(fuelType);
         sb.append(".");
         sb.append("  ");
+        sb.append(toFormattedPriceWithCurrency(price));
+        return sb.toString();
+    }
+
+    public static String generateFuelPrice( String price) {
+        StringBuilder sb = new StringBuilder();
         sb.append(toFormattedPrice(price));
         return sb.toString();
     }
 
-    public static String toFormattedPrice(String price) {
-        return toFormattedPrice(price, currentCurrency);
+    public static String toFormattedPriceWithCurrency(String price) {
+        return toFormattedPriceWithCurrency(price, currentCurrency);
     }
 
-    private static String toFormattedPrice(String price, String currency) {
+
+
+    private static String toFormattedPrice(String price) {
+        if (price != null ) {
+            try {
+                double dPrice = new BigDecimal(price).doubleValue();
+                String to = nf.format(dPrice);
+                return to;
+            } catch (NumberFormatException e) {
+                Log.e("NumberFormatException", "" + e.getMessage());
+            } catch (NullPointerException e) {
+                Log.e("NumberFormatException", "" + e.getMessage());
+            }
+        }
+
+        return UNKOWN_PRICE;
+    }
+
+    private static String toFormattedPriceWithCurrency(String price, String currency) {
         if (price != null && currency != null) {
             try {
                 double dPrice = new BigDecimal(price).doubleValue();

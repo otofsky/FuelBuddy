@@ -40,6 +40,7 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, HomeActivity.class);
     }

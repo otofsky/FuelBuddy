@@ -11,6 +11,8 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -27,16 +29,30 @@ public interface ApiInterface {
     Observable<List<GasStationEntity>> getGasStations( @Query("latitude") String latitude,
                                                       @Query("longitude") String longitude);
 
+
+    //fuelbuddy.dk/ws/updatestation?userID=5&ID=512&price92=1.20&price95=1.35&priceDiesel=1.1&photoID=2
     @GET("updatestation?")
-    Observable<ResponseEntity> updateStation(@Query("ID") String iD,
-                                             @Query("userID") String userID,
-                                             @Query("photoID") String photoID,
-                                             @Query("price92") Double price92,
-                                             @Query("price95") Double price95,
-                                             @Query("priceDiesel") Double priceDiesel);
+    Observable<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
+                                            @Query("userID") String userID,
+                                            @Query("photoID") String photoID,
+                                            @Query("price92") Double price92,
+                                            @Query("price95") Double price95,
+                                            @Query("priceDiesel") Double priceDiesel);
     @Multipart
     @POST("upload?")
-    Observable<UploadResponseEntity> updateStation(@Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header,@Part("description") RequestBody description, @Part MultipartBody.Part file);
+
+    @GET("updatestation?")
+    Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
+                                            @Query("userID") String userID,
+                                            @Query("photoID") String photoID,
+                                            @Query("price92") Double price92,
+                                            @Query("price95") Double price95,
+                                            @Query("priceDiesel") Double priceDiesel,  Callback<ResponseEntity> callback);
+    @Multipart
+    @POST("upload?")
+    Call<Void> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file, Callback<UploadResponseEntity> callback );
+
 
     @GET("adduser?")
     Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

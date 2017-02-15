@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map.event;
 
+import com.fuelbuddy.mobile.base.Event;
 import com.google.android.gms.maps.model.LatLng;
 
 /**

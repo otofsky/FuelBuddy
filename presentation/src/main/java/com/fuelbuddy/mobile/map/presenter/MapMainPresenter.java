@@ -36,8 +36,7 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
 
     @Inject
-    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase
-            ,LogOutUseCase logOutUseCase) {
+    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase,LogOutUseCase logOutUseCase) {
         this.mGetGasStationsUseCase = getGasStationsUseCase;
         this.logOutUseCase = logOutUseCase;
         mPositionMapper = new PositionMapper();
@@ -79,6 +78,8 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
         getMvpView().showLoading();
         this.logOutUseCase.execute(new LogOutSubscriber());
     }
+
+
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         getMvpView().context();

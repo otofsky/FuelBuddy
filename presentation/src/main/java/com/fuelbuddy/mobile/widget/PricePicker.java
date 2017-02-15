@@ -112,7 +112,7 @@ public class PricePicker extends LinearLayout implements SeekBar.OnSeekBarChange
         //this.seekBarPanel.setVisibility(z ? 0 : 8);
         this.checkBox.setText(fuelModel.getFuelName());
 
-        priceView.setText(PriceHelper.toFormattedPrice(fuelModel.getPrice()));
+        priceView.setText(PriceHelper.toFormattedPriceWithCurrency(fuelModel.getPrice()));
 
 
         //this.checkBox.setTextColor(settings.getTextColor());

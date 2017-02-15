@@ -1,7 +1,9 @@
 package com.fuelbuddy.mobile.map;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -9,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -22,17 +23,17 @@ import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
-import com.fuelbuddy.mobile.map.event.Event;
+import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
+import com.fuelbuddy.mobile.map.event.ResponseEvent;
 import com.fuelbuddy.mobile.map.fragment.DetailInfoFragment;
 import com.fuelbuddy.mobile.map.fragment.MapFragment;
 import com.fuelbuddy.mobile.map.fragment.PriceListFragment;
 import com.fuelbuddy.mobile.map.presenter.MapMainPresenter;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
-import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
@@ -56,7 +57,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, HasComponent<MapsComponent> {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks,Dialog.OnClickListener  ,  HasComponent<MapsComponent> {
     private static final String TAG = MapsMainActivity.class.getCanonicalName();
 
     @Inject
@@ -164,12 +165,12 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
             Log.d(TAG, "onEventMainThread: ");
         }
         if (event instanceof MissingLocationEvent) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+            DialogFactory.createErrorDialog(this,this).show();
+        }
+        if (event instanceof ResponseEvent) {
+            DialogFactory.createSimpleSnackBarInfo(mToolbar,((ResponseEvent) event).getMessage());
         }
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -259,6 +260,12 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     @Override
+    public void onClick(DialogInterface dialog, int which) {
+        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent);
+    }
+
+    @Override
     public void showSuccessMessage(String message) {
         // DialogFactory.createSimpleSnackBarInfo(fuelPriceHolderView, message);
     }
@@ -331,4 +338,5 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     public MapsComponent getComponent() {
         return mMapsComponent;
     }
+
 }

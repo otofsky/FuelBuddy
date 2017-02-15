@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -35,10 +33,10 @@ public final class DialogFactory {
 
     public static Dialog createErrorDialog(Context context, Dialog.OnClickListener onClickListener) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
-                .setTitle("Gps is not available")
-                .setMessage("Make sure the GPS is turned on")
-                .setPositiveButton("Yes",onClickListener)
-                .setNegativeButton("No",null);
+                .setTitle(R.string.start_location_title)
+                .setMessage(R.string.start_location_message)
+                .setPositiveButton(R.string.start_location_positive_button,onClickListener)
+                .setNegativeButton(R.string.start_location_negative_message,null);
         return alertDialog.create();
     }
 

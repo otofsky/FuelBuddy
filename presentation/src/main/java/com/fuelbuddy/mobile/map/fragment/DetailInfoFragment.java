@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.fuelbuddy.mobile.map.presenter.DetailInfoPresenter;
 import com.fuelbuddy.mobile.map.view.DetailInfoView;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
+import com.fuelbuddy.mobile.util.DateHelper;
+import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.MapUtil;
 import com.fuelbuddy.mobile.util.StringHelper;
 
@@ -114,14 +117,40 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     public void showTitleOnly(GasStationModel gasStationModel) {
         mGasStationModel = gasStationModel;
-        initPriceDetailViews(mGasStationModel);
+        initGasStationDetailViews(mGasStationModel);
         setCollapsedOnly();
     }
 
-    private void initPriceDetailViews(GasStationModel gasStationModel) {
+
+
+    private void initGasStationDetailViews(GasStationModel gasStationModel) {
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
         info.setText(R.string.map_direction_btn_text);
+
+        if(isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())){
+            updateBtn.setEnabled(true);
+            updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
+        }
+        else{
+            updateBtn.setEnabled(false);
+            updateBtn.setBackgroundColor(getResources().getColor(R.color.gray));
+            DialogFactory.createSimpleSnackBarInfo(mBottomSheet, "This price is not available for update !");
+        }
+    }
+
+    public boolean isFuelPriceAvailableForUpdate(String lastUpDatePrice) {
+        int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
+        if (numOfHours < 2) {
+            Log.d("is available", "isFuelPriceAvailableForUpdate: false");
+            return false;
+        } else if (numOfHours > 2 && numOfHours < 4) {
+            Log.d("is available", "isFuelPriceAvailableForUpdate: true");
+            return true;
+        } else {
+            Log.d("is available", "isFuelPriceAvailableForUpdate: true");
+            return true;
+        }
     }
 
     private void setCollapsedOnly() {
@@ -135,8 +164,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         navigateBtn.setVisibility(View.GONE);
     }
 
-    private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback
-            = new BottomSheetBehavior.BottomSheetCallback() {
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
         public void onStateChanged(@NonNull final View bottomSheet, final int newState) {

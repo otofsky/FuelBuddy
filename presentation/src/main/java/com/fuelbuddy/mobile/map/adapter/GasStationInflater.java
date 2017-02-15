@@ -61,18 +61,18 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         switch (fuelPriceMode) {
             case BENZIN_92:
                 init92FuelPriceView(viewHolder, gasStationModel.getPrice92(),
-                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_92,
+                        PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_92,
                                 gasStationModel.getPrice92()));
                 setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case BENZIN_95:
                 init95FuelPriceView(viewHolder, gasStationModel.getPrice95(),
-                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
+                        PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
                 setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case DIESEL:
                 initDieselFuelPriceView(viewHolder, gasStationModel.getPriceDiesel(),
-                        PriceHelper.generateFuelPrice(Config.FUEL_TYPE_DIESEL,
+                        PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_DIESEL,
                                 gasStationModel.getPriceDiesel()));
                 setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;

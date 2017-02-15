@@ -20,20 +20,34 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
+import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
+import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
+import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
+import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
+import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.FileUtils;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
+import com.fuelbuddy.mobile.util.PriceHelper;
+import com.fuelbuddy.mobile.util.StringHelper;
+import com.fuelbuddy.validator.FileValidator;
 import com.gun0912.tedpermission.PermissionListener;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,7 +95,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     GasStationModel gasStationModel;
 
-    String videoPath;
     Uri videoUri;
 
     Unbinder mUnbinder;
@@ -149,6 +162,18 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         stationAddress.setText(gasStationModel.getGasStationName());
         info.setText(R.string.map_direction_btn_text);
         info.setText(R.string.update_price_btn_text);
+        gasStationModel.toString();
+
+        /*initFuelPriceView(fuelInput92, gasStationModel.getPrice92());
+        initFuelPriceView(fuelInput95, gasStationModel.getPrice95());
+        initFuelPriceView(fuelInputDiesel, gasStationModel.getPriceDiesel());*/
+    }
+
+    private void initFuelPriceView(EditText editText, String price) {
+        if (!StringHelper.isNullOrEmpty(price)) {
+            Log.d("Price ", "initFuelPriceView: "  + price);
+            editText.setText(PriceHelper.generateFuelPrice(price));
+        }
     }
 
     private void initPresenter() {
@@ -196,6 +221,15 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         openCamera();
     }
 
+    @Subscribe
+    public void onEventMainThread(Event event) {
+        if (event instanceof OnReturnToMapEvent) {
+            onBackPressed();
+            AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.send, menu);
@@ -230,32 +264,17 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
                 videoUri = data.getData();
-                getRealPathFromURI(videoUri);
             }
         }
     }
 
-    private void getRealPathFromURI(Uri contentUri) {
-        videoPath = "";
-        if (contentUri != null) {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
-            Cursor cursor = cursorLoader.loadInBackground();
-            if (cursor != null) {
-                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                videoPath = cursor.getString(columnIndex);
-                cursor.close();
-            } else {
-                videoPath = contentUri.getPath();
-                cursor.close();
-            }
-        }
-    }
-    
     @Override
-    public void updatePrice() {
-
+    public void updatePrice(FuelPricesUpdateEntry fuelPricesUpdateEntry, File file) {
+        Intent i = new Intent(this, TrackLocationService.class);
+        i.putExtra(TrackLocationService.PARAM_SYNC_TYPE,TrackLocationService.PARAM_UPDATE_FUEL);
+        i.putExtra(TrackLocationService.FUEL_PRICE_UPDATE_TASK, fuelPricesUpdateEntry);
+        i.putExtra(TrackLocationService.VIDEO_FILE_TO_UPDATE, file);
+        startService(i);
     }
 
     @Override
@@ -288,13 +307,13 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     public void onStart() {
         super.onStart();
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
