@@ -3,6 +3,7 @@ package com.fuelbuddy.mobile.editprice;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -302,6 +303,16 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public void showMap() {
         onBackPressed();
         AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
+    }
+
+    @Override
+    public void showConfirmationMessage(final FuelPricesUpdateEntry fuelPricesUpdateEntry, final File file) {
+        DialogFactory.createSimpleOkDialog(this, "Price Update", "Now entered price need to be veryfied by our crew. As soon as they will be ready You will receive confirmation email", "Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                updatePrice(fuelPricesUpdateEntry,file);
+            }
+        }).show();
     }
 
     @Override

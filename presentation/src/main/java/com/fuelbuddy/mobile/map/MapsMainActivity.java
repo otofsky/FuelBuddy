@@ -76,7 +76,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
 
 
-    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("52.229770"), Double.valueOf("21.011780"));
+   // private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("52.229770"), Double.valueOf("21.011780"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -159,8 +159,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         Log.d(TAG, "onEventMainThread:  ");
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
-            //mMapPresenter.submitSearch(mCurrentPositionLatLng);
-            mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
+            mMapPresenter.submitSearch(mCurrentPositionLatLng);
+            //mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
         }
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
@@ -259,7 +259,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
             mMapFragment.showGasStationPositions(gasStationModelList);
         } else {
             //mMapFragment.showClientPositions(mCurrentPositionLatLng);
-            mMapFragment.showClientPositions(fakeCurrentPositionLatLng);
+            //mMapFragment.showClientPositions(fakeCurrentPositionLatLng);
             showError(getString(R.string.error_massage_no_gas_stations));
         }
     }

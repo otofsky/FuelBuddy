@@ -103,7 +103,8 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
         @DebugLog
         @Override
         public void onNext(FuelPricesUpdate fuelPricesUpdate) {
-            getMvpView().updatePrice(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
+            getMvpView().showConfirmationMessage(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
+            //getMvpView().updatePrice(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
             getMvpView().hideLoading();
         }
     }
