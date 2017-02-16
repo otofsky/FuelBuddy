@@ -22,6 +22,14 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/distanceTv"
+            style="@style/TextViewFuelPriceDetail"
+            tools:text="2.4 km"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <RelativeLayout
             android:id="@+id/locationView"
             android:layout_width="match_parent"

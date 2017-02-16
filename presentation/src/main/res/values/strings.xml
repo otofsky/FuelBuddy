@@ -50,6 +50,7 @@
     <string name="error_massage_no_gas_stations">Sorry! there are no gas stations within 5km distance</string>
     <string name="price_update_confirmation_dialog">Entered pricse need to be veryfied by our crew. As soon as they will be ready, You will receive confirmation email !</string>
     <string name="price_update_dialog_title">Price Update</string>
+    <string name="price_info_up_to_date">This price is up to date!</string>
 
 
 </resources>

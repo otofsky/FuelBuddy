@@ -135,7 +135,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         else{
             updateBtn.setEnabled(false);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.gray));
-            DialogFactory.createSimpleSnackBarInfo(mBottomSheet, "This price is not available for update !");
+            DialogFactory.createSimpleSnackBarInfo(mBottomSheet, getString(R.string.price_info_up_to_date));
         }
     }
 
