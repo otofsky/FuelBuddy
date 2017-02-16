@@ -18,6 +18,7 @@ public final class DialogFactory {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
+                 .setCancelable(false)
                 .setNeutralButton(neutralBtnMessage, listener);
         return alertDialog.create();
     }

@@ -307,7 +307,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void showConfirmationMessage(final FuelPricesUpdateEntry fuelPricesUpdateEntry, final File file) {
-        DialogFactory.createSimpleOkDialog(this, "Price Update", "Now entered price need to be veryfied by our crew. As soon as they will be ready You will receive confirmation email", "Ok", new DialogInterface.OnClickListener() {
+        DialogFactory.createSimpleOkDialog(this, getString(R.string.price_update_dialog_title),
+                getString(R.string.price_update_confirmation_dialog),
+                getString(R.string.dialog_action_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 updatePrice(fuelPricesUpdateEntry,file);
