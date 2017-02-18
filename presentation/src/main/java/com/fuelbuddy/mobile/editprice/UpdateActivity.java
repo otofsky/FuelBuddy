@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fuelbuddy.data.FuelPricesUpdate;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
@@ -31,9 +28,6 @@ import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerUpdateComponent;
 import com.fuelbuddy.mobile.di.component.UpdateComponent;
 import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
-import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
-import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
-import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
@@ -43,9 +37,9 @@ import com.fuelbuddy.mobile.util.FileUtils;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.fuelbuddy.mobile.util.PriceHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
-import com.fuelbuddy.validator.FileValidator;
 import com.gun0912.tedpermission.PermissionListener;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
+import com.redmadrobot.inputmask.PolyMaskTextChangedListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,7 +57,7 @@ import hugo.weaving.DebugLog;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class UpdateActivity extends BaseActivity implements UpdateView, View.OnClickListener, HasComponent<UpdateComponent> {
+public class UpdateActivity extends BaseActivity implements UpdateView, View.OnClickListener, HasComponent<UpdateComponent>, PolyMaskTextChangedListener.OnTextEndListener {
 
 
     private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
@@ -103,6 +97,8 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     private UpdateComponent mUpdateComponent;
 
+    // PolyMaskTextChangedListener.OnTextEndListener onTextEndListener = new OnTextE
+
 
     MaskedTextChangedListener.ValueListener valueListener = new MaskedTextChangedListener.ValueListener() {
         @Override
@@ -132,15 +128,16 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void init92PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener, this,R.drawable.border_line_gray);
         fuelInput92.addTextChangedListener(listener);
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
         fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
+
     }
 
     private void init95PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null, valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null, valueListener, this,R.drawable.border_line_gray);
         fuelInput95.addTextChangedListener(listener);
         fuelInput95.setOnFocusChangeListener(listener);
         fuelInput95.setHint(listener.placeholder());
@@ -148,7 +145,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void initDieselPriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null, valueListener);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null, valueListener, this,R.drawable.border_line_gray);
         fuelInputDiesel.addTextChangedListener(listener);
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
@@ -172,7 +169,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     private void initFuelPriceView(EditText editText, String price) {
         if (!StringHelper.isNullOrEmpty(price)) {
-            Log.d("Price ", "initFuelPriceView: "  + price);
+            Log.d("Price ", "initFuelPriceView: " + price);
             editText.setText(PriceHelper.generateFuelPrice(price));
         }
     }
@@ -272,7 +269,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     public void updatePrice(FuelPricesUpdateEntry fuelPricesUpdateEntry, File file) {
         Intent i = new Intent(this, TrackLocationService.class);
-        i.putExtra(TrackLocationService.PARAM_SYNC_TYPE,TrackLocationService.PARAM_UPDATE_FUEL);
+        i.putExtra(TrackLocationService.PARAM_SYNC_TYPE, TrackLocationService.PARAM_UPDATE_FUEL);
         i.putExtra(TrackLocationService.FUEL_PRICE_UPDATE_TASK, fuelPricesUpdateEntry);
         i.putExtra(TrackLocationService.VIDEO_FILE_TO_UPDATE, file);
         startService(i);
@@ -282,6 +279,12 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public void showVideoError() {
         DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.video_not_selected_info));
 
+    }
+
+    @Override
+    public void onTextEndChanged() {
+        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
+        fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
     }
 
     @Override
@@ -310,11 +313,11 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         DialogFactory.createSimpleOkDialog(this, getString(R.string.price_update_dialog_title),
                 getString(R.string.price_update_confirmation_dialog),
                 getString(R.string.dialog_action_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                updatePrice(fuelPricesUpdateEntry,file);
-            }
-        }).show();
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        updatePrice(fuelPricesUpdateEntry, file);
+                    }
+                }).show();
     }
 
     @Override
@@ -368,6 +371,5 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public UpdateComponent getComponent() {
         return mUpdateComponent;
     }
-
 
 }
