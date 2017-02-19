@@ -97,7 +97,9 @@
 
                         <EditText
                             android:id="@+id/fuelInput95"
-                            android:inputType="phone"
+                            android:inputType="number"
+                            android:digits="0123456789 -."
+                            android:imeOptions="actionNext"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
                             android:gravity="center"
@@ -132,7 +134,9 @@
 
                         <EditText
                             android:id="@+id/fuelInputDiesel"
-                            android:inputType="phone"
+                            android:inputType="number"
+                            android:digits="0123456789 -."
+                            android:imeOptions="actionNext"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
                             android:gravity="center"
@@ -172,10 +176,11 @@
 
                         <EditText
                             android:id="@+id/fuelInput92"
-                            android:inputType="phone"
+                            android:inputType="number"
+                            android:digits="0123456789 -."
+                            android:imeOptions="actionNext"
                             android:layout_width="100dp"
                             android:layout_height="40dp"
-
                             android:gravity="center"
                             android:layout_alignParentRight="true"
                             android:background="@color/white"

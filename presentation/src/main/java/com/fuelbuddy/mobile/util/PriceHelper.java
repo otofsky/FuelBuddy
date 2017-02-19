@@ -32,7 +32,7 @@ public class PriceHelper {
         return sb.toString();
     }
 
-    public static String generateFuelPrice( String price) {
+    public static String generateFuelPrice(String price) {
         StringBuilder sb = new StringBuilder();
         sb.append(toFormattedPrice(price));
         return sb.toString();
@@ -43,21 +43,24 @@ public class PriceHelper {
     }
 
 
-
     private static String toFormattedPrice(String price) {
-        if (price != null ) {
+        String to = UNKOWN_PRICE;
+        if (price != null) {
             try {
                 double dPrice = new BigDecimal(price).doubleValue();
-                String to = nf.format(dPrice);
-                return to;
+                to = nf.format(dPrice);
+                to = to.replace("\u00A4", "");
+                to = to.replace(",", ".");
+                StringBuilder sb = new StringBuilder(to);
+                sb.deleteCharAt(to.length()-1);
+                to = sb.toString();
             } catch (NumberFormatException e) {
                 Log.e("NumberFormatException", "" + e.getMessage());
             } catch (NullPointerException e) {
                 Log.e("NumberFormatException", "" + e.getMessage());
             }
         }
-
-        return UNKOWN_PRICE;
+        return to;
     }
 
     private static String toFormattedPriceWithCurrency(String price, String currency) {

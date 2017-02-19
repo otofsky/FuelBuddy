@@ -130,9 +130,11 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     private void init92PriceView() {
         final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener, this,R.drawable.border_line_gray);
         fuelInput92.addTextChangedListener(listener);
+        fuelInput92.requestFocus();
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
         fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
+
 
     }
 
@@ -162,15 +164,18 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         info.setText(R.string.update_price_btn_text);
         gasStationModel.toString();
 
-        /*initFuelPriceView(fuelInput92, gasStationModel.getPrice92());
+        gasStationModel.getPrice92();
+        initFuelPriceView(fuelInput92, gasStationModel.getPrice92());
         initFuelPriceView(fuelInput95, gasStationModel.getPrice95());
-        initFuelPriceView(fuelInputDiesel, gasStationModel.getPriceDiesel());*/
+        initFuelPriceView(fuelInputDiesel, gasStationModel.getPriceDiesel());
     }
 
     private void initFuelPriceView(EditText editText, String price) {
         if (!StringHelper.isNullOrEmpty(price)) {
-            Log.d("Price ", "initFuelPriceView: " + price);
+
+            PriceHelper.generateFuelPrice(price);
             editText.setText(PriceHelper.generateFuelPrice(price));
+            Log.d("Price ", "initFuelPriceView: " + PriceHelper.generateFuelPrice(price));
         }
     }
 
