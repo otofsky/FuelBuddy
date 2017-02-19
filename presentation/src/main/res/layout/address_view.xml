@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/detailSectionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,10 @@
             tools:text="2.4 km"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/stationNameTv"
+            android:layout_toEndOf="@+id/stationNameTv" />
 
         <RelativeLayout
             android:id="@+id/locationView"
@@ -70,6 +73,8 @@
                 android:textColor="@color/white" />
         </RelativeLayout>
 
-    </LinearLayout>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.MapUtil;
+import com.fuelbuddy.mobile.util.Precision;
 import com.fuelbuddy.mobile.util.StringHelper;
 
 import javax.inject.Inject;
@@ -55,6 +56,9 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     @BindView(R.id.stationNameTv)
     TextView gasStationName;
+
+    @BindView(R.id.distanceTv)
+    TextView distance;
 
     @BindView(R.id.stationAddressTv)
     TextView stationAddress;
@@ -110,7 +114,8 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         hide();
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
     }
@@ -122,17 +127,21 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     }
 
 
-
     private void initGasStationDetailViews(GasStationModel gasStationModel) {
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
+        double dist = Double.valueOf(gasStationModel.getDistance());
+
+        double rounded = Precision.round(dist, 2);
+        String.valueOf(rounded);
+
+        distance.setText(String.valueOf(rounded).replace(".",",") + " km");
         info.setText(R.string.map_direction_btn_text);
 
-        if(isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())){
+        if (isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())) {
             updateBtn.setEnabled(true);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
-        }
-        else{
+        } else {
             updateBtn.setEnabled(false);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.gray));
             DialogFactory.createSimpleSnackBarInfo(mBottomSheet, getString(R.string.price_info_up_to_date));
