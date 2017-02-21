@@ -17,6 +17,8 @@ import java.util.*
 class PolyMaskTextChangedListener(
         format: String,
         resource: Int?,
+        resourceEnd: Int?,
+
         affineFormats: List<String>,
         autocomplete: Boolean,
         field: EditText,
@@ -25,7 +27,7 @@ class PolyMaskTextChangedListener(
         onTextEndListener: MaskedTextChangedListener.OnTextEndListener?)
     :
 
-        MaskedTextChangedListener(format, autocomplete, field, listener, valueListener, onTextEndListener, resource as Int) {
+        MaskedTextChangedListener(format, autocomplete, field, listener, valueListener, onTextEndListener, resource as Int,resourceEnd as Int) {
 
 
     var affineFormats: List<String>

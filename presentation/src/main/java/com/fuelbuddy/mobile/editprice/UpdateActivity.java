@@ -132,30 +132,33 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     private void init92PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener, this,R.drawable.border_line_gray);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput92, null, valueListener, this,
+                R.drawable.border_line_gray,R.drawable.border_line_green);
         fuelInput92.addTextChangedListener(listener);
         fuelInput92.requestFocus();
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
-        fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
+        //fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
 
 
     }
 
     private void init95PriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null, valueListener, this,R.drawable.border_line_gray);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInput95, null, valueListener, this,
+                R.drawable.border_line_gray,R.drawable.border_line_green);
         fuelInput95.addTextChangedListener(listener);
         fuelInput95.setOnFocusChangeListener(listener);
         fuelInput95.setHint(listener.placeholder());
-        fuelInput95.setBackgroundResource(R.drawable.border_line_gray);
+       // fuelInput95.setBackgroundResource(R.drawable.border_line_gray);
     }
 
     private void initDieselPriceView() {
-        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null, valueListener, this,R.drawable.border_line_gray);
+        final MaskedTextChangedListener listener = new MaskedTextChangedListener("[00].[00]", true, fuelInputDiesel, null, valueListener,
+                this, R.drawable.border_line_gray,R.drawable.border_line_green);
         fuelInputDiesel.addTextChangedListener(listener);
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
-        fuelInputDiesel.setBackgroundResource(R.drawable.border_line_gray);
+       // fuelInputDiesel.setBackgroundResource(R.drawable.border_line_gray);
     }
 
 
@@ -169,7 +172,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         info.setText(R.string.update_price_btn_text);
 
 
-
         initFuelPriceView(fuelInput92, gasStationModel.getPrice92());
         initFuelPriceView(fuelInput95, gasStationModel.getPrice95());
         initFuelPriceView(fuelInputDiesel, gasStationModel.getPriceDiesel());
@@ -177,11 +179,14 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     private void initFuelPriceView(EditText editText, String price) {
         if (!StringHelper.isNullOrEmpty(price)) {
-
             PriceHelper.generateFuelPrice(price);
             editText.setText(PriceHelper.generateFuelPrice(price));
-            Log.d("Price ", "initFuelPriceView: " + PriceHelper.generateFuelPrice(price));
+            initGreenState(editText);
         }
+    }
+
+    private void initGreenState(EditText editText) {
+        editText.setBackgroundResource(R.drawable.border_line_green);
     }
 
     private void initPresenter() {
@@ -294,7 +299,19 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     public void onTextEndChanged() {
         Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
-        fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
+        //fuelInput92.setBackgroundResource(R.drawable.border_line_green);
+    }
+
+    @Override
+    public void onTextNotFinished() {
+        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
+        //fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
+    }
+
+    @Override
+    public void onTextError() {
+        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
+        //fuelInput92.setBackgroundResource(R.drawable.border_line_red);
     }
 
     @Override

@@ -68,14 +68,6 @@ public class ApplicationModule {
     }
 
 
-/*
-    @Provides
-    @Singleton
-    InputValidator provideInputValidator(InputValidator inputValidator) {
-        return inputValidator;
-    }
-*/
-
     @Provides
     @Singleton
     InputValidator provideInputValidator(PriceValidator priceValidator, FileValidator fileValidator) {

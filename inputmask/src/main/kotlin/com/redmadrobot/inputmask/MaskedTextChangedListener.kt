@@ -17,7 +17,9 @@ import java.lang.ref.WeakReference
 open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
                                      field: EditText, listener: TextWatcher?,
                                      valueListener: ValueListener?,
-                                     onTextEndListener: OnTextEndListener?,resource:Int
+                                     onTextEndListener: OnTextEndListener?,
+                                     resourceNeutral:Int,
+                                     resourceEnd:Int
 )
     : TextWatcher, View.OnFocusChangeListener {
 
@@ -27,6 +29,9 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
 
     interface OnTextEndListener {
         fun onTextEndChanged()
+        fun onTextNotFinished()
+        fun onTextError()
+
     }
 
 
@@ -35,7 +40,8 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
     var onTextEndListener: OnTextEndListener?
 
     val mask: Mask
-    val resource : Int
+     val resourceEnd : Int
+    val resourceNeutral : Int
     val autocomplete: Boolean
 
     var afterText: String = ""
@@ -49,7 +55,8 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
         this.listener = listener
         this.valueListener = valueListener
         this.onTextEndListener = onTextEndListener
-        this.resource = resource
+        this.resourceEnd = resourceEnd
+        this.resourceNeutral = resourceNeutral
         this.field = WeakReference(field)
     }
 
@@ -125,9 +132,15 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
         var limit: Int
         limit = edit?.length!!;
         if (limit >= 5) {
-            this.field.get().setBackgroundResource(resource)
+            this.field.get().setBackgroundResource(resourceEnd)
             this.onTextEndListener?.onTextEndChanged()
         }
+
+        else{
+          this.field.get().setBackgroundResource(resourceNeutral)
+                    this.onTextEndListener?.onTextEndChanged()
+        }
+
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
