@@ -130,12 +130,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
     private void initGasStationDetailViews(GasStationModel gasStationModel) {
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
-        double dist = Double.valueOf(gasStationModel.getDistance());
-
-        double rounded = Precision.round(dist, 2);
-        String.valueOf(rounded);
-
-        distance.setText(String.valueOf(rounded).replace(".",",") + " km");
+        distance.setText(gasStationModel.getDistance());
         info.setText(R.string.map_direction_btn_text);
 
         if (isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())) {

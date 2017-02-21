@@ -164,12 +164,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         gasStationModel = (GasStationModel) i.getParcelableExtra(Config.GAS_STATION_DETAIL);
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
-
-        double dist = Double.valueOf(gasStationModel.getDistance());
-        double rounded = Precision.round(dist, 2);
-        String.valueOf(rounded);
-        distance.setText(String.valueOf(rounded).replace(".",",") + " km");
-
+        distance.setText(gasStationModel.getDistance());
         info.setText(R.string.map_direction_btn_text);
         info.setText(R.string.update_price_btn_text);
 
