@@ -41,25 +41,22 @@
                 android:id="@+id/viewA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.4"
                 android:background="@color/gray"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/update_indicator"
-
-                    />
-
+          <TextView
+              android:id="@+id/diagnosticTv"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"/>
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/fuel_price_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4">
+                android:layout_weight="0.6">
 
                 <include
                     android:id="@+id/address_view"

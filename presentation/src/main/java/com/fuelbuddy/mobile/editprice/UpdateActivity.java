@@ -88,6 +88,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     EditText fuelInput95;
     @BindView(R.id.fuelInputDiesel)
     EditText fuelInputDiesel;
+    @BindView(R.id.diagnosticTv)
+    TextView diagnosticTv;
+    StringBuffer stringBuffer;
 
     @BindView(R.id.openCameraBtn)
     FloatingActionButton openCameraBtn;
@@ -254,7 +257,17 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionUpdatePrice:
+                stringBuffer.append("\n");
+                stringBuffer.append("Convert Uri to file");
                 File file = FileUtils.getFile(this, videoUri);
+                stringBuffer.append("\n");
+                stringBuffer.append("File "+ file.getName());
+                stringBuffer.append("\n");
+                stringBuffer.append("File "+ file.getAbsolutePath());
+                stringBuffer.append("\n");
+                stringBuffer.append("File "+ file.getPath());
+                stringBuffer.append("\n");
+                diagnosticTv.setText(stringBuffer.toString());
                 mPresenter.updateVideo(file, gasStationModel.getGasStationId(), fuelInput92.getText().toString(),
                         fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
                 return true;
@@ -274,11 +287,27 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+         stringBuffer = new StringBuffer("Lets have a look at you shity camera Michael ");
+        stringBuffer.append("START DIAGNOSIS");
+        stringBuffer.append("\n");
+        stringBuffer.append(String.valueOf("Activity.RESULT_OK" + Activity.RESULT_OK));
+        stringBuffer.append("\n");
+        stringBuffer.append(String.valueOf(" Request Code" + requestCode));
+        stringBuffer.append(String.valueOf(" resultCode" + resultCode));
+        stringBuffer.append("\n");
+        stringBuffer.append(String.valueOf("CAMERA_CAPTURE_VIDEO_REQUEST_CODE" + CAMERA_CAPTURE_VIDEO_REQUEST_CODE));
+        stringBuffer.append("\n");
         if (resultCode == Activity.RESULT_OK) {
+            stringBuffer.append("Correct 1");
             if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE) {
+                stringBuffer.append("\n");
+                stringBuffer.append("Correct 2");
+                stringBuffer.append("\n");
                 videoUri = data.getData();
+                stringBuffer.append("path: " + videoUri.toString());
             }
         }
+        diagnosticTv.setText(stringBuffer.toString());
     }
 
     @Override
@@ -292,6 +321,10 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void showVideoError() {
+        stringBuffer.append("\n");
+        stringBuffer.append("Indeed, there is a proble with your camera Sir!!!!");
+        stringBuffer.append("\n");
+        diagnosticTv.setText(stringBuffer.toString());
         DialogFactory.createSimpleSnackBarInfo(toolbar, getString(R.string.video_not_selected_info));
 
     }
@@ -337,14 +370,18 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     @Override
     public void showConfirmationMessage(final FuelPricesUpdateEntry fuelPricesUpdateEntry, final File file) {
-        DialogFactory.createSimpleOkDialog(this, getString(R.string.price_update_dialog_title),
+        stringBuffer.append("\n");
+        stringBuffer.append("works like a hell");
+        stringBuffer.append("\n");
+        diagnosticTv.setText(stringBuffer.toString());
+      /*  DialogFactory.createSimpleOkDialog(this, getString(R.string.price_update_dialog_title),
                 getString(R.string.price_update_confirmation_dialog),
                 getString(R.string.dialog_action_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         updatePrice(fuelPricesUpdateEntry, file);
                     }
-                }).show();
+                }).show();*/
     }
 
     @Override
