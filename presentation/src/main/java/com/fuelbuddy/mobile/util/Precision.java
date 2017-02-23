@@ -40,19 +40,26 @@ public class Precision {
      * number 2<sup>-1022</sup>: {@value}.
      */
     public static final double SAFE_MIN = 0x1.0p-1022;
-    /** Offset to order signed double numbers lexicographically. */
+    /**
+     * Offset to order signed double numbers lexicographically.
+     */
     private static final long SGN_MASK = 0x8000000000000000L;
-    /** Offset to order signed double numbers lexicographically. */
+    /**
+     * Offset to order signed double numbers lexicographically.
+     */
     private static final int SGN_MASK_FLOAT = 0x80000000;
 
     /**
      * Private constructor.
      */
-    private Precision() {}
+    private Precision() {
+    }
 
 
-    public static double round(double x, int scale) {
-        return round(x, scale, BigDecimal.ROUND_HALF_UP);
+    public static String round(double x, int scale) {
+        double d = round(x, scale, BigDecimal.ROUND_HALF_UP);
+        String distance = String.valueOf(d).replace(".", ",");
+        return distance;
     }
 
     /**
@@ -62,14 +69,14 @@ public class Precision {
      * If {@code x} is infinite or {@code NaN}, then the value of {@code x} is
      * returned unchanged, regardless of the other parameters.
      *
-     * @param x Value to round.
-     * @param scale Number of digits to the right of the decimal point.
+     * @param x              Value to round.
+     * @param scale          Number of digits to the right of the decimal point.
      * @param roundingMethod Rounding method as defined in {@link BigDecimal}.
      * @return the rounded value.
-     * @throws ArithmeticException if {@code roundingMethod == ROUND_UNNECESSARY}
-     * and the specified scaling operation would require rounding.
+     * @throws ArithmeticException      if {@code roundingMethod == ROUND_UNNECESSARY}
+     *                                  and the specified scaling operation would require rounding.
      * @throws IllegalArgumentException if {@code roundingMethod} does not
-     * represent a valid rounding mode.
+     *                                  represent a valid rounding mode.
      * @since 1.1 (previously in {@code MathUtils}, moved as of version 3.0)
      */
     public static double round(double x, int scale, int roundingMethod) {

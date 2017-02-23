@@ -16,7 +16,7 @@ public interface UpdateView extends MvpView {
 
     void updatePrice(FuelPricesUpdateEntry fuelPricesUpdateEntry, File file);
 
-    void showVideoError();
+    void showVideoError(String message);
 
     void show92Error();
 

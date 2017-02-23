@@ -52,15 +52,21 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
     }
 
     public void updateVideo(File file, String gasStationId, String fuel92, String fuel95, String diesel) {
-        boolean result =    mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
+        boolean result = mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber());
         }
     }
 
+
     @Override
-    public void showVideoError() {
-      getMvpView().showVideoError();
+    public void showDiagMessage(String errorMessage) {
+        getMvpView().showVideoError(errorMessage);
+    }
+
+    @Override
+    public void showVideoError(String errorMessage) {
+        getMvpView().showVideoError(errorMessage);
     }
 
     @Override

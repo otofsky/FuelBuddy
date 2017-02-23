@@ -120,7 +120,6 @@ public class SharePreferencesUserCacheImpl implements UserCache {
         return  sharedPreferences.getString(SP_TOKEN_ENTITY, "");
     }
 
-
     @Override
     public boolean isCached(int userId) {
         return false;
@@ -135,6 +134,4 @@ public class SharePreferencesUserCacheImpl implements UserCache {
     public void evictAll() {
 
     }
-
-
 }

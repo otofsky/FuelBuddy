@@ -104,6 +104,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
 
     @Override
     public Context context() {
-        return null;
+        return getActivity().getApplication();
     }
 }

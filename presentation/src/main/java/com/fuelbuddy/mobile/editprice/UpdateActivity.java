@@ -288,6 +288,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
          stringBuffer = new StringBuffer("Lets have a look at you shity camera Michael ");
+        stringBuffer.append("\n");
         stringBuffer.append("START DIAGNOSIS");
         stringBuffer.append("\n");
         stringBuffer.append(String.valueOf("Activity.RESULT_OK" + Activity.RESULT_OK));
@@ -320,7 +321,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     @Override
-    public void showVideoError() {
+    public void showVideoError(String message) {
+        stringBuffer.append("\n");
+        stringBuffer.append(message);
         stringBuffer.append("\n");
         stringBuffer.append("Indeed, there is a proble with your camera Sir!!!!");
         stringBuffer.append("\n");

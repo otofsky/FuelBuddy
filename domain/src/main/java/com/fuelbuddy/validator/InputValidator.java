@@ -12,7 +12,9 @@ public class InputValidator {
 
     public interface UpdateFinishedListener {
 
-        void showVideoError();
+        void showDiagMessage(String errorMessage);
+
+        void showVideoError(String errorMessage);
 
         void show92Error();
 
@@ -32,13 +34,28 @@ public class InputValidator {
 
     }
 
+    public boolean validate(File file) {
+        if (file != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean validatePrice(File file, String fuel92, String fuel95, String diesel, UpdateFinishedListener updateFinishedListener) {
         boolean isValidate = true;
 
-        if (!mFileValidator.validate(file)) {
-            updateFinishedListener.showVideoError();
+        if (file != null) {
+        } else
+        {
+            updateFinishedListener.showVideoError("File is not Validate  ");
+        }
+
+        if (!mFileValidator.validate(null)) {
+            updateFinishedListener.showVideoError("File is not Validate -> !mFileValidator.validate(file)");
             isValidate = false;
         }
+
 
         if (!mPriceValidator.validate(fuel92)) {
             updateFinishedListener.show92Error();

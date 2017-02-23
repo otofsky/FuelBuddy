@@ -28,7 +28,13 @@ public class StringHelper {
         double lat = getLat(latLng);
         double lng = getLong(latLng);
         return getNavigationUrl(String.valueOf(lat), String.valueOf(lng));
+    }
 
+    public static String concat(String a, String b) {
+        StringBuilder stringBuilder = new StringBuilder(a);
+        stringBuilder.append(" ");
+        stringBuilder.append(b);
+        return stringBuilder.toString();
     }
 
     private static double getLong(LatLng latLng) {
