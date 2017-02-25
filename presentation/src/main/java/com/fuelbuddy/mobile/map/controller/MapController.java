@@ -37,6 +37,7 @@ public class MapController implements MapInterface {
         void onMarkerClick(GasStationModel gasStationModel);
     }
 
+
     Context mContext;
     private GoogleMap mMap;
     private List<GasStationModel> gasStationModelList;
@@ -58,7 +59,6 @@ public class MapController implements MapInterface {
         this.mMap = map;
         this.onMarkerClickCallback = onMarkerClickCallback;
         mMap.setOnMarkerClickListener(onMarkerClickListener);
-
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
@@ -69,21 +69,8 @@ public class MapController implements MapInterface {
                 return;
             }
             mMap.setMyLocationEnabled(true);
-
         }
-        //centerOnVenue(false);
     }
-
-    GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            MarkerEntry markerEntry = mapEntries.get(marker.getPosition());
-            MarkerModel markerModel = markerEntry.getModel();
-            onMarkerClickCallback.onMarkerClick(markerModel.getGasStationModel());
-            return true;
-        }
-    };
-
 
     public void centerOnGasStation(boolean animate, LatLng latLng) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(centerOnPosition(latLng));
@@ -247,4 +234,15 @@ public class MapController implements MapInterface {
     private double getLat(String gasStationLatitude) {
         return Double.parseDouble(gasStationLatitude);
     }
+
+    GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            MarkerEntry markerEntry = mapEntries.get(marker.getPosition());
+            MarkerModel markerModel = markerEntry.getModel();
+            onMarkerClickCallback.onMarkerClick(markerModel.getGasStationModel());
+            return true;
+        }
+    };
+
 }

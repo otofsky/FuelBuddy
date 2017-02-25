@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="12dp"
     android:background="@color/app_green"
     android:orientation="vertical">
 
@@ -26,6 +27,7 @@
             android:id="@+id/distanceTv"
             style="@style/TextViewFuelPriceDetail"
             tools:text="2.4 km"
+            android:layout_marginLeft="24dp"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -44,8 +46,8 @@
                 android:id="@+id/locationIconImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="24dp"
-                android:src="@android:drawable/ic_dialog_map" />
+
+                android:src="@drawable/ic_map_marker_24dp" />
 
             <TextView
                 android:id="@+id/stationAddressTv"
@@ -67,7 +69,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:gravity="right"
-                android:paddingRight="12dp"
                 tools:text="Retninger"
                 android:textStyle = "bold"
                 android:textColor="@color/white" />

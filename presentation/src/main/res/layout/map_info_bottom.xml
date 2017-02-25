@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:src="@android:drawable/ic_menu_directions"
+        android:src="@drawable/ic_directions_24dp"
         app:layout_anchor="@id/map_bottomsheet"
         app:layout_anchorGravity="top|right|end" />
 </android.support.design.widget.CoordinatorLayout>

@@ -30,7 +30,7 @@ import hugo.weaving.DebugLog;
  */
 
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
-        GoogleMap.OnMapClickListener, OnMapReadyCallback,
+        GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback {
 
 
@@ -98,6 +98,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMapClickListener(this);
         mapController.initMap(getActivity(), googleMap, this);
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+
     }
 
 
