@@ -1,7 +1,6 @@
 package com.fuelbuddy.data.net;
 
 
-import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
@@ -26,41 +25,43 @@ public interface ApiInterface {
 
 
     @GET("stations?")
-    Observable<List<GasStationEntity>> getGasStations( @Query("latitude") String latitude,
-                                                      @Query("longitude") String longitude);
+   Call<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude,
+                                          @Query("longitude") String longitude);
 
 
     //fuelbuddy.dk/ws/updatestation?userID=5&ID=512&price92=1.20&price95=1.35&priceDiesel=1.1&photoID=2
     @GET("updatestation?")
-    Observable<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
+    Call<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
                                             @Query("userID") String userID,
                                             @Query("photoID") String photoID,
                                             @Query("price92") Double price92,
                                             @Query("price95") Double price95,
                                             @Query("priceDiesel") Double priceDiesel);
+
     @Multipart
     @POST("upload?")
-    Observable<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header,@Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Call<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("updatestation?")
     Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
-                                            @Query("userID") String userID,
-                                            @Query("photoID") String photoID,
-                                            @Query("price92") Double price92,
-                                            @Query("price95") Double price95,
-                                            @Query("priceDiesel") Double priceDiesel,  Callback<ResponseEntity> callback);
+                            @Query("userID") String userID,
+                            @Query("photoID") String photoID,
+                            @Query("price92") Double price92,
+                            @Query("price95") Double price95,
+                            @Query("priceDiesel") Double priceDiesel, Callback<ResponseEntity> callback);
+
     @Multipart
     @POST("upload?")
-    Call<Void> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file, Callback<UploadResponseEntity> callback );
+    Call<Void> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file, Callback<UploadResponseEntity> callback);
 
 
     @GET("adduser?")
-    Observable<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);
+    Call<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);
 
     @GET("checkuser?")
-    Observable<UserEntity> checkUser(@Query("userID") String userID);
+    Call<UserEntity> checkUser(@Query("userID") String userID);
 
     @GET("auth?")
-    Observable<ResponseEntity> auth(@Query("userID") String userID, @Query("email") String email );
+    Call<ResponseEntity> auth(@Query("userID") String userID, @Query("email") String email);
 
 }

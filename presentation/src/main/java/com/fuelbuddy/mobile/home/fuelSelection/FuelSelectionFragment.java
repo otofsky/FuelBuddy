@@ -55,7 +55,6 @@ public class FuelSelectionFragment extends BaseFragment implements FuelSelection
         return fragmentView;
     }
 
-
     @Override public void onDestroy() {
         super.onDestroy();
         this.mFuelSelectionPresenter.detachView();

@@ -3,18 +3,22 @@ package com.fuelbuddy.data.repository.datasource.UserDataStore;
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.net.RestApi;
 
 import hugo.weaving.DebugLog;
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 22.11.16.
  */
 public class DiskUserDataStore implements UserDataStore {
     UserCache mUserCache;
+    private final RestApi mRestApi;
 
-    public DiskUserDataStore(UserCache userCache) {
+    public DiskUserDataStore(UserCache userCache, RestApi restApi) {
         mUserCache = userCache;
+        mRestApi = restApi;
     }
 
     @Override
@@ -23,8 +27,8 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
-    public Observable<ResponseEntity> putToken(String token) {
-        return mUserCache.putToken(token);
+    public  Observable<ResponseEntity>  putToken(ResponseEntity responseEntity) {
+       return   mUserCache.putToken(responseEntity);
     }
 
     public  String getToken(){
@@ -32,7 +36,7 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
-    public Observable<UserEntity> checkUser(String userId) {
+    public Observable<UserEntity>  checkUser(String userId) {
         return null;
     }
 

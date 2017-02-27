@@ -31,8 +31,6 @@ import hugo.weaving.DebugLog;
  */
 public class HomeActivity extends BaseActivity implements HomeView, HasComponent<HomeComponent> {
 
-    private GoogleApiClient mGoogleApiClient;
-    private static final int RC_SIGN_IN = 007;
     @Inject
     public HomePresenter homePresenter;
     private HomeComponent homeComponent;
@@ -46,7 +44,6 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
     }
 
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("home", "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.initializeInjector();
@@ -56,7 +53,6 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
     }
 
     private void initPresenter() {
-        Log.d("home", "onCreate: initPresenter");
         homePresenter.attachView(this);
         homePresenter.verifyCurrentUser();
     }
@@ -76,7 +72,6 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
     @DebugLog
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.actionLogOut:
                 homePresenter.logout();
@@ -110,12 +105,6 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
         homeComponent.inject(this);
     }
 
- /*   @Override
-    public void navigateToHome() {
-        Log.d("home ", "navigateToHome: FuelSelectionFragment");
-        addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
-        toolbar.showOverflowMenu();
-    }*/
 
     @Override
     public void showMap() {
@@ -129,17 +118,14 @@ public class HomeActivity extends BaseActivity implements HomeView, HasComponent
 
     @Override
     public void showLoginView() {
-        Log.d("home", "showLoginView: ");
         Navigator.navigateToLoginActivity(this);
         finish();
     }
 
     @Override
     public void showFuelTypeView() {
-        Log.d("home", "showFuelTypeView: FuelSelectionFragment");
         addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
-
 
     @Override
     public void showLoading() {

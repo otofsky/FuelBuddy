@@ -8,7 +8,8 @@ import com.fuelbuddy.data.UploadResponse;
 import java.io.File;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 06.11.16.

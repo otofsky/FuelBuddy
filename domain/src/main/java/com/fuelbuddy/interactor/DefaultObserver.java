@@ -13,16 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fuelbuddy.executor;
+package com.fuelbuddy.interactor;
 
-
-import io.reactivex.Scheduler;
+import io.reactivex.observers.DisposableObserver;
 
 /**
- * Thread abstraction created to change the execution context from any thread to any other thread.
- * Useful to encapsulate a UI Thread for example, since some job will be done in background, an
- * implementation of this interface will change context and update the UI.
+ * Default subscriber base class to be used whenever you want default error handling.
  */
-public interface PostExecutionThread {
-  Scheduler getScheduler();
+public class DefaultObserver<T> extends DisposableObserver<T> {
+  @Override public void onNext(T t) {
+    // no-op by default.
+  }
+
+  @Override public void onComplete() {
+    // no-op by default.
+  }
+
+  @Override public void onError(Throwable exception) {
+    // no-op by default.
+  }
 }

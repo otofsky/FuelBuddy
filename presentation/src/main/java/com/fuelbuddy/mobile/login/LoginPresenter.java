@@ -4,16 +4,17 @@ import android.util.Log;
 
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
-import com.fuelbuddy.data.net.RetrofitException;
+import com.fuelbuddy.data.exeption.UserNotFoundException;
+import com.fuelbuddy.exception.DefaultErrorBundle;
+import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.AuthUseCase;
 import com.fuelbuddy.interactor.CheckUserUseCase;
-import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.interactor.SetUserInCloudUseCase;
 import com.fuelbuddy.interactor.SetUserLocallyUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.mapper.UserModelDataMapper;
-import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.fuelbuddy.mobile.model.UserModel;
 
 import javax.inject.Inject;
@@ -52,19 +53,19 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public void checkUser(UserModel userModel) {
         mUserModel = userModel;
-        mCheckUserUseCase.setUser(userModelDataMapper.transformToUser(userModel));
-        this.mCheckUserUseCase.execute(new CheckUserSubscriber());
+        this.mCheckUserUseCase.execute(new CheckUserSubscriber(),
+                CheckUserUseCase.Params.forProfile(userModelDataMapper.transformToUser(userModel)));
     }
 
 
-    public void addNewUseInCloud(UserModel user) {
+  /*  public void addNewUseInCloud(UserModel user) {
         mSetUserInCloudUseCase.setUser(userModelDataMapper.transformToUser(user));
         this.mSetUserInCloudUseCase.execute(new AddUserInCloudSubscriber());
-    }
+    }*/
 
     public void addNewUserLocally(UserModel user) {
         mSetUserLocallyUseCase.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber());
+        this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber(), null);
     }
 
     public void auth(String userId, String email) {
@@ -73,55 +74,44 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
 
-    private void showErrorMessage(String errorMessage) {
+    private void showErrorMessage(ErrorBundle errorBundle) {
+        String errorMessage = ErrorMessageFactory.create(this.getMvpView().context(), errorBundle.getException());
         getMvpView().showError(errorMessage);
     }
 
-    private final class CheckUserSubscriber extends DefaultSubscriber<Response> {
+    private final class CheckUserSubscriber extends DefaultObserver<Response> {
         @DebugLog
         @Override
-        public void onCompleted() {
-            Log.d(TAG, "check onCompleted: ");
+        public void onComplete() {
         }
 
         @DebugLog
         @Override
-        public void onError(Throwable throwable) {
-            Log.d(TAG, "check user onError: ");
-            if (throwable instanceof RetrofitException) {
-                ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
-                if (errorResponse.getErrorCode() != null && errorResponse.getErrorCode() == 404) {
-                   // addNewUseInCloud(mUserModel);
-                } else {
-                    showErrorMessage(errorResponse.getErrorMassage());
-                }
-            }
+        public void onError(Throwable e) {
+
         }
 
         @DebugLog
         @Override
         public void onNext(Response response) {
-            Log.d(TAG, "check onNext: " + response.getMessage());
             addNewUserLocally(mUserModel);
         }
     }
 
-    private final class AddUserInCloudSubscriber extends DefaultSubscriber<User> {
+
+    private final class AddUserInCloudSubscriber extends DefaultObserver<User> {
 
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
             Log.d(TAG, " incloud onCompleted: ");
             getMvpView().showFuelSectionView();
         }
 
         @DebugLog
         @Override
-        public void onError(Throwable throwable) {
-            Log.d(TAG, " inCloud onError: ");
-            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
-            showErrorMessage(errorResponse.getErrorMassage());
-            //showErrorMessage(new DefaultErrorBundle((Exception) throwable));
+        public void onError(Throwable e) {
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
         }
 
         @DebugLog
@@ -132,20 +122,18 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         }
     }
 
-    private final class AddUserLocallySubscriber extends DefaultSubscriber<Response> {
+    private final class AddUserLocallySubscriber extends DefaultObserver<Response> {
 
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
             Log.d(TAG, "onCompleted: locally");
         }
 
         @DebugLog
         @Override
-        public void onError(Throwable throwable) {
-            Log.d(TAG, "onError: locally");
-            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
-            showErrorMessage(errorResponse.getErrorMassage());
+        public void onError(Throwable e) {
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
         }
 
         @DebugLog
@@ -156,20 +144,18 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         }
     }
 
-    private final class AuthSubscriber extends DefaultSubscriber<User> {
+    private final class AuthSubscriber extends DefaultObserver<User> {
 
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
             Log.d(TAG, "onCompleted: locally");
         }
 
         @DebugLog
         @Override
-        public void onError(Throwable throwable) {
-            Log.d(TAG, "onError: locally");
-            ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), (RetrofitException) throwable);
-            showErrorMessage(errorResponse.getErrorMassage());
+        public void onError(Throwable e) {
+            showErrorMessage(new DefaultErrorBundle((Exception) e));
         }
 
         @DebugLog

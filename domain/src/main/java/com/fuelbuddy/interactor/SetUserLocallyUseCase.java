@@ -8,8 +8,9 @@ import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+
 
 /**
  * Created by zjuroszek on 20.11.16.
@@ -37,17 +38,12 @@ public class SetUserLocallyUseCase extends UseCase  {
         return userRepository.setCurrentUser(mUser).flatMap(onUserExist);
     }
 
-    private final Func1<Response, Observable<Response>> onUserExist = new Func1<Response, Observable<Response>>() {
+    private final Function<Response, Observable<Response>> onUserExist = new Function<Response, Observable<Response>>() {
         @Override
-        public Observable<Response> call(Response response) {
-            return userRepository.auth(mUser.getUserID(),mUser.getEmail()).flatMap(putToken);
+        public Observable<Response> apply(Response response) {
+            return userRepository.auth(mUser.getUserID(),mUser.getEmail());
         }
     };
 
-    private final Func1<Response, Observable<Response>> putToken = new Func1<Response, Observable<Response>>() {
-        @Override
-        public Observable<Response> call(Response response) {
-            return userRepository.putToken(response.getMessage());
-        }
-    };
+
 }

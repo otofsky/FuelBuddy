@@ -3,7 +3,8 @@ package com.fuelbuddy.data.cache;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 22.11.16.
@@ -23,7 +24,7 @@ public interface UserCache {
      */
     Observable<ResponseEntity> putUser(UserEntity userEntity);
 
-    Observable<ResponseEntity> putToken(String token);
+    Observable<ResponseEntity> putToken(ResponseEntity responseEntity);
 
     String getToken();
 

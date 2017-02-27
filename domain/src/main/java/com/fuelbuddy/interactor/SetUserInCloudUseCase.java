@@ -8,19 +8,17 @@ import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 20.11.16.
  */
 
 
-public class SetUserInCloudUseCase extends UseCase  {
-
+public class SetUserInCloudUseCase extends UseCase<Response, SetUserInCloudUseCase.Params> {
 
     UserRepository userRepository;
-    private User mUser;
 
     @Inject
     public SetUserInCloudUseCase(UserRepository userRepository, ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -28,14 +26,22 @@ public class SetUserInCloudUseCase extends UseCase  {
         this.userRepository = userRepository;
     }
 
-    public void setUser(User user){
-        this.mUser = user;
-    }
-
     @Override
-    protected Observable buildUseCaseObservable() {
-        return userRepository.addNewUser(mUser);
+    protected Observable <Response> buildUseCaseObservable(Params params) {
+        return userRepository.addNewUser(params.mUser);
     }
 
+    public static final class Params {
+
+        private User mUser;
+
+        private Params(User mUser) {
+            this.mUser = mUser;
+        }
+
+        public static Params forUser(User user) {
+            return new Params(user);
+        }
+    }
 
 }

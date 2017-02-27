@@ -7,14 +7,14 @@ import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 14.11.16.
  */
 
-public class GetCurrentUserUseCase extends UseCase {
+public class GetCurrentUserUseCase extends UseCase<User, GetCurrentUserUseCase.Param> {
 
     UserRepository userRepository;
 
@@ -25,7 +25,7 @@ public class GetCurrentUserUseCase extends UseCase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable buildUseCaseObservable(Param param) {
         return getLocalUserObservable();
 
     }
@@ -33,5 +33,7 @@ public class GetCurrentUserUseCase extends UseCase {
     protected Observable getLocalUserObservable() {
         return userRepository.getCurrentUser();
     }
+
+    public class Param {}
 }
 

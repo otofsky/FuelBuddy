@@ -20,7 +20,7 @@ import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
-import com.fuelbuddy.data.net.RestApiService;
+import com.fuelbuddy.data.net.RestApi;
 
 import java.io.File;
 import java.util.List;
@@ -32,28 +32,28 @@ import rx.Observable;
 
 class CloudGasStationStore implements GasStationDataStore {
 
-    private final RestApiService mRestApiService;
+    private final RestApi mRestApi;
 
 
     @Inject
-    CloudGasStationStore(RestApiService restApiService) {
-        this.mRestApiService = restApiService;
+    CloudGasStationStore(RestApi restApi) {
+        this.mRestApi = restApi;
     }
 
 
     @Override
     public Observable<List<GasStationEntity>> gasStationsEntityList(Position position) {
-        return this.mRestApiService.gasStationEntityList(position);
+        return this.mRestApi.gasStationEntityList(position);
     }
 
     @Override
     public Observable<ResponseEntity> updateStation(String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
-        return mRestApiService.updateStation(iD, userID, photoID, price92, price95, priceDiesel);
+        return mRestApi.updateStation(iD, userID, photoID, price92, price95, priceDiesel);
     }
 
     @Override
     public Observable<UploadResponseEntity> uploadVideo(File file) {
-        return mRestApiService.uploadVideo(file);
+        return mRestApi.uploadVideo(file);
     }
 
     @Override

@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 Fernando Cejas Open Source Project
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,39 +16,37 @@
 package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
 
-
-import com.fuelbuddy.data.Response;
-import com.fuelbuddy.data.entity.AuthEntity;
-import com.fuelbuddy.data.entity.GasStationEntity;
+import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
-import com.fuelbuddy.data.net.RestApiService;
-import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationDataStore;
-
-import java.util.List;
+import com.fuelbuddy.data.net.RestApi;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 
 class CloudUserStore implements UserDataStore {
 
-  private final RestApiService mRestApiService;
+    private final RestApi mRestApi;
+    private final UserCache userCache;
 
-@Inject
-CloudUserStore(RestApiService restApiService) {
-    this.mRestApiService = restApiService;
-  }
-
-    @Override
-    public Observable<ResponseEntity> auth(String userId, String email) {
-        return this.mRestApiService.auth(userId,email);
+    @Inject
+    CloudUserStore(RestApi restApi, UserCache userCache) {
+        this.mRestApi = restApi;
+        this.userCache = userCache;
     }
 
     @Override
+    public Observable<ResponseEntity> auth(String userId, String email) {
+        return this.mRestApi.auth(userId, email)
+                .doOnNext(CloudUserStore.this.userCache::putToken);
+    }
+
+
+    @Override
     public Observable<UserEntity> checkUser(String userId) {
-        return this.mRestApiService.checkUser(userId);
+        return this.mRestApi.checkUser(userId).doOnNext(CloudUserStore.this.userCache::putUser );
     }
 
     @Override
@@ -63,7 +61,7 @@ CloudUserStore(RestApiService restApiService) {
 
     @Override
     public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return mRestApiService.addNewUser(userEntity);
+        return mRestApi.addNewUser(userEntity);
     }
 
     @Override
@@ -72,8 +70,7 @@ CloudUserStore(RestApiService restApiService) {
     }
 
     @Override
-    public Observable<ResponseEntity> putToken(String token) {
+    public Observable<ResponseEntity> putToken(ResponseEntity token) {
         return null;
     }
-
 }

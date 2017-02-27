@@ -1,20 +1,19 @@
 package com.fuelbuddy.interactor;
 
-import com.fuelbuddy.data.User;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 20.11.16.
  */
 
-public class LogOutUseCase extends UseCase {
+public class LogOutUseCase extends UseCase<Boolean, LogOutUseCase.Params> {
 
     UserRepository userRepository;
 
@@ -25,7 +24,11 @@ public class LogOutUseCase extends UseCase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable<Boolean> buildUseCaseObservable(Params params) {
         return userRepository.logOut();
     }
+
+    public static final class Params {
+    }
+
 }

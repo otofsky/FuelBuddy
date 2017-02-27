@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+    }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
@@ -21,11 +31,11 @@ android {
 
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
-        }
     }
 
     dependencies {
@@ -34,9 +44,7 @@ android {
         compile 'com.android.support:appcompat-v7:24.2.1'
         compile project(path: ':domain')
 
-        compile 'com.google.code.gson:gson:2.6.1'
-        compile 'com.squareup.retrofit2:retrofit:2.0.2'
-        compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+
         compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
         compile 'com.squareup.retrofit2:converter-gson:2.0.2'
         compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
