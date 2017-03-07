@@ -1,10 +1,8 @@
 package com.fuelbuddy.mobile.home;
 
-
 import android.util.Log;
-
 import com.fuelbuddy.data.User;
-import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
@@ -14,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
+
 
 /**
  * Created by zjuroszek on 07.10.16.
@@ -31,19 +30,19 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     @DebugLog
     public void verifyCurrentUser() {
-        this.getCurrentUser.execute(new HomePresenter.CurrentUserSubscriber());
+        this.getCurrentUser.execute(new HomePresenter.CurrentUserSubscriber(),null);
     }
 
     public void logout() {
         getMvpView().showLoading();
-        this.logOutUseCase.execute(new LogOutSubscriber());
+        this.logOutUseCase.execute(new LogOutSubscriber(),null);
     }
 
 
-    private final class CurrentUserSubscriber extends DefaultSubscriber<User> {
+    private final class CurrentUserSubscriber extends DefaultObserver<User> {
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
 
         }
 
@@ -61,11 +60,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
         }
     }
 
-    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
+    private final class LogOutSubscriber extends DefaultObserver<Boolean> {
 
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @DebugLog

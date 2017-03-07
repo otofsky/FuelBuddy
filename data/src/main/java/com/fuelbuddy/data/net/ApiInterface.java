@@ -8,6 +8,7 @@ import com.fuelbuddy.data.entity.UserEntity;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -18,14 +19,14 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
-import rx.Observable;
+
 
 
 public interface ApiInterface {
 
 
     @GET("stations?")
-   Call<List<GasStationEntity>> getGasStations(@Query("latitude") String latitude,
+   Call<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String header, @Query("latitude") String latitude,
                                           @Query("longitude") String longitude);
 
 
@@ -40,7 +41,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("upload?")
-    Call<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Observable<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("updatestation?")
     Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,

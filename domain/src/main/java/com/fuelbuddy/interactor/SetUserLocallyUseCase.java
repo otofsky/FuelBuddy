@@ -33,11 +33,11 @@ public class SetUserLocallyUseCase extends UseCase  {
         this.mUser = user;
     }
 
-    @Override
+  /*  @Override
     protected Observable buildUseCaseObservable() {
         return userRepository.setCurrentUser(mUser).flatMap(onUserExist);
     }
-
+*/
     private final Function<Response, Observable<Response>> onUserExist = new Function<Response, Observable<Response>>() {
         @Override
         public Observable<Response> apply(Response response) {
@@ -46,4 +46,8 @@ public class SetUserLocallyUseCase extends UseCase  {
     };
 
 
+    @Override
+    Observable buildUseCaseObservable(Object o) {
+        return null;
+    }
 }

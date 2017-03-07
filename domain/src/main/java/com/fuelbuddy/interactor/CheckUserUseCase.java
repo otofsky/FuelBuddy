@@ -1,18 +1,17 @@
 package com.fuelbuddy.interactor;
 
 import com.fuelbuddy.data.Response;
-
 import com.fuelbuddy.data.User;
-
+import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 
@@ -21,7 +20,7 @@ import io.reactivex.functions.Function;
  */
 
 
-public class CheckUserUseCase extends UseCase <Response, CheckUserUseCase.Params>  {
+public class CheckUserUseCase extends UseCase<Response, CheckUserUseCase.Params> {
 
     UserRepository userRepository;
 
@@ -31,71 +30,61 @@ public class CheckUserUseCase extends UseCase <Response, CheckUserUseCase.Params
         this.userRepository = userRepository;
     }
 
+    // jesli istnieje
+    //to zapisje dane lokalnie
+    // jesli nie istnieje wysyłam dane na server i
+    // zapisuje lokalnie -
+    //
+    // wywołanie metody auth
+
+    // jesli instnieje
+
+    // zapisujemy loalnie
+
+    // i wywołaie metody auth
+    //return userRepository.checkUser(mUser.getUserID()).concatMap(StoreRemoteUser);
+    // to zapisje dane lokalnie
+    //wysyłam dane na server i zapisuje lokalnie
+
     @Override
     protected Observable<Response> buildUseCaseObservable(final Params params) {
-        // jesli istnieje
-        //to zapisje dane lokalnie
-        // jesli nie istnieje wysyłam dane na server i zapisuje lokalnie
-        //return userRepository.checkUser(mUser.getUserID()).concatMap(StoreRemoteUser);
         return userRepository.checkUser(params.user.getUserID())
+                .flatMap(new Function<User, ObservableSource<Response>>() {
+                    @Override
+                    public ObservableSource<Response> apply(User user) throws Exception {
+                        return userRepository.auth(user.getUserID(), user.getEmail());
+                    }
+                })
                 .onErrorResumeNext(error(params.user));
 
-        // to zapisje dane lokalnie
-        //wysyłam dane na server i zapisuje lokalnie
     }
 
-    public static final class Params {
-
-       private User user;
-
-        private Params(User user) {
-           this.user = user;
-        }
-        public static Params forProfile(User user) {
-            return new Params(user);
-        }
-    }
-
-
-    private Function error(final User user){
-         final Function<Throwable, Observable<Response>> errorHandling = new Function<Throwable, Observable<Response>>() {
+    private Function error(final User user) {
+        final Function<Throwable, Observable<Response>> errorHandling = new Function<Throwable, Observable<Response>>() {
             @Override
             public Observable<Response> apply(Throwable e) {
-                return userRepository.addNewUser(user);
+                return userRepository.addNewUser(user)
+                        .doOnNext(new Consumer<Response>() {
+                            @Override
+                            public void accept(Response response) throws Exception {
+                                 userRepository.auth(user.getUserID(), user.getEmail());
+                            }
+                        });
             }
         };
         return errorHandling;
     }
 
-    public static void create( Exception exception) {
+    public static final class Params {
 
+        private User user;
 
+        private Params(User user) {
+            this.user = user;
+        }
 
-
-
+        public static Params forProfile(User user) {
+            return new Params(user);
+        }
     }
-
-/*
-    private final Function<Throwable, Observable<Response>> errorHandling = new Function<Throwable, Observable<Response>>() {
-
-        @Override
-        public Observable<Response> apply(Throwable throwable) {
-            return userRepository.addNewUser(mUser);
-        }
-    };
-
-    private final Function<User, Observable<Response>> onUserExist = new Function<User, Observable<Response>>() {
-        @Override
-        public Observable<Response> apply(User response) {
-            return userRepository.setCurrentUser(mUser);
-        }
-    };
-
-    private final Function<Response, Observable<Response>> onUserAdded = new Function<Response, Observable<Response>>() {
-        @Override
-        public Observable<Response> apply(Response response) {
-            return userRepository.auth(mUser.getUserID(),mUser.getEmail());
-        }
-    };*/
-
 }

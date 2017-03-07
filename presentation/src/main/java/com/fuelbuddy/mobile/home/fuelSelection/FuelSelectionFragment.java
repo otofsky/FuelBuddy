@@ -4,19 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
 import com.fuelbuddy.mobile.di.component.HomeComponent;
 import com.fuelbuddy.mobile.home.LoginViewEvent;
-import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.DialogFactory;
 

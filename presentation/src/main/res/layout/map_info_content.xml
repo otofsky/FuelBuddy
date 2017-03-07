@@ -10,21 +10,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/address_view"
-        android:padding="8dp">
-
+        android:padding="2dp"
+        android:layout_below="@+id/address_view">
         <Button
             android:id="@+id/updateBtn"
-            style="@style/GreenButton"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/button_green_all_rounded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_green_right_rounded"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="opdater pris"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             android:textSize="14sp" />
-
     </RelativeLayout>
 
 

@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
-import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.base.Event;

@@ -39,13 +39,11 @@ public class UserDataRepository implements UserRepository {
         this.authEntityMapper = authEntityMapper;
     }
 
-/*
     @Override
     public  Observable<Response> auth(String userId, String email) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
         return userDataStore.auth(userId,email).map(mResponseEntityMapper::transformToResponse);
     }
-*/
 
 
 
@@ -56,6 +54,8 @@ public class UserDataRepository implements UserRepository {
         return userDataStore.putToken(token).map(mResponseEntityMapper::transformToResponse);
     }
 */
+
+
 
     @Override
     public Observable<User> getCurrentUser() {

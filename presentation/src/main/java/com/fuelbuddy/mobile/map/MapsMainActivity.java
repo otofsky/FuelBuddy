@@ -16,14 +16,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.di.HasComponent;
 import com.fuelbuddy.mobile.di.component.DaggerMapsComponent;
 import com.fuelbuddy.mobile.di.component.MapsComponent;
-import com.fuelbuddy.mobile.base.Event;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
@@ -74,6 +75,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     protected PriceListFragment mPriceListFragment;
     protected DetailInfoFragment mDetailInfoFragment;
     private LatLng mCurrentPositionLatLng;
+    private FuelPriceMode fuelPriceMode;
 
 
     private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("52.229770"), Double.valueOf("21.011780"));
@@ -144,9 +146,13 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     private void initPriceListFragment() {
-        FuelPriceMode fuelPriceMode = (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
+        FuelPriceMode fuelPriceMode = getFuelType();
         mPriceListFragment = PriceListFragment.newInstance(fuelPriceMode);
         addFragment(R.id.fragment_price_container_map, mPriceListFragment);
+    }
+
+    private FuelPriceMode getFuelType() {
+        return (FuelPriceMode) getIntent().getSerializableExtra(Config.FUEL_TYPE);
     }
 
     private void initMapFragment() {
@@ -159,8 +165,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         Log.d(TAG, "onEventMainThread:  ");
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
-            //mMapPresenter.submitSearch(mCurrentPositionLatLng);
-            mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
+            mMapPresenter.submitSearch(mCurrentPositionLatLng, getFuelType());
+            //mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
         }
         if (event instanceof OnPriceClickEvent) {
             Log.d(TAG, "onEventMainThread: ");
@@ -276,8 +282,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     @Override
-    public void refreshFuelPrices() {
-        mMapPresenter.getUpdatedFuelPrices(mCurrentPositionLatLng);
+    public void refreshFuelPrices(FuelPriceMode fuelPriceMode) {
+        mMapPresenter.getUpdatedFuelPrices(mCurrentPositionLatLng,fuelPriceMode);
     }
 
     @DebugLog

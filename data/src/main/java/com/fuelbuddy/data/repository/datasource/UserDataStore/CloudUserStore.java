@@ -24,6 +24,7 @@ import com.fuelbuddy.data.net.RestApi;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 
 class CloudUserStore implements UserDataStore {
@@ -40,13 +41,23 @@ class CloudUserStore implements UserDataStore {
     @Override
     public Observable<ResponseEntity> auth(String userId, String email) {
         return this.mRestApi.auth(userId, email)
-                .doOnNext(CloudUserStore.this.userCache::putToken);
+                .doOnNext(new Consumer<ResponseEntity>() {
+                    @Override
+                    public void accept(ResponseEntity responseEntity) throws Exception {
+                        userCache.putToken(responseEntity);
+                    }
+                });
     }
 
 
     @Override
     public Observable<UserEntity> checkUser(String userId) {
-        return this.mRestApi.checkUser(userId).doOnNext(CloudUserStore.this.userCache::putUser );
+        return this.mRestApi.checkUser(userId).doOnNext(new Consumer<UserEntity>() {
+            @Override
+            public void accept(UserEntity userEntity) throws Exception {
+                userCache.putUser(userEntity);
+            }
+        });
     }
 
     @Override
@@ -69,8 +80,5 @@ class CloudUserStore implements UserDataStore {
         return null;
     }
 
-    @Override
-    public Observable<ResponseEntity> putToken(ResponseEntity token) {
-        return null;
-    }
+
 }

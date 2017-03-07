@@ -33,15 +33,12 @@ public class UserStoreFactory {
     public UserDataStore createDiskUserDataStore() {
         UserDataStore userDataStore = new DiskUserDataStore(this.userCache);
         return userDataStore;
-
     }
 
     public UserDataStore createCloudDataStore() {
         GasStationEntityDataMapper gasStationEntityDataMapper = new GasStationEntityDataMapper();
         RestApi restApi = new RestApiImpl(mApiInvoker,this.context, gasStationEntityDataMapper);
-        return new CloudUserStore(restApi);
-
+        return new CloudUserStore(restApi,userCache);
     }
-
 
 }

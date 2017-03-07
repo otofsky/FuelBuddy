@@ -9,7 +9,8 @@ import com.fuelbuddy.data.entity.UploadResponseEntity;
 import java.io.File;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 08.11.16.
@@ -21,8 +22,5 @@ public interface GasStationDataStore {
 
     Observable<ResponseEntity> updateStation(String iD, String userID,String photoID, Double price92,Double price95, Double priceDiesel);
 
-    Observable<UploadResponseEntity> uploadVideo(File file);
-
-    Observable<GasStationEntity> gasStationEntityDetails(final int userId);
 
 }

@@ -22,9 +22,11 @@ public interface UserCache {
      *
      * @param userEntity Element to insert in the cache.
      */
-    Observable<ResponseEntity> putUser(UserEntity userEntity);
+    //Observable<ResponseEntity> putUser(UserEntity userEntity);
 
-    Observable<ResponseEntity> putToken(ResponseEntity responseEntity);
+    void putUser(UserEntity userEntity);
+
+    void putToken(ResponseEntity responseEntity);
 
     String getToken();
 

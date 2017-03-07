@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;

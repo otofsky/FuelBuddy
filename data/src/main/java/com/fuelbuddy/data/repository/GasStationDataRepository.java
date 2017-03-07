@@ -19,8 +19,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+
 
 /**
  * Created by zjuroszek on 06.11.16.
@@ -34,8 +35,6 @@ public class GasStationDataRepository implements GasStationsRepository {
     GasStationEntityDataMapper mGasStationEntityDataMapper;
     ResponseEntityMapper responseEntityMapper;
 
-
-
     @Inject
     public GasStationDataRepository(GasStationEntityDataMapper gasStationEntityDataMapper,ResponseEntityMapper responseEntityMapper,GasStationStoreFactory mGasStationStoreFactory ) {
         this.mGasStationEntityDataMapper = gasStationEntityDataMapper;
@@ -47,42 +46,25 @@ public class GasStationDataRepository implements GasStationsRepository {
     public Observable<List<GasStation>> gasStations(Position position) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
 
-        return gasStationDataStore.gasStationsEntityList(position).map(new Func1<List<GasStationEntity>, List<GasStation>>() {
+        return gasStationDataStore.gasStationsEntityList(position).map(new Function<List<GasStationEntity>, List<GasStation>>() {
             @Override
-            public List<GasStation> call(List<GasStationEntity> gasStationEntities) {
+            public List<GasStation> apply(List<GasStationEntity> gasStationEntities) {
                 return  mGasStationEntityDataMapper.transform(gasStationEntities);
             }
         });
     }
 
-
-
     @Override
     public Observable<Response> updateStation(String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
         GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.updateStation(iD,userID,photoID,price92,price95,priceDiesel).map(new Func1<ResponseEntity, Response>() {
+        return  gasStationDataStore.updateStation(iD,userID,photoID,price92,price95,priceDiesel).map(new Function<ResponseEntity, Response>() {
             @Override
-            public Response call(ResponseEntity responseEntity) {
+            public Response apply(ResponseEntity responseEntity) {
                 return responseEntityMapper.transformToResponse(responseEntity);
             }
         });
-
     }
 
-    @Override
-    public Observable<UploadResponse> uploadVideo(File file) {
-        GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
-        return  gasStationDataStore.uploadVideo(file).map(new Func1<UploadResponseEntity, UploadResponse>() {
-            @Override
-            public UploadResponse call(UploadResponseEntity responseEntity) {
-                return responseEntityMapper.transformToUploadResponse(responseEntity);
-            }
-        });
 
-    }
 
-    @Override
-    public Observable<GasStation> gasStation(int userId) {
-        return null;
-    }
 }

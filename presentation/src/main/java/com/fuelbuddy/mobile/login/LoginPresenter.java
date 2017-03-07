@@ -68,10 +68,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber(), null);
     }
 
-    public void auth(String userId, String email) {
+   /* public void auth(String userId, String email) {
         this.authUseCase.setFuelPricesUpdate(userId, email);
 
-    }
+    }*/
 
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -94,7 +94,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onNext(Response response) {
-            addNewUserLocally(mUserModel);
+            getMvpView().showFuelSectionView();
         }
     }
 

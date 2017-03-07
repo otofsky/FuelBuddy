@@ -67,29 +67,17 @@ public class SharePreferencesUserCacheImpl implements UserCache {
     }
 
     @Override
-    public Observable<ResponseEntity> putUser(final UserEntity userEntity) {
-        return Observable.create(emiter -> {
-                    try {
-                        sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
-                        ResponseEntity responseEntity = new ResponseEntity();
-                        responseEntity.setMessage("User added");
-                        emiter.onNext(responseEntity);
-                    } catch (JSONException e) {
-                        emiter.onError(e);
-                    }
-                }
-        );
+    public void putUser(final UserEntity userEntity) {
+        try {
+            sharedPreferences.edit().putString(SP_USER_ENTITY, entityJsonMapper.toJson(userEntity)).apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public Observable<ResponseEntity> putToken(final ResponseEntity responseEntity) {
-        return Observable.create(emiter -> {
-            sharedPreferences.edit().putString(SP_TOKEN_ENTITY, responseEntity.getMessage()).apply();
-            ResponseEntity responseE = new ResponseEntity();
-            responseE.setMessage("Token added");
-            emiter.onNext(responseE);
-
-        });
+    public void putToken(final ResponseEntity responseEntity) {
+        sharedPreferences.edit().putString(SP_TOKEN_ENTITY, responseEntity.getMessage()).apply();
     }
 
     @Override

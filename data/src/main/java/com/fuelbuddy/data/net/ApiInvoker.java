@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -27,10 +28,7 @@ import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 
 public class ApiInvoker {
@@ -116,11 +114,9 @@ public class ApiInvoker {
                 .setLenient()
                 .create();
 
-        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetworkUtil.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(rxAdapter)
                 .client(okHttpClient)
                 .build();
 
@@ -150,9 +146,9 @@ public class ApiInvoker {
         return httpsInvoker;
     }
 
-    public List<GasStationEntity> getGasStations(String latitude, String longitude) {
+    public List<GasStationEntity> getGasStations(String token, String latitude, String longitude) {
         try {
-            return apiInterface.getGasStations(latitude, longitude).execute().body();
+            return apiInterface.getGasStations(token, latitude, longitude).execute().body();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -172,17 +168,13 @@ public class ApiInvoker {
         apiInterface.updatePrices(token, iD, userID, photoID, price92, price95, priceDiesel, callback);
     }
 
-    public UploadResponseEntity uploadVideo(String token, File file) {
+    public Observable<UploadResponseEntity> uploadVideo(String token, File file) {
         MediaType mediaType2 = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType2, file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
         String descriptionString = "hello, this is description speaking";
         RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-        try {
-            return apiInterface.uploadVideo(token, description, body).execute().body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return apiInterface.uploadVideo(token, description, body);
     }
 
     public void uploadVideo(String token, File file, Callback<UploadResponseEntity> callback) {
@@ -205,7 +197,7 @@ public class ApiInvoker {
 
     public UserEntity checkUser(String userID) {
         try {
-            return  apiInterface.checkUser(userID).execute().body();
+            return apiInterface.checkUser(userID).execute().body();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -2,6 +2,7 @@ package com.fuelbuddy.repository;
 
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
+
 import io.reactivex.Observable;
 
 

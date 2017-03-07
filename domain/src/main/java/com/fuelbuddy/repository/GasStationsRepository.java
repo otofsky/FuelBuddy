@@ -16,21 +16,11 @@ import io.reactivex.Observable;
  */
 public interface GasStationsRepository {
 
-    /**
-     * Get an {@link rx.Observable} which will emit a List of {@link GasStation}.
-     */
+
     Observable<List<GasStation>> gasStations(Position position);
 
     Observable<Response> updateStation(String iD, String userID, String photoID, Double price92
             ,Double price95, Double priceDiesel);
 
-    Observable<UploadResponse> uploadVideo(File file);
-
-    /**
-     * Get an {@link rx.Observable} which will emit a {@link GasStation}.
-     *
-     * @param userId The gasStation id used to retrieve user data.
-     */
-    Observable<GasStation> gasStation(final int userId);
 
 }

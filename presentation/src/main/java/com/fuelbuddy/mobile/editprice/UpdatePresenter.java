@@ -12,7 +12,7 @@ import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
-import com.fuelbuddy.interactor.UploadVideoUseCase;
+
 import com.fuelbuddy.mobile.base.BasePresenter;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.model.ErrorResponse;
@@ -79,7 +79,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+       // ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
         // Log.d("showErrorMessage", "showErrorMessage: " + errorResponse.getErrorMassage());
         //getMvpView().showError(errorResponse.getErrorMassage());
     }

@@ -19,11 +19,9 @@ import io.reactivex.Observable;
  */
 public interface RestApi {
 
-    Observable<List<GasStationEntity>> gasStationEntityList(Position position);
+    Observable<List<GasStationEntity>> gasStationEntityList(String token,Position position);
 
-    Observable<ResponseEntity> updateStation(String iD, String userID,  String photoID, Double price92, Double price95, Double priceDiesel);
-
-    Observable<UploadResponseEntity> uploadVideo(File file);
+    Observable<ResponseEntity> updateStation(String token,String iD, String userID,  String photoID, Double price92, Double price95, Double priceDiesel);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
 

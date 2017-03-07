@@ -3,7 +3,7 @@ package com.fuelbuddy.mobile.map.controller;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.map.adapter.GasStationAdapter;
 import com.fuelbuddy.mobile.map.adapter.GasStationInflater;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
