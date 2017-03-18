@@ -16,14 +16,11 @@
 package com.fuelbuddy.mobile.exeption;
 
 import android.content.Context;
-import android.util.Log;
 
-
-import com.fuelbuddy.data.net.RetrofitException;
+import com.fuelbuddy.data.exeption.GasStationsNotFoundException;
+import com.fuelbuddy.data.exeption.NetworkConnectionException;
+import com.fuelbuddy.data.exeption.UserNotFoundException;
 import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.model.ErrorResponse;
-
-import retrofit2.Response;
 
 
 /**
@@ -34,26 +31,18 @@ public class ErrorMessageFactory {
     private ErrorMessageFactory() {
     }
 
-    public static ErrorResponse create(Context context, Exception exception) {
+    public static String create(Context context, Exception exception) {
 
-        ErrorResponse errorResponse = null;
-        Response response;
-        if (exception instanceof RetrofitException) {
-            RetrofitException error = (RetrofitException) exception;
-           response  = error.getResponse();
-            error.getKind();
-            switch (error.getKind()) {
-                case HTTP:
-                    errorResponse = new ErrorResponse(response.code(),response.message());
-                    break;
-                case NETWORK:
-                    errorResponse = new ErrorResponse(context.getString(R.string.exception_message_no_connection));
-                    break;
-                case UNEXPECTED:
-                    errorResponse = new ErrorResponse(context.getString(R.string.exception_message_generic));
-                    break;
-            }
+        String message = context.getString(R.string.exception_message_generic);
+
+        if (exception instanceof NetworkConnectionException) {
+            message = context.getString(R.string.exception_message_no_connection);
+        } else if (exception instanceof UserNotFoundException) {
+            message = context.getString(R.string.exception_message_user_not_found);
+        } else if (exception instanceof GasStationsNotFoundException) {
+            message = context.getString(R.string.exception_message_user_not_found);
         }
-        return errorResponse;
+
+        return message;
     }
 }

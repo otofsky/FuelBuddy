@@ -6,7 +6,8 @@ import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 18.11.16.
@@ -15,7 +16,7 @@ public interface UserDataStore {
 
     Observable<ResponseEntity> auth(String userId, String email);
 
-    Observable<ResponseEntity> putToken(String token);
+
 
     Observable<UserEntity> checkUser(String userId);
 

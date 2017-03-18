@@ -14,4 +14,8 @@ public class GasStationAdapter extends GenericCustomListAdapter<GasStationModel>
     public GasStationAdapter(ListItemInflater<GasStationModel> listItemInflater, Context context) {
         super(listItemInflater, context);
     }
+
+    public void setSelectedItem(String itemId) {
+        setSelectedId(itemId);
+    }
 }

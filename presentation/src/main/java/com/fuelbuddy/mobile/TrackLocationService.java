@@ -3,7 +3,6 @@ package com.fuelbuddy.mobile;
 import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
 import com.fuelbuddy.data.net.ApiInvoker;
+import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.mobile.di.component.ApplicationComponent;
 import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
@@ -36,18 +36,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
-import javax.inject.Inject;
-
 import hugo.weaving.DebugLog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class TrackLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
@@ -128,39 +121,21 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
         ApiInvoker.getInstance().uploadVideo(sharePreferencesUserCache.getToken(), file)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<UploadResponseEntity, Observable<ResponseEntity>>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<UploadResponseEntity, ObservableSource<ResponseEntity>>() {
                     @Override
-                    public Observable<ResponseEntity> call(UploadResponseEntity uploadResponseEntity) {
-                        return (Observable<ResponseEntity>) ApiInvoker.getInstance()
-                                .updateStation(sharePreferencesUserCache.getToken(),
-                                        fuelPricesUpdateEntry.getStationID(),
-                                        fuelPricesUpdateEntry.getUserID(),
-                                        uploadResponseEntity.getFileID(),
-                                        fuelPricesUpdateEntry.getPrice92(),
-                                        fuelPricesUpdateEntry.getPrice95(),
-                                        fuelPricesUpdateEntry.getPriceDiesel());
-
+                    public ObservableSource<ResponseEntity> apply(UploadResponseEntity uploadResponseEntity) throws Exception {
+                        return (ObservableSource<ResponseEntity>) ApiInvoker.getInstance().updateStation(sharePreferencesUserCache.getToken(),
+                                fuelPricesUpdateEntry.getStationID(),
+                                fuelPricesUpdateEntry.getUserID(),
+                                uploadResponseEntity.getFileID(),
+                                fuelPricesUpdateEntry.getPrice92(),
+                                fuelPricesUpdateEntry.getPrice95(),
+                                fuelPricesUpdateEntry.getPriceDiesel());
                     }
                 })
-                .subscribe(new Subscriber<ResponseEntity>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted: ");
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        EventBus.getDefault().post(new ResponseEvent(0,((Exception) throwable).getMessage()));
-                    }
-
-                    @Override
-                    public void onNext(ResponseEntity responseEntity) {
-                        EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(),responseEntity.getMessage()));
-                        Log.d(TAG, "onNext: " + responseEntity.toString());
-                    }
-                });
+                .subscribe(new UpdateStationSubscriber());
     }
 
     @Override
@@ -260,6 +235,25 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
+    }
 
+    private final class UpdateStationSubscriber extends DefaultObserver<ResponseEntity> {
+
+        @DebugLog
+        @Override
+        public void onComplete() {
+        }
+
+        @DebugLog
+        @Override
+        public void onError(Throwable e) {
+            EventBus.getDefault().post(new ResponseEvent(0, ((Exception) e).getMessage()));
+        }
+
+        @DebugLog
+        @Override
+        public void onNext(ResponseEntity responseEntity) {
+            EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(), responseEntity.getMessage()));
+        }
     }
 }

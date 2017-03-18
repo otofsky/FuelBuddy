@@ -17,48 +17,42 @@ package com.fuelbuddy.data.repository.datasource.GasStationDataStore;
 
 
 import com.fuelbuddy.data.Position;
+import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
-import com.fuelbuddy.data.net.RestApiService;
+import com.fuelbuddy.data.net.RestApi;
 
 import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 
 class CloudGasStationStore implements GasStationDataStore {
 
-    private final RestApiService mRestApiService;
+    private final RestApi mRestApi;
+    private final UserCache userCache;
 
 
     @Inject
-    CloudGasStationStore(RestApiService restApiService) {
-        this.mRestApiService = restApiService;
+    CloudGasStationStore(UserCache userCache,RestApi restApi) {
+        this.userCache = userCache;
+        this.mRestApi = restApi;
     }
 
 
     @Override
     public Observable<List<GasStationEntity>> gasStationsEntityList(Position position) {
-        return this.mRestApiService.gasStationEntityList(position);
+        return this.mRestApi.gasStationEntityList(userCache.getToken(),position);
     }
 
     @Override
     public Observable<ResponseEntity> updateStation(String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
-        return mRestApiService.updateStation(iD, userID, photoID, price92, price95, priceDiesel);
+        return mRestApi.updateStation(userCache.getToken(),iD, userID, photoID, price92, price95, priceDiesel);
     }
 
-    @Override
-    public Observable<UploadResponseEntity> uploadVideo(File file) {
-        return mRestApiService.uploadVideo(file);
-    }
-
-    @Override
-    public Observable<GasStationEntity> gasStationEntityDetails(int userId) {
-        return null;
-    }
 
 }

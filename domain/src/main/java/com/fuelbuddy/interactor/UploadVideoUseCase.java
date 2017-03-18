@@ -9,16 +9,16 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+
 
 /**
  * Created by zjuroszek on 20.11.16.
  */
 
 
-public class UploadVideoUseCase extends UseCase {
+public class UploadVideoUseCase  {
 
-    GasStationsRepository gasStationsRepository;
+/*    GasStationsRepository gasStationsRepository;
     File file;
 
     @Inject
@@ -36,6 +36,6 @@ public class UploadVideoUseCase extends UseCase {
     protected Observable buildUseCaseObservable() {
         return gasStationsRepository.uploadVideo(file);
 
-    }
+    }*/
 
 }

@@ -9,14 +9,21 @@ import com.fuelbuddy.mobile.model.GasStationModel;
 
 public class OnPriceClickEvent extends Event {
     GasStationModel gasStationModel;
-
-
+    String selectedGasStationId;
 
     public OnPriceClickEvent(GasStationModel gasStationModel) {
         this.gasStationModel = gasStationModel;
     }
 
+    public OnPriceClickEvent( String selectedGasStationId) {
+        this.selectedGasStationId = selectedGasStationId;
+    }
+
     public GasStationModel getGasStationModel() {
         return gasStationModel;
+    }
+
+    public String getSelectedGasStationId() {
+        return selectedGasStationId;
     }
 }

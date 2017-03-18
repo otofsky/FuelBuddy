@@ -2,8 +2,12 @@ package com.fuelbuddy.mobile.map.controller;
 
 import android.content.Context;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.fuelbuddy.mobile.map.FuelPriceMode;
+import com.fuelbuddy.data.FuelPriceMode;
+import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.map.adapter.GasStationAdapter;
 import com.fuelbuddy.mobile.map.adapter.GasStationInflater;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
@@ -18,16 +22,16 @@ import java.util.List;
 
 public class FuelPriceController {
 
-    GasStationAdapter gasStationAdapter;
-    List<GasStationModel> gasStationModelList = new ArrayList<>();
-    private final Context context;
-    ViewGroup view;
+    GasStationAdapter mGasStationAdapter;
+    List<GasStationModel> mGasStationModelList = new ArrayList<>();
+    private final Context mContext;
+    ViewGroup mView;
 
-    public FuelPriceController(Context mapsActivity, ViewGroup view, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener) {
-        this.context = mapsActivity;
-        this.view = view;
-        gasStationAdapter = new GasStationAdapter(new GasStationInflater(context,fuelPriceMode,onFuelPriceClickListener), context);
-        initFuelPriceSection(this.gasStationModelList);
+    public FuelPriceController(Context mapsActivity, ViewGroup mView, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener) {
+        this.mContext = mapsActivity;
+        this.mView = mView;
+        mGasStationAdapter = new GasStationAdapter(new GasStationInflater(mContext, fuelPriceMode, onFuelPriceClickListener, onItemRefresh), mContext);
+        initFuelPriceSection(this.mGasStationModelList);
     }
 
     private void initFuelPriceSection(List<GasStationModel> gasStationModelList) {
@@ -35,28 +39,51 @@ public class FuelPriceController {
     }
 
     public void populateFuelPriceBarsSection(List<GasStationModel> gasStationModels) {
-        gasStationAdapter.clear();
+        this.mGasStationModelList = gasStationModels;
+        mGasStationAdapter.clear();
         clearCurrentSection();
         initAdapter(gasStationModels);
         initView();
-        gasStationAdapter.notifyDataSetChanged();
+        mGasStationAdapter.notifyDataSetChanged();
     }
+
+    public void refreshFuelPriceBarsSection(String gasStationId) {
+        refreshPriceBarView(gasStationId);
+    }
+
+    private void refreshPriceBarView(String gasStationId) {
+        mGasStationAdapter.clear();
+        mGasStationAdapter.setSelectedItem(gasStationId);
+        clearCurrentSection();
+        initAdapter(mGasStationModelList);
+        initView();
+        mGasStationAdapter.notifyDataSetChanged();
+    }
+
     private void initAdapter(List<GasStationModel> gasStationModels) {
         for (GasStationModel gasStationModel : gasStationModels) {
-            gasStationAdapter.add(gasStationModel);
+            mGasStationAdapter.add(gasStationModel);
         }
     }
+
     private void initView() {
-        view.removeAllViews();
-        for (int i = 0; i < gasStationAdapter.getCount(); ++i) {
-            view.addView(gasStationAdapter.getView(i, null, null));
+        mView.removeAllViews();
+        for (int i = 0; i < mGasStationAdapter.getCount(); ++i) {
+            mView.addView(mGasStationAdapter.getView(i, null, null));
         }
     }
 
     private void clearCurrentSection() {
-        int count = view.getChildCount();
+        int count = mView.getChildCount();
         if (count > 1) {
-            view.removeViews(0,count - 1);
+            mView.removeViews(0, count - 1);
         }
     }
+
+    private GenericCustomListAdapter.OnClickItemRefreshListener onItemRefresh = new GenericCustomListAdapter.OnClickItemRefreshListener() {
+        @Override
+        public void onItemRefresh(String gasStationId) {
+            refreshFuelPriceBarsSection(gasStationId);
+        }
+    };
 }

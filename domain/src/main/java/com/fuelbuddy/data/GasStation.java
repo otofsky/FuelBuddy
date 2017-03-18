@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class GasStation {
+public class GasStation  {
 
 
     private String gasStationId;
@@ -220,4 +220,5 @@ public class GasStation {
         result = 31 * result + (distance != null ? distance.hashCode() : 0);
         return result;
     }
+
 }

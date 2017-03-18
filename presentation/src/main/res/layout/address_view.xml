@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+
     android:padding="12dp"
-    android:background="@color/app_green"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
@@ -12,14 +13,14 @@
         android:id="@+id/detailSectionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_green"
+
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/stationNameTv"
             style="@style/TextViewFuelPriceDetail"
             tools:text="Collapsed"
-            android:textColor="@color/white"
+            android:textColor="@color/app_green"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -28,7 +29,7 @@
             style="@style/TextViewFuelPriceDetail"
             tools:text="2.4 km"
             android:layout_marginLeft="24dp"
-            android:textColor="@color/white"
+            android:textColor="@color/app_green"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_alignParentTop="true"
@@ -59,7 +60,7 @@
                 android:layout_toEndOf="@+id/locationIconImg"
                 android:layout_toRightOf="@+id/locationIconImg"
                 tools:text="Goleszów, Zniwna 4"
-                android:textColor="@color/white" />
+                android:textColor="@color/app_green" />
 
             <TextView
                 android:id="@+id/infoTv"
@@ -71,7 +72,7 @@
                 android:gravity="right"
                 tools:text="Retninger"
                 android:textStyle = "bold"
-                android:textColor="@color/white" />
+                android:textColor="@color/app_green" />
         </RelativeLayout>
 
 

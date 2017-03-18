@@ -11,27 +11,22 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.util.List;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public interface RestApiService {
+public interface RestApi {
 
-    Observable<List<GasStationEntity>> gasStationEntityList(Position position);
+    Observable<List<GasStationEntity>> gasStationEntityList(String token,Position position);
 
-    Observable<ResponseEntity> updateStation(String iD, String userID,  String photoID, Double price92, Double price95, Double priceDiesel);
-
-    Observable<UploadResponseEntity> uploadVideo(File file);
+    Observable<ResponseEntity> updateStation(String token,String iD, String userID,  String photoID, Double price92, Double price95, Double priceDiesel);
 
     Observable<ResponseEntity> addNewUser(UserEntity userEntity);
 
     Observable<ResponseEntity> auth(String userId, String email);
 
     Observable<UserEntity> checkUser(String userId);
-
-    Observable<GasStationEntity> gasStationEntityById(final int gasStationId);
 
 }

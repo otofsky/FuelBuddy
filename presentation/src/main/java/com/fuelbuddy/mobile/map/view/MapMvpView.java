@@ -1,5 +1,6 @@
 package com.fuelbuddy.mobile.map.view;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.mobile.base.MvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
@@ -15,5 +16,5 @@ public interface MapMvpView extends MvpView {
 
     public void showSuccessMessage(String message);
 
-    public void refreshFuelPrices();
+    public void refreshFuelPrices(FuelPriceMode fuelPriceMod);
 }

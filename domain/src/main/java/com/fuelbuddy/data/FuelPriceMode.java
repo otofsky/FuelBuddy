@@ -1,4 +1,4 @@
-package com.fuelbuddy.mobile.map;
+package com.fuelbuddy.data;
 
 /**
  * Created by zjuroszek on 24.11.16.

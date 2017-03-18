@@ -2,7 +2,6 @@ package com.fuelbuddy.mobile.home.fuelSelection;
 
 import android.util.Log;
 
-import com.fuelbuddy.interactor.DefaultSubscriber;
 import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
@@ -11,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
+import com.fuelbuddy.interactor.DefaultObserver;
 
 /**
  * Created by zjuroszek on 15.11.16.
@@ -27,15 +27,15 @@ public class FuelSelectionPresenter extends BasePresenter<FuelSelectionView> {
 
     public void logout() {
         getMvpView().showLoading();
-        this.logOutUseCase.execute(new LogOutSubscriber());
+        this.logOutUseCase.execute(new LogOutSubscriber(),null);
     }
 
 
-    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
+    private final class LogOutSubscriber extends DefaultObserver<Boolean> {
 
         @DebugLog
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @DebugLog

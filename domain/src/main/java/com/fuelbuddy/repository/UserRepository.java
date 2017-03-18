@@ -1,10 +1,10 @@
 package com.fuelbuddy.repository;
 
-import com.fuelbuddy.data.Auth;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 18.11.16.
@@ -12,9 +12,7 @@ import rx.Observable;
 public interface UserRepository {
 
 
-    Observable<Response> auth(String userId, String email);
-
-    Observable<Response> putToken(String token);
+    Observable auth(String userId, String email);
 
     Observable<User> getCurrentUser();
 

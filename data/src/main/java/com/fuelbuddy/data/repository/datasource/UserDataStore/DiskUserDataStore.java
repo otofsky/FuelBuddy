@@ -5,7 +5,8 @@ import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import hugo.weaving.DebugLog;
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by zjuroszek on 22.11.16.
@@ -13,8 +14,10 @@ import rx.Observable;
 public class DiskUserDataStore implements UserDataStore {
     UserCache mUserCache;
 
+
     public DiskUserDataStore(UserCache userCache) {
         mUserCache = userCache;
+
     }
 
     @Override
@@ -22,13 +25,10 @@ public class DiskUserDataStore implements UserDataStore {
         return null;
     }
 
-    @Override
-    public Observable<ResponseEntity> putToken(String token) {
-        return mUserCache.putToken(token);
-    }
 
-    public  String getToken(){
-       return mUserCache.getToken();
+
+    public String getToken() {
+        return mUserCache.getToken();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DiskUserDataStore implements UserDataStore {
 
     @Override
     public Observable<ResponseEntity> setCurrentUser(final UserEntity userEntity) {
-        return mUserCache.putUser(userEntity);
+        return null;
     }
 
     @Override

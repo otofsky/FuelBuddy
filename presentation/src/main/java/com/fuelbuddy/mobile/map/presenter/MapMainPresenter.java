@@ -1,22 +1,17 @@
 package com.fuelbuddy.mobile.map.presenter;
 
 
-import android.util.Log;
-
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.data.GasStation;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
-import com.fuelbuddy.interactor.DefaultSubscriber;
+import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.interactor.GetGasStationsUseCase;
-import com.fuelbuddy.interactor.LogOutUseCase;
-import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
-import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -32,14 +27,12 @@ import hugo.weaving.DebugLog;
 public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
     private final GetGasStationsUseCase mGetGasStationsUseCase;
-    private final LogOutUseCase logOutUseCase;
     private PositionMapper mPositionMapper;
 
 
     @Inject
-    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase,LogOutUseCase logOutUseCase) {
+    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase) {
         this.mGetGasStationsUseCase = getGasStationsUseCase;
-        this.logOutUseCase = logOutUseCase;
         mPositionMapper = new PositionMapper();
     }
 
@@ -52,46 +45,39 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        this.mGetGasStationsUseCase.unsubscribe();
+        this.mGetGasStationsUseCase.dispose();
     }
     @DebugLog
-    public void submitSearch(LatLng loLatLng) {
+    public void submitSearch(LatLng loLatLng, FuelPriceMode fuelPriceMode) {
         getMvpView().showLoading();
-        loadUserList(loLatLng);
+        loadUserList(loLatLng,fuelPriceMode);
     }
 
     @DebugLog
-    private void loadUserList(LatLng loLatLng) {
-        this.getFuelPrices(loLatLng);
+    private void loadUserList(LatLng loLatLng,FuelPriceMode fuelPriceMode) {
+        this.getFuelPrices(loLatLng,fuelPriceMode);
     }
 
-    private void getFuelPrices(LatLng loLatLn) {
-        this.mGetGasStationsUseCase.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
-        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber());
+    private void getFuelPrices(LatLng loLatLn,FuelPriceMode fuelPriceMode) {
+        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(),
+                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn),fuelPriceMode));
     }
 
-    public void getUpdatedFuelPrices(LatLng loLatLn) {
-        this.mGetGasStationsUseCase.setCurrentPosition(mPositionMapper.transformToPosition(loLatLn));
-        this.mGetGasStationsUseCase.execute(new FuelUpdatedPricesListSubscriber());
-    }
-
-    public void logout() {
-        getMvpView().showLoading();
-        this.logOutUseCase.execute(new LogOutSubscriber());
-    }
-
-
+    public void getUpdatedFuelPrices(LatLng loLatLn, FuelPriceMode fuelPriceMode) {
+        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(),
+                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn),fuelPriceMode));
+}
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         getMvpView().context();
-        ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
-        getMvpView().showError(errorResponse.getErrorMassage());
+        //ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
+       // getMvpView().showError(errorResponse.getErrorMassage());
     }
 
 
-    private final class FuelPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
+    private final class FuelPricesListSubscriber extends DefaultObserver<List<GasStation>> {
         @DebugLog
-        @Override public void onCompleted() {
+        @Override public void onComplete() {
             getMvpView().hideLoading();
         }
         @DebugLog
@@ -105,67 +91,6 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
             getMvpView().hideLoading();
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
             getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
-        }
-    }
-
-    private final class UpdateFuelPriceSubscriber extends DefaultSubscriber<Response> {
-        @DebugLog
-        @Override public void onCompleted() {
-            getMvpView().hideLoading();
-        }
-        @DebugLog
-        @Override public void onError(Throwable throwable) {
-            getMvpView().hideLoading();
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-        }
-
-        @DebugLog
-        @Override public void onNext(Response response) {
-            getMvpView().hideLoading();
-            getMvpView().showSuccessMessage(response.getMessage());
-
-        }
-    }
-
-    private final class FuelUpdatedPricesListSubscriber extends DefaultSubscriber<List<GasStation>> {
-        @DebugLog
-        @Override public void onCompleted() {
-            getMvpView().hideLoading();
-        }
-        @DebugLog
-        @Override public void onError(Throwable throwable) {
-            getMvpView().hideLoading();
-            showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-        }
-
-        @DebugLog
-        @Override public void onNext(List<GasStation> gasStations) {
-            getMvpView().hideLoading();
-            GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
-            getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));
-
-        }
-    }
-
-    private final class LogOutSubscriber extends DefaultSubscriber<Boolean> {
-
-        @DebugLog
-        @Override
-        public void onCompleted() {
-        }
-
-        @DebugLog
-        @Override
-        public void onError(Throwable e) {
-
-        }
-
-        @DebugLog
-        @Override
-        public void onNext(Boolean isLogout) {
-            Log.d("Logout", "onNext: " + isLogout);
-            getMvpView().hideLoading();
-            getMvpView().logOut();
         }
     }
 }

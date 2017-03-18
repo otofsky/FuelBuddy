@@ -19,29 +19,28 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-
 import com.fuelbuddy.data.Position;
-import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
+import com.fuelbuddy.data.exeption.NetworkConnectionException;
+import com.fuelbuddy.data.exeption.UserNotFoundException;
 
 import java.io.File;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
- * {@link RestApiService} implementation for retrieving data from the network.
+ * {@link RestApi} implementation for retrieving data from the network.
  */
-public class RestApiImpl implements RestApiService {
+public class RestApiImpl implements RestApi {
 
     private final Context context;
-
     GasStationEntityDataMapper mGasStationEntityDataMapper;
-
     ApiInvoker mApiInvoker;
 
     public RestApiImpl(Context context) {
@@ -49,7 +48,7 @@ public class RestApiImpl implements RestApiService {
     }
 
 
-    public RestApiImpl( ApiInvoker apiInvoker,Context context, GasStationEntityDataMapper gasStationEntityDataMapper) {
+    public RestApiImpl(ApiInvoker apiInvoker, Context context, GasStationEntityDataMapper gasStationEntityDataMapper) {
         this.mApiInvoker = apiInvoker;
         this.context = context;
         mGasStationEntityDataMapper = gasStationEntityDataMapper;
@@ -70,49 +69,104 @@ public class RestApiImpl implements RestApiService {
         return isConnected;
     }
 
-    @Override
-    public Observable<List<GasStationEntity>> gasStationEntityList(Position position) {
-        return mApiInvoker.getGasStations(position.getLatitude(),position.getLongitude());
-    }
-
-    @Override
-    public Observable<ResponseEntity> updateStation(String ID, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
-    //    return ApiInvoker.getInstance().uploadVideo(file);
-        return mApiInvoker.updateStation("",ID, userID,photoID, price92, price95, priceDiesel);
-    }
-
-    @Override
-    public Observable<UploadResponseEntity> uploadVideo(File file) {
-        return mApiInvoker.uploadVideo("", file);
-    }
-
-
-    public Observable<UserEntity> checkUser(String userId) {
-        return mApiInvoker.checkUser(userId);
-    }
 
     public Observable<ResponseEntity> auth(String userId, String email) {
-        return mApiInvoker.auth(userId,email);
+        return Observable.create(emitter -> {
+            if (isThereInternetConnection()) {
+                try {
+                    ResponseEntity responseEntity = authFromApi(userId, email);
+                    if (responseEntity != null) {
+                        emitter.onNext(responseEntity);
+                        emitter.onComplete();
+                    } else {
+                        emitter.onError(new NetworkConnectionException());
+                    }
+                } catch (Exception e) {
+                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                }
+            } else {
+                emitter.onError(new NetworkConnectionException());
+            }
+        });
     }
-
 
     @Override
     public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return mApiInvoker.addNewUser(userEntity.getUserID(),userEntity.getProfileName(),userEntity.getEmail());
+        return Observable.create(emitter -> {
+            if (isThereInternetConnection()) {
+                try {
+                    ResponseEntity responseEntity = addNewUserFromApi(userEntity);
+                    if (responseEntity != null) {
+                        emitter.onNext(responseEntity);
+                        emitter.onComplete();
+                    } else {
+                        emitter.onError(new NetworkConnectionException());
+                    }
+                } catch (Exception e) {
+                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                }
+            } else {
+                emitter.onError(new NetworkConnectionException());
+            }
+        });
+    }
+
+    public Observable<UserEntity> checkUser(String userId) {
+        return Observable.create(emitter -> {
+            if (isThereInternetConnection()) {
+                try {
+                    UserEntity userEntity = checkUserEntityFromApi(userId);
+                    if (userEntity != null) {
+                        emitter.onNext(userEntity);
+                        emitter.onComplete();
+                    } else {
+                        emitter.onError(new UserNotFoundException());
+                    }
+                } catch (Exception e) {
+                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                }
+            } else {
+                emitter.onError(new NetworkConnectionException());
+            }
+        });
+    }
+
+
+    @Override
+    public Observable<ResponseEntity> updateStation(String token, String ID, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
+        return Observable.create(emitter -> {
+            if (isThereInternetConnection()) {
+                try {
+                    ResponseEntity responseEntity = updateStationFromApi(token, ID, userID, photoID, price92, price95, priceDiesel);
+                    if (responseEntity != null) {
+                        emitter.onNext(responseEntity);
+                        emitter.onComplete();
+                    } else {
+                        emitter.onError(new NetworkConnectionException());
+                    }
+                } catch (Exception e) {
+                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                }
+            } else {
+                emitter.onError(new NetworkConnectionException());
+            }
+        });
     }
 
 
 
-/*
     @Override
-    public Observable<List<GasStationEntity>> gasStationEntityList() {
+    public Observable<List<GasStationEntity>> gasStationEntityList(String token, final Position position) {
         return Observable.create(subscriber -> {
             if (isThereInternetConnection()) {
                 try {
-                    //String responseUserEntities = getUserEntitiesFromApi();
-                    subscriber.onNext(getUserEntitiesFromApi());
-                    subscriber.onCompleted();
-
+                    List<GasStationEntity> gasStationEntityList = getGasStationEntitiesFromApi(token, position);
+                    if (gasStationEntityList != null) {
+                        subscriber.onNext(gasStationEntityList);
+                        subscriber.onComplete();
+                    } else {
+                        subscriber.onError(new NetworkConnectionException());
+                    }
                 } catch (Exception e) {
                     subscriber.onError(new NetworkConnectionException(e.getCause()));
                 }
@@ -121,18 +175,28 @@ public class RestApiImpl implements RestApiService {
             }
         });
     }
-*/
 
-    @Override
-    public Observable<GasStationEntity> gasStationEntityById(int gasStationId) {
-        return null;
+    private List<GasStationEntity> getGasStationEntitiesFromApi(String token, Position position) {
+        return mApiInvoker.getGasStations(token, position.getLatitude(), position.getLongitude());
     }
-/*
-    public List<GasStationEntity> getUserEntitiesFromApi() {
-        RestApiService.Creator.newRestApiService().gasStationEntityList();
-        GasStationEntity gasStationEntity = new GasStationEntity("Statoil");
-        List<GasStationEntity> gasStationEntityList = new ArrayList<GasStationEntity>();
-        gasStationEntityList.add(gasStationEntity);
-        return gasStationEntityList;
-    }*/
+
+
+    public UserEntity checkUserEntityFromApi(String userId) {
+        return mApiInvoker.checkUser(userId);
+    }
+
+
+    public ResponseEntity updateStationFromApi(String token, String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel) {
+        return mApiInvoker.updateStation(token, iD, userID, photoID, price92, price95, priceDiesel);
+    }
+
+
+
+    public ResponseEntity addNewUserFromApi(UserEntity userEntity) {
+        return mApiInvoker.addNewUser(userEntity.getUserID(), userEntity.getProfileName(), userEntity.getEmail());
+    }
+
+    public ResponseEntity authFromApi(String userId, String email) {
+        return mApiInvoker.auth(userId, email);
+    }
 }

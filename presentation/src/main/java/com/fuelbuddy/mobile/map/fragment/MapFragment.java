@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.controller.MapInterface;
 import com.fuelbuddy.mobile.base.Event;
@@ -42,7 +43,10 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     }
 
+    public String DEFAULT_PRICE_SELECTION = "";
+
     private Callbacks mCallbacks;
+    private PriceListFragment.OnStationClickListener onStationClickListener;
 
     private MapInterface mapController;
 
@@ -78,6 +82,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
                     "Activity must implement fragment's callbacks.");
         }
         mCallbacks = (Callbacks) activity;
+        onStationClickListener = (PriceListFragment.OnStationClickListener)activity;
     }
 
     @Override
@@ -125,12 +130,15 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public void onMapClick(LatLng latLng) {
         mCallbacks.onInfoHide();
         mapController.setFuelStationsPositions();
+        onStationClickListener.onMarkerClick(DEFAULT_PRICE_SELECTION);
     }
 
     @Override
     public void onMarkerClick(GasStationModel gasStationModel) {
         mapController.centerOnGasStation(true, MapUtil.getLatLng(gasStationModel));
         mCallbacks.onInfoShow(gasStationModel);
+        onStationClickListener.onMarkerClick(gasStationModel.getGasStationId());
+        //pull out
     }
 
     @Subscribe

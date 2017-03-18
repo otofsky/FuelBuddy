@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fuelbuddy.interactor;
+package com.fuelbuddy.data.exeption;
 
 /**
- * Default subscriber base class to be used whenever you want default error handling.
+ * Exception throw by the application when a User search can't return a valid result.
  */
-public class DefaultSubscriber<T> extends rx.Subscriber<T> {
-  @Override public void onCompleted() {
-    // no-op by default.
+public class GasStationsNotFoundException extends Exception {
+
+  public GasStationsNotFoundException() {
+    super();
   }
 
-  @Override public void onError(Throwable e) {
-    // no-op by default.
+  public GasStationsNotFoundException(final String message) {
+    super(message);
   }
 
-  @Override public void onNext(T t) {
-    // no-op by default.
+  public GasStationsNotFoundException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
+
+  public GasStationsNotFoundException(final Throwable cause) {
+    super(cause);
   }
 }

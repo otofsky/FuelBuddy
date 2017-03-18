@@ -1,9 +1,7 @@
 package com.fuelbuddy.data.repository;
 
-import com.fuelbuddy.data.Auth;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
-import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.AuthEntityMapper;
@@ -15,9 +13,8 @@ import com.fuelbuddy.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 /**
  * Created by zjuroszek on 18.11.16.
@@ -43,69 +40,47 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<Response> auth(String userId, String email) {
+    public  Observable<Response> auth(String userId, String email) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.auth(userId,email).map(new Func1<ResponseEntity, Response>() {
-            @Override
-            public Response call(ResponseEntity responseEntity) {
-                return mResponseEntityMapper.transformToResponse(responseEntity);
-            }
-        });
+        return userDataStore.auth(userId,email).map(mResponseEntityMapper::transformToResponse);
     }
 
+
+
+/*
     @Override
     public Observable<Response> putToken(String token) {
         UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
-        return userDataStore.putToken(token).map(new Func1<ResponseEntity, Response>() {
-            @Override
-            public Response call(ResponseEntity responseEntity) {
-                return mResponseEntityMapper.transformToResponse(responseEntity);
-            }
-        });
+        return userDataStore.putToken(token).map(mResponseEntityMapper::transformToResponse);
     }
+*/
+
+
 
     @Override
     public Observable<User> getCurrentUser() {
         UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
-        return userDataStore.getCurrentUserEntity().map(new Func1<UserEntity, User>() {
-            @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
-            }
-        });
+        return userDataStore.getCurrentUserEntity().map(mUserEntityMapper::transformToUser);
     }
 
     @Override
     public Observable<User> checkUser(String userId) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.checkUser(userId).map(new Func1<UserEntity, User>() {
-            @Override
-            public User call(UserEntity userEntity) {
-                return mUserEntityMapper.transformToUser(userEntity);
-            }
-        });
+        return userDataStore.checkUser(userId).map(mUserEntityMapper::transformToUser);
     }
 
     @Override
     public Observable<Response> setCurrentUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createDiskUserDataStore();
-        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
-            @Override
-            public Response call(ResponseEntity responseEntity) {
-                return mResponseEntityMapper.transformToResponse(responseEntity);
-            }
-        });
+        return userDataStore.setCurrentUser(mUserEntityMapper.transformToUserEntity(user))
+                .map(mResponseEntityMapper::transformToResponse);
     }
 
     @Override
     public Observable<Response> addNewUser(User user) {
         UserDataStore userDataStore = mUserStoreFactory.createCloudDataStore();
-        return userDataStore.addNewUser(mUserEntityMapper.transformToUserEntity(user)).map(new Func1<ResponseEntity, Response>() {
-            @Override
-            public Response call(ResponseEntity responseEntity) {
-                return mResponseEntityMapper.transformToResponse(responseEntity);
-            }
-        });
+        return userDataStore.addNewUser(mUserEntityMapper.transformToUserEntity(user))
+                .map(mResponseEntityMapper::transformToResponse);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.model.MarkerEntry;
 import com.fuelbuddy.mobile.model.MarkerModel;
+import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.MapUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,7 +52,6 @@ public class MapController implements MapInterface {
     /**
      * Default position of the camera that shows the venue.
      */
-
 
     @Override
     public void initMap(Context context, GoogleMap map, OnMarkerClickCallback onMarkerClickCallback) {
@@ -189,12 +189,14 @@ public class MapController implements MapInterface {
 
     @NonNull
     private MarkerOptions getMarkerUnselectedOptions(GasStationModel gs, LatLng latLng) {
-        MarkerOptions markerOptions;
-        markerOptions = MapUtil.initMarkerOptions(gs.getGasStationName(),
-                latLng,
-                MapUtil.MarkerType.STATION,
-                R.mipmap.drop_unselected);
-        return markerOptions;
+        int numOfHours = DateHelper.isOlderThanData(gs.getTimeUpdated());
+        if (numOfHours < 2) {
+            return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_green);
+        } else if (numOfHours > 2 && numOfHours < 4) {
+            return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_yellow);
+        } else {
+            return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_red);
+        }
     }
 
     @NonNull

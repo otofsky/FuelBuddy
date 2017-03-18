@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseFragment;
-import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.base.Event;
@@ -19,6 +19,7 @@ import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.map.view.PriceListMvpView;
 import com.fuelbuddy.mobile.model.GasStationModel;
+import com.fuelbuddy.mobile.util.MapUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,6 +42,10 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
             EventBus.getDefault().post(new OnPriceClickEvent(gasStationModel));
         }
     };
+
+    public interface OnStationClickListener {
+        public void onMarkerClick(String selectedStationId);
+    }
 
     FuelPriceController mFuelPriceController;
     @BindView(R.id.fuelPriceHolderView)
@@ -94,14 +99,16 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
 
     @Subscribe
     public void onEventMainThread(Event event) {
+        if (event instanceof OnPriceClickEvent) {
+            String selectedGasStationId= ((OnPriceClickEvent) event).getSelectedGasStationId();
+            mFuelPriceController.refreshFuelPriceBarsSection(selectedGasStationId);
+        }
     }
 
     @Override
     public void showFuelPriceBars(List<GasStationModel> gasStationModelList) {
         mFuelPriceController.populateFuelPriceBarsSection(gasStationModelList);
     }
-
-
 
     @Override
     public void showLoading() {

@@ -15,17 +15,15 @@
  */
 package com.fuelbuddy.mobile.navigation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.editprice.UpdateActivity;
 import com.fuelbuddy.mobile.home.HomeActivity;
 import com.fuelbuddy.mobile.login.LoginActivity;
-import com.fuelbuddy.mobile.map.FuelPriceMode;
 import com.fuelbuddy.mobile.map.MapsMainActivity;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.AnimationHelper;
