@@ -1,10 +1,10 @@
 package com.fuelbuddy.mobile.map.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
@@ -29,24 +29,34 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     private LayoutInflater inflater;
     private FuelPriceMode fuelPriceMode;
     OnFuelPriceClickListener onFuelPriceClickListener;
+    GenericCustomListAdapter.OnClickItemRefreshListener onClickItemRefreshListener;
     private Context context;
     String TAG = getClass().getName();
 
 
-    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener) {
+    public GasStationInflater(Context context, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener, GenericCustomListAdapter.OnClickItemRefreshListener onClickItemRefreshListener) {
         this.context = context;
         inflater = LayoutInflater.from(this.context);
         this.fuelPriceMode = fuelPriceMode;
         this.onFuelPriceClickListener = onFuelPriceClickListener;
+        this.onClickItemRefreshListener = onClickItemRefreshListener;
     }
 
     @Override
-    public View getView(GasStationModel item, View convertView, int positionFlag) {
+    public View getView(GasStationModel item, View convertView, String selectedItem, int positionFlag) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.fuel_price_bar_benzin, null);
+            if (!com.fuelbuddy.util.StringHelper.isNullOrEmpty(selectedItem)) {
+                if (item.getGasStationId().equalsIgnoreCase(selectedItem)) {
+                    convertView = setSelectedPriceBar();
+                } else {
+                    convertView = setDefaultPriceBar();
+                }
+            } else {
+                convertView = setDefaultPriceBar();
+            }
             holder = new ViewHolder();
-            holder.fuelPriceBtn = (AppCompatTextView) convertView.findViewById(R.id.fuelPriceView);
+            holder.fuelPriceBtn = (TextView) convertView.findViewById(R.id.fuelPriceTextView);
             setBtnListener(holder.fuelPriceBtn, item);
             convertView.setTag(holder);
 
@@ -54,6 +64,18 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
             holder = (ViewHolder) convertView.getTag();
         }
         initFuelPriceDataViews(item, holder);
+        return convertView;
+    }
+
+    private View setSelectedPriceBar() {
+        View convertView;
+        convertView = inflater.inflate(R.layout.fuel_price_bar_selected, null);
+        return convertView;
+    }
+
+    private View setDefaultPriceBar() {
+        View convertView;
+        convertView = inflater.inflate(R.layout.fuel_price_bar, null);
         return convertView;
     }
 
@@ -83,12 +105,13 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     }
 
 
-    private void setBtnListener(AppCompatTextView appCompatButton, final GasStationModel gasStationModel) {
-        appCompatButton.setOnClickListener(new View.OnClickListener() {
+    private void setBtnListener(final TextView textView, final GasStationModel gasStationModel) {
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FuelPriceUpdate fuelPriceUpdate = isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated());
                 onFuelPriceClickListener.onFuelPriceClick(gasStationModel, fuelPriceUpdate);
+                onClickItemRefreshListener.onItemRefresh(gasStationModel.getGasStationId());
             }
         });
     }
@@ -140,9 +163,8 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         }
     }
 
-
     public static class ViewHolder {
-        AppCompatTextView fuelPriceBtn;
+        TextView fuelPriceBtn;
     }
 }
 

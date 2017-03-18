@@ -5,4 +5,10 @@
 
     <!-- Map -->
     <dimen name="map_slideableinfo_height">125dp</dimen>
+
+
+    <dimen name="selected_price_bar">152dp</dimen>
+
+    <dimen name="test_vertical_margin">75dp</dimen>
+
 </resources>

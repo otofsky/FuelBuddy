@@ -14,6 +14,7 @@ public class GenericCustomListAdapter<T> extends ArrayAdapter<T> {
     public static final int POSITION_FLAG_FIRST = 1;
     public static final int POSITION_FLAG_LAST = 2;
     public static final int POSITION_FLAG_BOTH = POSITION_FLAG_FIRST + POSITION_FLAG_LAST;
+    public String selectedItem;
 
 
     public GenericCustomListAdapter(ListItemInflater<T> listItemInflater, Context context) {
@@ -24,7 +25,6 @@ public class GenericCustomListAdapter<T> extends ArrayAdapter<T> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         int positionFlag = 0;
         if(position==0) {
             positionFlag+=POSITION_FLAG_FIRST;
@@ -32,15 +32,21 @@ public class GenericCustomListAdapter<T> extends ArrayAdapter<T> {
         if(position+1==getCount()) {
             positionFlag+=POSITION_FLAG_LAST;
         }
-        return listItemInflater.getView(getItem(position), convertView, positionFlag);
+
+        return listItemInflater.getView(getItem(position), convertView, selectedItem, positionFlag);
     }
 
+    public void setSelectedId(String selectedItem){
+        this.selectedItem = selectedItem;
+    }
 
     public static interface ListItemInflater<T> {
-
-        public View getView(T item, View convertView, int positionFlag);
+        public View getView(T item, View convertView, String selectedItem, int positionFlag);
     }
 
+    public interface OnClickItemRefreshListener {
+        void onItemRefresh(String gasStationId);
+    }
 
 
 }

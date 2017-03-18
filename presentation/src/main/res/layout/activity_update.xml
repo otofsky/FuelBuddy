@@ -41,17 +41,24 @@
                 android:id="@+id/viewA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
-                android:background="@color/gray"
+                android:layout_weight="0.7"
+
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="match_parent"
+                <com.kofigyan.stateprogressbar.StateProgressBar
+                    android:id="@+id/stateIndicator"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/update_indicator"
-
-                    />
+                    app:spb_currentStateNumber="three"
+                    app:spb_maxStateNumber="three"
+                    app:spb_stateBackgroundColor="@color/white"
+                    app:spb_stateForegroundColor="@color/app_green"
+                    app:spb_stateNumberBackgroundColor="@color/white"
+                    app:spb_stateNumberForegroundColor="#eeeeee"
+                    app:spb_currentStateDescriptionColor="@color/app_green"
+                    app:spb_stateDescriptionColor="@color/white"
+                    app:spb_enableAllStatesCompleted="true"/>
 
             </LinearLayout>
 

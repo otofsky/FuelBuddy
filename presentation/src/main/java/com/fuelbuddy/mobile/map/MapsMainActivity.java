@@ -58,7 +58,7 @@ import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, Dialog.OnClickListener, HasComponent<MapsComponent> {
+        GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, PriceListFragment.OnStationClickListener, Dialog.OnClickListener, HasComponent<MapsComponent> {
     private static final String TAG = MapsMainActivity.class.getCanonicalName();
 
     @Inject
@@ -350,4 +350,9 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         return mMapsComponent;
     }
 
+    @Override
+    public void onMarkerClick(String selectedStationId) {
+        EventBus.getDefault().post(new OnPriceClickEvent(selectedStationId));
+
+    }
 }

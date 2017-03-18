@@ -36,6 +36,7 @@ import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.FileUtils;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.gun0912.tedpermission.PermissionListener;
+import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.redmadrobot.inputmask.MaskedTextChangedListener;
 import com.redmadrobot.inputmask.PolyMaskTextChangedListener;
 
@@ -95,10 +96,9 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     Unbinder mUnbinder;
 
+    String[] descriptionData = {"Video", "Update Price", "Send"};
 
     private UpdateComponent mUpdateComponent;
-
-    // PolyMaskTextChangedListener.OnTextEndListener onTextEndListener = new OnTextE
 
 
     MaskedTextChangedListener.ValueListener valueListener = new MaskedTextChangedListener.ValueListener() {
@@ -119,6 +119,8 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         setContentView(R.layout.activity_update);
         mUnbinder = ButterKnife.bind(this);
         openCameraBtn.setOnClickListener(this);
+        StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.stateIndicator);
+        stateProgressBar.setStateDescriptionData(descriptionData);
         initializeInjector();
         initPresenter();
         setToolbar();
@@ -221,13 +223,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
             onBackPressed();
             AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.send, menu);
-        return true;
     }
 
     @DebugLog

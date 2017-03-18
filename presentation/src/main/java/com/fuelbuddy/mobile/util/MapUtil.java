@@ -1,7 +1,9 @@
 package com.fuelbuddy.mobile.util;
 
 import android.support.annotation.NonNull;
+import android.view.View;
 
+import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -34,9 +36,6 @@ public class MapUtil {
             case STATION:
                 bitmapDescriptor =  BitmapDescriptorFactory.fromResource(icon);
                 break;
-          /*  case USER:
-                bitmapDescriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                break;*/
         }
         return bitmapDescriptor;
     }
