@@ -12,9 +12,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +34,7 @@ import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.AnimationHelper;
 import com.fuelbuddy.mobile.util.DialogFactory;
 import com.fuelbuddy.mobile.util.FileUtils;
+import com.fuelbuddy.mobile.util.KeyboardUtil;
 import com.fuelbuddy.mobile.util.PermissionsUtils;
 import com.gun0912.tedpermission.PermissionListener;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -64,31 +65,26 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     UpdatePresenter mPresenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.stationNameTv)
     TextView gasStationName;
-
     @BindView(R.id.stationAddressTv)
     TextView stationAddress;
-
     @BindView(R.id.distanceTv)
     TextView distance;
-
     @BindView(R.id.infoTv)
     TextView info;
-
     @BindView(R.id.locationIconImg)
     ImageView locationIconImg;
-
     @BindView(R.id.fuelInput92)
     EditText fuelInput92;
     @BindView(R.id.fuelInput95)
     EditText fuelInput95;
     @BindView(R.id.fuelInputDiesel)
     EditText fuelInputDiesel;
-
     @BindView(R.id.openCameraBtn)
     FloatingActionButton openCameraBtn;
+    @BindView(R.id.sendBtn)
+    Button sendButton;
 
     GasStationModel gasStationModel;
 
@@ -109,7 +105,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         }
     };
 
-
     public static Intent getCallingIntent(Activity context) {
         return new Intent(context, UpdateActivity.class);
     }
@@ -119,6 +114,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         setContentView(R.layout.activity_update);
         mUnbinder = ButterKnife.bind(this);
         openCameraBtn.setOnClickListener(this);
+        sendButton.setOnClickListener(this);
         StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.stateIndicator);
         stateProgressBar.setStateDescriptionData(descriptionData);
         initializeInjector();
@@ -138,8 +134,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         fuelInput92.setOnFocusChangeListener(listener);
         fuelInput92.setHint(listener.placeholder());
         fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
-
-
     }
 
     private void init95PriceView() {
@@ -158,8 +152,8 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         fuelInputDiesel.setOnFocusChangeListener(listener);
         fuelInputDiesel.setHint(listener.placeholder());
         fuelInputDiesel.setBackgroundResource(R.drawable.border_line_gray);
+        KeyboardUtil.hideSoftKeyboard(fuelInputDiesel, this);
     }
-
 
     private void obtainData() {
         Intent i = getIntent();
@@ -169,7 +163,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         distance.setText(gasStationModel.getDistance());
         info.setText(R.string.map_direction_btn_text);
         info.setText(R.string.update_price_btn_text);
-
     }
 
     private void initPresenter() {
@@ -198,19 +191,13 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
                 PermissionsUtils.initPermission(this, permissionlistener,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
                 break;
+            case R.id.sendBtn:
+                File file = FileUtils.getFile(this, videoUri);
+                mPresenter.updateVideo(file, gasStationModel.getGasStationId(), fuelInput92.getText().toString(),
+                        fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
+                break;
         }
     }
-
-    PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            showCamera();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-        }
-    };
 
     @Override
     public void showCamera() {
@@ -229,11 +216,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.actionUpdatePrice:
-                File file = FileUtils.getFile(this, videoUri);
-                mPresenter.updateVideo(file, gasStationModel.getGasStationId(), fuelInput92.getText().toString(),
-                        fuelInput95.getText().toString(), fuelInputDiesel.getText().toString());
-                return true;
             case android.R.id.home:
                 onBackPressed();
                 AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
@@ -375,4 +357,14 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         return mUpdateComponent;
     }
 
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            showCamera();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+        }
+    };
 }

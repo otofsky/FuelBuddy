@@ -34,7 +34,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener, MapController.OnMarkerClickCallback {
 
-
     public interface Callbacks {
 
         void onInfoHide();
@@ -56,7 +55,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         MapFragment fragment = new MapFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
-
         return fragment;
     }
 
@@ -109,7 +107,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public void onMapLongClick(LatLng latLng) {
 
     }
-
 
     public void showGasStationPositions(List<GasStationModel> gasStationModelList) {
         mapController.clear();

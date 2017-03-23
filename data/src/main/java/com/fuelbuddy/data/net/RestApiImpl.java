@@ -18,6 +18,7 @@ package com.fuelbuddy.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
@@ -26,6 +27,7 @@ import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.exeption.NetworkConnectionException;
+import com.fuelbuddy.data.exeption.ServiceNotAvailableException;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 
 import java.io.File;
@@ -82,7 +84,7 @@ public class RestApiImpl implements RestApi {
                         emitter.onError(new NetworkConnectionException());
                     }
                 } catch (Exception e) {
-                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                    emitter.onError(new ServiceNotAvailableException(e.getCause()));
                 }
             } else {
                 emitter.onError(new NetworkConnectionException());
@@ -103,7 +105,7 @@ public class RestApiImpl implements RestApi {
                         emitter.onError(new NetworkConnectionException());
                     }
                 } catch (Exception e) {
-                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                    emitter.onError(new ServiceNotAvailableException(e.getCause()));
                 }
             } else {
                 emitter.onError(new NetworkConnectionException());
@@ -123,7 +125,7 @@ public class RestApiImpl implements RestApi {
                         emitter.onError(new UserNotFoundException());
                     }
                 } catch (Exception e) {
-                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                    emitter.onError(new ServiceNotAvailableException(e.getCause()));
                 }
             } else {
                 emitter.onError(new NetworkConnectionException());
@@ -145,7 +147,7 @@ public class RestApiImpl implements RestApi {
                         emitter.onError(new NetworkConnectionException());
                     }
                 } catch (Exception e) {
-                    emitter.onError(new NetworkConnectionException(e.getCause()));
+                    emitter.onError(new ServiceNotAvailableException(e.getCause()));
                 }
             } else {
                 emitter.onError(new NetworkConnectionException());
@@ -153,6 +155,26 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<UploadResponseEntity> uploadVideo(String token, File file) {
+        return Observable.create(emiter -> {
+            if (isThereInternetConnection()) {
+                try {
+                    UploadResponseEntity uploadResponseEntity = uploadVideoFromApi(token, file);
+                    if (uploadResponseEntity != null) {
+                        emiter.onNext(uploadResponseEntity);
+                        emiter.onComplete();
+                    } else {
+                        emiter.onError(new NetworkConnectionException());
+                    }
+                } catch (Exception e) {
+                    emiter.onError(new ServiceNotAvailableException(e.getCause()));
+                }
+            } else {
+                emiter.onError(new NetworkConnectionException());
+            }
+        });
+    }
 
 
     @Override
@@ -168,7 +190,7 @@ public class RestApiImpl implements RestApi {
                         subscriber.onError(new NetworkConnectionException());
                     }
                 } catch (Exception e) {
-                    subscriber.onError(new NetworkConnectionException(e.getCause()));
+                    subscriber.onError(new ServiceNotAvailableException(e.getCause()));
                 }
             } else {
                 subscriber.onError(new NetworkConnectionException());
@@ -190,6 +212,9 @@ public class RestApiImpl implements RestApi {
         return mApiInvoker.updateStation(token, iD, userID, photoID, price92, price95, priceDiesel);
     }
 
+    public UploadResponseEntity uploadVideoFromApi(String token, File file) {
+        return mApiInvoker.uploadVideo(token, file);
+    }
 
 
     public ResponseEntity addNewUserFromApi(UserEntity userEntity) {

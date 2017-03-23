@@ -15,6 +15,7 @@ import com.fuelbuddy.mobile.di.module.ApplicationModule;
 import com.fuelbuddy.mobile.util.LocationRequestData;
 import com.google.android.gms.location.LocationRequest;
 import io.fabric.sdk.android.Fabric;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public class AndroidApplication extends Application {
@@ -28,6 +29,15 @@ public class AndroidApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         this.initializeInjector();
+        initFont();
+    }
+
+    private void initFont() {
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     private void initializeInjector() {

@@ -50,6 +50,31 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
+<!--    android:id="@+id/fuelInput92"
+    android:inputType="number"
+    android:digits="0123456789 -."
+    android:imeOptions="actionNext"
+    android:layout_width="100dp"
+    android:layout_height="40dp"
+    android:textSize="18sp"
+    android:gravity="center"
+    android:textColor="@color/app_green"
+    android:background="@color/white"
+-->
+
+    <style name="EditTextFb">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColor">@color/app_green</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:digits">0123456789 -.</item>
+        <item name="android:inputType">number</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
     <style name="TextViewFuelPriceDetail">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -9,9 +9,11 @@ import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.interactor.GetGasStationsUseCase;
 import com.fuelbuddy.mobile.base.BasePresenter;
+import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
+import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -68,12 +70,12 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
                 GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn),fuelPriceMode));
 }
 
-    private void showErrorMessage(ErrorBundle errorBundle) {
-        getMvpView().context();
-        //ErrorResponse errorResponse = ErrorMessageFactory.create(getMvpView().context(), errorBundle.getException());
-       // getMvpView().showError(errorResponse.getErrorMassage());
-    }
 
+    private void showErrorMessage(ErrorBundle errorBundle) {
+        String errorMessage = ErrorMessageFactory.create(getMvpView().context(),
+                errorBundle.getException());
+        getMvpView().showError(errorMessage);
+    }
 
     private final class FuelPricesListSubscriber extends DefaultObserver<List<GasStation>> {
         @DebugLog

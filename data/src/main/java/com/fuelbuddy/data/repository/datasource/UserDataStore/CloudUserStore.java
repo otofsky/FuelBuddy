@@ -48,8 +48,7 @@ class CloudUserStore implements UserDataStore {
                     }
                 });
     }
-
-
+    
     @Override
     public Observable<UserEntity> checkUser(String userId) {
         return this.mRestApi.checkUser(userId).doOnNext(new Consumer<UserEntity>() {

@@ -10,6 +10,8 @@ import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 /**
@@ -17,10 +19,10 @@ import io.reactivex.Observable;
  */
 public interface GasStationDataStore {
 
-
     Observable<List<GasStationEntity>> gasStationsEntityList(Position position);
 
     Observable<ResponseEntity> updateStation(String iD, String userID,String photoID, Double price92,Double price95, Double priceDiesel);
 
+    Observable<UploadResponseEntity> uploadVideo( File file);
 
 }

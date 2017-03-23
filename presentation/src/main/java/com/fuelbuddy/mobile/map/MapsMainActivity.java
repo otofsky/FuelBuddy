@@ -307,8 +307,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void logOut() {
-      /*  Navigator.navigateToLoginActivity(this);
-        finish();*/
     }
 
     @Override

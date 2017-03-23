@@ -41,7 +41,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("upload?")
-    Observable<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
+    Call<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
 
     @GET("updatestation?")
     Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
@@ -51,10 +51,10 @@ public interface ApiInterface {
                             @Query("price95") Double price95,
                             @Query("priceDiesel") Double priceDiesel, Callback<ResponseEntity> callback);
 
-    @Multipart
+   /* @Multipart
     @POST("upload?")
     Call<Void> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file, Callback<UploadResponseEntity> callback);
-
+*/
 
     @GET("adduser?")
     Call<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

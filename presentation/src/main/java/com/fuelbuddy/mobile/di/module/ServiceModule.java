@@ -6,10 +6,12 @@ import android.preference.PreferenceManager;
 import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.net.ApiInvoker;
+import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.mobile.AndroidApplication;
 import com.fuelbuddy.mobile.TrackLocationService;
 import com.fuelbuddy.mobile.base.ActivityScope;
 import com.fuelbuddy.mobile.base.BaseActivity;
+import com.fuelbuddy.repository.GasStationsRepository;
 
 import javax.inject.Singleton;
 
@@ -23,14 +25,11 @@ import dagger.Provides;
 public class ServiceModule {
 
     TrackLocationService trackLocationService;
-    AndroidApplication application;
 
-    public ServiceModule(TrackLocationService trackLocationService, AndroidApplication application) {
+
+    public ServiceModule(TrackLocationService trackLocationService) {
         this.trackLocationService = trackLocationService;
-        this.application = application;
-        if (this.application != null) {
 
-        }
     }
 
     @Provides
@@ -38,6 +37,7 @@ public class ServiceModule {
     TrackLocationService provideTrackLocationService() {
         return trackLocationService;
     }
+
     @Provides
     @Singleton
     ApiInvoker provideApiInvoker(UserCache sharePreferencesUserCacheImpl) {
@@ -52,10 +52,17 @@ public class ServiceModule {
     }
 
     @Provides
+    GasStationsRepository provideGasStationRepository(GasStationDataRepository gasStationDataRepository) {
+        return gasStationDataRepository;
+    }
+
+
+   /* @Provides
     @Singleton
     SharedPreferences provideSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
 
-    }
+    }*/
+
 
 }

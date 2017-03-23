@@ -20,7 +20,9 @@ public interface GasStationsRepository {
     Observable<List<GasStation>> gasStations(Position position);
 
     Observable<Response> updateStation(String iD, String userID, String photoID, Double price92
-            ,Double price95, Double priceDiesel);
+            , Double price95, Double priceDiesel);
+
+    Observable<UploadResponse> uploadVideo(File file);
 
 
 }

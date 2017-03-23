@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -164,28 +163,20 @@ public class ApiInvoker {
         }
     }
 
-    public void updateStation(String token, String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel, Callback<ResponseEntity> callback) {
-        apiInterface.updatePrices(token, iD, userID, photoID, price92, price95, priceDiesel, callback);
-    }
 
-    public Observable<UploadResponseEntity> uploadVideo(String token, File file) {
+    public UploadResponseEntity uploadVideo(String token, File file) {
         MediaType mediaType2 = MediaType.parse("multipart/form-data");
         RequestBody requestFile = RequestBody.create(mediaType2, file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
         String descriptionString = "hello, this is description speaking";
         RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-        return apiInterface.uploadVideo(token, description, body);
-    }
+        try {
+            return apiInterface.uploadVideo(token, description, body).execute().body();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-    public void uploadVideo(String token, File file, Callback<UploadResponseEntity> callback) {
-        MediaType mediaType2 = MediaType.parse("multipart/form-data");
-        RequestBody requestFile = RequestBody.create(mediaType2, file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("video", file.getName(), requestFile);
-        String descriptionString = "hello, this is description speaking";
-        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
-        apiInterface.uploadVideo(token, description, body, callback);
     }
-
 
     public ResponseEntity addNewUser(String userID, String profileName, String email) {
         try {

@@ -21,6 +21,8 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 /**
@@ -65,6 +67,15 @@ public class GasStationDataRepository implements GasStationsRepository {
         });
     }
 
-
+    @Override
+    public Observable<UploadResponse> uploadVideo(File file) {
+        GasStationDataStore gasStationDataStore = mGasStationStoreFactory.createCloudDataStore();
+        return  gasStationDataStore.uploadVideo(file).map(new Function<UploadResponseEntity, UploadResponse>() {
+            @Override
+            public UploadResponse apply(UploadResponseEntity uploadResponseEntity) {
+                return responseEntityMapper.transformToUploadResponse(uploadResponseEntity);
+            }
+        });
+    }
 
 }

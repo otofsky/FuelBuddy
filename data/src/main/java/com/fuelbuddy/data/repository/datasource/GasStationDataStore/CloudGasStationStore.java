@@ -54,5 +54,10 @@ class CloudGasStationStore implements GasStationDataStore {
         return mRestApi.updateStation(userCache.getToken(),iD, userID, photoID, price92, price95, priceDiesel);
     }
 
+    @Override
+    public Observable<UploadResponseEntity> uploadVideo(File file) {
+        return mRestApi.uploadVideo(userCache.getToken(),file);
+    }
+
 
 }

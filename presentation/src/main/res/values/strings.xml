@@ -30,7 +30,8 @@
     <string name="dialog_navigation_button_txt">Navigate here</string>
 
    <!-- Exception messages-->
-    <string name="exception_message_generic">There was an application error</string>
+    <string name="exception_message_generic">An application error has occurred</string>
+    <string name="exception_message_server_error">Service is temporarily unavailable, please try again later</string>
     <string name="exception_message_no_connection">There is no internet connection</string>
     <string name="exception_message_user_not_found">Cannot retrieve user data. Check your internet connection</string>
     <string name="map_user_current_position">Your Current Position</string>
@@ -48,9 +49,11 @@
     <string name="start_location_positive_button">Open location settings</string>
     <string name="start_location_negative_message">Cancel</string>
     <string name="error_massage_no_gas_stations">Sorry! there are no gas stations within 5km distance</string>
-    <string name="price_update_confirmation_dialog">Entered pricse need to be veryfied by our crew. As soon as they will be ready, You will receive confirmation email !</string>
+    <string name="price_update_confirmation_dialog">Entered prices need to be veryfied by our crew. As soon as they will be ready, You will receive confirmation email !</string>
     <string name="price_update_dialog_title">Price Update</string>
     <string name="price_info_up_to_date">This price is up to date!</string>
+    <string name="opdater_pris">opdater pris</string>
+    <string name="send_btn">Send</string>
 
 
 </resources>
