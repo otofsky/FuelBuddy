@@ -1,6 +1,8 @@
 package com.fuelbuddy.data.net;
 
 
+import android.util.Log;
+
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
@@ -173,6 +175,7 @@ public class ApiInvoker {
         try {
             return apiInterface.uploadVideo(token, description, body).execute().body();
         } catch (IOException e) {
+            Log.d("Api invoker", "uploadVideo: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
