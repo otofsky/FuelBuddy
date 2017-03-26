@@ -24,7 +24,6 @@ public interface UpdateView extends MvpView {
 
     void showDieselError();
 
-    void showMap();
 
-    void showConfirmationMessage(FuelPricesUpdateEntry fuelPricesUpdateEntry, File file);
+    void showUpdateConfirmationMessage(FuelPricesUpdateEntry fuelPricesUpdateEntry, File file);
 }

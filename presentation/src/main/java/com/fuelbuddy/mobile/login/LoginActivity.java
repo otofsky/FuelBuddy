@@ -4,10 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.facebook.CallbackManager;
@@ -22,7 +22,6 @@ import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
 import com.fuelbuddy.mobile.di.component.DaggerLoginComponent;
 import com.fuelbuddy.mobile.di.component.LoginComponent;
-
 import com.fuelbuddy.mobile.model.UserModel;
 import com.fuelbuddy.mobile.navigation.Navigator;
 import com.fuelbuddy.mobile.util.DialogFactory;
@@ -64,13 +63,12 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
     }
 
     @BindView(R.id.login_google_button)
-    AppCompatButton mloginGoogleButton;
+    Button mloginGoogleButton;
     @BindView(R.id.login_fb_button)
-    AppCompatButton mLoginFbButton;
+    Button mLoginFbButton;
 
     @BindView(R.id.progressView)
     RelativeLayout rl_progress;
-
 
 
     ProgressDialog progress;
@@ -172,7 +170,9 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
 
     @Override
     public void showFuelSectionView() {
-        Navigator.navigateToHomeActivity(this); // navigate to activity
+        Navigator.navigateToHomeActivity(this);
+        finish();
+
     }
 
     @DebugLog
@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity implements LoginView, GoogleApiC
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
+                parameters.putString(getString(R.string.facebook_account_key_parameters), getString(R.string.facebook_account_value_parameters));
                 request.setParameters(parameters);
                 request.executeAsync();
             }

@@ -69,10 +69,6 @@ public class ApiInvoker {
 
                 .build();
 
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetworkUtil.BASE_URL)
@@ -159,6 +155,7 @@ public class ApiInvoker {
                                         String photoID, Double price92,
                                         Double price95, Double priceDiesel) {
         try {
+
             return apiInterface.updatePrices(token, iD, userID, photoID, price92, price95, priceDiesel).execute().body();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -175,7 +172,6 @@ public class ApiInvoker {
         try {
             return apiInterface.uploadVideo(token, description, body).execute().body();
         } catch (IOException e) {
-            Log.d("Api invoker", "uploadVideo: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

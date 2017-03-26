@@ -49,7 +49,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            Log.d("HomePresenter", "onError: show login view " );
             getMvpView().showLoginView();
         }
 

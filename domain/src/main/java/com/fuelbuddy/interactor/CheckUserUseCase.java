@@ -2,7 +2,6 @@ package com.fuelbuddy.interactor;
 
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.User;
-import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.executor.PostExecutionThread;
 import com.fuelbuddy.executor.ThreadExecutor;
 import com.fuelbuddy.repository.UserRepository;
@@ -11,7 +10,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 
 
@@ -54,8 +53,8 @@ public class CheckUserUseCase extends UseCase<Response, CheckUserUseCase.Params>
                     public ObservableSource<Response> apply(User user) throws Exception {
                         return userRepository.auth(user.getUserID(), user.getEmail());
                     }
-                })
-                .onErrorResumeNext(error(params.user));
+                });
+               // .onErrorResumeNext(error(params.user));
 
     }
 
@@ -63,17 +62,35 @@ public class CheckUserUseCase extends UseCase<Response, CheckUserUseCase.Params>
         final Function<Throwable, Observable<Response>> errorHandling = new Function<Throwable, Observable<Response>>() {
             @Override
             public Observable<Response> apply(Throwable e) {
-                return userRepository.addNewUser(user)
-                        .doOnNext(new Consumer<Response>() {
-                            @Override
-                            public void accept(Response response) throws Exception {
-                                 userRepository.auth(user.getUserID(), user.getEmail());
-                            }
-                        });
+                return userRepository.addNewUser(user);
             }
         };
         return errorHandling;
     }
+
+
+
+
+/*
+    private Function error(final User user) {
+
+        final Function<Throwable, Observable<Response>> errorHandling = new Function<Throwable, Observable<Response>>() {
+            @Override
+            public Observable apply(Throwable e) {
+                return Observable.zip(
+                        userRepository.authUser(user.getUserID(), user.getEmail()),
+                        userRepository.addUser(user),
+                        new BiFunction<Object, Object, Response>() {
+                    @Override
+                    public Response apply(Object o, Object o2) throws Exception {
+                        return null;
+                    }
+                });
+            }
+        };
+        return errorHandling;
+    }
+*/
 
     public static final class Params {
 

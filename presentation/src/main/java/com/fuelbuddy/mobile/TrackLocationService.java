@@ -15,7 +15,6 @@ import android.util.Log;
 import com.fuelbuddy.data.Response;
 import com.fuelbuddy.data.UploadResponse;
 import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
-import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.entity.mapper.ResponseEntityMapper;
@@ -101,8 +100,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         sharePreferencesUserCache = new SharePreferencesUserCacheImpl(this, PreferenceManager.getDefaultSharedPreferences(this), new EntityJsonMapper());
         gasStationStoreFactory = new GasStationStoreFactory(this, sharePreferencesUserCache, new ApiInvoker());
         gasStationDataRepository = new GasStationDataRepository(new GasStationEntityDataMapper(), new ResponseEntityMapper(), gasStationStoreFactory);
-        //(ApiInvoker apiInvoker, Context context, GasStationEntityDataMapper gasStationEntityDataMapper
-
         app = (AndroidApplication) getApplication();
         createGoogleApiClient();
         connectGoogleApiClient();
@@ -150,11 +147,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
         gasStationDataRepository.uploadVideo(file)
-                .subscribe(new UpdateStationSubscriber());
-    }
-
-   /* private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
-        gasStationDataRepository.uploadVideo(file)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Function<UploadResponse, ObservableSource<Response>>() {
@@ -170,7 +162,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
                     }
                 })
                 .subscribe(new UpdateStationSubscriber());
-    }*/
+    }
 
     @Override
     public void onDestroy() {
@@ -269,12 +261,16 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
     }
 
+    private void setUpdateEvent(Response responseEntity) {
+        EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(), responseEntity.getMessage()));
+    }
+
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(getApplicationContext(), errorBundle.getException());
         EventBus.getDefault().post(new ResponseEvent(null, errorMessage));
     }
 
-    private final class UpdateStationSubscriber extends DefaultObserver<UploadResponse> {
+    private final class UpdateStationSubscriber extends DefaultObserver<Response> {
 
         @DebugLog
         @Override
@@ -289,9 +285,9 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
         @DebugLog
         @Override
-        public void onNext(UploadResponse responseEntity) {
-            Log.d(TAG, "onNext:  "  +responseEntity.toString());
-          //  EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(), responseEntity.getMessage()));
+        public void onNext(Response responseEntity) {
+            setUpdateEvent(responseEntity);
         }
     }
+
 }

@@ -1,8 +1,5 @@
 package com.fuelbuddy.data.repository.datasource.UserDataStore;
 
-import com.fuelbuddy.data.Response;
-import com.fuelbuddy.data.User;
-import com.fuelbuddy.data.entity.AuthEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
@@ -13,6 +10,10 @@ import io.reactivex.Observable;
  * Created by zjuroszek on 18.11.16.
  */
 public interface UserDataStore {
+
+    ResponseEntity addUser(UserEntity user) ;
+
+    ResponseEntity authUser(String userId, String email);
 
     Observable<ResponseEntity> auth(String userId, String email);
 

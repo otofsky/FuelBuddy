@@ -1,9 +1,6 @@
 package com.fuelbuddy.mobile.login;
 
-import android.util.Log;
-
 import com.fuelbuddy.data.Response;
-import com.fuelbuddy.data.User;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
@@ -36,7 +33,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private SetUserInCloudUseCase mSetUserInCloudUseCase;
     private CheckUserUseCase mCheckUserUseCase;
     private AuthUseCase authUseCase;
-    private UserModel mUserModel; //
+    private UserModel mUserModel;
 
     @Inject
     public LoginPresenter(@Named("setUserLocally") SetUserLocallyUseCase setUserLocallyUseCase,
@@ -53,31 +50,27 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
     public void checkUser(UserModel userModel) {
         mUserModel = userModel;
-        this.mCheckUserUseCase.execute(new CheckUserSubscriber(),
-                CheckUserUseCase.Params.forProfile(userModelDataMapper.transformToUser(userModel)));
+        this.mCheckUserUseCase.execute(new CheckUserSubscriber(), CheckUserUseCase.Params.forProfile(userModelDataMapper.transformToUser(userModel)));
     }
 
-
-  /*  public void addNewUseInCloud(UserModel user) {
-        mSetUserInCloudUseCase.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserInCloudUseCase.execute(new AddUserInCloudSubscriber());
-    }*/
-
-    public void addNewUserLocally(UserModel user) {
-        mSetUserLocallyUseCase.setUser(userModelDataMapper.transformToUser(user));
-        this.mSetUserLocallyUseCase.execute(new AddUserLocallySubscriber(), null);
+    public void addNewUseInCloud(UserModel user) {
+        this.mSetUserInCloudUseCase.execute(new AddUserInCloudSubscriber(), SetUserInCloudUseCase.Params.forUser(userModelDataMapper.transformToUser(user)));
     }
-
-   /* public void auth(String userId, String email) {
-        this.authUseCase.setFuelPricesUpdate(userId, email);
-
-    }*/
 
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(this.getMvpView().context(), errorBundle.getException());
         getMvpView().showError(errorMessage);
     }
+
+    private boolean isUserException(Exception exception) {
+        if (exception instanceof UserNotFoundException) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     private final class CheckUserSubscriber extends DefaultObserver<Response> {
         @DebugLog
@@ -88,7 +81,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         @DebugLog
         @Override
         public void onError(Throwable e) {
-
+            if (isUserException((Exception) e)) {
+                addNewUseInCloud(mUserModel);
+            } else {
+                showErrorMessage(new DefaultErrorBundle((Exception) e));
+            }
         }
 
         @DebugLog
@@ -98,14 +95,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         }
     }
 
-
-    private final class AddUserInCloudSubscriber extends DefaultObserver<User> {
+    private final class AddUserInCloudSubscriber extends DefaultObserver<Response> {
 
         @DebugLog
         @Override
         public void onComplete() {
-            Log.d(TAG, " incloud onCompleted: ");
-            getMvpView().showFuelSectionView();
         }
 
         @DebugLog
@@ -116,53 +110,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
 
         @DebugLog
         @Override
-        public void onNext(User user) {
-            Log.d(TAG, "onNext: add user inCloud");
-            addNewUserLocally(mUserModel);
-        }
-    }
-
-    private final class AddUserLocallySubscriber extends DefaultObserver<Response> {
-
-        @DebugLog
-        @Override
-        public void onComplete() {
-            Log.d(TAG, "onCompleted: locally");
-        }
-
-        @DebugLog
-        @Override
-        public void onError(Throwable e) {
-            showErrorMessage(new DefaultErrorBundle((Exception) e));
-        }
-
-        @DebugLog
-        @Override
-        public void onNext(Response response) {
-            Log.d(TAG, "onNext: locally");
+        public void onNext(Response user) {
             getMvpView().showFuelSectionView();
-        }
-    }
 
-    private final class AuthSubscriber extends DefaultObserver<User> {
-
-        @DebugLog
-        @Override
-        public void onComplete() {
-            Log.d(TAG, "onCompleted: locally");
-        }
-
-        @DebugLog
-        @Override
-        public void onError(Throwable e) {
-            showErrorMessage(new DefaultErrorBundle((Exception) e));
-        }
-
-        @DebugLog
-        @Override
-        public void onNext(User user) {
-            Log.d(TAG, "onNext: locally");
-            getMvpView().showFuelSectionView();
         }
     }
 }

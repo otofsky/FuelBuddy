@@ -29,7 +29,7 @@ public class AndroidApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         this.initializeInjector();
-        initFont();
+      //  initFont();
     }
 
     private void initFont() {

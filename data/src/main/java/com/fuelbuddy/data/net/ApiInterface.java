@@ -28,9 +28,6 @@ public interface ApiInterface {
     @GET("stations?")
    Call<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String header, @Query("latitude") String latitude,
                                           @Query("longitude") String longitude);
-
-
-    //fuelbuddy.dk/ws/updatestation?userID=5&ID=512&price92=1.20&price95=1.35&priceDiesel=1.1&photoID=2
     @GET("updatestation?")
     Call<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
                                             @Query("userID") String userID,
@@ -42,19 +39,6 @@ public interface ApiInterface {
     @Multipart
     @POST("upload?")
     Call<UploadResponseEntity> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file);
-
-    @GET("updatestation?")
-    Call<Void> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
-                            @Query("userID") String userID,
-                            @Query("photoID") String photoID,
-                            @Query("price92") Double price92,
-                            @Query("price95") Double price95,
-                            @Query("priceDiesel") Double priceDiesel, Callback<ResponseEntity> callback);
-
-   /* @Multipart
-    @POST("upload?")
-    Call<Void> uploadVideo(@Header("TokenAuth") String header, @Part("description") RequestBody description, @Part MultipartBody.Part file, Callback<UploadResponseEntity> callback);
-*/
 
     @GET("adduser?")
     Call<ResponseEntity> addNewUser(@Query("userID") String userID, @Query("profileName") String profileName, @Query("email") String email);

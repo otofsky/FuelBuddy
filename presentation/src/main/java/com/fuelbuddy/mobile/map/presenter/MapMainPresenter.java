@@ -3,7 +3,6 @@ package com.fuelbuddy.mobile.map.presenter;
 
 import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.data.GasStation;
-import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
 import com.fuelbuddy.interactor.DefaultObserver;
@@ -13,7 +12,6 @@ import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.view.MapMvpView;
 import com.fuelbuddy.mobile.mapper.GasStationModelDataMapper;
 import com.fuelbuddy.mobile.mapper.PositionMapper;
-import com.fuelbuddy.mobile.model.ErrorResponse;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -33,7 +31,7 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
 
     @Inject
-    public MapMainPresenter(@Named("gasStationList")GetGasStationsUseCase getGasStationsUseCase) {
+    public MapMainPresenter(@Named("gasStationList") GetGasStationsUseCase getGasStationsUseCase) {
         this.mGetGasStationsUseCase = getGasStationsUseCase;
         mPositionMapper = new PositionMapper();
     }
@@ -49,26 +47,27 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
         super.detachView();
         this.mGetGasStationsUseCase.dispose();
     }
+
     @DebugLog
     public void submitSearch(LatLng loLatLng, FuelPriceMode fuelPriceMode) {
         getMvpView().showLoading();
-        loadUserList(loLatLng,fuelPriceMode);
+        loadUserList(loLatLng, fuelPriceMode);
     }
 
     @DebugLog
-    private void loadUserList(LatLng loLatLng,FuelPriceMode fuelPriceMode) {
-        this.getFuelPrices(loLatLng,fuelPriceMode);
+    private void loadUserList(LatLng loLatLng, FuelPriceMode fuelPriceMode) {
+        this.getFuelPrices(loLatLng, fuelPriceMode);
     }
 
-    private void getFuelPrices(LatLng loLatLn,FuelPriceMode fuelPriceMode) {
+    private void getFuelPrices(LatLng loLatLn, FuelPriceMode fuelPriceMode) {
         this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(),
-                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn),fuelPriceMode));
+                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn), fuelPriceMode));
     }
 
     public void getUpdatedFuelPrices(LatLng loLatLn, FuelPriceMode fuelPriceMode) {
         this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(),
-                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn),fuelPriceMode));
-}
+                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn), fuelPriceMode));
+    }
 
 
     private void showErrorMessage(ErrorBundle errorBundle) {
@@ -79,17 +78,21 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
 
     private final class FuelPricesListSubscriber extends DefaultObserver<List<GasStation>> {
         @DebugLog
-        @Override public void onComplete() {
+        @Override
+        public void onComplete() {
             getMvpView().hideLoading();
         }
+
         @DebugLog
-        @Override public void onError(Throwable throwable) {
+        @Override
+        public void onError(Throwable throwable) {
             getMvpView().hideLoading();
             showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
-        @Override public void onNext(List<GasStation> gasStations) {
+        @Override
+        public void onNext(List<GasStation> gasStations) {
             getMvpView().hideLoading();
             GasStationModelDataMapper gasStationModelDataMapper = new GasStationModelDataMapper();
             getMvpView().showGasStations(gasStationModelDataMapper.transform(gasStations));

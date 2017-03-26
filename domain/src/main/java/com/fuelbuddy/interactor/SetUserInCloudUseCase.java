@@ -9,6 +9,8 @@ import com.fuelbuddy.repository.UserRepository;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 
 /**
@@ -27,9 +29,33 @@ public class SetUserInCloudUseCase extends UseCase<Response, SetUserInCloudUseCa
     }
 
     @Override
-    protected Observable <Response> buildUseCaseObservable(Params params) {
-        return userRepository.addNewUser(params.mUser);
+    protected Observable <Response> buildUseCaseObservable( final Params params) {
+        return userRepository.addNewUser(params.mUser)
+                .flatMap(new Function<Response, ObservableSource<Response>>() {
+                    @Override
+                    public ObservableSource<Response> apply(Response response) throws Exception {
+                        return userRepository.auth(params.mUser.getUserID(), params.mUser.getEmail());
+                    }
+                });
     }
+
+
+
+/*
+    @Override
+    protected Observable <Response> buildUseCaseObservable(Params params) {
+        return userRepository.addNewUser(params.mUser)
+        .flatMap(new Function<User, ObservableSource<Response>>() {
+            @Override
+            public ObservableSource<Response> apply(User user) throws Exception {
+                return userRepository.auth(user.getUserID(), user.getEmail());
+            }
+        });
+    }
+*/
+
+
+
 
     public static final class Params {
 

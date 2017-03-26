@@ -28,9 +28,7 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
     }
 
     interface OnTextEndListener {
-        fun onTextEndChanged()
-        fun onTextNotFinished()
-        fun onTextError()
+
 
     }
 
@@ -133,12 +131,11 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
         limit = edit?.length!!;
         if (limit >= 5) {
             this.field.get().setBackgroundResource(resourceEnd)
-            this.onTextEndListener?.onTextEndChanged()
         }
 
         else{
           this.field.get().setBackgroundResource(resourceNeutral)
-                    this.onTextEndListener?.onTextEndChanged()
+
         }
 
     }

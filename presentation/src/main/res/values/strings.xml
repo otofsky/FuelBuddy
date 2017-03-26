@@ -30,12 +30,12 @@
     <string name="dialog_navigation_button_txt">Navigate here</string>
 
    <!-- Exception messages-->
-    <string name="exception_message_generic">An application error has occurred</string>
-    <string name="exception_message_server_error">Service is temporarily unavailable, please try again later</string>
-    <string name="exception_message_no_connection">There is no internet connection</string>
-    <string name="exception_message_user_not_found">Cannot retrieve user data. Check your internet connection</string>
+    <string name="exception_message_generic">An application error has occurred!</string>
+    <string name="exception_message_server_error">An application error has occurred!</string>
+    <string name="exception_message_no_connection">There is no internet connection!</string>
+    <string name="exception_message_user_not_found">Cannot retrieve user data. Check your internet connection!</string>
     <string name="map_user_current_position">Your Current Position</string>
-    <string name="sign_in_google_failed">Google Login Failed</string>
+    <string name="sign_in_google_failed">Google Login Failed!</string>
 
     <string name="update_unavailable">Update is temporarily unavailable</string>
     <string name="map_direction_btn_text">Vis vej</string>
@@ -54,6 +54,9 @@
     <string name="price_info_up_to_date">This price is up to date!</string>
     <string name="opdater_pris">opdater pris</string>
     <string name="send_btn">Send</string>
+    <string name="welocome_msg">Velkomen til Fuel Buddy\n Vaelg dit brandstof</string>
+    <string name="facebook_account_key_parameters">fields</string>
+    <string name="facebook_account_value_parameters">id,name,email,gender, birthday</string>
 
 
 </resources>

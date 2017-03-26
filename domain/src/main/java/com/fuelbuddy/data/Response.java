@@ -1,10 +1,18 @@
 package com.fuelbuddy.data;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+
 /**
  * Created by zjuroszek on 06.12.16.
  */
 
-public class Response {
+public class Response implements ObservableSource<Object> {
+
+    @Override
+    public void subscribe(Observer<? super Object> observer) {
+
+    }
 
     public enum ResultTypeEnum {
         Success,  GeneralError,  UserNotFound,

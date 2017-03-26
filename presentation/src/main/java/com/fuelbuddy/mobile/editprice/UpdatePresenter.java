@@ -1,26 +1,18 @@
 package com.fuelbuddy.mobile.editprice;
 
-import android.util.Log;
-
 import com.fuelbuddy.data.FuelPricesUpdate;
-import com.fuelbuddy.data.UploadResponse;
 import com.fuelbuddy.interactor.DefaultObserver;
 import com.fuelbuddy.mobile.mapper.FuelPriceUpdateMapper;
 import com.fuelbuddy.validator.InputValidator;
-import com.fuelbuddy.data.Response;
 import com.fuelbuddy.exception.DefaultErrorBundle;
 import com.fuelbuddy.exception.ErrorBundle;
-import com.fuelbuddy.interactor.LogOutUseCase;
 import com.fuelbuddy.interactor.UpdateFuelPricesUseCase;
 
 import com.fuelbuddy.mobile.base.BasePresenter;
-import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
-import com.fuelbuddy.mobile.model.ErrorResponse;
 
 import java.io.File;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import hugo.weaving.DebugLog;
 
@@ -52,7 +44,7 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
     }
 
     public void updateVideo(File file, String gasStationId, String fuel92, String fuel95, String diesel) {
-        boolean result =    mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
+        boolean result = mUpdateFuelPricesUseCase.validateInputData(file,gasStationId, fuel92, fuel95, diesel,this);
         if (result) {
             this.mUpdateFuelPricesUseCase.execute(new UpdateFuelPriceSubscriber(),null);
         }
@@ -97,14 +89,12 @@ public class UpdatePresenter extends BasePresenter<UpdateView> implements InputV
         public void onError(Throwable throwable) {
             getMvpView().hideLoading();
             showErrorMessage(new DefaultErrorBundle((Exception) throwable));
-           // getMvpView().showMap();
         }
 
         @DebugLog
         @Override
         public void onNext(FuelPricesUpdate fuelPricesUpdate) {
-            getMvpView().showConfirmationMessage(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
-            //getMvpView().updatePrice(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
+            getMvpView().showUpdateConfirmationMessage(fuelPriceUpdateMapper.transform(fuelPricesUpdate),fuelPricesUpdate.getFile());
             getMvpView().hideLoading();
         }
     }

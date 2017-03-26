@@ -67,7 +67,6 @@ public class Navigator {
     public static void navigateToHomeActivity(FragmentActivity context) {
         if (context != null) {
             Intent intentToLaunch = HomeActivity.getCallingIntent(context);
-            context.finish();
             context.startActivity(intentToLaunch);
             AnimationHelper.startAnimatedActivity(context, AnimationHelper.AnimationDirection.RIGHT_LEFT);
 

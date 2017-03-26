@@ -39,6 +39,16 @@ class CloudUserStore implements UserDataStore {
     }
 
     @Override
+    public ResponseEntity addUser(UserEntity user)  {
+        return mRestApi.addUser(user);
+    }
+
+    @Override
+    public ResponseEntity authUser(String userId, String email)  {
+        return this.mRestApi.authUser(userId, email);
+    }
+
+    @Override
     public Observable<ResponseEntity> auth(String userId, String email) {
         return this.mRestApi.auth(userId, email)
                 .doOnNext(new Consumer<ResponseEntity>() {

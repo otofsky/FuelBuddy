@@ -255,24 +255,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     @Override
-    public void onTextEndChanged() {
-        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
-        //fuelInput92.setBackgroundResource(R.drawable.border_line_green);
-    }
-
-    @Override
-    public void onTextNotFinished() {
-        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
-        //fuelInput92.setBackgroundResource(R.drawable.border_line_gray);
-    }
-
-    @Override
-    public void onTextError() {
-        Log.d("UpdateActivity  ", "onTextEndChanged: change color ");
-        //fuelInput92.setBackgroundResource(R.drawable.border_line_red);
-    }
-
-    @Override
     public void show92Error() {
         fuelInput92.setBackgroundResource(R.drawable.border_line_red);
     }
@@ -288,13 +270,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
     }
 
     @Override
-    public void showMap() {
-        onBackPressed();
-        AnimationHelper.startAnimatedActivity(this, AnimationHelper.AnimationDirection.LEFT_RIGHT);
-    }
-
-    @Override
-    public void showConfirmationMessage(final FuelPricesUpdateEntry fuelPricesUpdateEntry, final File file) {
+    public void showUpdateConfirmationMessage(final FuelPricesUpdateEntry fuelPricesUpdateEntry, final File file) {
         DialogFactory.createSimpleOkDialog(this, getString(R.string.price_update_dialog_title),
                 getString(R.string.price_update_confirmation_dialog),
                 getString(R.string.dialog_action_ok), new DialogInterface.OnClickListener() {

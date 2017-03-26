@@ -6,41 +6,40 @@
     android:background="@mipmap/background"
     android:orientation="vertical">
 
-  <include
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      layout="@layout/toolbar_transparent"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true"/>
-
-  <ImageView
-      android:id="@+id/logoImg"
-      android:layout_width="120dp"
-      android:layout_height="wrap_content"
-      app:srcCompat="@mipmap/fuelbuddy_logo"
-      android:layout_below="@+id/toolbar"
-      android:layout_centerHorizontal="true"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
-  <TextView
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/logo_fuel_buddy" />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <TextView
         android:id="@+id/welcomeTextTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Velkomen til Fuel Buddy Vaelg dit brandstof"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:layout_below="@+id/logoImg"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/welcomeTextTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
+        android:layout_marginBottom="16dp"
+        android:text="@string/welocome_msg"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>

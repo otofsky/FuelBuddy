@@ -171,6 +171,7 @@
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/button_green_right_rounded"
                     android:fontFamily="sans-serif-light"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:text="@string/send_btn"
                     android:textColor="@color/white" />

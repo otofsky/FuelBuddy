@@ -25,7 +25,6 @@ import io.reactivex.functions.Function;
 
 public class UpdateFuelPricesUseCase extends UseCase<FuelPricesUpdate, UpdateFuelPricesUseCase.Params> {
 
-
     FuelUpdateFactory mFuelUpdateFactory;
     GasStationsRepository gasStationsRepository;
     UserRepository userRepository;

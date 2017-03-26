@@ -19,7 +19,7 @@ import android.content.Context;
 
 import com.fuelbuddy.data.exeption.GasStationsNotFoundException;
 import com.fuelbuddy.data.exeption.NetworkConnectionException;
-import com.fuelbuddy.data.exeption.ServiceNotAvailableException;
+import com.fuelbuddy.data.exeption.ServiceException;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 import com.fuelbuddy.mobile.R;
 
@@ -38,11 +38,9 @@ public class ErrorMessageFactory {
 
         if (exception instanceof NetworkConnectionException) {
             message = context.getString(R.string.exception_message_no_connection);
-        } else if (exception instanceof ServiceNotAvailableException) {
+        } else if (exception instanceof ServiceException) {
              message = context.getString(R.string.exception_message_server_error);
-        } else if (exception instanceof UserNotFoundException) {
-            message = context.getString(R.string.exception_message_user_not_found);
-        } else if (exception instanceof GasStationsNotFoundException) {
+        }  else if (exception instanceof GasStationsNotFoundException) {
             message = context.getString(R.string.exception_message_user_not_found);
         }
 

@@ -11,6 +11,10 @@ import io.reactivex.Observable;
  */
 public interface UserRepository {
 
+    Response addUser(User user);
+
+    Response authUser(String userId, String email);
+
 
     Observable auth(String userId, String email);
 
