@@ -7,6 +7,7 @@ import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -21,7 +22,7 @@ public interface RestApi {
 
     ResponseEntity authUser(String userId, String email);
 
-    Observable<List<GasStationEntity>> gasStationEntityList(String token, Position position);
+    Observable<List<GasStationEntity>> gasStationEntityList(String token, Position position) ;
 
     Observable<ResponseEntity> updateStation(String token, String iD, String userID, String photoID, Double price92, Double price95, Double priceDiesel);
 

@@ -18,6 +18,7 @@ package com.fuelbuddy.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.fuelbuddy.data.Position;
 import com.fuelbuddy.data.entity.GasStationEntity;
@@ -30,6 +31,7 @@ import com.fuelbuddy.data.exeption.ServiceException;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -94,30 +96,10 @@ public class RestApiImpl implements RestApi {
         });
     }
 
-
-
-
-
-
-
-
     @Override
     public ResponseEntity addUser(UserEntity userEntity)  {
         return addNewUserFromApi(userEntity);
-   /*     if (isThereInternetConnection()) {
-            try {
-                ResponseEntity responseEntity = addNewUserFromApi(userEntity);
-                if (responseEntity != null) {
-                    return responseEntity;
-                } else {
-                    throw new ServiceNotAvailableException();
-                }
-            } catch (Exception e) {
-                throw new ServiceNotAvailableException();
-            }
-        } else {
-            throw new NetworkConnectionException();
-        }*/
+
 
     }
 
@@ -125,21 +107,6 @@ public class RestApiImpl implements RestApi {
     public ResponseEntity authUser(String userId, String email) {
         return  authFromApi(userId, email);
 
- /*       if (isThereInternetConnection()) {
-            try {
-                ResponseEntity responseEntity = authFromApi(userId, email);
-                if (responseEntity != null) {
-                    return responseEntity;
-                } else {
-                    throw new ServiceNotAvailableException();
-                }
-
-            } catch (Exception e) {
-                throw new ServiceNotAvailableException();
-            }
-        } else {
-            throw new NetworkConnectionException();
-        }*/
     }
 
 
@@ -165,26 +132,6 @@ public class RestApiImpl implements RestApi {
         });
     }
 
-/*    @Override
-    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return Observable.create(emitter -> {
-            if (isThereInternetConnection()) {
-                try {
-                    ResponseEntity responseEntity = addNewUserFromApi(userEntity);
-                    if (responseEntity != null) {
-                        emitter.onNext(responseEntity);
-                        emitter.onComplete();
-                    } else {
-                        emitter.onError(new ServiceNotAvailableException());
-                    }
-                } catch (Exception e) {
-                    emitter.onError(new ServiceNotAvailableException(e.getCause()));
-                }
-            } else {
-                emitter.onError(new NetworkConnectionException());
-            }
-        });
-    }*/
 
     public Observable<UserEntity> checkUser(String userId) {
         return Observable.create(emitter -> {
@@ -262,7 +209,12 @@ public class RestApiImpl implements RestApi {
                     } else {
                         subscriber.onError(new ServiceException());
                     }
-                } catch (Exception e) {
+                }
+
+                catch (Exception e) {
+                    Log.d("Exception", "gasStationEntityList: "+ e.getMessage());
+                    Log.d("Exception", "gasStationEntityList: "+ e.getCause().getMessage());
+                    Log.d("Exception", "gasStationEntityList: "+ e.getCause().getLocalizedMessage());
                     subscriber.onError(new ServiceException(e.getCause()));
                 }
             } else {

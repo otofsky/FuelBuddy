@@ -23,7 +23,7 @@
 		<selector>
 			<item android:state_enabled="false">
 				<shape>
-
+					<solid android:color="@color/facebook_brand_color" />
 					 <corners
                         android:bottomLeftRadius="2dp"
                         android:bottomRightRadius="2dp"
@@ -40,7 +40,7 @@
 		
 			<item android:state_selected="true">
 				<shape>
-
+					<solid android:color="@color/facebook_brand_color" />
 					 <corners
                         android:bottomLeftRadius="2dp"
                         android:bottomRightRadius="2dp"
@@ -56,7 +56,7 @@
 			</item>
 			<item android:state_focused="true">
 				<shape>
-
+					<solid android:color="@color/facebook_brand_color" />
 					 <corners
                         android:bottomLeftRadius="2dp"
                         android:bottomRightRadius="2dp"
@@ -72,6 +72,7 @@
 			</item>
 			<item>
 				<shape>
+					<solid android:color="@color/facebook_brand_color" />
 					 <corners
                         android:bottomLeftRadius="2dp"
                         android:bottomRightRadius="2dp"

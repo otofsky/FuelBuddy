@@ -4,6 +4,8 @@ package com.fuelbuddy.mobile;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.ndk.CrashlyticsNdk;
@@ -18,7 +20,7 @@ import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
-public class AndroidApplication extends Application {
+public class AndroidApplication extends MultiDexApplication {
 
     private ApplicationComponent component;
     private LocationRequestData locationRequestData = LocationRequestData.FREQUENCY_MEDIUM;
@@ -30,6 +32,12 @@ public class AndroidApplication extends Application {
         Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         this.initializeInjector();
       //  initFont();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        MultiDex.install(newBase);
+        super.attachBaseContext(newBase);
     }
 
     private void initFont() {

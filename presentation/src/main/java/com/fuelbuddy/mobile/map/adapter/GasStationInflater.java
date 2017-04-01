@@ -156,7 +156,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
             return FuelPriceUpdate.GREEN;
-        } else if (numOfHours > 2 && numOfHours < 4) {
+        } else if (numOfHours >= 2 && numOfHours < 4) {
             return FuelPriceUpdate.YELLOW;
         } else {
             return FuelPriceUpdate.RED;

@@ -15,7 +15,7 @@ public interface UserDataStore {
 
     ResponseEntity authUser(String userId, String email);
 
-    Observable<ResponseEntity> auth(String userId, String email);
+    Observable<ResponseEntity> auth(String userID, String email);
 
     Observable<UserEntity> checkUser(String userId);
 

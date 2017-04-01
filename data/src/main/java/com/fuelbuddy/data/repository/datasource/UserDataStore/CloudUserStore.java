@@ -49,14 +49,26 @@ class CloudUserStore implements UserDataStore {
     }
 
     @Override
-    public Observable<ResponseEntity> auth(String userId, String email) {
-        return this.mRestApi.auth(userId, email)
+    public Observable<ResponseEntity> auth(String userID, String email) {
+        return this.mRestApi.auth(userID, email)
                 .doOnNext(new Consumer<ResponseEntity>() {
                     @Override
                     public void accept(ResponseEntity responseEntity) throws Exception {
                         userCache.putToken(responseEntity);
+
                     }
                 });
+    }
+
+    @Override
+    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
+        return mRestApi.addNewUser(userEntity).
+        doOnNext(new Consumer<ResponseEntity>() {
+            @Override
+            public void accept(ResponseEntity responseEntity) throws Exception {
+                userCache.putUser(userEntity);
+            }
+        });
     }
     
     @Override
@@ -79,10 +91,6 @@ class CloudUserStore implements UserDataStore {
         return null;
     }
 
-    @Override
-    public Observable<ResponseEntity> addNewUser(UserEntity userEntity) {
-        return mRestApi.addNewUser(userEntity);
-    }
 
     @Override
     public Observable<Boolean> logOut() {

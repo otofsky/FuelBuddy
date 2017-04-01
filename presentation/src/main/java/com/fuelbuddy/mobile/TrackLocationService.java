@@ -79,7 +79,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     GasStationDataRepository gasStationDataRepository;
 
-    RestApi restApi;
+
 
     public static boolean isServiceRunning() {
         return isServiceRunning;
@@ -147,8 +147,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     private void uploadVideoFile(File file, final FuelPricesUpdateEntry fuelPricesUpdateEntry) {
         gasStationDataRepository.uploadVideo(file)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+
                 .flatMap(new Function<UploadResponse, ObservableSource<Response>>() {
                     @Override
                     public ObservableSource<Response> apply(UploadResponse uploadResponse) throws Exception {
@@ -161,13 +160,14 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
                                 fuelPricesUpdateEntry.getPriceDiesel());
                     }
                 })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new UpdateStationSubscriber());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
         stopLocationUpdates();
         TrackLocationService.setIsServiceRunning(false);
     }
@@ -255,7 +255,8 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @DebugLog
     private void updateLocationData(Location location) {
-        Log.d(TAG, "updateLocationData: ");
+        Log.d(TAG, "updateLocationData: "+ location.getLatitude());
+        Log.d(TAG, "updateLocationData: "+ location.getLongitude());
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));

@@ -169,7 +169,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/button_green_right_rounded"
+                    android:background="@drawable/button_green_all_rounded"
                     android:fontFamily="sans-serif-light"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_camcorder_24dp"
+            app:srcCompat="@drawable/ic_camcorder_24dp"
             app:backgroundTint="@color/app_green"
             app:layout_anchor="@id/viewA"
             app:layout_anchorGravity="bottom|right|end" />

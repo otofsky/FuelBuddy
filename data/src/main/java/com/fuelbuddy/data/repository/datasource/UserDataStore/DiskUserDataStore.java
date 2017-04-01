@@ -33,7 +33,7 @@ public class DiskUserDataStore implements UserDataStore {
     }
 
     @Override
-    public Observable<ResponseEntity> auth(String userId, String email) {
+    public Observable<ResponseEntity> auth(String userID, String email) {
         return null;
     }
 

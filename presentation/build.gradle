@@ -33,9 +33,10 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0-3"
+        versionName "1.0-6"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -119,7 +120,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.5@aar') {
         transitive = true;
     }
-
+    compile 'com.android.support:multidex:1.0.1'
     compile project(path: ':inputmask')
 }
 

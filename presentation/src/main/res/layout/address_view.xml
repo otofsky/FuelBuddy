@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:padding="12dp"
     android:background="@color/white"
@@ -47,8 +48,7 @@
                 android:id="@+id/locationIconImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:src="@drawable/ic_map_marker_24dp" />
+                app:srcCompat="@drawable/ic_map_marker_24dp" />
 
             <TextView
                 android:id="@+id/stationAddressTv"

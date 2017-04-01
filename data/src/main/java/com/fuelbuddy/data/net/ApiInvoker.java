@@ -147,6 +147,7 @@ public class ApiInvoker {
         try {
             return apiInterface.getGasStations(token, latitude, longitude).execute().body();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -158,6 +159,7 @@ public class ApiInvoker {
 
             return apiInterface.updatePrices(token, iD, userID, photoID, price92, price95, priceDiesel).execute().body();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -181,6 +183,7 @@ public class ApiInvoker {
         try {
             return apiInterface.addNewUser(userID, profileName, email).execute().body();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -189,6 +192,7 @@ public class ApiInvoker {
         try {
             return apiInterface.checkUser(userID).execute().body();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -197,6 +201,7 @@ public class ApiInvoker {
         try {
             return apiInterface.auth(userID, email).execute().body();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

@@ -9,22 +9,6 @@
 
     </style>
 
-
-
-    <style name="button" parent="@android:style/Widget.Button">
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textColor">#FFFFFFFF</item>
-        <item name="android:shadowColor">#FF000000</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">-1</item>
-        <item name="android:shadowRadius">0.2</item>
-        <item name="android:textSize">16dip</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/button</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
     <style name="AppThemeTransparent" parent="ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -52,17 +36,6 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-<!--    android:id="@+id/fuelInput92"
-    android:inputType="number"
-    android:digits="0123456789 -."
-    android:imeOptions="actionNext"
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:textSize="18sp"
-    android:gravity="center"
-    android:textColor="@color/app_green"
-    android:background="@color/white"
--->
 
     <style name="EditTextFb">
         <item name="android:layout_width">100dp</item>
