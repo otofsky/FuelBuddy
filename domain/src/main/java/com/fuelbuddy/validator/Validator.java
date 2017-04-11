@@ -5,5 +5,5 @@ package com.fuelbuddy.validator;
  */
 
 public interface Validator <T>{
-    public boolean validate(T t);
+    boolean validate(T t);
 }

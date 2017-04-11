@@ -1,10 +1,5 @@
 package com.fuelbuddy.mobile.util;
 
-import android.support.annotation.NonNull;
-import android.view.View;
-
-import com.fuelbuddy.mobile.R;
-import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,26 +18,25 @@ public class MapUtil {
         STATION, USER
     }
 
-    public static MarkerOptions initMarkerOptions(String title, LatLng currentPositionLatLng,MarkerType markerType, int icon) {
+    public static MarkerOptions initMarkerOptions(String title, LatLng currentPositionLatLng, MarkerType markerType, int icon) {
         return new MarkerOptions().position(currentPositionLatLng)
                 .position(currentPositionLatLng)
                 .title(title)
-                .icon(getBitmapDescriptor(markerType,icon));
+                .icon(getBitmapDescriptor(markerType, icon));
     }
 
-    private static BitmapDescriptor getBitmapDescriptor(MarkerType markerType, int icon){
+    private static BitmapDescriptor getBitmapDescriptor(MarkerType markerType, int icon) {
         BitmapDescriptor bitmapDescriptor = null;
-        switch (markerType){
+        switch (markerType) {
             case STATION:
-                bitmapDescriptor =  BitmapDescriptorFactory.fromResource(icon);
+                bitmapDescriptor = BitmapDescriptorFactory.fromResource(icon);
                 break;
         }
         return bitmapDescriptor;
     }
 
-    public static LatLng getLatLng(GasStationModel gasStationModel) {
-        return new LatLng(getLat(gasStationModel.getGasStationLatitude()),
-                getLng(gasStationModel.getGasStationLongitude()));
+    public static LatLng getLatLng(String latitude, String Longitude) {
+        return new LatLng(getLat(latitude), getLng(Longitude));
     }
 
     private static double getLng(String gasStationLongitude) {

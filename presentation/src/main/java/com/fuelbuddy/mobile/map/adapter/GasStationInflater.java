@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fuelbuddy.data.FuelPriceMode;
@@ -42,8 +43,9 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         this.onClickItemRefreshListener = onClickItemRefreshListener;
     }
 
+
     @Override
-    public View getView(GasStationModel item, View convertView, String selectedItem, int positionFlag) {
+    public View getView(GasStationModel item, View convertView, ViewGroup parent, String selectedItem, int positionFlag,int position) {
         ViewHolder holder = null;
         if (convertView == null) {
             if (!com.fuelbuddy.util.StringHelper.isNullOrEmpty(selectedItem)) {
@@ -64,6 +66,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
             holder = (ViewHolder) convertView.getTag();
         }
         initFuelPriceDataViews(item, holder);
+        Log.d(TAG, "getView:  " + item.getGasStationId());
         return convertView;
     }
 
@@ -161,6 +164,17 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         } else {
             return FuelPriceUpdate.RED;
         }
+    }
+
+    @Override
+    public View getDropDownView(GasStationModel item, View convertView, ViewGroup parent, int positionFlag, int position) {
+        return null;
+    }
+
+
+    @Override
+    public boolean isEnabled(GasStationModel item, int position) {
+        return false;
     }
 
     public static class ViewHolder {

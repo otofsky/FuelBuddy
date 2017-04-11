@@ -55,7 +55,7 @@ public class PriceSorter implements Sorter<GasStation, FuelPriceMode> {
 
     @Override
     public List<GasStation> sort(List<GasStation> collection, FuelPriceMode fuelPriceMode) {
-        this.fuelPriceMode = fuelPriceMode;
+        PriceSorter.fuelPriceMode = fuelPriceMode;
         Collections.sort(collection, PriceComparator);
         for (GasStation gs : collection) {
             gs.getPrice92();

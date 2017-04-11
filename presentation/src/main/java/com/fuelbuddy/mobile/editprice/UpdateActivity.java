@@ -92,8 +92,6 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     Unbinder mUnbinder;
 
-    String[] descriptionData = {"Video", "Update Price", "Send"};
-
     private UpdateComponent mUpdateComponent;
 
 
@@ -116,7 +114,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
         openCameraBtn.setOnClickListener(this);
         sendButton.setOnClickListener(this);
         StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.stateIndicator);
-        stateProgressBar.setStateDescriptionData(descriptionData);
+        stateProgressBar.setStateDescriptionData( getResources().getStringArray(R.array.update_steps));
         initializeInjector();
         initPresenter();
         setToolbar();
@@ -157,7 +155,7 @@ public class UpdateActivity extends BaseActivity implements UpdateView, View.OnC
 
     private void obtainData() {
         Intent i = getIntent();
-        gasStationModel = (GasStationModel) i.getParcelableExtra(Config.GAS_STATION_DETAIL);
+        gasStationModel = i.getParcelableExtra(Config.GAS_STATION_DETAIL);
         gasStationName.setText(gasStationModel.getCompanyName());
         stationAddress.setText(gasStationModel.getGasStationName());
         distance.setText(gasStationModel.getDistance());

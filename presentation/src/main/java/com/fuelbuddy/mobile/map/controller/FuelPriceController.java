@@ -1,12 +1,11 @@
 package com.fuelbuddy.mobile.map.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.fuelbuddy.data.FuelPriceMode;
-import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
 import com.fuelbuddy.mobile.map.adapter.GasStationAdapter;
 import com.fuelbuddy.mobile.map.adapter.GasStationInflater;
@@ -30,7 +29,7 @@ public class FuelPriceController {
     public FuelPriceController(Context mapsActivity, ViewGroup mView, FuelPriceMode fuelPriceMode, OnFuelPriceClickListener onFuelPriceClickListener) {
         this.mContext = mapsActivity;
         this.mView = mView;
-        mGasStationAdapter = new GasStationAdapter(new GasStationInflater(mContext, fuelPriceMode, onFuelPriceClickListener, onItemRefresh), mContext);
+        mGasStationAdapter = new GasStationAdapter(new GasStationInflater(mContext, fuelPriceMode, onFuelPriceClickListener, onItemRefresh),mGasStationModelList, mContext);
         initFuelPriceSection(this.mGasStationModelList);
     }
 

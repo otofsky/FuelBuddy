@@ -6,12 +6,14 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.model.MarkerEntry;
 import com.fuelbuddy.mobile.model.MarkerModel;
 import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.MapUtil;
+import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,6 +50,8 @@ public class MapController implements MapInterface {
     public static final float MAP_DEFAULTCAMERA_BEARING = 334.04f;
     public static final float MAP_DEFAULTCAMERA_ZOOM = 16.7f;
     public static final float MAP_DEFAULTCAMERA_TILT = 0f;
+    LatLng defaultLocation = MapUtil.getLatLng("55.4038", "10.4024");
+
 
     /**
      * Default position of the camera that shows the venue.
@@ -55,6 +59,7 @@ public class MapController implements MapInterface {
 
     @Override
     public void initMap(Context context, GoogleMap map, OnMarkerClickCallback onMarkerClickCallback) {
+        gasStationModelList = new ArrayList<>();
         this.mContext = context;
         this.mMap = map;
         this.onMarkerClickCallback = onMarkerClickCallback;
@@ -69,10 +74,17 @@ public class MapController implements MapInterface {
                 return;
             }
             mMap.setMyLocationEnabled(true);
+            centerOnDefaultPosition();
         }
     }
 
-    public void centerOnGasStation(boolean animate, LatLng latLng) {
+    public void centerOnDefaultPosition() {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 6.3f);
+        mMap.animateCamera(cameraUpdate);
+    }
+
+
+    public void centerOnPosition(boolean animate, LatLng latLng) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(centerOnPosition(latLng));
         if (animate) {
             mMap.animateCamera(camera);
@@ -108,10 +120,30 @@ public class MapController implements MapInterface {
     }
 
     @Override
-    public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, String id) {
-        this.gasStationModelList = gasStationModelList;
+    public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, FuelPriceMode fuelPriceMode) {
+        this.gasStationModelList.clear();
+        for (GasStationModel gasStation : gasStationModelList) {
+            switch (fuelPriceMode) {
+                case BENZIN_92:
+                    if (!StringHelper.isNullOrEmpty(gasStation.getPrice92())) {
+                        this.gasStationModelList.add(gasStation);
+                    }
+                    break;
+                case BENZIN_95:
+                    if (!StringHelper.isNullOrEmpty(gasStation.getPrice95())) {
+                        this.gasStationModelList.add(gasStation);
+                    }
+                    break;
+                case DIESEL:
+                    if (!StringHelper.isNullOrEmpty(gasStation.getPriceDiesel())) {
+                        this.gasStationModelList.add(gasStation);
+                    }
+                    break;
+            }
+        }
+
         if (mMap != null) {
-            initMapWithMarkers(gasStationModelList);
+            initMapWithMarkers(this.gasStationModelList);
         }
     }
 
@@ -138,8 +170,8 @@ public class MapController implements MapInterface {
         this.gasStationModelList = gasStationModelList;
     }
 
-    private void initMapWithMarkers(List<GasStationModel> gasStationModelList) {
-        List<LatLng> listLatLng = initMarkMarkerEntryList(gasStationModelList);
+    private void initMapWithMarkers(List<GasStationModel> gasStations) {
+        List<LatLng> listLatLng = initMarkMarkerEntryList(gasStations);
         addMarkersToMap();
         centerOnGasStations(listLatLng);
     }
@@ -147,7 +179,7 @@ public class MapController implements MapInterface {
     private void initMapWithSelectedMarker(String selectedMarkerId) {
         LatLng selectedLatLng = initSelectedMarkerEntryList(gasStationModelList, selectedMarkerId);
         addMarkersToMap();
-        centerOnGasStation(true, selectedLatLng);
+        centerOnPosition(true, selectedLatLng);
     }
 
     private void addMarkersToMap() {
@@ -165,6 +197,7 @@ public class MapController implements MapInterface {
             MarkerOptions markerOptions = getMarkerUnselectedOptions(gs, latLng);
             MarkerEntry markerEntry = new MarkerEntry(markerModel, markerOptions);
             mapEntries.put(latLng, markerEntry);
+
         }
         return listLatLng;
     }
@@ -189,14 +222,15 @@ public class MapController implements MapInterface {
 
     @NonNull
     private MarkerOptions getMarkerUnselectedOptions(GasStationModel gs, LatLng latLng) {
-        int numOfHours = DateHelper.isOlderThanData(gs.getTimeUpdated());
+        return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_green);
+     /*   int numOfHours = DateHelper.isOlderThanData(gs.getTimeUpdated());
         if (numOfHours < 2) {
             return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_green);
         } else if (numOfHours > 2 && numOfHours < 4) {
             return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_yellow);
         } else {
             return MapUtil.initMarkerOptions(gs.getGasStationName(), latLng, MapUtil.MarkerType.STATION, R.mipmap.petrol_stations_symbol_red);
-        }
+        }*/
     }
 
     @NonNull

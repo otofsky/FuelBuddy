@@ -64,11 +64,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     private boolean isUserException(Exception exception) {
-        if (exception instanceof UserNotFoundException) {
-            return true;
-        } else {
-            return false;
-        }
+        return exception instanceof UserNotFoundException;
     }
 
 

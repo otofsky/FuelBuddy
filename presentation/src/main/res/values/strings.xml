@@ -49,14 +49,21 @@
     <string name="start_location_positive_button">Open location settings</string>
     <string name="start_location_negative_message">Cancel</string>
     <string name="error_massage_no_gas_stations">Sorry! there are no gas stations within 5km distance</string>
-    <string name="price_update_confirmation_dialog">Entered prices need to be veryfied by our crew. As soon as they will be ready, You will receive confirmation email !</string>
-    <string name="price_update_dialog_title">Price Update</string>
+    <string name="price_update_confirmation_dialog">Vi vil nu gå din opdatering igennem. Hvis godkendt, sender vi dig en lille gave på mail!</string>
+    <string name="price_update_dialog_title">TAK for opdateringen</string>
     <string name="price_info_up_to_date">This price is up to date!</string>
     <string name="opdater_pris">opdater pris</string>
     <string name="send_btn">Send</string>
-    <string name="welocome_msg">Velkomen til Fuel Buddy\n Vaelg dit brandstof</string>
+    <string name="welcome_msg">Velkomen til Fuel Buddy\n Vælg dit brandstof</string>
     <string name="facebook_account_key_parameters">fields</string>
     <string name="facebook_account_value_parameters">id,name,email,gender, birthday</string>
+
+   <!--Update -->
+    <string-array name="update_steps">
+        <item>Video</item>
+        <item>Opdatere pris</item>
+        <item>Send</item>
+    </string-array>
 
 
 </resources>

@@ -6,9 +6,9 @@ import com.fuelbuddy.mobile.base.Event;
  * Created by zjuroszek on 13.02.17.
  */
 
-public class ResponseEvent extends Event {
+public class UpdateResponseEvent extends Event {
 
-    public ResponseEvent(Integer code, String message) {
+    public UpdateResponseEvent(Integer code, String message) {
         super(code, message);
     }
 }

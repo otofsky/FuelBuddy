@@ -16,7 +16,7 @@ public class Response implements ObservableSource<Object> {
 
     public enum ResultTypeEnum {
         Success,  GeneralError,  UserNotFound,
-    };
+    }
 
     private Integer code;
 

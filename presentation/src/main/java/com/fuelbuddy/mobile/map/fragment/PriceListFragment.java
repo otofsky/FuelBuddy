@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.Config;
@@ -44,7 +45,7 @@ public class PriceListFragment extends BaseFragment implements PriceListMvpView 
     };
 
     public interface OnStationClickListener {
-        public void onMarkerClick(String selectedStationId);
+        void onMarkerClick(String selectedStationId);
     }
 
     FuelPriceController mFuelPriceController;

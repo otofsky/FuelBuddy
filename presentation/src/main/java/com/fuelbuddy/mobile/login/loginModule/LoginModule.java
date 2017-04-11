@@ -8,8 +8,8 @@ import android.content.Intent;
 
 public interface LoginModule {
 
-    public Intent getSignInIntent ();
+    Intent getSignInIntent();
 
-    public void close();
+    void close();
 
 }

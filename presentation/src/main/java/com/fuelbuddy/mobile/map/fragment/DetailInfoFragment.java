@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fuelbuddy.mobile.Config;
@@ -79,6 +81,8 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     Unbinder mUnbinder;
 
+    ListView listView;
+
 
     public static DetailInfoFragment newInstance() {
         return new DetailInfoFragment();
@@ -101,6 +105,23 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         mUnbinder = ButterKnife.bind(this, fragmentView);
         navigateBtn.setOnClickListener(this);
         updateBtn.setOnClickListener(this);
+
+/*        listView = (ListView) fragmentView.findViewById(R.id.list);
+
+        String[] values = new String[] { "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+
+        // Assign adapter to ListView
+        listView.setAdapter(adapter);*/
         return fragmentView;
     }
 
@@ -125,7 +146,6 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         initGasStationDetailViews(mGasStationModel);
         setCollapsedOnly();
     }
-
 
     private void initGasStationDetailViews(GasStationModel gasStationModel) {
         gasStationName.setText(gasStationModel.getCompanyName());
@@ -204,7 +224,7 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
 
     @Override
     public void showNavigationView() {
-        Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel)));
+        Uri gmmIntentUri = Uri.parse(StringHelper.getNavigationUrl(MapUtil.getLatLng(mGasStationModel.getGasStationLatitude(),mGasStationModel.getGasStationLongitude())));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage(Config.GOOGLE_MAP_PACKAGE);
         startActivity(mapIntent);

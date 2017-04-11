@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface Sorter<T, E> {
 
-    public List<T> sort(List<T> collection, E e);
+    List<T> sort(List<T> collection, E e);
 
 
 

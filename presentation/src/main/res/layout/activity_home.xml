@@ -37,7 +37,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:text="@string/welocome_msg"
+        android:text="@string/welcome_msg"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

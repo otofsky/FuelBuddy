@@ -60,8 +60,7 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
     }
 
     private void getFuelPrices(LatLng loLatLn, FuelPriceMode fuelPriceMode) {
-        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(),
-                GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn), fuelPriceMode));
+        this.mGetGasStationsUseCase.execute(new FuelPricesListSubscriber(), GetGasStationsUseCase.Params.forPosition(mPositionMapper.transformToPosition(loLatLn), fuelPriceMode));
     }
 
     public void getUpdatedFuelPrices(LatLng loLatLn, FuelPriceMode fuelPriceMode) {

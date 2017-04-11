@@ -56,7 +56,6 @@ public class GetGasStationsUseCase extends UseCase<List<GasStation>, GetGasStati
                 .map(new Function<List<GasStation>, List<GasStation>>() {
                     @Override
                     public List<GasStation> apply(List<GasStation> gasStations) throws Exception {
-
                         return sorter.sort(gasStations,params.fuelPriceMode);
                     }
                 });

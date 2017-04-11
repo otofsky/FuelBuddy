@@ -16,10 +16,6 @@ public class FileValidator implements Validator<File> {
 
     @Override
     public boolean validate(File file) {
-        if (file != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return file != null;
     }
 }

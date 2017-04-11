@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface PriceListMvpView extends MvpView {
 
-    public void showFuelPriceBars(List<GasStationModel> gasStationModelList);
+    void showFuelPriceBars(List<GasStationModel> gasStationModelList);
 
 }

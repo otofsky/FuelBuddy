@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface MapMainMvp extends MvpView {
 
-    public void showGasStations(List<GasStationModel> gasStationModelList);
+    void showGasStations(List<GasStationModel> gasStationModelList);
 
-    public void showSuccessMessage(String message);
+    void showSuccessMessage(String message);
 
-    public void refreshFuelPrices();
+    void refreshFuelPrices();
 }

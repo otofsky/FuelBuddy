@@ -46,7 +46,7 @@ of the map.-->
 
     <!-- Content of screen. Contains a map and optional info bottom sheet. -->
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
         <!-- Main layout -->
         <FrameLayout
@@ -54,10 +54,9 @@ of the map.-->
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-
         <FrameLayout
             android:id="@+id/fragment_price_container_map"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <FrameLayout
@@ -65,6 +64,7 @@ of the map.-->
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
+
     <include
         android:id="@+id/view_progress"
         android:visibility="gone"

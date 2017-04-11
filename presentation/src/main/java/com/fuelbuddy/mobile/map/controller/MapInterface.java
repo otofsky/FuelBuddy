@@ -2,6 +2,7 @@ package com.fuelbuddy.mobile.map.controller;
 
 import android.content.Context;
 
+import com.fuelbuddy.data.FuelPriceMode;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -14,20 +15,20 @@ import java.util.List;
 
 public interface MapInterface {
 
-    public void initMap(Context context, GoogleMap map, MapController.OnMarkerClickCallback onMarkerClickCallback);
+    void initMap(Context context, GoogleMap map, MapController.OnMarkerClickCallback onMarkerClickCallback);
 
-    public void clear();
+    void clear();
 
-    public void showUserCurrentPosition(LatLng latLng);
+    void showUserCurrentPosition(LatLng latLng);
 
-    public void showSelectedGasStation(String gasStationId);
+    void showSelectedGasStation(String gasStationId);
 
-    public void setFuelStationsPositions(List<GasStationModel> gasStationModelList, String id);
+    void setFuelStationsPositions(List<GasStationModel> gasStationModelList, FuelPriceMode fuelPriceMode);
 
-    public void setFuelStationsPositions();
+    void setFuelStationsPositions();
 
-    public void centerOnGasStation(boolean animate, LatLng latLng);
+    void centerOnPosition(boolean animate, LatLng latLng);
 
-    public void setClientPositions(LatLng latLng);
+    void setClientPositions(LatLng latLng);
 
 }

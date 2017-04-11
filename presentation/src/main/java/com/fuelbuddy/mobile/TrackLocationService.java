@@ -19,7 +19,6 @@ import com.fuelbuddy.data.entity.mapper.EntityJsonMapper;
 import com.fuelbuddy.data.entity.mapper.GasStationEntityDataMapper;
 import com.fuelbuddy.data.entity.mapper.ResponseEntityMapper;
 import com.fuelbuddy.data.net.ApiInvoker;
-import com.fuelbuddy.data.net.RestApi;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.data.repository.datasource.GasStationDataStore.GasStationStoreFactory;
 import com.fuelbuddy.exception.DefaultErrorBundle;
@@ -33,7 +32,7 @@ import com.fuelbuddy.mobile.editprice.event.OnReturnToMapEvent;
 import com.fuelbuddy.mobile.exeption.ErrorMessageFactory;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
-import com.fuelbuddy.mobile.map.event.ResponseEvent;
+import com.fuelbuddy.mobile.map.event.UpdateResponseEvent;
 import com.fuelbuddy.mobile.model.FuelPricesUpdateEntry;
 import com.fuelbuddy.mobile.util.LocationUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -126,7 +125,7 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getIntExtra(PARAM_SYNC_TYPE, 0) == PARAM_UPDATE_FUEL) {
             File videoFile = (File) intent.getSerializableExtra(VIDEO_FILE_TO_UPDATE);
-            FuelPricesUpdateEntry fuelPricesUpdateEntry = (FuelPricesUpdateEntry) intent.getParcelableExtra(FUEL_PRICE_UPDATE_TASK);
+            FuelPricesUpdateEntry fuelPricesUpdateEntry = intent.getParcelableExtra(FUEL_PRICE_UPDATE_TASK);
             updateFuelStation(videoFile, fuelPricesUpdateEntry);
         } else {
             TrackLocationService.setIsServiceRunning(true);
@@ -263,12 +262,12 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
     }
 
     private void setUpdateEvent(Response responseEntity) {
-        EventBus.getDefault().post(new ResponseEvent(responseEntity.getCode(), responseEntity.getMessage()));
+        EventBus.getDefault().post(new UpdateResponseEvent(responseEntity.getCode(), responseEntity.getMessage()));
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
         String errorMessage = ErrorMessageFactory.create(getApplicationContext(), errorBundle.getException());
-        EventBus.getDefault().post(new ResponseEvent(null, errorMessage));
+        EventBus.getDefault().post(new UpdateResponseEvent(null, errorMessage));
     }
 
     private final class UpdateStationSubscriber extends DefaultObserver<Response> {

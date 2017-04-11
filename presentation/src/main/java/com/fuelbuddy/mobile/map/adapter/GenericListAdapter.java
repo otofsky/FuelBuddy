@@ -1,5 +1,4 @@
-package com.fuelbuddy.mobile.map;
-
+package com.fuelbuddy.mobile.map.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -15,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterable {
+public class GenericListAdapter<T> extends BaseAdapter implements Filterable {
 
     public static final int POSITION_FLAG_BETWEEN = 0;
     public static final int POSITION_FLAG_FIRST = 1;
@@ -24,8 +23,6 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
 
     public static final int POSITION_FLAG_BOTH = POSITION_FLAG_FIRST + POSITION_FLAG_LAST;
 
-    public String selectedItem;
-
     /**
      * <p>
      * An array filter constrains the content of the array adapter with a
@@ -33,10 +30,6 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
      * from the list.
      * </p>
      */
-
-
-
-
     private class ArrayFilter extends Filter {
         @Override
         protected FilterResults performFiltering(final CharSequence prefix) {
@@ -108,23 +101,11 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
         }
     }
 
-
-    public void setSelectedId(String selectedItem) {
-        this.selectedItem = selectedItem;
-    }
-
-
-    public interface OnClickItemRefreshListener {
-        void onItemRefresh(String gasStationId);
-    }
-
-
-
     public interface ListItemInflater<T> {
 
         View getDropDownView(T item, View convertView, ViewGroup parent, int positionFlag, int position);
 
-        View getView(T item, View convertView, ViewGroup parent, String selectedItem, int positionFlag, int position);
+        View getView(T item, View convertView, ViewGroup parent, int positionFlag, int position);
 
         boolean isEnabled(T item, int position);
     }
@@ -163,7 +144,7 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
 
     private ArrayFilter mFilter;
 
-    public GenericCustomListAdapter(final ListItemInflater<T> listItemInflater, final Context context, final List<T> items) {
+    public GenericListAdapter(final ListItemInflater<T> listItemInflater, final Context context, final List<T> items) {
         this.context = context;
         this.listItemInflater = listItemInflater;
         init(context, 0, 0, items);
@@ -311,7 +292,7 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
         if (position + 1 == getCount()) {
             positionFlag += POSITION_FLAG_LAST;
         }
-        return listItemInflater.getView(getItem(position), convertView, parent,selectedItem, positionFlag, position);
+        return listItemInflater.getView(getItem(position), convertView, parent, positionFlag, position);
     }
 
     private void init(final Context context, final int resource, final int textViewResourceId, final List<T> objects) {
@@ -365,7 +346,7 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
                 mObjects.remove(object);
             }
         }
-        if (mNotifyOnChange) {
+        if (mNotifyOnChange)  {
             notifyDataSetChanged();
         }
     }
@@ -401,7 +382,7 @@ public class GenericCustomListAdapter<T> extends BaseAdapter implements Filterab
                 Collections.sort(mObjects, comparator);
             }
         }
-        if (mNotifyOnChange) {
+        if (mNotifyOnChange)     {
             notifyDataSetChanged();
         }
     }

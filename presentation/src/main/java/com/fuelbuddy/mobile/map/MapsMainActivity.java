@@ -28,7 +28,7 @@ import com.fuelbuddy.mobile.di.component.MapsComponent;
 import com.fuelbuddy.mobile.map.event.LocationUpdateEvent;
 import com.fuelbuddy.mobile.map.event.MissingLocationEvent;
 import com.fuelbuddy.mobile.map.event.OnPriceClickEvent;
-import com.fuelbuddy.mobile.map.event.ResponseEvent;
+import com.fuelbuddy.mobile.map.event.UpdateResponseEvent;
 import com.fuelbuddy.mobile.map.fragment.DetailInfoFragment;
 import com.fuelbuddy.mobile.map.fragment.MapFragment;
 import com.fuelbuddy.mobile.map.fragment.PriceListFragment;
@@ -77,8 +77,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
     private FuelPriceMode fuelPriceMode;
 
+    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.6419"), Double.valueOf("12.0878"));
 
-    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("52.229770"), Double.valueOf("21.011780"));
 
 
     public static Intent getCallingIntent(Context context) {
@@ -156,7 +156,8 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     private void initMapFragment() {
-        mMapFragment = MapFragment.newInstance();
+        FuelPriceMode fuelPriceMode = getFuelType();
+        mMapFragment = MapFragment.newInstance(fuelPriceMode);
         addFragment(R.id.fragment_container_map, mMapFragment);
     }
 
@@ -173,8 +174,9 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         if (event instanceof MissingLocationEvent) {
             DialogFactory.createErrorDialog(this, this).show();
         }
-        if (event instanceof ResponseEvent) {
-            DialogFactory.createSimpleSnackBarInfo(mToolbar, ((ResponseEvent) event).getMessage());
+        if (event instanceof UpdateResponseEvent) {
+            DialogFactory.createSimpleSnackBarInfo(mToolbar, event.getMessage());
+            mMapPresenter.submitSearch(mCurrentPositionLatLng, getFuelType());
         }
     }
 

@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fuelbuddy.mobile.R;
+import com.fuelbuddy.data.FuelPriceMode;
+import com.fuelbuddy.mobile.Config;
+import com.fuelbuddy.mobile.map.controller.FuelPriceController;
 import com.fuelbuddy.mobile.map.controller.MapController;
 import com.fuelbuddy.mobile.map.controller.MapInterface;
 import com.fuelbuddy.mobile.base.Event;
@@ -51,9 +53,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     View mapView;
 
-    public static MapFragment newInstance() {
+
+    public static MapFragment newInstance(FuelPriceMode fuelPriceMode) {
         MapFragment fragment = new MapFragment();
         Bundle arguments = new Bundle();
+        arguments.putSerializable(Config.FUEL_TYPE, fuelPriceMode);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -109,8 +113,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
     public void showGasStationPositions(List<GasStationModel> gasStationModelList) {
-        mapController.clear();
-        mapController.setFuelStationsPositions(gasStationModelList, "");
+        Bundle args = getArguments();
+        FuelPriceMode fuelPriceMode = (FuelPriceMode) args.getSerializable(Config.FUEL_TYPE);
+        if (fuelPriceMode != null) {
+            mapController.clear();
+            mapController.setFuelStationsPositions(gasStationModelList, fuelPriceMode);
+        }
     }
 
     public void showClientPositions(LatLng latLng) {
@@ -132,7 +140,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     @Override
     public void onMarkerClick(GasStationModel gasStationModel) {
-        mapController.centerOnGasStation(true, MapUtil.getLatLng(gasStationModel));
+        mapController.centerOnPosition(true, MapUtil.getLatLng(gasStationModel.getGasStationLatitude(),gasStationModel.getGasStationLongitude()));
         mCallbacks.onInfoShow(gasStationModel);
         onStationClickListener.onMarkerClick(gasStationModel.getGasStationId());
         //pull out
@@ -142,7 +150,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public void onEventMainThread(Event event) {
         if (event instanceof OnPriceClickEvent) {
             GasStationModel gasStationModel = ((OnPriceClickEvent) event).getGasStationModel();
-            mapController.centerOnGasStation(true, MapUtil.getLatLng(gasStationModel));
+            mapController.centerOnPosition(true, MapUtil.getLatLng(gasStationModel.getGasStationLatitude(),gasStationModel.getGasStationLongitude()));
             mCallbacks.onInfoShow(gasStationModel);
         }
     }

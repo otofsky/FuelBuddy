@@ -27,10 +27,7 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
         fun onTextChanged(maskFilled: Boolean, extractedValue: String)
     }
 
-    interface OnTextEndListener {
-
-
-    }
+    interface OnTextEndListener
 
 
     var listener: TextWatcher?
@@ -128,7 +125,7 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
         this.field.get().addTextChangedListener(this)
         this.listener?.afterTextChanged(edit)
         var limit: Int
-        limit = edit?.length!!;
+        limit = edit?.length!!
         if (limit >= 5) {
             this.field.get().setBackgroundResource(resourceEnd)
         }

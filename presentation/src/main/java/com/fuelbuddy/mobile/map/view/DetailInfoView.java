@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface DetailInfoView extends MvpView {
 
-    public void showNavigationView();
+    void showNavigationView();
 
-    public void showEditPriceView();
+    void showEditPriceView();
 
 }

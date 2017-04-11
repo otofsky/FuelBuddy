@@ -14,11 +14,7 @@ public class PriceValidator implements Validator<String> {
 
     @Override
     public boolean validate(String input) {
-        if (!isNullOrEmpty(input) && input.length() == 5) {
-            return true;
-        } else {
-            return false;
-        }
+        return !isNullOrEmpty(input) && input.length() == 5;
     }
 
     public static boolean isNullOrEmpty(String string) {

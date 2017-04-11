@@ -8,7 +8,7 @@ public class UploadResponse {
 
     public enum ResultTypeEnum {
         Success,  GeneralError,  UserNotFound,
-    };
+    }
 
     private Integer code;
 
