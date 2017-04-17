@@ -11,7 +11,6 @@ import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.model.MarkerEntry;
 import com.fuelbuddy.mobile.model.MarkerModel;
-import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.MapUtil;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.google.android.gms.maps.CameraUpdate;
@@ -245,10 +244,12 @@ public class MapController implements MapInterface {
 
     public void centerOnGasStations(List<LatLng> listLatLng) {
         LatLngBounds.Builder bounds = new LatLngBounds.Builder();
-        for (LatLng latLng : listLatLng) {
-            bounds.include(latLng);
+        if (listLatLng != null &&!listLatLng.isEmpty()) {
+            for (LatLng latLng : listLatLng) {
+                    bounds.include(latLng);
+            }
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200));
         }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200));
     }
 
     public void centerOnClientPosition(LatLng latLng) {

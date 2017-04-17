@@ -149,9 +149,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     @Subscribe
     public void onEventMainThread(Event event) {
         if (event instanceof OnPriceClickEvent) {
-            GasStationModel gasStationModel = ((OnPriceClickEvent) event).getGasStationModel();
-            mapController.centerOnPosition(true, MapUtil.getLatLng(gasStationModel.getGasStationLatitude(),gasStationModel.getGasStationLongitude()));
-            mCallbacks.onInfoShow(gasStationModel);
+            if( ((OnPriceClickEvent) event).getGasStationModel()!=null) {
+                GasStationModel gasStationModel = ((OnPriceClickEvent) event).getGasStationModel();
+                mapController.centerOnPosition(true, MapUtil.getLatLng(gasStationModel.getGasStationLatitude(), gasStationModel.getGasStationLongitude()));
+                mCallbacks.onInfoShow(gasStationModel);
+            }
         }
     }
 }
