@@ -56,6 +56,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MapsMainActivity extends BaseActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, MapMvpView, MapFragment.Callbacks, PriceListFragment.OnStationClickListener, Dialog.OnClickListener, HasComponent<MapsComponent> {
@@ -63,11 +64,10 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Inject
     public MapMainPresenter mMapPresenter;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.view_progress)
-    RelativeLayout progressView;
+    /*@BindView(R.id.progressView)
+    MaterialProgressBar materialProgressBar;*/
 
     private GoogleApiClient mGoogleApiClient;
     private MapsComponent mMapsComponent;
@@ -77,7 +77,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     private LatLng mCurrentPositionLatLng;
     private FuelPriceMode fuelPriceMode;
 
-    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.6419"), Double.valueOf("12.0878"));
+    private LatLng fakeCurrentPositionLatLng = new LatLng(Double.valueOf("55.68288039999999"), Double.valueOf("12.369392699999935"));
 
 
 
@@ -102,6 +102,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         ButterKnife.bind(this);
         setToolbar();
         mMapPresenter.attachView(this);
+        connectGoogleApiClient();
         PermissionsUtils.initPermission(this, permissionlistener,
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
 
@@ -163,20 +164,19 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Subscribe
     public void onEventMainThread(Event event) {
+
         if (event instanceof LocationUpdateEvent) {
             this.mCurrentPositionLatLng = ((LocationUpdateEvent) event).getLatLng();
             mMapPresenter.submitSearch(mCurrentPositionLatLng, getFuelType());
-            //mMapPresenter.submitSearch(fakeCurrentPositionLatLng);
+            //mMapPresenter.submitSearch(fakeCurrentPositionLatLng,getFuelType());
         }
-        if (event instanceof OnPriceClickEvent) {
-            Log.d(TAG, "onEventMainThread: ");
-        }
-        if (event instanceof MissingLocationEvent) {
+
+       else if (event instanceof MissingLocationEvent) {
             DialogFactory.createErrorDialog(this, this).show();
         }
-        if (event instanceof UpdateResponseEvent) {
+       else if (event instanceof UpdateResponseEvent) {
             DialogFactory.createSimpleSnackBarInfo(mToolbar, event.getMessage());
-            mMapPresenter.submitSearch(mCurrentPositionLatLng, getFuelType());
+            mMapPresenter.updateMapView(mCurrentPositionLatLng, getFuelType());
         }
     }
 
@@ -201,15 +201,20 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @Override
     public void onStart() {
         super.onStart();
-        connectGoogleApiClient();
+        Log.d(TAG, "onStart: ");
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
-        stopTracking();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopTracking();
+        super.onDestroy();
     }
 
     private void connectGoogleApiClient() {
@@ -221,7 +226,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
         if (!(mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.connect();
         } else {
-            Log.d(TAG, "start location connectGoogleApiClient: ");
             startTrackLocationService();
         }
     }
@@ -250,7 +254,6 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     }
 
     private void startTrackLocationService() {
-        Log.d(TAG, "onConnected: start tracking");
         startService(new Intent(this, TrackLocationService.class));
     }
 
@@ -261,6 +264,7 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
 
     @Override
     public void showGasStations(List<GasStationModel> gasStationModelList) {
+
         if (!gasStationModelList.isEmpty()) {
             mPriceListFragment.showFuelPriceBars(gasStationModelList);
             mMapFragment.showGasStationPositions(gasStationModelList);
@@ -290,14 +294,13 @@ public class MapsMainActivity extends BaseActivity implements GoogleApiClient.Co
     @DebugLog
     @Override
     public void showLoading() {
-        this.progressView.setVisibility(View.VISIBLE);
-
+        progressDialog.show();
     }
 
     @DebugLog
     @Override
     public void hideLoading() {
-        this.progressView.setVisibility(View.GONE);
+        progressDialog.hide();
     }
 
     @DebugLog

@@ -16,9 +16,6 @@ public class UserUtil {
 
     public UserModel populateGoogleUser(GoogleSignInAccount account){
         UserModel googleUser = new UserModel();
-  /*    googleUser.setUserId("212312333");
-        googleUser.setProfileName("Bgilly Kidd");
-        googleUser.setEmail("killler@ghoud.com");*/
         if(account!=null) {
             googleUser.setUserId(account.getId());
             googleUser.setProfileName(account.getDisplayName());

@@ -236,7 +236,8 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
                 != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "\"  permision is not granted: ");
             return;
-        } else {
+        }
+        else {
             Log.d(TAG, "permision is granted");
 
             if (!LocationUtil.isLocationEnabled(getApplicationContext())) {
@@ -254,8 +255,6 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
 
     @DebugLog
     private void updateLocationData(Location location) {
-        Log.d(TAG, "updateLocationData: "+ location.getLatitude());
-        Log.d(TAG, "updateLocationData: "+ location.getLongitude());
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         EventBus.getDefault().post(new LocationUpdateEvent(new LatLng(latitude, longitude)));
@@ -275,17 +274,21 @@ public class TrackLocationService extends Service implements GoogleApiClient.Con
         @DebugLog
         @Override
         public void onComplete() {
+            Log.d(TAG, "onComplete: ");
         }
 
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
+            Log.d(TAG, "onError: " + throwable.getMessage());
+            Log.d(TAG, "onError: " + throwable.toString());
             showErrorMessage(new DefaultErrorBundle((Exception) throwable));
         }
 
         @DebugLog
         @Override
         public void onNext(Response responseEntity) {
+            Log.d(TAG, "onNext: " + responseEntity.getMessage());
             setUpdateEvent(responseEntity);
         }
     }

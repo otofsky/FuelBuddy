@@ -18,10 +18,12 @@
 of the map.-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <!-- Header bar on top of map -->
     <LinearLayout
@@ -44,10 +46,21 @@ of the map.-->
 
     </LinearLayout>
 
+ <!--   <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@id/progressView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:layout_marginBottom="-6dp"
+        android:progress="30"
+        android:secondaryProgress="60"
+        app:mpb_progressStyle="horizontal"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />-->
     <!-- Content of screen. Contains a map and optional info bottom sheet. -->
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <!-- Main layout -->
         <FrameLayout
             android:id="@+id/fragment_container_map"

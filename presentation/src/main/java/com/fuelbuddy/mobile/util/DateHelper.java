@@ -1,5 +1,7 @@
 package com.fuelbuddy.mobile.util;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
@@ -11,7 +13,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class DateHelper {
 
-    private static final int UNKOWN_HOURS = 0;
+    private static final int UNKOWN_MINUTES = 0;
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static DateTime convertStringToDate(String dateString) {
@@ -26,9 +28,14 @@ public class DateHelper {
             DateTime dt = convertStringToDate(fuelLastUpDateString);
             DateTime dateTime = new DateTime();
             Duration p = new Duration(dt, dateTime);
-            int hours = (int) p.getStandardHours();
-            return hours;
+
+            Log.d("datehelper", "isOlderThanData: " +  p.toStandardMinutes());
+            Log.d("datehelper", "isOlderThanData: " +  (int)p.getStandardMinutes());
+            Log.d("datehelper", "isOlderThanData: " +  p.getStandardHours());
+
+            int minutes = (int) p.getStandardMinutes();
+            return minutes;
         }
-        return UNKOWN_HOURS;
+        return UNKOWN_MINUTES;
     }
 }

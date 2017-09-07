@@ -9,6 +9,7 @@ import okhttp3.MediaType;
 public class RequestHelper {
 
 
+
     public static MediaType getMediaType(String mediaType) {
         MediaType mt = null;
         if (mediaType != null && mediaType.length() != 0) {

@@ -152,7 +152,9 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
         stationAddress.setText(gasStationModel.getGasStationName());
         distance.setText(gasStationModel.getDistance());
         info.setText(R.string.map_direction_btn_text);
-
+        updateBtn.setEnabled(true);
+        updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
+/*
         if (isFuelPriceAvailableForUpdate(gasStationModel.getTimeUpdated())) {
             updateBtn.setEnabled(true);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.app_green));
@@ -160,19 +162,17 @@ public class DetailInfoFragment extends BaseFragment implements DetailInfoView, 
             updateBtn.setEnabled(false);
             updateBtn.setBackgroundColor(getResources().getColor(R.color.gray));
             DialogFactory.createSimpleSnackBarInfo(mBottomSheet, getString(R.string.price_info_up_to_date));
-        }
+        }*/
     }
 
     public boolean isFuelPriceAvailableForUpdate(String lastUpDatePrice) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
-            Log.d("is available", "isFuelPriceAvailableForUpdate: false");
             return false;
         } else if (numOfHours > 2 && numOfHours < 4) {
-            Log.d("is available", "isFuelPriceAvailableForUpdate: true");
+
             return true;
         } else {
-            Log.d("is available", "isFuelPriceAvailableForUpdate: true");
             return true;
         }
     }

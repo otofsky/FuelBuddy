@@ -58,6 +58,9 @@
     <string name="facebook_account_key_parameters">fields</string>
     <string name="facebook_account_value_parameters">id,name,email,gender, birthday</string>
 
+    <string name="searching_for_station_progress_bar">Searching for station</string>
+
+
    <!--Update -->
     <string-array name="update_steps">
         <item>Video</item>

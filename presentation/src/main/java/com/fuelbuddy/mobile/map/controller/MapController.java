@@ -124,19 +124,22 @@ public class MapController implements MapInterface {
         for (GasStationModel gasStation : gasStationModelList) {
             switch (fuelPriceMode) {
                 case BENZIN_92:
-                    if (!StringHelper.isNullOrEmpty(gasStation.getPrice92())) {
-                        this.gasStationModelList.add(gasStation);
-                    }
+                    this.gasStationModelList.add(gasStation);
+                  /*  if (!StringHelper.isNullOrEmpty(gasStation.getPrice92())) {
+
+                    }*/
                     break;
                 case BENZIN_95:
-                    if (!StringHelper.isNullOrEmpty(gasStation.getPrice95())) {
-                        this.gasStationModelList.add(gasStation);
-                    }
+                    this.gasStationModelList.add(gasStation);
+                  /*  if (!StringHelper.isNullOrEmpty(gasStation.getPrice95())) {
+
+                    }*/
                     break;
                 case DIESEL:
-                    if (!StringHelper.isNullOrEmpty(gasStation.getPriceDiesel())) {
+                    this.gasStationModelList.add(gasStation);
+                    /*if (!StringHelper.isNullOrEmpty(gasStation.getPriceDiesel())) {
                         this.gasStationModelList.add(gasStation);
-                    }
+                    }*/
                     break;
             }
         }

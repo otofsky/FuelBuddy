@@ -143,7 +143,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mapController.centerOnPosition(true, MapUtil.getLatLng(gasStationModel.getGasStationLatitude(),gasStationModel.getGasStationLongitude()));
         mCallbacks.onInfoShow(gasStationModel);
         onStationClickListener.onMarkerClick(gasStationModel.getGasStationId());
-        //pull out
     }
 
     @Subscribe

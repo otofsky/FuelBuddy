@@ -123,7 +123,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         if (!StringHelper.isNullOrEmpty(priceDiesel)) {
             viewHolder.fuelPriceBtn.setText(s);
         } else {
-            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+            viewHolder.fuelPriceBtn.setText("----");
         }
     }
 
@@ -131,7 +131,8 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
         if (!StringHelper.isNullOrEmpty(price95)) {
             viewHolder.fuelPriceBtn.setText(s);
         } else {
-            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+            viewHolder.fuelPriceBtn.setText("----");
+           // ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
         }
     }
 
@@ -140,15 +141,18 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
             viewHolder.fuelPriceBtn.setText(s);
 
         } else {
-            ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
+            viewHolder.fuelPriceBtn.setText("----");
+            //ViewHelper.setVisible(viewHolder.fuelPriceBtn, false);
         }
     }
 
+    /*okay it should be green from 0-2 Hours yellow 2-4 Hours and red after 4 hours 🙂*/
+
     public void setSetFuelColorState(String lastUpDatePrice, View view) {
-        int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
-        if (numOfHours < 2) {
+        int numOfMinutes = DateHelper.isOlderThanData(lastUpDatePrice);
+        if (numOfMinutes <= 120) {
             view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_green_right_rounded));
-        } else if (numOfHours > 2 && numOfHours < 4) {
+        } else if (numOfMinutes > 120 && numOfMinutes < 240) {
             view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_yellow_right_rounded));
         } else {
             view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_red_right_rounded));

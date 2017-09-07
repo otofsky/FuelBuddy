@@ -54,6 +54,10 @@ public class MapMainPresenter extends BasePresenter<MapMvpView> {
         loadUserList(loLatLng, fuelPriceMode);
     }
 
+    public void updateMapView(LatLng loLatLng, FuelPriceMode fuelPriceMode) {
+        loadUserList(loLatLng, fuelPriceMode);
+    }
+
     @DebugLog
     private void loadUserList(LatLng loLatLng, FuelPriceMode fuelPriceMode) {
         this.getFuelPrices(loLatLng, fuelPriceMode);

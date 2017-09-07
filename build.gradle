@@ -42,9 +42,7 @@ ext {
     espressoVersion = "2.2.2"
     mockitoVersion = '1.10.19'
     powerMockito = '1.6.2'
-
     kotlinVersion = '1.0.4'
-
     jUnitVersion = '4.12'
 
     deps = [
