@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by zjuroszek on 06.03.17.
+ * Created by zjuroszek on 06.03.17. bla ble bli
  */
 
 public class PriceSorter implements Sorter<GasStation, FuelPriceMode> {
