@@ -1,0 +1,195 @@
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_shadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/viewA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.kofigyan.stateprogressbar.StateProgressBar
+                    android:id="@+id/stateIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:spb_currentStateDescriptionColor="@color/app_green"
+                    app:spb_currentStateNumber="three"
+                    app:spb_enableAllStatesCompleted="true"
+                    app:spb_maxStateNumber="three"
+                    app:spb_stateBackgroundColor="@color/white"
+                    app:spb_stateDescriptionColor="@color/white"
+                    app:spb_stateForegroundColor="@color/app_green"
+                    app:spb_stateNumberBackgroundColor="@color/white"
+                    app:spb_stateNumberForegroundColor="#eeeeee" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/fuel_price_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_weight="0.3">
+
+                <include
+                    android:id="@+id/addressView"
+                    layout="@layout/address_view" />
+
+                <RelativeLayout
+                    android:id="@+id/priceInputHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/sendBtn"
+                    android:layout_below="@+id/addressView"
+                    android:gravity="center"
+                    android:padding="2dp">
+
+                    <RelativeLayout
+                        android:id="@+id/fuel92holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="48dp"
+                        android:paddingRight="48dp">
+
+
+                        <TextView
+                            android:id="@+id/fuel92"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical"
+                            android:text="@string/update_blyfri_92"
+                            android:textAllCaps="true"
+                            android:textColor="@color/app_green"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/fuelInput92"
+                            style="@style/EditTextFb" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/fuel95holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fuel92holder"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="48dp"
+                        android:paddingRight="48dp">
+
+                        <TextView
+                            android:id="@+id/fuel95"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical"
+                            android:text="@string/update_blyfri_95"
+                            android:textAllCaps="true"
+                            android:textColor="@color/app_green"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/fuelInput95"
+                            style="@style/EditTextFb" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/fuelDieselholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/fuel95holder"
+                        android:orientation="horizontal"
+                        android:paddingLeft="48dp"
+                        android:paddingRight="48dp">
+
+                        <TextView
+                            android:id="@+id/fuelDiesel"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical"
+                            android:text="@string/update_diesel"
+                            android:textAllCaps="true"
+                            android:textColor="@color/app_green"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/fuelInputDiesel"
+                            style="@style/EditTextFb" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
+                <Button
+                    android:id="@+id/sendBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/button_green_all_rounded"
+                    android:fontFamily="sans-serif-light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@string/send_btn"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/openCameraBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_camcorder_24dp"
+            app:backgroundTint="@color/app_green"
+            app:layout_anchor="@id/viewA"
+            app:layout_anchorGravity="bottom|right|end" />
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>

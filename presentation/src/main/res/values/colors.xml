@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#339489</color>
+    <color name="colorPrimaryDark">#266e66</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="app_orange">#CD5B1C</color>
-    <color name="app_green">#508B89</color>
-    <color name="app_green_selected">#69a5a3</color>
-    <color name="white">#FFFFFF</color>
 
+    <color name="app_green">#339489</color>
+    <color name="app_red">#f05223</color>
+    <color name="app_yellow">#f8a822</color>
+
+    <color name="app_green_selected">#69a5a3</color>
+
+    <color name="facebook_brand_color">#3B5998</color>
+    <color name="google_plus_brand_color">#dc4e41</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#DCDCDC</color>
+    #DCDCDC
 </resources>

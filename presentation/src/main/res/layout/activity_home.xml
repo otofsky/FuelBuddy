@@ -3,71 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@mipmap/background"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <ImageView
         android:id="@+id/logoImg"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentTop="true"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@mipmap/fuelbuddy_logo" />
+        app:srcCompat="@mipmap/logo_fuel_buddy" />
 
-
-    <TextView
-        android:id="@+id/text1Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Velkomen til Fuel Buddy Vaelg dit brandstof"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:layout_below="@+id/logoImg"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
-
-
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/welcomeTextTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/text1Tv"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <Button
-            android:id="@+id/fuelType92Btn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="92"
-            android:elevation="10dp" />
-
-        <Button
-            android:id="@+id/fuelType95Btn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="95" />
-
-        <Button
-            android:id="@+id/fuelTypeDieselBtn"
-            style="@style/GreenButton"
-            android:layout_marginBottom="10dp"
-            android:text="Diesel" />
-
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            style="@style/GreenButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/welcome_msg"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>

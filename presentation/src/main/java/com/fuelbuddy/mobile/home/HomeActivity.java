@@ -1,64 +1,108 @@
 package com.fuelbuddy.mobile.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.fuelbuddy.mobile.FuelBuddyApplication;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.base.BaseActivity;
-import com.fuelbuddy.mobile.di.module.HomeModule;
+import com.fuelbuddy.mobile.di.HasComponent;
+import com.fuelbuddy.mobile.di.component.DaggerHomeComponent;
+
+import com.fuelbuddy.mobile.di.component.HomeComponent;
+
+import com.fuelbuddy.mobile.home.fuelSelection.FuelSelectionFragment;
 import com.fuelbuddy.mobile.navigation.Navigator;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import hugo.weaving.DebugLog;
-
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_92;
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_95;
-import static com.fuelbuddy.mobile.Constants.FUEL_TYPE_DIESEL;
 
 /**
  * Created by zjuroszek on 07.10.16.
  */
-public class HomeActivity extends AppCompatActivity implements HomeMvpView {
+public class HomeActivity extends BaseActivity implements HomeView, HasComponent<HomeComponent> {
+
+    @Inject
+    public HomePresenter homePresenter;
+    private HomeComponent homeComponent;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, HomeActivity.class);
+    }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-       // homePresenter.attachView(this);
+        this.initializeInjector();
+        initPresenter();
         ButterKnife.bind(this);
+        setToolbar();
     }
 
+    private void initPresenter() {
+        homePresenter.attachView(this);
+        homePresenter.verifyCurrentUser();
+    }
 
+    private void setToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+    }
 
-
-
-    @DebugLog
-    @OnClick(R.id.fuelType92Btn)
-    public void submitFuelType92() {
-        Log.d("submitFuelType92", "submitFuelType92: ");
-        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_92);
-        //homePresenter.showInfo();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 
     @DebugLog
-    @OnClick(R.id.fuelType95Btn)
-    public void submitFuelType95() {
-        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_95);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionLogOut:
+                homePresenter.logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
-    @DebugLog
-    @OnClick(R.id.fuelTypeDieselBtn)
-    public void submitFuelTypeDiesel() {
-        Navigator.navigateToMapsActivity(HomeActivity.this,FUEL_TYPE_DIESEL);
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void navigateToHomeActivity() {
+
+    }
+
+    private void initializeInjector() {
+        this.homeComponent = DaggerHomeComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+        homeComponent.inject(this);
     }
 
 
@@ -68,13 +112,23 @@ public class HomeActivity extends AppCompatActivity implements HomeMvpView {
     }
 
     @Override
-    public void showInfo() {
-        Toast.makeText(this, "updateLocationData " , Toast.LENGTH_SHORT).show();
+    public void showInfo(String userId) {
+        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLoginView() {
+        Navigator.navigateToLoginActivity(this);
+        finish();
+    }
+
+    @Override
+    public void showFuelTypeView() {
+        addFragment(R.id.fragmentContainer, new FuelSelectionFragment());
     }
 
     @Override
     public void showLoading() {
-
     }
 
     @Override
@@ -83,17 +137,23 @@ public class HomeActivity extends AppCompatActivity implements HomeMvpView {
     }
 
     @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @Override
     public void showError(String message) {
 
+    }
+
+    @Override
+    public void logOut() {
+        Navigator.navigateToLoginActivity(this);
+        finish();
+    }
+
+    @Override
+    public Context context() {
+        return null;
+    }
+
+    @Override
+    public HomeComponent getComponent() {
+        return homeComponent;
     }
 }
