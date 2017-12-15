@@ -31,7 +31,6 @@ import com.fuelbuddy.data.exeption.ServiceException;
 import com.fuelbuddy.data.exeption.UserNotFoundException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -44,7 +43,7 @@ public class RestApiImpl implements RestApi {
 
     private final Context context;
     GasStationEntityDataMapper mGasStationEntityDataMapper;
-    ApiInvoker mApiInvoker;
+   ApiInvoker mApiInvoker;
 
     public RestApiImpl(Context context) {
         this.context = context;

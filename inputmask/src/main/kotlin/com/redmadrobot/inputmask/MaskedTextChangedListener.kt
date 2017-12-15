@@ -68,8 +68,8 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
                         ),
                         this.autocomplete
                 )
-        this.field.get().setText(result.formattedText.string)
-        this.field.get().setSelection(result.formattedText.caretPosition)
+        this.field.get()?.setText(result.formattedText.string)
+        this.field.get()?.setSelection(result.formattedText.caretPosition)
         this.valueListener?.onTextChanged(result.complete, result.extractedValue)
     }
 
@@ -119,19 +119,19 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
     }
 
     override fun afterTextChanged(edit: Editable?) {
-        this.field.get().removeTextChangedListener(this)
+        this.field.get()?.removeTextChangedListener(this)
         edit?.replace(0, edit.length, this.afterText)
-        this.field.get().setSelection(this.caretPosition)
-        this.field.get().addTextChangedListener(this)
+        this.field.get()?.setSelection(this.caretPosition)
+        this.field.get()?.addTextChangedListener(this)
         this.listener?.afterTextChanged(edit)
         var limit: Int
         limit = edit?.length!!
         if (limit >= 5) {
-            this.field.get().setBackgroundResource(resourceEnd)
+            this.field.get()?.setBackgroundResource(resourceEnd)
         }
 
         else{
-          this.field.get().setBackgroundResource(resourceNeutral)
+          this.field.get()?.setBackgroundResource(resourceNeutral)
 
         }
 
@@ -160,10 +160,10 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         if (this.autocomplete && hasFocus) {
             val text: String
-            if (this.field.get().text.isEmpty()) {
+            if (this.field.get()?.text?.isEmpty() as Boolean) {
                 text = ""
             } else {
-                text = this.field.get().text.toString()
+                text = this.field.get()?.text.toString()
             }
 
             val result: Mask.Result =
@@ -174,8 +174,8 @@ open class MaskedTextChangedListener(format: String, autocomplete: Boolean,
                             ),
                             this.autocomplete
                     )
-            this.field.get().setText(result.formattedText.string)
-            this.field.get().setSelection(result.formattedText.caretPosition)
+            this.field.get()?.setText(result.formattedText.string)
+            this.field.get()?.setSelection(result.formattedText.caretPosition)
             this.valueListener?.onTextChanged(result.complete, result.extractedValue)
         }
     }

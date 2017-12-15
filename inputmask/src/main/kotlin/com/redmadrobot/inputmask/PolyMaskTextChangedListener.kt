@@ -49,8 +49,8 @@ class PolyMaskTextChangedListener(
                         ),
                         this.autocomplete
                 )
-        this.field.get().setText(result.formattedText.string)
-        this.field.get().setSelection(result.formattedText.caretPosition)
+        this.field.get()?.setText(result.formattedText.string)
+        this.field.get()?.setSelection(result.formattedText.caretPosition)
         this.valueListener?.onTextChanged(result.complete, result.extractedValue)
     }
 
@@ -76,10 +76,10 @@ class PolyMaskTextChangedListener(
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         if (this.autocomplete && hasFocus) {
             val text: String
-            if (this.field.get().text.isEmpty()) {
+            if (this.field.get()?.text?.isEmpty() as Boolean) {
                 text = ""
             } else {
-                text = this.field.get().text.toString()
+                text = this.field.get()?.text.toString()
             }
 
             val result: Mask.Result =
@@ -94,8 +94,8 @@ class PolyMaskTextChangedListener(
                             ),
                             this.autocomplete
                     )
-            this.field.get().setText(result.formattedText.string)
-            this.field.get().setSelection(result.formattedText.caretPosition)
+            this.field.get()?.setText(result.formattedText.string)
+            this.field.get()?.setSelection(result.formattedText.caretPosition)
             this.valueListener?.onTextChanged(result.complete, result.extractedValue)
         }
     }

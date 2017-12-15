@@ -26,15 +26,15 @@ public interface ApiInterface {
 
 
     @GET("stations?")
-   Call<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String header, @Query("latitude") String latitude,
-                                          @Query("longitude") String longitude);
+    Call<List<GasStationEntity>> getGasStations(@Header("TokenAuth") String header, @Query("latitude") String latitude,
+                                                @Query("longitude") String longitude);
     @GET("updatestation?")
     Call<ResponseEntity> updatePrices(@Header("TokenAuth") String header, @Query("ID") String iD,
-                                            @Query("userID") String userID,
-                                            @Query("photoID") String photoID,
-                                            @Query("price92") Double price92,
-                                            @Query("price95") Double price95,
-                                            @Query("priceDiesel") Double priceDiesel);
+                                      @Query("userID") String userID,
+                                      @Query("photoID") String photoID,
+                                      @Query("price92") Double price92,
+                                      @Query("price95") Double price95,
+                                      @Query("priceDiesel") Double priceDiesel);
 
     @Multipart
     @POST("upload?")

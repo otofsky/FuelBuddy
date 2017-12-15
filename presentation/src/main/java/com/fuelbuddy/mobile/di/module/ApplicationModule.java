@@ -8,6 +8,7 @@ import com.fuelbuddy.data.cache.SharePreferencesUserCacheImpl;
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.executor.JobExecutor;
 import com.fuelbuddy.data.net.ApiInvoker;
+import com.fuelbuddy.data.net.utils.FakeInjector;
 import com.fuelbuddy.data.repository.GasStationDataRepository;
 import com.fuelbuddy.data.repository.UserDataRepository;
 import com.fuelbuddy.executor.PostExecutionThread;

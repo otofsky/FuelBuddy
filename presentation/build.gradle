@@ -52,6 +52,10 @@ android {
     packagingOptions{
         exclude 'LICENSE.txt'
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -96,7 +100,6 @@ dependencies {
     compile 'com.google.dagger:dagger:2.6.1'
     compile 'org.greenrobot:eventbus:3.0.0'
 
-
     compile 'javax.annotation:jsr250-api:1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
 
@@ -122,6 +125,8 @@ dependencies {
     }
     compile 'com.android.support:multidex:1.0.1'
     compile project(path: ':inputmask')
+    compile project(path: ':data')
+
 }
 
 crashlytics {

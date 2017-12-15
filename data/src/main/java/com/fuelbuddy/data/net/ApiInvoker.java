@@ -1,13 +1,12 @@
 package com.fuelbuddy.data.net;
 
 
-import android.util.Log;
-
 import com.fuelbuddy.data.cache.UserCache;
 import com.fuelbuddy.data.entity.GasStationEntity;
 import com.fuelbuddy.data.entity.ResponseEntity;
 import com.fuelbuddy.data.entity.UploadResponseEntity;
 import com.fuelbuddy.data.entity.UserEntity;
+import com.fuelbuddy.data.net.utils.FakeDataInjectorKt;
 import com.fuelbuddy.data.net.utils.NetworkUtil;
 import com.fuelbuddy.data.net.utils.StringHelper;
 import com.google.gson.Gson;
@@ -27,7 +26,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,7 +36,7 @@ public class ApiInvoker {
     private ApiInterface apiInterface;
     UserCache mSharePreferencesUserCache;
 
-    private static ApiInvoker httpsInvoker;
+    private static com.fuelbuddy.data.net.utils.FakeInjector httpsInvoker;
 
 
     @Inject
@@ -138,17 +136,17 @@ public class ApiInvoker {
         return request;
     }
 
-    public static ApiInvoker getInstance() {
+    public static com.fuelbuddy.data.net.utils.FakeInjector getInstance() {
 
         if (httpsInvoker == null) {
-            httpsInvoker = new ApiInvoker();
+            httpsInvoker = new com.fuelbuddy.data.net.utils.FakeInjector();
         }
         return httpsInvoker;
     }
 
-    public List<GasStationEntity> getGasStations(String token, String latitude, String longitude) {
+    public List<GasStationEntity> getGasStations(String tokekn, String latitude, String longitude) {
         try {
-            return apiInterface.getGasStations(token, latitude, longitude).execute().body();
+            return FakeDataInjectorKt.getGasStations(tokekn,latitude,longitude);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

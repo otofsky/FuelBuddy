@@ -30,7 +30,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     @DebugLog
     public void verifyCurrentUser() {
-        this.getCurrentUser.execute(new HomePresenter.CurrentUserSubscriber(),null);
+        getMvpView().showFuelTypeView();
+        //this.getCurrentUser.execute(new HomePresenter.CurrentUserSubscriber(),null);
     }
 
     public void logout() {
@@ -49,7 +50,8 @@ public class HomePresenter extends BasePresenter<HomeView> {
         @DebugLog
         @Override
         public void onError(Throwable throwable) {
-            getMvpView().showLoginView();
+            //getMvpView().showLoginView();
+            getMvpView().showFuelTypeView();
         }
 
         @DebugLog

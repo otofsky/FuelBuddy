@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 24
@@ -31,6 +32,9 @@ android {
 
     }
 
+    // If you need to add more flavors, consider using flavor dimensions.
+
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -50,4 +54,11 @@ android {
         compile 'com.squareup.retrofit2:retrofit:2.0.2'
         compile 'io.reactivex.rxjava2:rxjava:2.0.2'
         compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+        /*kotlin*/
+        compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.6"
+        testCompile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.6'
+        testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.6'
+        testCompile "com.nhaarman:mockito-kotlin:1.1.0"
+        testCompile 'org.amshove.kluent:kluent:1.14'
     }

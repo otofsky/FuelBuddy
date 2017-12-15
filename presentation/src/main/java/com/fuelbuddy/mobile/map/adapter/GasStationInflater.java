@@ -12,11 +12,14 @@ import com.fuelbuddy.mobile.Config;
 import com.fuelbuddy.mobile.R;
 import com.fuelbuddy.mobile.map.FuelPriceUpdate;
 import com.fuelbuddy.mobile.map.GenericCustomListAdapter;
+import com.fuelbuddy.mobile.map.adapter.colorInjector.FreshPriceColor;
+import com.fuelbuddy.mobile.map.adapter.colorInjector.MidPriceColor;
+import com.fuelbuddy.mobile.map.adapter.colorInjector.OldPriceColor;
+import com.fuelbuddy.mobile.map.adapter.colorInjector.PriceColorManager;
 import com.fuelbuddy.mobile.map.listener.OnFuelPriceClickListener;
 import com.fuelbuddy.mobile.model.GasStationModel;
 import com.fuelbuddy.mobile.util.DateHelper;
 import com.fuelbuddy.mobile.util.PriceHelper;
-import com.fuelbuddy.mobile.util.ResourcesHelper;
 import com.fuelbuddy.mobile.util.StringHelper;
 import com.fuelbuddy.mobile.util.ViewHelper;
 
@@ -29,6 +32,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
     private LayoutInflater inflater;
     private FuelPriceMode fuelPriceMode;
+    PriceColorManager priceColorManager;
     OnFuelPriceClickListener onFuelPriceClickListener;
     GenericCustomListAdapter.OnClickItemRefreshListener onClickItemRefreshListener;
     private Context context;
@@ -45,7 +49,7 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
 
 
     @Override
-    public View getView(GasStationModel item, View convertView, ViewGroup parent, String selectedItem, int positionFlag,int position) {
+    public View getView(GasStationModel item, View convertView, ViewGroup parent, String selectedItem, int positionFlag, int position) {
         ViewHolder holder = null;
         if (convertView == null) {
             if (!com.fuelbuddy.util.StringHelper.isNullOrEmpty(selectedItem)) {
@@ -88,18 +92,18 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
                 init92FuelPriceView(viewHolder, gasStationModel.getPrice92(),
                         PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_92,
                                 gasStationModel.getPrice92()));
-                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
+                //setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case BENZIN_95:
                 init95FuelPriceView(viewHolder, gasStationModel.getPrice95(),
                         PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_95, gasStationModel.getPrice95()));
-                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
+              //  setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             case DIESEL:
                 initDieselFuelPriceView(viewHolder, gasStationModel.getPriceDiesel(),
                         PriceHelper.generateFuelPriceWithCurrency(Config.FUEL_TYPE_DIESEL,
                                 gasStationModel.getPriceDiesel()));
-                setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
+               // setSetFuelColorState(gasStationModel.getTimeUpdated(), viewHolder.fuelPriceBtn);
                 break;
             default:
                 Log.d(TAG, "invalid fuel type: ");
@@ -147,13 +151,17 @@ public class GasStationInflater implements GenericCustomListAdapter.ListItemInfl
     public void setSetFuelColorState(String lastUpDatePrice, View view) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
         if (numOfHours < 2) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_green_right_rounded));
+            priceColorManager.setColorStrategy(new FreshPriceColor());
+            priceColorManager.inflateColorState(view, context);
         } else if (numOfHours > 2 && numOfHours < 4) {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_yellow_right_rounded));
+            priceColorManager.setColorStrategy(new MidPriceColor());
+            priceColorManager.inflateColorState(view, context);
         } else {
-            view.setBackgroundDrawable(ResourcesHelper.getDrawable(context, R.drawable.button_red_right_rounded));
+            priceColorManager.setColorStrategy(new OldPriceColor());
+            priceColorManager.inflateColorState(view, context);
         }
     }
+
 
     public FuelPriceUpdate isFuelPriceAvailableForUpdate(String lastUpDatePrice) {
         int numOfHours = DateHelper.isOlderThanData(lastUpDatePrice);
